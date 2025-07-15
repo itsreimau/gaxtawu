@@ -12,3 +12,6 @@ database.json
 
 # Abaikan file 'package-lock.js'
 package-lock.json
+
+# Abaikan file 'yarn.lock'
+yarn.lock
