@@ -7,17 +7,16 @@ module.exports = {
             const customText = await db.get("bot.text.donate") || null;
             const text = customText ?
                 customText
-                .replace(/%tag%/g, `@${tools.cmd.getId(ctx.sender.jid)}`)
+                .replace(/%tag%/g, `@${ctx.getId(ctx.sender.jid)}`)
                 .replace(/%name%/g, config.bot.name)
                 .replace(/%prefix%/g, ctx.used.prefix)
                 .replace(/%command%/g, ctx.used.command)
                 .replace(/%footer%/g, config.msg.footer)
                 .replace(/%readmore%/g, config.msg.readmore) :
-                `${formatter.quote("083838039693 (DANA)")}\n` +
+                `${formatter.quote("083879175089 (DANA)")}\n` +
                 `${formatter.quote("─────")}\n` +
-                `${formatter.quote("https://paypal.me/itsreimau (PayPal)")}\n` +
-                `${formatter.quote("https://saweria.co/itsreimau (Saweria)")}\n` +
-                formatter.quote("https://trakteer.id/itsreimau (Trakteer)");
+                `${formatter.quote("https://saweria.co/unitycentral (Saweria)")}\n` +
+                formatter.quote("https://trakteer.id/ (Trakteer)");
 
             return await ctx.reply({
                 text: text,
