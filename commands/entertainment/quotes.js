@@ -1,6 +1,3 @@
-const {
-    ButtonBuilder
-} = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
@@ -21,9 +18,12 @@ module.exports = {
                     `${formatter.quote(`Nama: ${result.author.name}`)}\n` +
                     formatter.quote(`Deskripsi: ${result.author.description}`),
                 footer: config.msg.footer,
-                buttons: new ButtonBuilder()
-                    .regulerButton("Ambil Lagi", ctx.used.prefix + ctx.used.command)
-                    .build()
+                buttons: [{
+                    buttonId: ctx.used.prefix + ctx.used.command,
+                    buttonText: {
+                        displayText: "Ambil Lagi"
+                    }
+                }]
             });
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);

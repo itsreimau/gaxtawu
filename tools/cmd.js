@@ -25,8 +25,7 @@ async function checkMedia(type, required) {
         groupStatusMention: "groupStatusMentionMessage",
         image: MessageType.imageMessage,
         sticker: MessageType.stickerMessage,
-        video: MessageType.videoMessage,
-        text: [MessageType.conversation, MessageType.extendedTextMessage]
+        video: MessageType.videoMessage
     };
 
     const mediaList = Array.isArray(required) ? required : [required];
@@ -53,15 +52,14 @@ async function checkQuotedMedia(type, required) {
         gif: MessageType.videoMessage,
         image: MessageType.imageMessage,
         sticker: MessageType.stickerMessage,
-        video: MessageType.videoMessage,
-        text: [MessageType.conversation, MessageType.extendedTextMessage]
+        text: [MessageType.conversation, MessageType.extendedTextMessage],
+        video: MessageType.videoMessage
     };
 
     const mediaList = Array.isArray(required) ? required : [required];
     for (const media of mediaList) {
         const mappedType = mediaMap[media];
         if (!mappedType) continue;
-
         if (Array.isArray(mappedType)) {
             if (mappedType.some(mt => type[mt] !== undefined)) return media;
         } else {

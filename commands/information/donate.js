@@ -1,6 +1,6 @@
 module.exports = {
     name: "donate",
-    aliases: ["donasi"],
+    aliases: ["donasi", "support"],
     category: "information",
     code: async (ctx) => {
         try {

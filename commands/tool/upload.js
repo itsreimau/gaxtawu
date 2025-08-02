@@ -1,7 +1,3 @@
-const {
-    ButtonBuilder
-} = require("@itsreimau/gktw");
-
 module.exports = {
     name: "upload",
     aliases: ["tourl"],
@@ -51,9 +47,13 @@ module.exports = {
             return await ctx.reply({
                 text: formatter.quote(`URL: ${result}`),
                 footer: config.msg.footer,
-                interactiveButtons: new ButtonBuilder()
-                    .copyButton("Salin URL", result)
-                    .build()
+                interactiveButtons: [{
+                    name: "cta_copy",
+                    buttonParamsJson: JSON.stringify({
+                        display_text: "Salin URL",
+                        copy_code: result
+                    })
+                }]
             });
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);

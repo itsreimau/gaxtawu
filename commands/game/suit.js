@@ -1,7 +1,3 @@
-const {
-    ButtonBuilder,
-    SectionBuilder
-} = require("@itsreimau/gktw");
 const session = new Map();
 
 module.exports = {
@@ -44,10 +40,17 @@ module.exports = {
                     formatter.quote(`Bonus: ${game.coin} Koin`),
                 mentions: [accountJid],
                 footer: config.msg.footer,
-                buttons: new ButtonBuilder()
-                    .regulerButton("Terima", "accept")
-                    .regulerButton("Tolak", "reject")
-                    .build()
+                buttons: [{
+                    buttonId: "accept",
+                    buttonText: {
+                        displayText: "Terima"
+                    }
+                }, {
+                    buttonId: "reject",
+                    buttonText: {
+                        displayText: "Tolak"
+                    }
+                }]
             });
 
             session.set(senderJid, game);
@@ -76,11 +79,25 @@ module.exports = {
                         });
 
                         const choiceText = formatter.quote("Silahkan pilih salah satu:");
-                        const buttons = new ButtonBuilder()
-                            .regulerButton("Batu", "batu")
-                            .regulerButton("Kertas", "kertas")
-                            .regulerButton("Gunting", "gunting")
-                            .build();
+                        const buttons = [{
+                                buttonId: "batu",
+                                buttonText: {
+                                    displayText: "Batu"
+                                }
+                            },
+                            {
+                                buttonId: "kertas",
+                                buttonText: {
+                                    displayText: "Kertas"
+                                }
+                            },
+                            {
+                                buttonId: "gunting",
+                                buttonText: {
+                                    displayText: "Gunting"
+                                }
+                            }
+                        ];
 
                         await ctx.sendMessage(senderJid, {
                             text: choiceText,

@@ -1,6 +1,3 @@
-const {
-    AlbumBuilder
-} = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
@@ -27,20 +24,18 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result.medias;
             const medias = result.filter(media => media.type === "image" || media.type === "video");
+            const album = medias.map(media => {
+                const isVideo = media.type === "video";
+                return {
+                    [isVideo ? "video" : "image"]: {
+                        url: media.url
+                    },
+                    mimetype: tools.mime.lookup(isVideo ? "mp4" : "jpg")
+                };
+            });
 
-            const album = new AlbumBuilder();
-            for (const media of medias) {
-                if (media.type === "image") {
-                    album.addImageUrl(media.url);
-                } else if (media.type === "video") {
-                    album.addVideoUrl(media.url);
-                }
-            }
-
-            return await ctx.reply({
-                album: album.build(),
-                caption: formatter.quote(`URL: ${url}`),
-                footer: config.msg.footer
+            return await ctx.core.sendAlbumMessage(ctx.id, album, {
+                quoted: ctx.msg
             });
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);

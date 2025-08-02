@@ -1,7 +1,6 @@
 // Impor modul dan dependensi yang diperlukan
 const {
-    Cooldown,
-    ButtonBuilder
+    Cooldown
 } = require("@itsreimau/gktw");
 const moment = require("moment-timezone");
 
@@ -18,7 +17,7 @@ module.exports = (bot) => {
     bot.use(async (ctx, next) => {
         // Variabel umum
         const isGroup = ctx.isGroup();
-        const isPrivate = ctx.isPrivate();
+        const isPrivate = !isGroup;
         const senderJid = ctx.sender.jid;
         const senderId = ctx.getId(senderJid);
         const groupJid = isGroup ? ctx.id : null;
@@ -55,9 +54,12 @@ module.exports = (bot) => {
                 await ctx.reply({
                     text: formatter.quote(`🎊 Selamat! Kamu telah naik ke level ${newUserLevel}.`),
                     footer: config.msg.footer,
-                    buttons: new ButtonBuilder()
-                        .regulerButton("Nonaktifkan Autolevelup", `${ctx.used.prefix}setprofile autolevelup`)
-                        .build()
+                    buttons: [{
+                        buttonId: `${ctx.used.prefix}setprofile autolevelup`,
+                        buttonText: {
+                            displayText: "Nonaktifkan Autolevelup"
+                        }
+                    }]
                 });
             }
 

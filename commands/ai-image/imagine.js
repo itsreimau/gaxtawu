@@ -1,7 +1,3 @@
-const {
-    ButtonBuilder
-} = require("@itsreimau/gktw");
-
 module.exports = {
     name: "imagine",
     category: "ai-image",
@@ -29,9 +25,12 @@ module.exports = {
                 mimetype: tools.mime.lookup("jpeg"),
                 caption: formatter.quote(`Prompt: ${input}`),
                 footer: config.msg.footer,
-                buttons: new ButtonBuilder()
-                    .regulerButton("Ambil Lagi", `${ctx.used.prefix + ctx.used.command} ${input}`)
-                    .build()
+                buttons: [{
+                    buttonId: `${ctx.used.prefix + ctx.used.command} ${input}`,
+                    buttonText: {
+                        displayText: "Ambil Lagi"
+                    }
+                }]
             });
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);

@@ -1,7 +1,3 @@
-const {
-    ButtonBuilder
-} = require("@itsreimau/gktw");
-
 module.exports = {
     name: "cecan",
     category: "entertainment",
@@ -31,9 +27,12 @@ module.exports = {
                 mimetype: tools.mime.lookup("jpg"),
                 caption: formatter.quote(`Kategori: ${tools.msg.ucwords(cecan)}`),
                 footer: config.msg.footer,
-                buttons: new ButtonBuilder()
-                    .regulerButton("Ambil Lagi", input ? `${ctx.used.prefix + ctx.used.command} ${input}` : ctx.used.prefix + ctx.used.command)
-                    .build()
+                buttons: [{
+                    buttonId: input ? `${ctx.used.prefix + ctx.used.command} ${input}` : ctx.used.prefix + ctx.used.command,
+                    buttonText: {
+                        displayText: "Ambil Lagi"
+                    }
+                }]
             });
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);

@@ -1,7 +1,3 @@
-const {
-    ButtonBuilder
-} = require("@itsreimau/gktw");
-
 module.exports = {
     name: "menfess",
     aliases: ["conf", "confes", "confess", "menf", "menfes"],
@@ -33,9 +29,12 @@ module.exports = {
         if (isReceiverInMenfess) return await ctx.reply(formatter.quote("❎ Kamu tidak dapat mengirim menfess, karena dia sedang terlibat dalam percakapan lain."));
 
         try {
-            const buttons = new ButtonBuilder()
-                .regulerButton("Button 1", "Hapus Menfess")
-                .build();
+            const buttons = [{
+                buttonId: "delete",
+                buttonText: {
+                    displayText: "Hapus Menfess"
+                }
+            }];
 
             await ctx.sendMessage(`${targetId}@s.whatsapp.net`, {
                 text: menfessText,

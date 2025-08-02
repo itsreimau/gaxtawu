@@ -1,6 +1,3 @@
-const {
-    ButtonBuilder
-} = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
@@ -35,9 +32,12 @@ module.exports = {
                 mimetype: tools.mime.lookup("jpg"),
                 caption: formatter.quote(`Kategori: ${tools.msg.ucwords(waifuim)}`),
                 footer: config.msg.footer,
-                buttons: new ButtonBuilder()
-                    .regulerButton("Ambil Lagi", input ? `${ctx.used.prefix + ctx.used.command} ${input}` : ctx.used.prefix + ctx.used.command)
-                    .build()
+                buttons: [{
+                    buttonId: input ? `${ctx.used.prefix + ctx.used.command} ${input}` : ctx.used.prefix + ctx.used.command,
+                    buttonText: {
+                        displayText: "Ambil Lagi"
+                    }
+                }]
             });
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);

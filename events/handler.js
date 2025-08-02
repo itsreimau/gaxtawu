@@ -1,6 +1,5 @@
 // Impor modul dan dependensi yang diperlukan
 const {
-    ButtonBuilder,
     Events,
     VCardBuilder
 } = require("@itsreimau/gktw");
@@ -138,7 +137,7 @@ module.exports = (bot) => {
     bot.ev.on(Events.MessagesUpsert, async (m, ctx) => {
         // Variabel umum
         const isGroup = ctx.isGroup();
-        const isPrivate = ctx.isPrivate();
+        const isPrivate = !isGroup;
         const senderJid = ctx.sender.jid;
         const senderId = ctx.getId(senderJid);
         const groupJid = isGroup ? ctx.id : null;
@@ -202,9 +201,12 @@ module.exports = (bot) => {
             if (isCmd?.didyoumean) await ctx.reply({
                 text: formatter.quote(`🧐 Apakah maksudmu ${formatter.inlineCode(isCmd.prefix + isCmd.didyoumean)}?`),
                 footer: config.msg.footer,
-                buttons: new ButtonBuilder()
-                    .regulerButton("Ya, benar!", `${isCmd.prefix + isCmd.didyoumean} ${isCmd.input}`)
-                    .build()
+                buttons: [{
+                    buttonId: `${isCmd.prefix + isCmd.didyoumean} ${isCmd.input}`,
+                    buttonText: {
+                        displayText: "Ya, benar!"
+                    }
+                }]
             });
 
             // Penanganan AFK (Menghapus status AFK pengguna yang mengirim pesan)

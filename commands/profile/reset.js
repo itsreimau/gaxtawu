@@ -1,7 +1,3 @@
-const {
-    ButtonBuilder
-} = require("@itsreimau/gktw");
-
 module.exports = {
     name: "reset",
     category: "profile",
@@ -12,10 +8,19 @@ module.exports = {
         await ctx.reply({
             text: formatter.quote(`🤖 Apakah kamu yakin ingin mereset datamu? Langkah ini akan menghapus seluruh data yang tersimpan dan tidak dapat dikembalikan.`),
             footer: config.msg.footer,
-            buttons: new ButtonBuilder()
-                .regulerButton("Ya", "y")
-                .regulerButton("Tidak", "n")
-                .build()
+            buttons: [{
+                    buttonId: `y`,
+                    buttonText: {
+                        displayText: "Ya"
+                    }
+                },
+                {
+                    buttonId: "n",
+                    buttonText: {
+                        displayText: "Tidak"
+                    }
+                }
+            ]
         });
 
         try {

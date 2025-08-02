@@ -143,7 +143,7 @@ Untuk menambahkan perintah baru, ikuti langkah-langkah berikut:
 
 ### Complete Documentation
 
-`gaxtawu` menggunakan versi modifikasi dari `@menkodingan/ckptw` yang telah difork dan disesuaikan khusus untuk bot ini. Library ini dibangun di atas `@yupra/baileys` yang menawarkan fitur lebih lengkap dibanding `@whiskeysockets/baileys`.
+`gaxtawu` menggunakan versi modifikasi dari `@mengkodingan/ckptw` yang telah difork dan disesuaikan khusus untuk bot ini. Library ini dibangun di atas `@yupra/baileys` yang menawarkan fitur lebih lengkap dibanding `@whiskeysockets/baileys`.
 
 #### Perbedaan Utama dengan Versi Original:
 - ✅ **Bug fixes** yang belum diatasi di versi original

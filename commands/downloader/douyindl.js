@@ -1,6 +1,3 @@
-const {
-    AlbumBuilder
-} = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
@@ -27,28 +24,26 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result;
 
-            if (!result.slide && result.media) {
-                return await ctx.reply({
-                    video: {
-                        url: result.media.mp4_hd || result.media.mp4_2 || result.media.mp4_1
-                    },
-                    mimetype: tools.mime.lookup("mp4"),
-                    caption: formatter.quote(`URL: ${url}`),
-                    footer: config.msg.footer
-                });
-            }
-
+            if (!result.slide && result.media) return await ctx.reply({
+                video: {
+                    url: result.media.mp4_hd || result.media.mp4_2 || result.media.mp4_1
+                },
+                mimetype: tools.mime.lookup("mp4"),
+                caption: formatter.quote(`URL: ${url}`),
+                footer: config.msg.footer
+            });
             if (result.slide && result.media) {
-                const album = new AlbumBuilder();
-                for (const imageUrl of result.media) {
-                    album.addImageUrl(imageUrl);
-                }
+                const album = result.media.map(imageUrl => ({
+                    image: {
+                        url: imageUrl
+                    },
+                    mimetype: tools.mime.lookup("jpeg")
+                }));
 
-                return await ctx.reply({
-                    album: album.build(),
-                    caption: formatter.quote(`URL: ${url}`),
-                    footer: config.msg.footer
-                });
+                return await ctx.core.sendAlbumMessage(ctx.id,
+                    album, {
+                        quoted: ctx.msg
+                    });
             }
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);
