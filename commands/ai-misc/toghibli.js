@@ -18,7 +18,7 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = await tools.cmd.upload(buffer, "image");
-            const apiUrl = tools.api.createUrl("falcon", "/tools/toghibli", {
+            const apiUrl = tools.api.createUrl("hang", "/tools/toghibli", {
                 url: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.result.data[0].url;

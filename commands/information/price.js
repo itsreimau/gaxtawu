@@ -16,28 +16,9 @@ module.exports = {
                 formatter.quote("❎ Bot ini tidak memiliki harga.");
 
             return await ctx.reply({
-                product: {
-                    productImage: {
-                        url: config.bot.thumbnail
-                    },
-                    productImageCount: 1,
-                    title: config.bot.name,
-                    description: config.bot.version,
-                    priceAmount1000: 20000 * 1000,
-                    currencyCode: "IDR",
-                    retailerId: ctx.id,
-                    url: config.bot.groupLink
-                },
-                businessOwnerJid: config.owner.id,
-                caption: text,
-                footer: config.msg.footer,
-                interactiveButtons: [{
-                    name: "cta_url",
-                    buttonParamsJson: JSON.stringify({
-                        display_text: "Grup Bot",
-                        url: config.bot.groupLink
-                    })
-                }]
+                text: text,
+                mentions: [ctx.sender.jid],
+                footer: config.msg.footer
             });
         } catch (error) {
             return await tools.cmd.handleError(ctx, error);

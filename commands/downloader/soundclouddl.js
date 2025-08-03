@@ -19,7 +19,7 @@ module.exports = {
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            const apiUrl = tools.api.createUrl("falcon", "/download/soundcloud", {
+            const apiUrl = tools.api.createUrl("hang", "/download/soundcloud", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;

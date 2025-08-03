@@ -52,7 +52,7 @@ module.exports = {
                     footer: config.msg.footer
                 });
 
-                const downloadApiUrl = tools.api.createUrl("falcon", "/download/soundcloud", {
+                const downloadApiUrl = tools.api.createUrl("hang", "/download/soundcloud", {
                     url: searchResult.url
                 });
                 const downloadResult = (await axios.get(downloadApiUrl)).data.result;

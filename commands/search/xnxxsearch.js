@@ -16,7 +16,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("falcon", "/search/xnxx", {
+            const apiUrl = tools.api.createUrl("hang", "/search/xnxx", {
                 q: input
             });
             const result = (await axios.get(apiUrl)).data.result;

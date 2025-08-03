@@ -21,7 +21,7 @@ module.exports = {
         );
 
         try {
-            const result = tools.api.createUrl("falcon", "/tools/emojimix", {
+            const result = tools.api.createUrl("hang", "/tools/emojimix", {
                 emoji1,
                 emoji2
             });

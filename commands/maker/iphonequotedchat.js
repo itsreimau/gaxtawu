@@ -17,7 +17,7 @@ module.exports = {
         if (input.length > 80) return await ctx.reply(formatter.quote("❎ Maksimal 80 kata!"));
 
         try {
-            const result = tools.api.createUrl("falcon", "/imagecreator/iqc", {
+            const result = tools.api.createUrl("hang", "/imagecreator/iqc", {
                 text: input
             });
 

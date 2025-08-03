@@ -12,6 +12,9 @@ const APIs = {
     diibot: {
         baseURL: "https://api.diioffc.web.id"
     },
+    hang: {
+        baseURL: "https://api.hanggts.xyz"
+    },
     nekorinn: {
         baseURL: "https://api.nekorinn.my.id"
     },
