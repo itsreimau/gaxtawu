@@ -58,6 +58,7 @@ global.config = {
         owner: Formatter.quote("⛔ Perintah hanya dapat diakses Owner!"), // Pesan untuk perintah yang hanya owner bisa akses
         premium: Formatter.quote("⛔ Tidak dapat memproses karena kamu bukan pengguna Premium!"), // Pesan jika pengguna bukan Premium
         private: Formatter.quote("⛔ Perintah hanya dapat diakses dalam obrolan pribadi!"), // Pesan untuk perintah obrolan pribadi
+        privatePremiumOnly: Formatter.quote("⛔ Menggunakan bot dalam obrolan pribadi hanya untuk pengguna Premium."), // Pesan jika pengguna bukan Premium menggunakan bot dalam obrolan pribadi
         restrict: Formatter.quote("⛔ Perintah ini telah dibatasi karena alasan keamanan!"), // Pesan pembatasan perintah
         unavailableAtNight: Formatter.quote("⛔ Bot tidak tersedia dari jam 12 malam sampai 6 pagi. Silakan kembali nanti!"), // Pesan jika tidak tersedia pada malam hari
 
@@ -94,10 +95,11 @@ global.config = {
         cooldown: 10 * 1000, // Jeda antar perintah (ms)
         maxListeners: 50, // Max listeners untuk events
         port: 3000, // Port (Jika pakai server)
-        reportErrorToOwner: true, // Laporkan error ke owner bot
+        privatePremiumOnly: false, // Pengguna bukan Premium tidak diperbolehkan menggunakan bot dalam percakapan pribadi
         restrict: false, // Batasi akses perintah
         requireBotGroupMembership: false, // Harus gabung grup bot
         requireGroupSewa: false, // Harus sewa bot untuk bisa dipakai di grup
+        reportErrorToOwner: true, // Laporkan error ke owner bot
         selfOwner: false, // Bot jadi owner sendiri
         selfReply: true, // Bot bisa balas pesan bot sendiri
         timeZone: "Asia/Jakarta", // Zona waktu bot

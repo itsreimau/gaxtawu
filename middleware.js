@@ -92,7 +92,14 @@ module.exports = (bot) => {
                 condition: groupDb?.option?.gamerestrict && isGroup && !isAdmin && ctx.bot.cmd.has(ctx.used.command) && ctx.bot.cmd.get(ctx.used.command).category === "game",
                 msg: config.msg.gamerestrict,
                 reaction: "🎮"
-            }, {
+            },
+            {
+                key: "privatePremiumOnly",
+                condition: config.system.privatePremiumOnly && isPrivate && !isOwner && !userDb?.premium,
+                msg: config.msg.privatePremiumOnly,
+                reaction: "💎"
+            },
+            {
                 key: "requireBotGroupMembership",
                 condition: config.system.requireBotGroupMembership && !isOwner && !userDb?.premium && ctx.used.command !== "botgroup" && config.bot.groupJid && !(await ctx.group(config.bot.groupJid).members()).some(member => member.id === senderJid),
                 msg: config.msg.botGroupMembership,
