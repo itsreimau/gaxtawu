@@ -18,9 +18,6 @@ const APIs = {
     nekorinn: {
         baseURL: "https://api.nekorinn.my.id"
     },
-    nirkyy: {
-        baseURL: "https://nirkyy-dev.hf.space"
-    },
     siputzx: {
         baseURL: "https://api.siputzx.my.id"
     },

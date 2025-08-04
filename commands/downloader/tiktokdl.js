@@ -19,7 +19,7 @@ module.exports = {
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            const apiUrl = tools.api.createUrl("diibot", "/download/tiktok", {
+            const apiUrl = tools.api.createUrl("diibot", "/api/download/tiktok", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;

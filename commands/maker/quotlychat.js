@@ -26,7 +26,7 @@ module.exports = {
             const profilePictureUrl = await ctx.core.profilePictureUrl(isQuoted ? ctx?.quoted?.senderJid : ctx.sender.jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
             const result = tools.api.createUrl("nekorinn", "/maker/quotechat", {
                 text: input,
-                name: isQuoted ? ctx.getPushname(ctx?.quoted?.senderJid) : ctx.sender.pushName,
+                name: isQuoted ? ctx.quoted.pushName : ctx.sender.pushName,
                 profile: profilePictureUrl
             });
             const sticker = new Sticker(result, {

@@ -17,7 +17,7 @@ module.exports = {
         if (input.length > 100) return await ctx.reply(formatter.quote("❎ Maksimal 100 kata!"));
 
         try {
-            const result = tools.api.createUrl("siputzx", "api/m/sertifikat-tolol", {
+            const result = tools.api.createUrl("hang", "/imagecreator/sertifikat-tolol", {
                 text: input
             });
 

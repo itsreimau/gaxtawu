@@ -1,6 +1,6 @@
 {
   "name": "gaxtawu",
-  "version": "1.4.0-alpha.2",
+  "version": "1.4.0-alpha.3",
   "description": "Useless WhatsApp Bot",
   "main": "index.js",
   "directories": {
@@ -36,7 +36,7 @@
     "cfonts": "^3.3.0",
     "didyoumean": "^1.2.2",
     "jimp": "^0.22.12",
-    "link-preview-js": "^3.1.0",
+    "link-preview-js": "^3.0.0",
     "mime-types": "^2.1.35",
     "moment-timezone": "^0.6.0",
     "safety-safe": "^2.0.0",

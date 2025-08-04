@@ -24,7 +24,7 @@ module.exports = {
         try {
             const isQuoted = ctx.args.length === 0 && ctx?.quoted?.senderJid;
             const result = tools.api.createUrl("siputzx", "/api/canvas/fake-xnxx", {
-                name: isQuoted ? ctx.getPushname(ctx?.quoted?.senderJid) : ctx.sender.pushName,
+                name: isQuoted ? ctx.quoted.pushName : ctx.sender.pushName,
                 quote: input,
                 likes: Math.floor(Math.random() * 10) + 1,
                 dislikes: 0

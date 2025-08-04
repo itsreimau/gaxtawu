@@ -31,9 +31,7 @@ module.exports = {
 
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = await tools.cmd.upload(buffer, "image");
-            const result = tools.api.createUrl("nirkyy", `/api/v1/memegen`, {
-                text_atas: top,
-                text_bawah: bottom,
+            const result = tools.api.createUrl("https://api.memegen.link", `/images/custom/${top}${bottom}.png`, {
                 background: uploadUrl
             });
             const sticker = new Sticker(result, {
