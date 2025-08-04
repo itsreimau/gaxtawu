@@ -40,10 +40,10 @@ module.exports = {
                     mimetype: tools.mime.lookup("jpeg")
                 }));
 
-                return await ctx.core.sendAlbumMessage(ctx.id,
-                    album, {
-                        quoted: ctx.msg
-                    });
+                return await ctx.reply({
+                    album,
+                    caption: formatter.quote(`URL: ${url}`)
+                });
             }
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);

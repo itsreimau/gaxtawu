@@ -12,20 +12,20 @@ module.exports = {
             const apiUrl = tools.api.createUrl("https://sandipbaruwal.onrender.com", "/dp");
             const result = (await axios.get(apiUrl)).data;
 
-            return await ctx.core.sendAlbumMessage(ctx.id, [{
-                    image: {
-                        url: result.male
+            return await ctx.reply({
+                album: [{
+                        image: {
+                            url: result.male
+                        },
+                        mimetype: tools.mime.lookup("jpg")
                     },
-                    mimetype: tools.mime.lookup("jpg")
-                },
-                {
-                    image: {
-                        url: result.female
-                    },
-                    mimetype: tools.mime.lookup("jpg")
-                }
-            ], {
-                quoted: ctx.msg
+                    {
+                        image: {
+                            url: result.female
+                        },
+                        mimetype: tools.mime.lookup("jpg")
+                    }
+                ]
             });
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);

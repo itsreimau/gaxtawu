@@ -10,7 +10,7 @@ module.exports = {
     code: async (ctx) => {
         try {
             const members = await ctx.group().members();
-            const memberIDs = members.map(m => m.id);
+            const memberIDs = members.map(m => m.jid);
 
             let selected = [];
             selected[0] = tools.cmd.getRandomElement(memberIDs);
