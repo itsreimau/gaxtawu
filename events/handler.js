@@ -151,22 +151,6 @@ module.exports = (bot) => {
         const userDb = await db.get(`user.${senderId}`) || {};
         const groupDb = await db.get(`group.${groupId}`) || {};
 
-        // Pengecekan mode bot (group, private, self)
-        if (botDb?.mode === "group" && isPrivate && !isOwner && !userDb?.premium) return;
-        if (botDb?.mode === "private" && isGroup && !isOwner && !userDb?.premium) return;
-        if (botDb?.mode === "self" && !isOwner) return;
-
-        // Pengecekan untuk tidak tersedia pada malam hari
-        const now = moment().tz(config.system.timeZone);
-        const hour = now.hour();
-        if (hour >= 0 && hour < 6 && !isOwner && !userDb?.premium) return;
-
-        // Pengecekan mute pada grup
-        if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;
-        if (groupDb?.mutebot === "owner" && !isOwner) return;
-        const muteList = groupDb?.mute || [];
-        if (muteList.includes(senderId)) await ctx.deleteMessage(m.key);
-
         // Grup atau Pribadi
         if (isGroup || isPrivate) {
             if (m.key.fromMe) return;
@@ -183,6 +167,16 @@ module.exports = (bot) => {
                 await db.delete(`user.${senderId}.premium`);
                 await db.delete(`user.${senderId}.premiumExpiration`);
             }
+
+            // Pengecekan mode bot (group, private, self)
+            if (botDb?.mode === "group" && isPrivate && !isOwner && !userDb?.premium) return;
+            if (botDb?.mode === "private" && isGroup && !isOwner && !userDb?.premium) return;
+            if (botDb?.mode === "self" && !isOwner) return;
+
+            // Pengecekan untuk tidak tersedia pada malam hari
+            const now = moment().tz(config.system.timeZone);
+            const hour = now.hour();
+            if (hour >= 0 && hour < 6 && !isOwner && !userDb?.premium) return;
 
             // Penanganan bug hama!
             const analyze = analyzeMessage(m.message);
@@ -229,6 +223,12 @@ module.exports = (bot) => {
 
             // Variabel umum
             const groupAutokick = groupDb?.option?.autokick;
+
+            // Pengecekan mute pada grup
+            if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;
+            if (groupDb?.mutebot === "owner" && !isOwner) return;
+            const muteList = groupDb?.mute || [];
+            if (muteList.includes(senderId)) await ctx.deleteMessage(m.key);
 
             // Penanganan database grup
             if (groupDb?.sewa && Date.now() > userDb?.sewaExpiration) {
