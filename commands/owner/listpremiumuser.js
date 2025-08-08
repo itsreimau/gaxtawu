@@ -26,7 +26,7 @@ module.exports = {
                 userMentions.push(`${user.id}@s.whatsapp.net`);
 
                 if (user.expiration) {
-                    const daysLeft = tools.msg.convertMsToDuration(user.expiration, ["hari"]);
+                    const daysLeft = tools.msg.convertMsToDuration(Date.now() - user.expiration, ["hari"]);
                     resultText += `${formatter.quote(`@${user.id} (${daysLeft} tersisa)`)}\n`;
                 } else {
                     resultText += `${formatter.quote(`@${user.id} (Premium permanen)`)}\n`;

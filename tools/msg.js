@@ -1,31 +1,40 @@
 const bytes = ["yBytes", "zBytes", "aBytes", "fBytes", "pBytes", "nBytes", "µBytes", "mBytes", "Bytes", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"];
 
 function convertMsToDuration(ms, units = []) {
-    const time = {
-        tahun: Math.floor(ms / 31557600000),
-        bulan: Math.floor(ms / 2629800000) % 12,
-        minggu: Math.floor(ms / 604800000) % 4,
-        hari: Math.floor(ms / 86400000) % 7,
-        jam: Math.floor(ms / 3600000) % 24,
-        menit: Math.floor(ms / 60000) % 60,
-        detik: Math.floor(ms / 1000) % 60,
-        milidetik: Math.floor(ms % 1000)
+    if (!ms || ms <= 0) return "0 hari";
+
+    const timeUnits = {
+        tahun: 31557600000,
+        bulan: 2629800000,
+        minggu: 604800000,
+        hari: 86400000,
+        jam: 3600000,
+        menit: 60000,
+        detik: 1000,
+        milidetik: 1
     };
 
-    if (units.length) return units.map(unit => `${time[unit]} ${unit}`).join(" ");
-
-    const result = [];
-    for (const [unit, value] of Object.entries(time)) {
-        if (value > 0) {
-            if (unit === "milidetik") {
-                if (ms < 1000) result.push(`${value} ${unit}`);
-            } else {
-                result.push(`${value} ${unit}`);
+    if (units.length > 0) {
+        let result = [];
+        for (const unit of units) {
+            if (timeUnits[unit]) {
+                const value = Math.floor(ms / timeUnits[unit]);
+                if (value > 0) result.push(`${value} ${unit}`);
+                ms %= timeUnits[unit];
             }
         }
+        return result.join(" ") || "0 " + units[0];
     }
 
-    return result.length ? result.join(" ") : ms < 1000 ? `${ms} milidetik` : "0 detik";
+    let result = [];
+    for (const [unit, duration] of Object.entries(timeUnits)) {
+        const value = Math.floor(ms / duration);
+        if (value > 0) {
+            result.push(`${value} ${unit}`);
+            ms %= duration;
+        }
+    }
+    return result.join(" ") || "0 detik";
 }
 
 function convertSecondToTimecode(seconds) {

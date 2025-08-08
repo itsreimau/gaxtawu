@@ -32,7 +32,7 @@ module.exports = {
                 });
 
                 if (group.expiration) {
-                    const daysLeft = tools.msg.convertMsToDuration(group.expiration, ["hari"]);
+                    const daysLeft = tools.msg.convertMsToDuration(Date.now() - group.expiration, ["hari"]);
                     resultText += `${formatter.quote(`@${groupJid} (${daysLeft} tersisa)`)}\n`;
                 } else {
                     resultText += `${formatter.quote(`@${groupJid} (Sewa permanen)`)}\n`;

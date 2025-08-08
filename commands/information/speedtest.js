@@ -7,7 +7,6 @@ module.exports = {
     code: async (ctx) => {
         try {
             const latencyStart = performance.now();
-            const latency = performance.now() - latencyStart;
 
             const downloadStart = performance.now();
             const downloadUrl = tools.api.createUrl("https://github.com", "/itsreimau/gaxtawu/raw/master/README.md");
@@ -26,6 +25,8 @@ module.exports = {
             });
             const uploadTime = (performance.now() - uploadStart) / 1000;
             const uploadSpeed = uploadData.length / uploadTime;
+
+            const latency = performance.now() - latencyStart;
 
             return await ctx.reply({
                 text: `${formatter.quote(`Latency: ${tools.msg.convertMsToDuration(latency)}`)}\n` +

@@ -80,24 +80,21 @@ module.exports = {
 
                         const choiceText = formatter.quote("Silahkan pilih salah satu:");
                         const buttons = [{
-                                buttonId: "batu",
-                                buttonText: {
-                                    displayText: "Batu"
-                                }
-                            },
-                            {
-                                buttonId: "kertas",
-                                buttonText: {
-                                    displayText: "Kertas"
-                                }
-                            },
-                            {
-                                buttonId: "gunting",
-                                buttonText: {
-                                    displayText: "Gunting"
-                                }
+                            buttonId: "batu",
+                            buttonText: {
+                                displayText: "Batu"
                             }
-                        ];
+                        }, {
+                            buttonId: "kertas",
+                            buttonText: {
+                                displayText: "Kertas"
+                            }
+                        }, {
+                            buttonId: "gunting",
+                            buttonText: {
+                                displayText: "Gunting"
+                            }
+                        }];
 
                         await ctx.sendMessage(senderJid, {
                             text: choiceText,

@@ -30,6 +30,13 @@ module.exports = (bot) => {
         const userDb = await db.get(`user.${senderId}`) || {};
         const groupDb = await db.get(`group.${groupId}`) || {};
 
+        // Log command masuk
+        if (isGroup) {
+            consolefy.info(`Incoming command: ${ctx.used.command}, from group: ${groupId}, by: ${senderId}`);
+        } else if (isPrivate) {
+            consolefy.info(`Incoming command: ${ctx.used.command}, from: ${senderId}`);
+        }
+
         // Pengecekan mode bot (group, private, self)
         if (botDb?.mode === "group" && isPrivate && !isOwner && !userDb?.premium) return;
         if (botDb?.mode === "private" && isGroup && !isOwner && !userDb?.premium) return;
@@ -76,52 +83,45 @@ module.exports = (bot) => {
 
         // Pengecekan kondisi restrictions
         const restrictions = [{
-                key: "banned",
-                condition: userDb?.banned,
-                msg: config.msg.banned,
-                reaction: "🚫"
-            },
-            {
-                key: "cooldown",
-                condition: !isOwner && !userDb?.premium && new Cooldown(ctx, config.system.cooldown).onCooldown,
-                msg: config.msg.cooldown,
-                reaction: "💤"
-            },
-            {
-                key: "gamerestrict",
-                condition: groupDb?.option?.gamerestrict && isGroup && !isAdmin && ctx.bot.cmd.has(ctx.used.command) && ctx.bot.cmd.get(ctx.used.command).category === "game",
-                msg: config.msg.gamerestrict,
-                reaction: "🎮"
-            },
-            {
-                key: "privatePremiumOnly",
-                condition: config.system.privatePremiumOnly && isPrivate && !isOwner && !userDb?.premium,
-                msg: config.msg.privatePremiumOnly,
-                reaction: "💎"
-            },
-            {
-                key: "requireBotGroupMembership",
-                condition: config.system.requireBotGroupMembership && !isOwner && !userDb?.premium && ctx.used.command !== "botgroup" && config.bot.groupJid && !(await ctx.group(config.bot.groupJid).members()).some(member => member.jid === senderJid),
-                msg: config.msg.botGroupMembership,
-                reaction: "🚫"
-            },
-            {
-                key: "requireGroupSewa",
-                condition: config.system.requireGroupSewa && isGroup && !isOwner && !["owner", "price"].includes(ctx.used.command) && groupDb?.sewa !== true,
-                msg: config.msg.groupSewa,
-                reaction: "🔒"
-            },
-            {
-                key: "unavailableAtNight",
-                condition: (() => {
-                    const now = moment().tz(config.system.timeZone);
-                    const hour = now.hour();
-                    return config.system.unavailableAtNight && !isOwner && !userDb?.premium && hour >= 0 && hour < 6;
-                })(),
-                msg: config.msg.unavailableAtNight,
-                reaction: "😴"
-            }
-        ];
+            key: "banned",
+            condition: userDb?.banned,
+            msg: config.msg.banned,
+            reaction: "🚫"
+        }, {
+            key: "cooldown",
+            condition: !isOwner && !userDb?.premium && new Cooldown(ctx, config.system.cooldown).onCooldown,
+            msg: config.msg.cooldown,
+            reaction: "💤"
+        }, {
+            key: "gamerestrict",
+            condition: groupDb?.option?.gamerestrict && isGroup && !isAdmin && ctx.bot.cmd.has(ctx.used.command) && ctx.bot.cmd.get(ctx.used.command).category === "game",
+            msg: config.msg.gamerestrict,
+            reaction: "🎮"
+        }, {
+            key: "privatePremiumOnly",
+            condition: config.system.privatePremiumOnly && isPrivate && !isOwner && !userDb?.premium,
+            msg: config.msg.privatePremiumOnly,
+            reaction: "💎"
+        }, {
+            key: "requireBotGroupMembership",
+            condition: config.system.requireBotGroupMembership && !isOwner && !userDb?.premium && ctx.used.command !== "botgroup" && config.bot.groupJid && !(await ctx.group(config.bot.groupJid).members()).some(member => member.jid === senderJid),
+            msg: config.msg.botGroupMembership,
+            reaction: "🚫"
+        }, {
+            key: "requireGroupSewa",
+            condition: config.system.requireGroupSewa && isGroup && !isOwner && !["owner", "price"].includes(ctx.used.command) && groupDb?.sewa !== true,
+            msg: config.msg.groupSewa,
+            reaction: "🔒"
+        }, {
+            key: "unavailableAtNight",
+            condition: (() => {
+                const now = moment().tz(config.system.timeZone);
+                const hour = now.hour();
+                return config.system.unavailableAtNight && !isOwner && !userDb?.premium && hour >= 0 && hour < 6;
+            })(),
+            msg: config.msg.unavailableAtNight,
+            reaction: "😴"
+        }];
 
         for (const {
                 condition,
@@ -154,54 +154,46 @@ module.exports = (bot) => {
             permissions = {}
         } = command;
         const permissionChecks = [{
-                key: "admin",
-                condition: isGroup && !isAdmin,
-                msg: config.msg.admin,
-                reaction: "🛡️"
-            },
-            {
-                key: "botAdmin",
-                condition: isGroup && !await ctx.group().isBotAdmin(),
-                msg: config.msg.botAdmin,
-                reaction: "🤖"
-            },
-            {
-                key: "coin",
-                condition: permissions.coin && config.system.useCoin && await checkCoin(permissions.coin, userDb, senderId, isOwner),
-                msg: config.msg.coin,
-                reaction: "💰"
-            },
-            {
-                key: "group",
-                condition: isPrivate,
-                msg: config.msg.group,
-                reaction: "👥"
-            },
-            {
-                key: "owner",
-                condition: !isOwner,
-                msg: config.msg.owner,
-                reaction: "👑"
-            },
-            {
-                key: "premium",
-                condition: !isOwner && !userDb?.premium,
-                msg: config.msg.premium,
-                reaction: "💎"
-            },
-            {
-                key: "private",
-                condition: isGroup,
-                msg: config.msg.private,
-                reaction: "📩"
-            },
-            {
-                key: "restrict",
-                condition: config.system.restrict,
-                msg: config.msg.restrict,
-                reaction: "🚫"
-            }
-        ];
+            key: "admin",
+            condition: isGroup && !isAdmin,
+            msg: config.msg.admin,
+            reaction: "🛡️"
+        }, {
+            key: "botAdmin",
+            condition: isGroup && !await ctx.group().isBotAdmin(),
+            msg: config.msg.botAdmin,
+            reaction: "🤖"
+        }, {
+            key: "coin",
+            condition: permissions.coin && config.system.useCoin && await checkCoin(permissions.coin, userDb, senderId, isOwner),
+            msg: config.msg.coin,
+            reaction: "💰"
+        }, {
+            key: "group",
+            condition: isPrivate,
+            msg: config.msg.group,
+            reaction: "👥"
+        }, {
+            key: "owner",
+            condition: !isOwner,
+            msg: config.msg.owner,
+            reaction: "👑"
+        }, {
+            key: "premium",
+            condition: !isOwner && !userDb?.premium,
+            msg: config.msg.premium,
+            reaction: "💎"
+        }, {
+            key: "private",
+            condition: isGroup,
+            msg: config.msg.private,
+            reaction: "📩"
+        }, {
+            key: "restrict",
+            condition: config.system.restrict,
+            msg: config.msg.restrict,
+            reaction: "🚫"
+        }];
 
         for (const {
                 key,

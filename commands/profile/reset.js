@@ -9,18 +9,16 @@ module.exports = {
             text: formatter.quote(`🤖 Apakah kamu yakin ingin mereset datamu? Langkah ini akan menghapus seluruh data yang tersimpan dan tidak dapat dikembalikan.`),
             footer: config.msg.footer,
             buttons: [{
-                    buttonId: `y`,
-                    buttonText: {
-                        displayText: "Ya"
-                    }
-                },
-                {
-                    buttonId: "n",
-                    buttonText: {
-                        displayText: "Tidak"
-                    }
+                buttonId: `y`,
+                buttonText: {
+                    displayText: "Ya"
                 }
-            ]
+            }, {
+                buttonId: "n",
+                buttonText: {
+                    displayText: "Tidak"
+                }
+            }]
         });
 
         try {

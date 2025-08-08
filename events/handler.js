@@ -219,7 +219,7 @@ module.exports = (bot) => {
         if (isGroup) {
             if (m.key.fromMe) return;
 
-            consolefy.info(`Incoming message from group: ${groupId}, by: ${senderId}`) // Log pesan masuk
+            if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from group: ${groupId}, by: ${senderId}`); // Log pesan masuk
 
             // Variabel umum
             const groupAutokick = groupDb?.option?.autokick;
@@ -367,7 +367,7 @@ module.exports = (bot) => {
         if (isPrivate) {
             if (m.key.fromMe) return;
 
-            consolefy.info(`Incoming message from: ${senderId}`); // Log pesan masuk
+            if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from: ${senderId}`); // Log pesan masuk
 
             // Penanganan menfess
             const allMenfessDb = await db.get("menfess") || {};

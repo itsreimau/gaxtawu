@@ -241,7 +241,7 @@ async function upload(buffer, type = "any", host = config.system.uploaderHost) {
         image: ["Quax", "Ryzumi", "Pomf"],
         video: ["Quax", "Ryzumi", "Pomf", "Videy"],
         audio: ["Quax", "Ryzumi", "Pomf"],
-        doc: []
+        document: []
     };
 
     if (host && hostMap.any.includes(host)) {

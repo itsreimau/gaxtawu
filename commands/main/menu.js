@@ -59,18 +59,16 @@ module.exports = {
                     text: text.trim(),
                     footer: config.msg.footer,
                     buttons: [{
-                            buttonId: `${ctx.used.prefix}owner`,
-                            buttonText: {
-                                displayText: "Hubungi Owner"
-                            }
-                        },
-                        {
-                            buttonId: `${ctx.used.prefix}donate`,
-                            buttonText: {
-                                displayText: "Donasi"
-                            }
+                        buttonId: `${ctx.used.prefix}owner`,
+                        buttonText: {
+                            displayText: "Hubungi Owner"
                         }
-                    ]
+                    }, {
+                        buttonId: `${ctx.used.prefix}donate`,
+                        buttonText: {
+                            displayText: "Donasi"
+                        }
+                    }]
                 });
             }
 
@@ -94,40 +92,37 @@ module.exports = {
                 mentions: [ctx.sender.jid],
                 footer: config.msg.footer,
                 buttons: [{
-                        buttonId: `${ctx.used.prefix}owner`,
-                        buttonText: {
-                            displayText: "Hubungi Owner"
-                        }
+                    buttonId: "action",
+                    buttonText: {
+                        displayText: "Daftar Menu"
                     },
-                    {
-                        buttonId: `${ctx.used.prefix}donate`,
-                        buttonText: {
-                            displayText: "Donasi"
-                        }
-                    },
-                    {
-                        buttonId: "action",
-                        buttonText: {
-                            displayText: "Daftar Menu"
-                        },
-                        type: 4,
-                        nativeFlowInfo: {
-                            name: "single_select",
-                            paramsJson: JSON.stringify({
-                                title: "Daftar Menu",
-                                sections: [{
-                                    title: "Pilih Kategori Menu",
-                                    highlight_label: "☺",
-                                    rows: Object.keys(tag).map(category => ({
-                                        title: tag[category],
-                                        description: `Klik untuk melihat perintah ${tag[category]}`,
-                                        id: `.menu ${category}`
-                                    }))
-                                }]
-                            })
-                        }
+                    type: 4,
+                    nativeFlowInfo: {
+                        name: "single_select",
+                        paramsJson: JSON.stringify({
+                            title: "Daftar Menu",
+                            sections: [{
+                                title: "Pilih Kategori Menu",
+                                highlight_label: config.bot.name,
+                                rows: Object.keys(tag).map(category => ({
+                                    title: tag[category],
+                                    description: `Klik untuk melihat perintah ${tag[category]}`,
+                                    id: `.menu ${category}`
+                                }))
+                            }]
+                        })
                     }
-                ]
+                }, {
+                    buttonId: `${ctx.used.prefix}owner`,
+                    buttonText: {
+                        displayText: "Hubungi Owner"
+                    }
+                }, {
+                    buttonId: `${ctx.used.prefix}donate`,
+                    buttonText: {
+                        displayText: "Donasi"
+                    }
+                }]
             }, {
                 quoted: tools.cmd.fakeMetaAiQuotedText(config.msg.note)
             });
