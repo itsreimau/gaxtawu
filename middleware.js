@@ -31,9 +31,9 @@ module.exports = (bot) => {
         const groupDb = await db.get(`group.${groupId}`) || {};
 
         // Log command masuk
-        if (isGroup) {
+        if (isGroup && !ctx.msg.key.fromMe) {
             consolefy.info(`Incoming command: ${ctx.used.command}, from group: ${groupId}, by: ${senderId}`);
-        } else if (isPrivate) {
+        } else if (isPrivate && !ctx.msg.key.fromMe) {
             consolefy.info(`Incoming command: ${ctx.used.command}, from: ${senderId}`);
         }
 
