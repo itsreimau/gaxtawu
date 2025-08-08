@@ -28,19 +28,8 @@ module.exports = {
                 "misc": "Miscellaneous"
             };
 
-            let text = `Halo @${ctx.getId(ctx.sender.jid)}, berikut adalah daftar perintah yang tersedia!\n` +
-                "\n" +
-                `${formatter.quote(`Tanggal: ${moment.tz(config.system.timeZone).locale("id").format("dddd, DD MMMM YYYY")}`)}\n` +
-                `${formatter.quote(`Waktu: ${moment.tz(config.system.timeZone).format("HH.mm.ss")}`)}\n` +
-                "\n" +
-                `${formatter.quote(`Bot Uptime: ${config.bot.uptime}`)}\n` +
-                `${formatter.quote(`Database: ${config.bot.dbSize} (Simpl.DB - JSON)`)}\n` +
-                `${formatter.quote("Library: @itsreimau/gktw (Fork of @mengkodingan/ckptw)")}\n` +
-                "\n" +
-                `${formatter.italic("Jangan lupa berdonasi agar bot tetap online!")}\n` +
-                `${config.msg.readmore}\n`;
-
-            for (const category of Object.keys(tag)) {
+            if (ctx.args[0]) {
+                const category = ctx.args[0].toLowerCase();
                 const categoryCmds = Array.from(cmd.values())
                     .filter(cmd => cmd.category === category)
                     .map(cmd => ({
@@ -49,27 +38,54 @@ module.exports = {
                         permissions: cmd.permissions || {}
                     }));
 
-                if (categoryCmds.length > 0) {
-                    text += `◆ ${formatter.bold(tag[category])}\n`;
+                if (categoryCmds.length === 0) return await ctx.reply("Menu tidak ditemukan!");
 
-                    categoryCmds.forEach(cmd => {
-                        let permissionsText = "";
-                        if (cmd.permissions.coin) permissionsText += "ⓒ";
-                        if (cmd.permissions.group) permissionsText += "Ⓖ";
-                        if (cmd.permissions.owner) permissionsText += "Ⓞ";
-                        if (cmd.permissions.premium) permissionsText += "Ⓟ";
-                        if (cmd.permissions.private) permissionsText += "ⓟ";
+                let text = `◆ ${formatter.bold(tag[category] || category)}\n` +
+                    "\n";
 
-                        text += formatter.quote(formatter.monospace(`${ctx.used.prefix + cmd.name} ${permissionsText}`));
-                        text += "\n";
-                    });
-                }
+                categoryCmds.forEach(cmd => {
+                    let permissionsText = "";
+                    if (cmd.permissions.coin) permissionsText += "ⓒ";
+                    if (cmd.permissions.group) permissionsText += "Ⓖ";
+                    if (cmd.permissions.owner) permissionsText += "Ⓞ";
+                    if (cmd.permissions.premium) permissionsText += "Ⓟ";
+                    if (cmd.permissions.private) permissionsText += "ⓟ";
 
-                text += "\n";
+                    text += formatter.quote(formatter.monospace(`${ctx.used.prefix + cmd.name} ${permissionsText}`));
+                    text += "\n";
+                });
 
+                return await ctx.reply({
+                    text: text.trim(),
+                    footer: config.msg.footer,
+                    buttons: [{
+                            buttonId: `${ctx.used.prefix}owner`,
+                            buttonText: {
+                                displayText: "Hubungi Owner"
+                            }
+                        },
+                        {
+                            buttonId: `${ctx.used.prefix}donate`,
+                            buttonText: {
+                                displayText: "Donasi"
+                            }
+                        }
+                    ]
+                });
             }
 
-            return await ctx.sendMessage(ctx.id, {
+            let text = `Halo @${ctx.getId(ctx.sender.jid)}, berikut adalah daftar menu yang tersedia!\n` +
+                "\n" +
+                `${formatter.quote(`Tanggal: ${moment.tz(config.system.timeZone).locale("id").format("dddd, DD MMMM YYYY")}`)}\n` +
+                `${formatter.quote(`Waktu: ${moment.tz(config.system.timeZone).format("HH.mm.ss")}`)}\n` +
+                "\n" +
+                `${formatter.quote(`Bot Uptime: ${config.bot.uptime}`)}\n` +
+                `${formatter.quote(`Database: ${config.bot.dbSize} (Simpl.DB - JSON)`)}\n` +
+                `${formatter.quote("Library: @itsreimau/gktw (Fork of @mengkodingan/ckptw)")}\n` +
+                "\n" +
+                `${formatter.italic("Jangan lupa berdonasi agar bot tetap online!")}\n`;
+
+            return await ctx.reply({
                 image: {
                     url: config.bot.thumbnail
                 },
@@ -87,6 +103,28 @@ module.exports = {
                         buttonId: `${ctx.used.prefix}donate`,
                         buttonText: {
                             displayText: "Donasi"
+                        }
+                    },
+                    {
+                        buttonId: null,
+                        buttonText: {
+                            displayText: "Daftar Menu"
+                        },
+                        type: 4,
+                        nativeFlowInfo: {
+                            name: "single_select",
+                            paramsJson: JSON.stringify({
+                                title: "Daftar Menu",
+                                sections: [{
+                                    title: "Pilih Kategori Menu",
+                                    highlight_label: "☺",
+                                    rows: Object.keys(tag).map(category => ({
+                                        title: tag[category],
+                                        description: `Klik untuk melihat perintah ${tag[category]}`,
+                                        id: `.menu ${category}`
+                                    }))
+                                }]
+                            })
                         }
                     }
                 ]

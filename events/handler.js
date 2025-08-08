@@ -400,6 +400,8 @@ module.exports = (bot) => {
     bot.ev.on(Events.Call, async (calls) => {
         if (!config.system.antiCall) return;
 
+        consolefy.info(`Incoming call from: ${bot.getId(call.from)}`); // Log panggilan masuk
+
         for (const call of calls) {
             if (call.status !== "offer") continue;
 

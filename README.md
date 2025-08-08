@@ -146,8 +146,8 @@ Untuk menambahkan perintah baru, ikuti langkah-langkah berikut:
 `gaxtawu` menggunakan versi modifikasi dari `@mengkodingan/ckptw` yang telah difork dan disesuaikan khusus untuk bot ini. Library ini dibangun di atas `@yupra/baileys` yang menawarkan fitur lebih lengkap dibanding `@whiskeysockets/baileys`.
 
 #### Perbedaan Utama dengan Versi Original:
-- ✅ **Bug fixes** yang belum diatasi di versi original
-- 🛠️ **Optimasi khusus** untuk kebutuhan `gaxtawu`
+- **Bug fixes** yang belum diatasi di versi original
+- **Optimasi khusus** untuk kebutuhan `gaxtawu`
 
 Untuk dokumentasi lengkap, silakan kunjungi:
 - [@mengkodingan/ckptw](https://www.npmjs.com/package/@mengkodingan/ckptw) - Referensi dasar struktur command

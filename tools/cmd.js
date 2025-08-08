@@ -105,11 +105,11 @@ function generateUID(id, withBotName = true) {
     return uid;
 }
 
-function getRandomElement(arr) {
-    if (!arr || !arr.length) return null;
+function getRandomElement(array) {
+    if (!array || !array.length) return null;
 
-    const randomIndex = Math.floor(Math.random() * arr.length);
-    return arr[randomIndex];
+    const randomIndex = Math.floor(Math.random() * array.length);
+    return array[randomIndex];
 }
 
 async function handleError(ctx, error, useAxios = false, reportErrorToOwner = true) {
