@@ -106,7 +106,7 @@ module.exports = {
                         }
                     },
                     {
-                        buttonId: null,
+                        buttonId: "action",
                         buttonText: {
                             displayText: "Daftar Menu"
                         },
