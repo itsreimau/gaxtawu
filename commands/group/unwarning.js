@@ -19,7 +19,7 @@ module.exports = {
         });
 
         if (accountId === config.bot.id) return await ctx.reply(formatter.quote(`❎ Tidak bisa mengubah warning bot!`));
-        if (accountJid === await ctx.group().owner()) return await ctx.reply(formatter.quote("❎ Tidak bisa mengubah warning admin grup!"));
+        if (await ctx.group().isOwner(accountJid)) return await ctx.reply(formatter.quote("❎ Tidak bisa mengubah warning admin grup!"));
 
         try {
             const groupId = ctx.getId(ctx.id);

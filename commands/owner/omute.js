@@ -24,7 +24,7 @@ module.exports = {
         });
 
         if (accountId === config.bot.id) return await ctx.reply(formatter.quote(`❎ Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`));
-        if (accountJid === await ctx.group().owner()) return await ctx.reply(formatter.quote("❎ Dia adalah owner grup!"));
+        if (await ctx.group().isOwner(accountJid)) return await ctx.reply(formatter.quote("❎ Dia adalah owner grup!"));
 
         try {
             const muteList = await db.get(`group.${groupId}.mute`) || [];

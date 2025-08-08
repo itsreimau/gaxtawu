@@ -182,7 +182,7 @@ module.exports = (bot) => {
             const analyze = analyzeMessage(m.message);
             if (analyze.isMalicious) {
                 await ctx.deleteMessage(m.key);
-                await bot.block(senderJid);
+                await ctx.block(senderJid);
                 await db.set(`user.${senderId}.banned`, true);
 
                 await ctx.sendMessage(`${config.owner.id}@s.whatsapp.net`, {

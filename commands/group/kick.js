@@ -18,7 +18,7 @@ module.exports = {
             mentions: [ctx.sender.jid]
         });
 
-        if (accountJid === await ctx.group().owner()) return await ctx.reply(formatter.quote("❎ Dia adalah owner grup!"));
+        if (await ctx.group().isOwner(accountJid)) return await ctx.reply(formatter.quote("❎ Dia adalah owner grup!"));
 
         try {
             await ctx.group().kick([accountJid]);
