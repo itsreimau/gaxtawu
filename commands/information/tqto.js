@@ -6,7 +6,7 @@ module.exports = {
         return await ctx.reply({
             text: `${formatter.quote("ItsReimau (https://github.com/itsreimau)")}\n` +
                 `${formatter.quote("Jastin Linggar Tama (https://github.com/JastinXyz)")}\n` +
-                `${formatter.quote("NaufalYP1 (https://github.com/NaufalYuPra)")}\n` +
+                `${formatter.quote("RexxHayanasi (https://github.com/RexxHayanasi)")}\n` +
                 `${formatter.quote("Rippanteq7 (https://github.com/Rippanteq7)")}\n` +
                 `${formatter.quote("Rizky Pratama (https://github.com/Kyluxx)")}\n` +
                 `${formatter.quote("FandyAhmD (https://github.com/fandyahmd)")}\n` +

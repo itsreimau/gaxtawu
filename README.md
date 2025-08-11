@@ -1,6 +1,6 @@
 # gaxtawu
 
-`gaxtawu` adalah bot WhatsApp yang menggunakan [@yupra/baileys](https://www.npmjs.com/package/@yupra/baileys). Bot ini dirancang untuk mengotomatisasi berbagai tugas di WhatsApp, serta mendukung arsitektur modular melalui sistem perintah (command), sehingga memudahkan pengembangan dan pemeliharaan fitur.
+`gaxtawu` adalah bot WhatsApp yang menggunakan [@rexxhayanasi/elaina-bail](https://www.npmjs.com/package/@rexxhayanasi/elaina-bail). Bot ini dirancang untuk mengotomatisasi berbagai tugas di WhatsApp, serta mendukung arsitektur modular melalui sistem perintah (command), sehingga memudahkan pengembangan dan pemeliharaan fitur.
 
 ## Disclaimer
 
@@ -143,16 +143,18 @@ Untuk menambahkan perintah baru, ikuti langkah-langkah berikut:
 
 ### Complete Documentation
 
-`gaxtawu` menggunakan versi modifikasi dari `@mengkodingan/ckptw` yang telah difork dan disesuaikan khusus untuk bot ini. Library ini dibangun di atas `@yupra/baileys` yang menawarkan fitur lebih lengkap dibanding `@whiskeysockets/baileys`.
+`gaxtawu` menggunakan versi modifikasi dari `@mengkodingan/ckptw` yang telah difork dan disesuaikan khusus untuk bot ini. Library ini dibangun di atas `@rexxhayanasi/elaina-bail` yang menawarkan fitur lebih lengkap dibanding `@whiskeysockets/baileys`.
 
 #### Perbedaan Utama dengan Versi Original:
+
 - **Bug fixes** yang belum diatasi di versi original
 - **Optimasi khusus** untuk kebutuhan `gaxtawu`
 
 Untuk dokumentasi lengkap, silakan kunjungi:
+
 - [@mengkodingan/ckptw](https://www.npmjs.com/package/@mengkodingan/ckptw) - Referensi dasar struktur command
 - [itsreimau/gktw](https://github.com/itsreimau/gktw) **(Fork Resmi untuk gaxtawu)** - Dokumentasi versi custom yang digunakan
-- [@yupra/baileys](https://www.npmjs.com/package/@yupra/baileys) - Panduan pengiriman pesan/media
+- [@rexxhayanasi/elaina-bail](https://www.npmjs.com/package/@rexxhayanasi/elaina-bail) - Panduan pengiriman pesan/media
 
 ## Contribution
 
