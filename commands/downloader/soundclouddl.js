@@ -19,14 +19,14 @@ module.exports = {
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            const apiUrl = tools.api.createUrl("hang", "/download/soundcloud", {
+            const apiUrl = tools.api.createUrl("izumi", "/downloader/soundcloud", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.url;
 
             return await ctx.reply({
                 audio: {
-                    url: result.audioBase || result.download
+                    url: result
                 },
                 mimetype: tools.mime.lookup("mp3")
             });

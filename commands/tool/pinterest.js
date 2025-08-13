@@ -16,10 +16,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("archive", "/api/search/pinterest", {
+            const apiUrl = tools.api.createUrl("izumi", "/search/pinterest", {
                 query: input
             });
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result).image;
+            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result.pins).media.images.orig.url;
 
             return await ctx.reply({
                 image: {

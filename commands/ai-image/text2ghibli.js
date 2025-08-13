@@ -15,7 +15,7 @@ module.exports = {
         );
 
         try {
-            const result = tools.api.createUrl("nekorinn", "/ai-img/text2ghibli", {
+            const result = tools.api.createUrl("neko", "/ai-img/text2ghibli", {
                 text: input
             });
 

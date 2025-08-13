@@ -14,7 +14,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("nekorinn", "/ai-vid/videogpt", {
+            const apiUrl = tools.api.createUrl("neko", "/ai-vid/videogpt", {
                 text: input
             });
 

@@ -15,7 +15,7 @@ module.exports = {
 
         try {
             const [left, right] = input.split("|");
-            const result = tools.api.createUrl("nekorinn", "/maker/ba-logo", {
+            const result = tools.api.createUrl("neko", "/maker/ba-logo", {
                 textL: left,
                 textR: right
             });

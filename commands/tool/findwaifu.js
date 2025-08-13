@@ -17,7 +17,7 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = await tools.cmd.upload(buffer, "image");
-            const apiUrl = tools.api.createUrl("nekorinn", "/tools/find-waifu", {
+            const apiUrl = tools.api.createUrl("neko", "/tools/find-waifu", {
                 imageUrl: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.result.character.name;

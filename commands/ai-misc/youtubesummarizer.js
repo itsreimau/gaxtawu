@@ -19,7 +19,7 @@ module.exports = {
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            const apiUrl = tools.api.createUrl("nekorinn", "/tools/yt-summarizer", {
+            const apiUrl = tools.api.createUrl("neko", "/tools/yt-summarizer", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;

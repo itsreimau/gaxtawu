@@ -17,9 +17,8 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("archive", "/api/ai/gpt-4-logic", {
-                text: input,
-                logic: `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.` // Dapat diubah sesuai keinginan
+            const apiUrl = tools.api.createUrl("davidcyril", "/ai/chatbot", {
+                query: input
             });
             const result = (await axios.get(apiUrl)).data.result;
 

@@ -16,7 +16,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("archive", "/api/search/spotify", {
+            const apiUrl = tools.api.createUrl("diibot", "/api/search/spotify", {
                 query: input
             });
             const result = (await axios.get(apiUrl)).data.result;

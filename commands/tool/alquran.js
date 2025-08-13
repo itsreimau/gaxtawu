@@ -24,7 +24,7 @@ module.exports = {
         if (isNaN(surat) || surat < 1 || surat > 114) return await ctx.reply(formatter.quote("❎ Surah harus berupa nomor antara 1 sampai 114!"));
 
         try {
-            const apiUrl = tools.api.createUrl("nekorinn", "/religious/nuquran-surah", {
+            const apiUrl = tools.api.createUrl("neko", "/religious/nuquran-surah", {
                 id: surat
             });
             const result = (await axios.get(apiUrl)).data.result;

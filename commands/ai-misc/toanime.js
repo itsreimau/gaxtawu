@@ -16,7 +16,7 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = await tools.cmd.upload(buffer, "image");
-            const result = tools.api.createUrl("nekorinn", "/tools/img2anime", {
+            const result = tools.api.createUrl("neko", "/tools/img2anime", {
                 imageUrl: uploadUrl
             });
 

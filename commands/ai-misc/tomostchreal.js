@@ -16,7 +16,7 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = await tools.cmd.upload(buffer, "image");
-            const result = tools.api.createUrl("zenzxz", "/maker/tosdmtinggi", {
+            const result = tools.api.createUrl("https://zenzxz.dpdns.org", "/maker/tosdmtinggi", {
                 url: uploadUrl
             });
 

@@ -3,9 +3,6 @@ const util = require("node:util");
 
 // Daftar API gratis
 const APIs = {
-    archive: {
-        baseURL: "https://archive.lick.eu.org"
-    },
     davidcyril: {
         baseURL: "https://apis.davidcyriltech.my.id"
     },
@@ -15,17 +12,17 @@ const APIs = {
     hang: {
         baseURL: "https://api.hanggts.xyz"
     },
-    nekorinn: {
-        baseURL: "https://api.nekorinn.my.id"
+    izumi: {
+        baseURL: "https://izumiiiiiiii.dpdns.org"
+    },
+    neko: {
+        baseURL: "https://api.nekoo.qzz.io"
     },
     siputzx: {
         baseURL: "https://api.siputzx.my.id"
     },
     zell: {
         baseURL: "https://zellapi.autos"
-    },
-    zenzxz: {
-        baseURL: "https://zenzxz.dpdns.org"
     }
 };
 

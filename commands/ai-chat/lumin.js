@@ -17,7 +17,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("archive", "/api/ai/luminai", {
+            const apiUrl = tools.api.createUrl("diibot", "/api/ai/luminai", {
                 text: input
             });
             const result = (await axios.get(apiUrl)).data.result.result;

@@ -50,8 +50,7 @@ module.exports = {
                 return await ctx.reply({
                     audio: response?.data,
                     mimetype: tools.mime.contentType(contentType),
-                    caption: formatter.quote("Untukmu, tuan!"),
-                    footer: config.msg.footer
+                    caption: formatter.quote("Untukmu, tuan!")
                 });
             } else if (/webp/.test(contentType)) {
                 const sticker = new Sticker(response?.data, {

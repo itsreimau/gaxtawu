@@ -14,7 +14,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("nekorinn", "/ai-img/flux-v2", {
+            const apiUrl = tools.api.createUrl("neko", "/ai-img/flux-v2", {
                 prompt: input
             });
 

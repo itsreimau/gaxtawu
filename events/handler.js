@@ -283,7 +283,7 @@ module.exports = (bot) => {
                 if (checkMedia) {
                     const buffer = await ctx.msg.media.toBuffer();
                     const uploadUrl = await tools.cmd.upload(buffer, "image");
-                    const apiUrl = tools.api.createUrl("nekorinn", "/tools/nsfw-checker", {
+                    const apiUrl = tools.api.createUrl("neko", "/tools/nsfw-checker", {
                         imageUrl: uploadUrl
                     });
                     const result = (await axios.get(apiUrl)).data.result.labelName.toLowerCase();
@@ -400,9 +400,9 @@ module.exports = (bot) => {
     bot.ev.on(Events.Call, async (calls) => {
         if (!config.system.antiCall) return;
 
-        consolefy.info(`Incoming call from: ${bot.getId(call.from)}`); // Log panggilan masuk
-
         for (const call of calls) {
+            consolefy.info(`Incoming call from: ${bot.getId(call.from)}`); // Log panggilan masuk
+
             if (call.status !== "offer") continue;
 
             await bot.core.rejectCall(call.id, call.from);

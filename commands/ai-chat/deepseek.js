@@ -16,7 +16,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("nekorinn", "/ai/deepseek-r1", {
+            const apiUrl = tools.api.createUrl("neko", "/ai/deepseek-r1", {
                 text: input
             });
             const result = (await axios.get(apiUrl)).data.result.text;

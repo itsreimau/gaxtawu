@@ -16,7 +16,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("nekorinn", "/search/xvideos", {
+            const apiUrl = tools.api.createUrl("neko", "/search/xvideos", {
                 q: input
             });
             const result = (await axios.get(apiUrl)).data.result;

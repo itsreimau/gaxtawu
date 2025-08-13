@@ -17,7 +17,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("nekorinn", "/ai-img/portrait-realistic", {
+            const apiUrl = tools.api.createUrl("neko", "/ai-img/portrait-realistic", {
                 text: input
             });
             const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result);

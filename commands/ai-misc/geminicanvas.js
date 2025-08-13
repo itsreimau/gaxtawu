@@ -25,7 +25,7 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = await tools.cmd.upload(buffer, "image");
-            const apiUrl = tools.api.createUrl("nekorinn", "/ai/gemini-canvas", {
+            const apiUrl = tools.api.createUrl("neko", "/ai/gemini-canvas", {
                 text: input,
                 imageUrl: uploadUrl
             });

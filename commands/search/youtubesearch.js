@@ -16,10 +16,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("archive", "/api/search/youtube", {
+            const apiUrl = tools.api.createUrl("davidcyril", "/youtube/search", {
                 query: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.results;
 
             const resultText = result.map(r =>
                 `${formatter.quote(`Judul: ${r.title}`)}\n` +

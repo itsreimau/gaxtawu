@@ -17,7 +17,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("nekorinn", "/ai/veniceai", {
+            const apiUrl = tools.api.createUrl("hang", "/ai/venicechat", {
                 text: input
             });
             const result = (await axios.get(apiUrl)).data.result;

@@ -16,15 +16,16 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("archive", "/api/search/npmjs", {
-                query: input
+            const apiUrl = tools.api.createUrl("neko", "/search/npmjs", {
+                q: input
             });
             const result = (await axios.get(apiUrl)).data.result;
 
             const resultText = result.map(r =>
                 `${formatter.quote(`Nama: ${r.name}`)}\n` +
+                `${formatter.quote(`Deskirpsi: ${r.desc}`)}\n` +
                 `${formatter.quote(`Versi: ${r.version}`)}\n` +
-                formatter.quote(`URL: ${r.npmLink}`)
+                formatter.quote(`URL: ${r.url}`)
             ).join(
                 "\n" +
                 `${formatter.quote("─────")}\n`

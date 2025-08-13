@@ -40,6 +40,7 @@ const bot = new Client({
     customPairingCode: system.customPairingCode,
     selfReply: system.selfReply,
     autoMention: system.autoMention,
+    autoAiLabel: system.AiLabel,
     WAVersion: [2, 3000, 1025091846]
 });
 

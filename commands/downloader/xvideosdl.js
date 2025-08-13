@@ -18,7 +18,7 @@ module.exports = {
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            const apiUrl = tools.api.createUrl("nekorinn", "/downloader/xvideos", {
+            const apiUrl = tools.api.createUrl("neko", "/downloader/xvideos", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result.videos;

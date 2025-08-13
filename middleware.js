@@ -106,12 +106,29 @@ module.exports = (bot) => {
             key: "requireBotGroupMembership",
             condition: config.system.requireBotGroupMembership && !isOwner && !userDb?.premium && ctx.used.command !== "botgroup" && config.bot.groupJid && !(await ctx.group(config.bot.groupJid).members()).some(member => member.jid === senderJid),
             msg: config.msg.botGroupMembership,
-            reaction: "🚫"
+            reaction: "🚫",
+            buttons: [{
+                buttonId: `${ctx.used.prefix}botgroup`,
+                buttonText: {
+                    displayText: "Grup Bot"
+                }
+            }]
         }, {
             key: "requireGroupSewa",
             condition: config.system.requireGroupSewa && isGroup && !isOwner && !["owner", "price"].includes(ctx.used.command) && groupDb?.sewa !== true,
             msg: config.msg.groupSewa,
-            reaction: "🔒"
+            reaction: "🔒",
+            buttons: [{
+                buttonId: `${ctx.used.prefix}price`,
+                buttonText: {
+                    displayText: "Harga Sewa"
+                }
+            }, {
+                buttonId: `${ctx.used.prefix}owner`,
+                buttonText: {
+                    displayText: "Hubungi Owner"
+                }
+            }]
         }, {
             key: "unavailableAtNight",
             condition: (() => {
@@ -127,7 +144,8 @@ module.exports = (bot) => {
                 condition,
                 msg,
                 reaction,
-                key
+                key,
+                buttons
             }
             of restrictions) {
             if (condition) {
@@ -138,7 +156,8 @@ module.exports = (bot) => {
                     simulateTyping();
                     await ctx.reply({
                         text: msg,
-                        footer: formatter.italic(`Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`)
+                        footer: formatter.italic(`Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`),
+                        buttons: buttons || undefined
                     });
                     return await db.set(`user.${senderId}.lastSentMsg.${key}`, now);
                 } else {

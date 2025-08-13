@@ -16,15 +16,18 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("archive", "/api/search/lyrics", {
-                query: input
+            const searchResult = (await axios.get(tools.api.createUrl("https://api.vreden.my.id", "/api/search/genius/find", {
+                lagu: input
+            }))).data.result[0];
+            const apiUrl = tools.api.createUrl("https://api.vreden.my.id", "/api/search/genius/lyrics", {
+                url: searchResult.url
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.lyrics;
 
             return await ctx.reply({
-                text: `${formatter.quote(`Judul: ${result.title}`)}\n` +
+                text: `${formatter.quote(`Judul: ${searchResult.title}`)}\n` +
                     `${formatter.quote("─────")}\n` +
-                    result.lyrics,
+                    result,
                 footer: config.msg.footer
             });
         } catch (error) {

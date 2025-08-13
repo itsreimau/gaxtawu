@@ -18,14 +18,14 @@ module.exports = {
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            const apiUrl = tools.api.createUrl("archive", "/api/download/sfile", {
+            const apiUrl = tools.api.createUrl("zell", "/download/sfile", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;
 
             return await ctx.reply({
                 document: {
-                    url: result.download.url
+                    url: result.download_url
                 },
                 fileName: result.metadata.filename,
                 mimetype: result.metadata.mimetype || "application/octet-stream",

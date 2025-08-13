@@ -41,6 +41,10 @@ module.exports = {
                             default: 0
                         }
                     },
+                    autolevelup: {
+                        type: "boolean",
+                        default: false
+                    },
                     banned: {
                         type: "boolean",
                         default: false
@@ -74,6 +78,26 @@ module.exports = {
                             default: 0
                         },
                         cooldown: {
+                            type: "number",
+                            default: 0
+                        },
+                        gamerestrict: {
+                            type: "number",
+                            default: 0
+                        },
+                        privatePremiumOnly: {
+                            type: "number",
+                            default: 0
+                        },
+                        requireBotGroupMembership: {
+                            type: "number",
+                            default: 0
+                        },
+                        requireGroupSewa: {
+                            type: "number",
+                            default: 0
+                        },
+                        unavailableAtNight: {
                             type: "number",
                             default: 0
                         },

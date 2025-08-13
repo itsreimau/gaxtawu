@@ -19,10 +19,10 @@ module.exports = {
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            const apiUrl = tools.api.createUrl("archive", "/api/download/twitterx", {
+            const apiUrl = tools.api.createUrl("davidcyril", "/twitterv2", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result.downloads.find(d => d.quality.includes("720p"));
+            const result = (await axios.get(apiUrl)).data.result.find(d => d.quality.includes("720p"));
 
             return await ctx.reply({
                 video: {

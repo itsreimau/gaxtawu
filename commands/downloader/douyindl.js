@@ -19,32 +19,19 @@ module.exports = {
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            const apiUrl = tools.api.createUrl("archive", "/api/download/douyin", {
+            const apiUrl = tools.api.createUrl("diibot", "/api/download/douyin", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;
 
-            if (!result.slide && result.media) return await ctx.reply({
+            return await ctx.reply({
                 video: {
-                    url: result.media.mp4_hd || result.media.mp4_2 || result.media.mp4_1
+                    url: result.Video_HD || result.Video
                 },
                 mimetype: tools.mime.lookup("mp4"),
                 caption: formatter.quote(`URL: ${url}`),
                 footer: config.msg.footer
             });
-            if (result.slide && result.media) {
-                const album = result.media.map(imageUrl => ({
-                    image: {
-                        url: imageUrl
-                    },
-                    mimetype: tools.mime.lookup("jpeg")
-                }));
-
-                return await ctx.reply({
-                    album,
-                    caption: formatter.quote(`URL: ${url}`)
-                });
-            }
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);
         }

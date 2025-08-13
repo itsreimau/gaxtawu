@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "text2image",
     aliases: ["text2img", "texttoimage", "texttoimg"],
@@ -17,10 +15,9 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("archive", "/api/ai/text2img-v2", {
+            const result = tools.api.createUrl("zell", "/ai/text2image", {
                 prompt: input
             });
-            const result = (await axios.get(apiUrl)).data.url;
 
             return await ctx.reply({
                 image: {

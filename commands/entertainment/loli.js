@@ -6,7 +6,7 @@ module.exports = {
     },
     code: async (ctx) => {
         try {
-            const result = tools.api.createUrl("archive", "/api/random/loli");
+            const result = tools.api.createUrl("izumi", "/random/loli");
 
             return await ctx.reply({
                 image: {

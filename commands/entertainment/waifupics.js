@@ -1,14 +1,17 @@
+const axios = require("axios");
+
 module.exports = {
-    name: "nsfwhub",
+    name: "waifupics",
+    aliases: ["wpics"],
     category: "entertainment",
     permissions: {
-        premium: true
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || null;
 
         if (input?.toLowerCase() === "list") {
-            const listText = await tools.list.get("nsfwhub");
+            const listText = await tools.list.get("waifupics");
             return await ctx.reply({
                 text: listText,
                 footer: config.msg.footer
@@ -16,16 +19,18 @@ module.exports = {
         }
 
         try {
-            const listNsfwhub = ["anal", "ass", "bdsm", "black", "blowjub", "boobs", "bottomless", "collared", "cum", "cumsluts", "dick", "dom", "dp", "easter", "extreme", "feet", "finger", "fuck", "futa", "gay", "group", "hentai", "kiss", "lesbian", "lick", "pegged", "puffies", "pussy", "real", "sixtynine", "suck", "tattoo", "tiny", "xmas"];
-            const nsfwhub = listNsfwhub.includes(input) ? input : tools.cmd.getRandomElement(listNsfwhub);
-            const result = tools.api.createUrl("neko", `/nsfwhub/${nsfwhub}`);
+            const listWaifupics = ["waifu", "neko", "shinobu", "megumin"];
+            const waifupics = listWaifupics.includes(input) ? input : tools.cmd.getRandomElement(listWaifupics);
+            const apiUrl = tools.api.createUrl("https://api.waifu.pics", `/sfw/${waifupics}`);
+            const result = (await axios.get(apiUrl)).data.url;
 
             return await ctx.reply({
                 image: {
                     url: result
                 },
                 mimetype: tools.mime.lookup("jpg"),
-                caption: formatter.quote(`Kategori: ${tools.msg.ucwords(nsfwhub)}`),
+                caption: `${formatter.quote(`Kategori: ${tools.msg.ucwords(waifupics)}`)}\n` +
+                    formatter.quote("Tipe: SFW"),
                 footer: config.msg.footer,
                 buttons: [{
                     buttonId: input ? `${ctx.used.prefix + ctx.used.command} ${input}` : ctx.used.prefix + ctx.used.command,

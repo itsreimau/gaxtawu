@@ -16,10 +16,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("archive", "/api/search/tiktok", {
+            const apiUrl = tools.api.createUrl("diibot", "/api/search/tiktok", {
                 query: input
             });
-            const result = (await axios.get(apiUrl)).data.result.no_watermark;
+            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result).media.no_watermark;
 
             return await ctx.reply({
                 video: {

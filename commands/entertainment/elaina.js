@@ -1,22 +1,19 @@
-const axios = require("axios");
-
 module.exports = {
-    name: "megumin",
+    name: "elaina",
     category: "entertainment",
     permissions: {
         coin: 10
     },
     code: async (ctx) => {
         try {
-            const apiUrl = tools.api.createUrl("https://api.waifu.pics", "/sfw/megumin");
-            const result = (await axios.get(apiUrl)).data.url;
+            const result = tools.api.createUrl("hang", "/random/elaina");
 
             return await ctx.reply({
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("jpeg"),
-                caption: formatter.quote("Explosion!"),
+                mimetype: tools.mime.lookup("png"),
+                caption: formatter.quote("Sou, Watashi desu!"),
                 footer: config.msg.footer,
                 buttons: [{
                     buttonId: ctx.used.prefix + ctx.used.command,

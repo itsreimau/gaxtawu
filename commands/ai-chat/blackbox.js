@@ -25,7 +25,7 @@ module.exports = {
             if (checkMedia || checkQuotedMedia) {
                 const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
                 const uploadUrl = await tools.cmd.upload(buffer, "image");
-                const apiUrl = tools.api.createUrl("nekorinn", "/ai/blackbox", {
+                const apiUrl = tools.api.createUrl("neko", "/ai/blackbox", {
                     text: input,
                     imageUrl: uploadUrl
                 });
@@ -33,7 +33,7 @@ module.exports = {
 
                 return await ctx.reply(result);
             } else {
-                const apiUrl = tools.api.createUrl("nekorinn", "/ai/blackbox", {
+                const apiUrl = tools.api.createUrl("neko", "/ai/blackbox", {
                     text: input,
                     sessionid: await db.get(`user.${ctx.getId(ctx.sender.jid)}.uid`) || "guest"
                 });

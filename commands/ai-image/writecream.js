@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "writecream",
     aliases: ["wcream", "writec"],
@@ -17,10 +15,9 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("archive", "/api/ai/writecream-image", {
-                prompt: input
+            const result = tools.api.createUrl("neko", "/ai-img/writecream", {
+                text: input
             });
-            const result = (await axios.get(apiUrl)).data.result.imageUrl;
 
             return await ctx.reply({
                 image: {

@@ -16,7 +16,7 @@ module.exports = {
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], ["video"])));
 
         try {
-            const buffer = await ctx.quoted.media.toBuffer();
+            const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const apiUrl = tools.api.createUrl("https://nekochii-converter.hf.space", "/mp4tomp3");
             const result = (await axios.post(apiUrl, {
                 file: buffer.toString("base64"),

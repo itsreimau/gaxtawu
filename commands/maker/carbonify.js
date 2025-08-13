@@ -15,7 +15,7 @@ module.exports = {
         );
 
         try {
-            const result = tools.api.createUrl("archive", "/api/maker/carbonify", {
+            const result = tools.api.createUrl("neko", "/maker/carbonify", {
                 text: input
             });
 

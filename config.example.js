@@ -89,8 +89,9 @@ global.config = {
     system: {
         alwaysOnline: true, // Bot selalu berstatus "online"
         antiCall: true, // Bot secara otomatis membanned orang yang menelepon
-        autoMention: true, // Bot otomatis mention seseorang dalam pesan yang dikirim
         autoRead: true, // Bot baca pesan otomatis
+        autoMention: true, // Bot otomatis mention seseorang dalam pesan yang dikirim
+        autoAiLabel: true, // Bot otomatis menambahkan label AI dalam pesan yang dikirim
         autoTypingOnCmd: true, // Tampilkan status "sedang mengetik" saat memproses perintah
         cooldown: 10 * 1000, // Jeda antar perintah (ms)
         maxListeners: 50, // Max listeners untuk events

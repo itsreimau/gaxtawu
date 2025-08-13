@@ -18,7 +18,7 @@ async function get(type) {
                 break;
             }
             case "alquran": {
-                const data = (await axios.get(api.createUrl("nekorinn", "/religious/nuquran-listsurah"))).data.result.list;
+                const data = (await axios.get(api.createUrl("neko", "/religious/nuquran-listsurah"))).data.result.list;
                 text = createList(data, d =>
                     `${formatter.quote(`Surah: ${d.name} (${d.id})`)}\n` +
                     `${formatter.quote(`Jumlah Ayat: ${d.verse_count}`)}`
@@ -148,18 +148,18 @@ async function get(type) {
                 );
                 break;
             }
-            case "ttsmp3": {
-                const data = ["zeina", "nicole", "russell", "ricardo", "camila", "vitoria", "brian", "amy", "emma", "chantal", "enrique", "lucia", "conchita", "zhiyu", "naja", "mads", "ruben", "lotte", "mathieu", "celine", "lea", "vicki", "marlene", "hans", "karl", "dora", "aditi", "raveena", "giorgio", "carla", "bianca", "takumi", "mizuki", "seoyeon", "mia", "liv", "jan", "maja", "ewa", "jacek", "cristiano", "ines", "carmen", "tatyana", "maxim", "astrid", "filiz", "kimberly", "ivy", "kendra", "justin", "joey", "matthew", "salli", "joanna", "penelope", "lupe", "miguel", "gwyneth", "geraint"];
-                text = createList(data, d => formatter.quote(d));
-                break;
-            }
             case "waifuim": {
                 const data = ["ass", "ecchi", "ero", "hentai", "maid", "milf", "oppai", "oral", "paizuri", "selfies", "uniform", "waifu"];
                 text = createList(data, d => formatter.quote(d));
                 break;
             }
-            case "waifusm": {
-                const data = ["animal", "animalears", "anusview", "ass", "barefoot", "bed", "bell", "bikini", "blonde", "bondage", "bra", "breasthold", "breasts", "bunnyears", "bunnygirl", "chain", "closeview", "cloudsview", "cum", "dress", "drunk", "elbowgloves", "erectnipples", "fateseries", "fingering", "flatchest", "food", "foxgirl", "gamecg", "genshin", "glasses", "gloves", "greenhair", "hatsunemiku", "hcatgirl", "headband", "headdress", "headphones", "hentaimiku", "hloli", "hneko", "hololive", "horns", "inshorts", "japanesecloths", "necklace", "nipples", "nobra", "nsfwbeach", "nsfwbell", "nsfwdemon", "nsfwidol", "nsfwmaid", "nsfwmenu", "nsfwvampire", "nude", "openshirt", "pantyhose", "pantypull", "penis", "pinkhair", "ponytail", "pussy", "schoolswimsuit", "schooluniform", "seethrough", "sex", "sex2", "sex3", "shirt", "shirtlift", "skirt", "spreadlegs", "spreadpussy", "squirt", "stockings", "sunglasses", "swimsuit", "tail", "tattoo", "tears", "thighhighs", "thogirls", "topless", "torncloths", "touhou", "twintails", "uncensored", "underwear", "vocaloid", "weapon", "white", "whitehair", "wings", "withflowers", "withguns", "withpetals", "withtie", "withtree", "wolfgirl", "yuri"];
+            case "waifupics": {
+                const data = ["waifu", "neko", "shinobu", "megumin"];
+                text = createList(data, d => formatter.quote(d));
+                break;
+            }
+            case "waifupicsnsfw": {
+                const data = ["waifu", "neko", "trap"];
                 text = createList(data, d => formatter.quote(d));
                 break;
             }

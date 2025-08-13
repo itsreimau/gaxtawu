@@ -19,18 +19,24 @@ module.exports = {
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            const apiUrl = tools.api.createUrl("zenzxz", "/downloader/aio", {
+            const apiUrl = tools.api.createUrl("zell", "/download/instagram", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result.medias;
-            const medias = result.filter(media => media.type === "image" || media.type === "video");
+            const result = (await axios.get(apiUrl)).data.result;
+            const medias = result.flatMap(item =>
+                item.url.map(media => ({
+                    type: media.ext === "mp4" ? "video" : "image",
+                    url: media.url,
+                    mimetype: tools.mime.lookup(media.ext)
+                }))
+            );
             const album = medias.map(media => {
                 const isVideo = media.type === "video";
                 return {
                     [isVideo ? "video" : "image"]: {
                         url: media.url
                     },
-                    mimetype: tools.mime.lookup(isVideo ? "mp4" : "jpg")
+                    mimetype: media.mimetype
                 };
             });
 

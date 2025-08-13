@@ -17,8 +17,8 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("nekorinn", "/ai/feloai", {
-                text: input
+            const apiUrl = tools.api.createUrl("izumi", "/ai/feloai", {
+                query: input
             });
             const result = (await axios.get(apiUrl)).data.result.text;
 

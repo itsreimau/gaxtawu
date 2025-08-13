@@ -2,6 +2,7 @@ const axios = require("axios");
 
 module.exports = {
     name: "waifuim",
+    aliases: ["wim"],
     category: "entertainment",
     permissions: {
         premium: true

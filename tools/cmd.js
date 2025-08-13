@@ -81,9 +81,7 @@ function fakeMetaAiQuotedText(text) {
             remoteJid: "status@broadcast"
         },
         message: {
-            extendedTextMessage: {
-                text
-            }
+            conversation: text
         }
     };
     return quoted;
@@ -217,15 +215,15 @@ function parseFlag(argsString, customRules = {}) {
     return options;
 }
 
-async function translate(text, language) {
-    if (!text || !language) return null;
+async function translate(text, to) {
+    if (!text || !to) return null;
 
     try {
-        const apiUrl = api.createUrl("archive", "/api/tools/translate", {
+        const apiUrl = api.createUrl("davidcyril", "/tools/translate", {
             text,
-            language
+            to
         });
-        const result = (await axios.get(apiUrl)).data.result;
+        const result = (await axios.get(apiUrl)).data.translated_text;
         return result;
     } catch (error) {
         consolefy.error(`Error: ${util.format(error)}`);

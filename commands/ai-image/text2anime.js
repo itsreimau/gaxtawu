@@ -15,7 +15,7 @@ module.exports = {
         );
 
         try {
-            const result = tools.api.createUrl("nekorinn", "/ai-img/text2anime", {
+            const result = tools.api.createUrl("neko", "/ai-img/text2anime", {
                 text: input,
                 ratio: "1:1"
             });

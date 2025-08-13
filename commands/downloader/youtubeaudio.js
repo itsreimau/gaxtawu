@@ -12,10 +12,9 @@ module.exports = {
 
         if (!input) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d -q 320"))}\n` +
+            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d"))}\n` +
             formatter.quote(tools.msg.generatesFlagInfo({
-                "-d": "Kirim sebagai dokumen",
-                "-q <number>": "Pilihan pada kualitas audio (tersedia: 64, 96, 128, 192, 256, 320 | default: 320)"
+                "-d": "Kirim sebagai dokumen"
             }))
         );
 
@@ -23,12 +22,6 @@ module.exports = {
             "-d": {
                 type: "boolean",
                 key: "document"
-            },
-            "-q": {
-                type: "value",
-                key: "quality",
-                validator: (val) => !isNaN(val) && parseInt(val) > 0,
-                parser: (val) => parseInt(val)
             }
         });
 
@@ -38,28 +31,26 @@ module.exports = {
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            let quality = flag?.quality || 320;
-            if (![64, 96, 128, 192, 256, 320].includes(quality)) quality = 320;
-            const apiUrl = tools.api.createUrl("nekorinn", "/downloader/youtube", {
+            const apiUrl = tools.api.createUrl("izumi", "/downloader/youtube", {
                 url,
-                format: quality,
-                type: "audio"
+                format: "mp3"
             });
             const result = (await axios.get(apiUrl)).data.result;
 
             const document = flag?.document || false;
             if (document) return await ctx.reply({
                 document: {
-                    url: result.downloadUrl
+                    url: result.download
                 },
                 fileName: `${result.title}.mp3`,
                 mimetype: tools.mime.lookup("mp3"),
                 caption: formatter.quote(`URL: ${url}`),
                 footer: config.msg.footer
             });
+
             return await ctx.reply({
                 audio: {
-                    url: result.downloadUrl
+                    url: result.download
                 },
                 mimetype: tools.mime.lookup("mp3")
             });

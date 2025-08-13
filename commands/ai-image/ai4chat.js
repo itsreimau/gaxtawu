@@ -14,7 +14,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("nekorinn", "/ai-img/ai4chat", {
+            const apiUrl = tools.api.createUrl("neko", "/ai-img/ai4chat", {
                 text: input,
                 ratio: "1:1"
             });

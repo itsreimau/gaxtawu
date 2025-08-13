@@ -16,7 +16,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("archive", "/api/search/soundcloud", {
+            const apiUrl = tools.api.createUrl("izumi", "/search/soundcloud", {
                 query: input
             });
             const result = (await axios.get(apiUrl)).data.result;

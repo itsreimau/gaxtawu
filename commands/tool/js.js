@@ -18,9 +18,9 @@ module.exports = {
         );
 
         try {
-            const restricted = ["require", "eval", "Function", "global"];
-            for (const w of restricted) {
-                if (input.includes(w)) return await ctx.reply(formatter.quote(`❎ Penggunaan ${w} tidak diperbolehkan dalam kode!`));
+            const restricted = ["require", "eval", "Function", "global", "import"];
+            for (const r of restricted) {
+                if (input.includes(r)) return await ctx.reply(formatter.quote(`❎ Penggunaan ${r} tidak diperbolehkan dalam kode!`));
             }
 
             const output = await new Promise(resolve => {

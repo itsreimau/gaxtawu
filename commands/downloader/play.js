@@ -41,7 +41,7 @@ module.exports = {
             if (!["soundcloud", "spotify", "youtube"].includes(source)) source = "youtube";
 
             if (source === "soundcloud") {
-                const searchApiUrl = tools.api.createUrl("archive", "/api/search/soundcloud", {
+                const searchApiUrl = tools.api.createUrl("izumi", "/search/soundcloud", {
                     query
                 });
                 const searchResult = (await axios.get(searchApiUrl)).data.result[searchIndex];
@@ -52,21 +52,21 @@ module.exports = {
                     footer: config.msg.footer
                 });
 
-                const downloadApiUrl = tools.api.createUrl("hang", "/download/soundcloud", {
+                const downloadApiUrl = tools.api.createUrl("izumi", "/downloader/soundcloud", {
                     url: searchResult.url
                 });
-                const downloadResult = (await axios.get(downloadApiUrl)).data.result;
+                const downloadResult = (await axios.get(downloadApiUrl)).data.result.url;
 
                 return await ctx.reply({
                     audio: {
-                        url: downloadResult.audioBase || downloadResult.download
+                        url: downloadResult
                     },
                     mimetype: tools.mime.lookup("mp3")
                 });
             }
 
             if (source === "spotify") {
-                const searchApiUrl = tools.api.createUrl("archive", "/api/search/spotify", {
+                const searchApiUrl = tools.api.createUrl("diibot", "/api/search/spotify", {
                     query
                 });
                 const searchResult = (await axios.get(searchApiUrl)).data.result[searchIndex];
@@ -78,10 +78,10 @@ module.exports = {
                     footer: config.msg.footer
                 });
 
-                const downloadApiUrl = tools.api.createUrl("archive", "/api/download/spotify", {
+                const downloadApiUrl = tools.api.createUrl("diibot", "/api/download/spotify", {
                     url: searchResult.externalUrl
                 });
-                const downloadResult = (await axios.get(downloadApiUrl)).data.result.data.download;
+                const downloadResult = (await axios.get(downloadApiUrl)).data.result.audio;
 
                 return await ctx.reply({
                     audio: {
@@ -92,10 +92,10 @@ module.exports = {
             }
 
             if (source === "youtube") {
-                const searchApiUrl = tools.api.createUrl("archive", "/api/search/youtube", {
+                const searchApiUrl = tools.api.createUrl("davidcyril", "/youtube/search", {
                     query
                 });
-                const searchResult = (await axios.get(searchApiUrl)).data.result[searchIndex];
+                const searchResult = (await axios.get(searchApiUrl)).data.results[searchIndex];
 
                 await ctx.reply({
                     text: `${formatter.quote(`Judul: ${searchResult.title}`)}\n` +
@@ -104,12 +104,11 @@ module.exports = {
                     footer: config.msg.footer
                 });
 
-                const downloadApiUrl = tools.api.createUrl("nekorinn", "/downloader/youtube", {
+                const downloadApiUrl = tools.api.createUrl("izumi", "/downloader/youtube", {
                     url: searchResult.link,
-                    format: 320,
-                    type: "audio"
+                    format: "mp3"
                 });
-                const downloadResult = (await axios.get(downloadApiUrl)).data.result.downloadUrl;
+                const downloadResult = (await axios.get(downloadApiUrl)).data.result.download;
 
                 return await ctx.reply({
                     audio: {

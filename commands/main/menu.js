@@ -2,7 +2,7 @@ const moment = require("moment-timezone");
 
 module.exports = {
     name: "menu",
-    aliases: ["allmenu", "help", "list", "listmenu"],
+    aliases: ["help", "list", "listmenu"],
     category: "main",
     code: async (ctx) => {
         try {
