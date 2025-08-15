@@ -2,7 +2,7 @@ const axios = require("axios");
 
 module.exports = {
     name: "dreamshaper",
-    aliases: ["dreams"],
+    aliases: ["dreams", "dreamshaperxl"],
     category: "ai-image",
     permissions: {
         coin: 10

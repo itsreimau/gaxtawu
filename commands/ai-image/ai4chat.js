@@ -1,5 +1,6 @@
 module.exports = {
     name: "ai4chat",
+    aliases: ["ai4"],
     category: "ai-image",
     permissions: {
         premium: true

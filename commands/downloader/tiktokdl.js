@@ -32,6 +32,7 @@ module.exports = {
                 caption: formatter.quote(`URL: ${url}`),
                 footer: config.msg.footer
             });
+
             if (result.images) {
                 const album = result.images.map(imageUrl => ({
                     image: {

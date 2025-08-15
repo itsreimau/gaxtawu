@@ -1,5 +1,5 @@
 module.exports = {
-    name: "dream",
+    name: "dalle",
     category: "ai-image",
     permissions: {
         coin: 10

@@ -99,13 +99,12 @@ module.exports = {
 
                 await ctx.reply({
                     text: `${formatter.quote(`Judul: ${searchResult.title}`)}\n` +
-                        `${formatter.quote(`Artis: ${searchResult.channel}`)}\n` +
-                        formatter.quote(`URL: ${searchResult.link}`),
+                        formatter.quote(`URL: ${searchResult.url}`),
                     footer: config.msg.footer
                 });
 
                 const downloadApiUrl = tools.api.createUrl("izumi", "/downloader/youtube", {
-                    url: searchResult.link,
+                    url: searchResult.url,
                     format: "mp3"
                 });
                 const downloadResult = (await axios.get(downloadApiUrl)).data.result.download;

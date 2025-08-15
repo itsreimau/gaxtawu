@@ -22,10 +22,10 @@ module.exports = {
             const apiUrl = tools.api.createUrl("zell", "/download/instagram", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.url;
             const medias = result.flatMap(item =>
-                item.url.map(media => ({
-                    type: media.ext === "mp4" ? "video" : "image",
+                item.map(media => ({
+                    type: media.type === "mp4" ? "video" : "image",
                     url: media.url,
                     mimetype: tools.mime.lookup(media.ext)
                 }))

@@ -1,5 +1,6 @@
 module.exports = {
     name: "videogpt",
+    aliases: ["vidgpt"],
     category: "ai-video",
     permissions: {
         premium: true

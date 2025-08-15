@@ -21,7 +21,7 @@ module.exports = {
         try {
             const listWaifupics = ["waifu", "neko", "trap"];
             const waifupics = listWaifupics.includes(input) ? input : tools.cmd.getRandomElement(listWaifupics);
-            const apiUrl = tools.api.createUrl("https://api.waifu.pics", `/nsfw/${listWaifupics}`);
+            const apiUrl = tools.api.createUrl("https://api.waifu.pics", `/nsfw/${waifupics}`);
             const result = (await axios.get(apiUrl)).data.url;
 
             return await ctx.reply({

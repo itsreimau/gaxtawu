@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "copilot",
+    name: "gemini",
     category: "ai-chat",
     permissions: {
         coin: 10

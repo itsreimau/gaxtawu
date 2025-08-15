@@ -23,9 +23,8 @@ module.exports = {
 
             const resultText = result.map(r =>
                 `${formatter.quote(`Judul: ${r.title}`)}\n` +
-                `${formatter.quote(`Channel: ${r.channel}`)}\n` +
                 `${formatter.quote(`Durasi: ${r.duration}`)}\n` +
-                formatter.quote(`URL: ${r.link}`)
+                formatter.quote(`URL: ${r.url}`)
             ).join(
                 "\n" +
                 `${formatter.quote("─────")}\n`

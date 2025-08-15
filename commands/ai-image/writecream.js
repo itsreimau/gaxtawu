@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["wcream", "writec"],
     category: "ai-image",
     permissions: {
-        premium: true
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || ctx?.quoted?.content || null;
