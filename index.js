@@ -1,5 +1,6 @@
 // Impor modul dan dependensi yang diperlukan
 require("./config.js");
+const pkg = require("./package.json");
 const tools = require("./tools/exports.js");
 const {
     Formatter
