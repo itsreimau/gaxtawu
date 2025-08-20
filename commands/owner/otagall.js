@@ -23,9 +23,7 @@ module.exports = {
                 text: `${input}\n` +
                     `${config.msg.readmore}─────\n` +
                     resultText,
-                mentions: mentions.map({
-                    mention
-                } => mention)
+                mentions: mentions.map(mention => mention.mention)
             });
         } catch (error) {
             return await tools.cmd.handleError(ctx, error);
