@@ -19,8 +19,8 @@ module.exports = {
 
         try {
             const urlCode = new URL(url).pathname.split("/").pop();
-            await ctx.groups.acceptInvite(urlCode).then(async result => {
-                await ctx.sendMessage(result, {
+            await ctx.groups.acceptInvite(urlCode).then(async (res) => {
+                await ctx.sendMessage(res, {
                     text: formatter.quote(`👋 Halo! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}. Saya bisa melakukan banyak perintah, seperti membuat stiker, menggunakan AI untuk pekerjaan tertentu, dan beberapa perintah berguna lainnya. Saya di sini untuk menghibur dan menyenangkan kamu!`)
                 });
             });

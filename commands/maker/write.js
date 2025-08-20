@@ -1,12 +1,12 @@
 module.exports = {
-    name: "tolol",
-    aliases: ["tlm", "sertiftolol"],
+    name: "write",
+    aliases: ["nulis", "tulis"],
     category: "maker",
     permissions: {
         coin: 10
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || ctx?.quoted.content || null;
+        const input = ctx.args.join(" ") || ctx?.quoted?.content || null;
 
         if (!input) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
@@ -14,10 +14,8 @@ module.exports = {
             formatter.quote(tools.msg.generateNotes(["Balas atau quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."]))
         );
 
-        if (input.length > 100) return await ctx.reply(formatter.quote("❎ Maksimal 100 kata!"));
-
         try {
-            const result = tools.api.createUrl("hang", "/imagecreator/sertifikat-tolol", {
+            const result = tools.api.createUrl("zenzxz", "/maker/nulis", {
                 text: input
             });
 
@@ -25,7 +23,7 @@ module.exports = {
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("jpg"),
+                mimetype: tools.mime.lookup("png"),
                 footer: config.msg.footer
             });
         } catch (error) {

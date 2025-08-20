@@ -30,7 +30,7 @@ module.exports = {
                     `${formatter.quote(`Model: ${cpus[0].model}`)}\n` +
                     `${formatter.quote(`Kecepatan: ${cpus[0].speed} MHz`)}\n` +
                     `${formatter.quote(`Cores: ${cpus.length}`)}\n` +
-                    `${formatter.quote(`Muat Rata-Rata: ${load.map(l => l.toFixed(2)).join(", ")}`)}\n` +
+                    `${formatter.quote(`Muat Rata-Rata: ${load.map(avg => avg.toFixed(2)).join(", ")}`)}\n` +
                     `${formatter.quote("─────")}\n` +
                     `${formatter.quote(`Versi NodeJS: ${process.version}`)}\n` +
                     `${formatter.quote(`Platform: ${process.platform}`)}\n` +

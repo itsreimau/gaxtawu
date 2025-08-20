@@ -13,7 +13,7 @@ module.exports = {
             return await ctx.reply(formatter.quote("✅ Berhasil me-unmute grup ini dari bot!"));
         }
 
-        const accountJid = ctx?.quoted?.senderJid || ctx.getMentioned()[0] || null;
+        const accountJid = ctx?.quoted.senderJid || ctx.getMentioned()[0] || null;
         const accountId = ctx.getId(accountJid);
 
         if (!accountJid) return await ctx.reply({
@@ -28,7 +28,7 @@ module.exports = {
 
         try {
             let muteList = await db.get(`group.${groupId}.mute`) || [];
-            muteList = muteList.filter(item => item !== accountId);
+            muteList = muteList.filter(mute => mute !== accountId);
             await db.set(`group.${groupId}.mute`, muteList);
 
             return await ctx.reply(formatter.quote("✅ Berhasil me-unmute pengguna itu dari grup ini!"));

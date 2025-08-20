@@ -28,9 +28,7 @@ module.exports = {
                 audio: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("mp3"),
-                caption: formatter.quote(`URL: ${url}`),
-                footer: config.msg.footer
+                mimetype: tools.mime.lookup("mp3")
             });
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);

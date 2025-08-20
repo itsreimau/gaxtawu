@@ -84,40 +84,56 @@ module.exports = (bot) => {
         // Pengecekan kondisi restrictions
         const restrictions = [{
             key: "banned",
-            condition: userDb?.banned,
+            condition: userDb?.banned && ctx.used.command !== "owner",
             msg: config.msg.banned,
+            buttons: [{
+                buttonId: `${ctx.used.prefix}owner`,
+                buttonText: {
+                    displayText: "Hubungi Owner"
+                }
+            }],
             reaction: "🚫"
         }, {
             key: "cooldown",
-            condition: !isOwner && !userDb?.premium && new Cooldown(ctx, config.system.cooldown).onCooldown,
+            condition: new Cooldown(ctx, config.system.cooldown).onCooldown && !isOwner && !userDb?.premium,
             msg: config.msg.cooldown,
             reaction: "💤"
         }, {
             key: "gamerestrict",
-            condition: groupDb?.option?.gamerestrict && isGroup && !isAdmin && ctx.bot.cmd.has(ctx.used.command) && ctx.bot.cmd.get(ctx.used.command).category === "game",
+            condition: groupDb?.option?.gamerestrict && isGroup && !isAdmin && ctx.bot.cmd.get(ctx.used.command).category === "game",
             msg: config.msg.gamerestrict,
             reaction: "🎮"
         }, {
             key: "privatePremiumOnly",
-            condition: config.system.privatePremiumOnly && isPrivate && !isOwner && !userDb?.premium,
+            condition: config.system.privatePremiumOnly && isPrivate && !isOwner && !userDb?.premium && !["price", "owner"].includes(ctx.used.command),
             msg: config.msg.privatePremiumOnly,
+            buttons: [{
+                buttonId: `${ctx.used.prefix}price`,
+                buttonText: {
+                    displayText: "Harga Premium"
+                }
+            }, {
+                buttonId: `${ctx.used.prefix}owner`,
+                buttonText: {
+                    displayText: "Hubungi Owner"
+                }
+            }],
             reaction: "💎"
         }, {
             key: "requireBotGroupMembership",
             condition: config.system.requireBotGroupMembership && !isOwner && !userDb?.premium && ctx.used.command !== "botgroup" && config.bot.groupJid && !(await ctx.group(config.bot.groupJid).members()).some(member => member.jid === senderJid),
             msg: config.msg.botGroupMembership,
-            reaction: "🚫",
             buttons: [{
                 buttonId: `${ctx.used.prefix}botgroup`,
                 buttonText: {
                     displayText: "Grup Bot"
                 }
-            }]
+            }],
+            reaction: "🚫"
         }, {
             key: "requireGroupSewa",
-            condition: config.system.requireGroupSewa && isGroup && !isOwner && !["owner", "price"].includes(ctx.used.command) && groupDb?.sewa !== true,
+            condition: config.system.requireGroupSewa && isGroup && !isOwner && !["price", "owner"].includes(ctx.used.command) && groupDb?.sewa !== true,
             msg: config.msg.groupSewa,
-            reaction: "🔒",
             buttons: [{
                 buttonId: `${ctx.used.prefix}price`,
                 buttonText: {
@@ -128,7 +144,8 @@ module.exports = (bot) => {
                 buttonText: {
                     displayText: "Hubungi Owner"
                 }
-            }]
+            }],
+            reaction: "🔒"
         }, {
             key: "unavailableAtNight",
             condition: (() => {
@@ -157,7 +174,7 @@ module.exports = (bot) => {
                     await ctx.reply({
                         text: msg,
                         footer: formatter.italic(`Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`),
-                        buttons: buttons || undefined
+                        buttons: buttons || null
                     });
                     return await db.set(`user.${senderId}.lastSentMsg.${key}`, now);
                 } else {
@@ -186,6 +203,12 @@ module.exports = (bot) => {
             key: "coin",
             condition: permissions.coin && config.system.useCoin && await checkCoin(permissions.coin, userDb, senderId, isOwner),
             msg: config.msg.coin,
+            buttons: [{
+                buttonId: `${ctx.used.prefix}coin`,
+                buttonText: {
+                    displayText: "Cek Koin"
+                }
+            }],
             reaction: "💰"
         }, {
             key: "group",
@@ -201,6 +224,17 @@ module.exports = (bot) => {
             key: "premium",
             condition: !isOwner && !userDb?.premium,
             msg: config.msg.premium,
+            buttons: [{
+                buttonId: `${ctx.used.prefix}price`,
+                buttonText: {
+                    displayText: "Harga Premium"
+                }
+            }, {
+                buttonId: `${ctx.used.prefix}owner`,
+                buttonText: {
+                    displayText: "Hubungi Owner"
+                }
+            }],
             reaction: "💎"
         }, {
             key: "private",
@@ -218,7 +252,8 @@ module.exports = (bot) => {
                 key,
                 condition,
                 msg,
-                reaction
+                reaction,
+                buttons
             }
             of permissionChecks) {
             if (permissions[key] && condition) {
@@ -229,7 +264,8 @@ module.exports = (bot) => {
                     simulateTyping();
                     await ctx.reply({
                         text: msg,
-                        footer: formatter.italic(`Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`)
+                        footer: formatter.italic(`Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`),
+                        buttons: buttons || null
                     });
                     return await db.set(`user.${senderId}.lastSentMsg.${key}`, now);
                 } else {

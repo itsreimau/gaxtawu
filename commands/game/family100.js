@@ -22,7 +22,7 @@ module.exports = {
                     allAnswered: 100
                 },
                 timeout: 90000,
-                answers: new Set(result.jawaban.map(d => d.toLowerCase())),
+                answers: new Set(result.jawaban.map(ans => ans.toLowerCase())),
                 participants: new Set()
             };
 

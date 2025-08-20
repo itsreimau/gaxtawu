@@ -1,6 +1,5 @@
 // Impor modul dan dependensi yang diperlukan
 require("./config.js");
-const pkg = require("./package.json");
 const tools = require("./tools/exports.js");
 const {
     Formatter
@@ -24,7 +23,6 @@ const dbFile = path.join(__dirname, "database.json");
 if (!fs.existsSync(dbFile)) fs.writeFileSync(dbFile, "{}", "utf8");
 
 // Tetapkan variabel global
-config.bot.version = `v${pkg.version}`;
 Object.assign(global, {
     config,
     consolefy: c,

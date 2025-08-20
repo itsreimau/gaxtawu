@@ -10,7 +10,6 @@ const util = require("node:util");
 
 const formatBotName = (botName) => {
     if (!botName) return null;
-
     botName = botName.toLowerCase();
     return botName.replace(/[aiueo0-9\W_]/g, "");
 };
@@ -22,7 +21,7 @@ async function checkMedia(type, required) {
         audio: MessageType.audioMessage,
         document: [MessageType.documentMessage, MessageType.documentWithCaptionMessage],
         gif: MessageType.videoMessage,
-        groupStatusMention: "groupStatusMentionMessage",
+        groupStatusMention: MessageType.groupStatusMentionMessage,
         image: MessageType.imageMessage,
         sticker: MessageType.stickerMessage,
         text: [MessageType.conversation, MessageType.extendedTextMessage],
@@ -77,8 +76,8 @@ function fakeMetaAiQuotedText(text) {
 
     const quoted = {
         key: {
-            participant: "13135550002@s.whatsapp.net",
-            remoteJid: "status@broadcast"
+            remoteJid: "status@broadcast",
+            participant: "13135550002@s.whatsapp.net"
         },
         message: {
             conversation: text
@@ -142,8 +141,8 @@ function isCmd(content, bot) {
     const [cmdName, ...inputArray] = content.slice(1).trim().toLowerCase().split(/\s+/);
     const input = inputArray.join(" ");
 
-    const commands = Array.from(bot.cmd.values());
-    const matchedCmd = commands.find(c => c.name === cmdName || c.aliases?.includes(cmdName));
+    const cmds = Array.from(bot.cmd.values());
+    const matchedCmd = cmds.find(cmd => cmd.name === cmdName || cmd.aliases?.includes(cmdName));
 
     if (matchedCmd) return {
         msg: content,
@@ -152,7 +151,7 @@ function isCmd(content, bot) {
         input
     };
 
-    const mean = didYouMean(cmdName, commands.flatMap(c => [c.name, ...(c.aliases || [])]));
+    const mean = didYouMean(cmdName, cmds.flatMap(cmd => [cmd.name, ...(cmd.aliases || [])]));
     return mean ? {
         msg: content,
         prefix,

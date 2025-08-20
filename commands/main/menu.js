@@ -30,7 +30,7 @@ module.exports = {
 
             if (ctx.args[0]) {
                 const category = ctx.args[0].toLowerCase();
-                const categoryCmds = Array.from(cmd.values())
+                const cmds = Array.from(cmd.values())
                     .filter(cmd => cmd.category === category)
                     .map(cmd => ({
                         name: cmd.name,
@@ -38,12 +38,12 @@ module.exports = {
                         permissions: cmd.permissions || {}
                     }));
 
-                if (categoryCmds.length === 0) return await ctx.reply("Menu tidak ditemukan!");
+                if (cmds.length === 0) return await ctx.reply("Menu tidak ditemukan!");
 
                 let text = `◆ ${formatter.bold(tag[category] || category)}\n` +
                     "\n";
 
-                categoryCmds.forEach(cmd => {
+                cmds.forEach(cmd => {
                     let permissionsText = "";
                     if (cmd.permissions.coin) permissionsText += "ⓒ";
                     if (cmd.permissions.group) permissionsText += "Ⓖ";

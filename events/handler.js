@@ -4,11 +4,11 @@ const {
     VCardBuilder
 } = require("@itsreimau/gktw");
 const axios = require("axios");
-const moment = require("moment-timezone");
-const fs = require("node:fs");
 const {
     analyzeMessage
-} = require("safety-safe");
+} = require("guranteed-security");
+const moment = require("moment-timezone");
+const fs = require("node:fs");
 
 // Fungsi untuk menangani event pengguna bergabung/keluar grup
 async function handleWelcome(bot, m, type, isSimulate = false) {
@@ -50,9 +50,10 @@ async function handleWelcome(bot, m, type, isSimulate = false) {
                 },
                 externalAdReply: {
                     title: config.bot.name,
-                    body: config.bot.version,
+                    body: `v${require("./package.json").version}`,
                     mediaType: 1,
-                    thumbnailUrl: profilePictureUrl
+                    thumbnailUrl: profilePictureUrl,
+                    sourceUrl: config.bot.groupLink
                 }
             }
         }, {
@@ -75,7 +76,7 @@ async function addWarning(ctx, groupDb, senderJid, groupId) {
 
     const warnings = groupDb?.warnings || [];
 
-    const userWarning = warnings.find(w => w.userId === senderId);
+    const userWarning = warnings.find(warning => warning.userId === senderId);
     let currentWarnings = userWarning ? userWarning.count : 0;
     currentWarnings += 1;
 
@@ -97,7 +98,7 @@ async function addWarning(ctx, groupDb, senderJid, groupId) {
     if (currentWarnings >= maxWarnings) {
         await ctx.reply(formatter.quote(`⛔ Kamu telah menerima ${maxWarnings} warning dan akan dikeluarkan dari grup!`));
         if (!config.system.restrict) await ctx.group().kick([senderJid]);
-        const updatedWarnings = warnings.filter(w => w.userId !== senderId);
+        const updatedWarnings = warnings.filter(warning => warning.userId !== senderId);
         await db.set(`group.${groupId}.warnings`, updatedWarnings);
     }
 }
@@ -160,7 +161,7 @@ module.exports = (bot) => {
 
             // Penanganan database pengguna
             if (isOwner || userDb?.premium) db.set(`user.${senderId}.coin`, 0);
-            if (userDb?.coin === undefined || !Number.isFinite(userDb.coin)) db.set(`user.${senderId}.coin`, 500);
+            if (!userDb?.coin || !Number.isFinite(userDb.coin)) db.set(`user.${senderId}.coin`, 500);
             if (!userDb?.uid || userDb?.uid !== tools.cmd.generateUID(senderId)) db.set(`user.${senderId}.uid`, tools.cmd.generateUID(senderId));
             if (!userDb?.username) db.set(`user.${senderId}.username`, `@user_${tools.cmd.generateUID(senderId, false)}`);
             if (userDb?.premium && Date.now() > userDb.premiumExpiration) {
@@ -186,7 +187,7 @@ module.exports = (bot) => {
                 await db.set(`user.${senderId}.banned`, true);
 
                 await ctx.sendMessage(`${config.owner.id}@s.whatsapp.net`, {
-                    text: `📢 Akun @${senderId} telah diblokir secara otomatis karena alasan: "${analyze.reason}".`,
+                    text: `📢 Akun @${senderId} telah diblokir secara otomatis karena alasan ${formatter.inlineCode(analyze.reason)}.`,
                     mentions: [senderJid]
                 });
             }
@@ -209,7 +210,7 @@ module.exports = (bot) => {
                 const timeElapsed = Date.now() - userAfk.timestamp;
                 if (timeElapsed > 3000) {
                     const timeago = tools.msg.convertMsToDuration(timeElapsed);
-                    await ctx.reply(formatter.quote(`📴 Kamu telah keluar dari AFK ${userAfk.reason ? `dengan alasan "${userAfk.reason}"` : "tanpa alasan"} selama ${timeago}.`));
+                    await ctx.reply(formatter.quote(`📴 Kamu telah keluar dari AFK ${userAfk.reason ? `dengan alasan ${formatter.inlineCode(userAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`));
                     await db.delete(`user.${senderId}.afk`);
                 }
             }
@@ -237,13 +238,13 @@ module.exports = (bot) => {
             }
 
             // Penanganan AFK (Pengguna yang disebutkan atau di-balas/quote)
-            const userMentions = ctx?.quoted?.senderJid ? [ctx.getId(ctx?.quoted?.senderJid)] : (ctx.getMentioned() || []).map((jid) => ctx.getId(jid)) || [];
+            const userMentions = ctx?.quoted.senderJid ? [ctx.getId(ctx?.quoted.senderJid)] : (ctx.getMentioned() || []).map((jid) => ctx.getId(jid)) || [];
             if (userMentions.length > 0) {
                 for (const userMention of userMentions) {
                     const userMentionAfk = await db.get(`user.${userMention}.afk`) || {};
                     if (userMentionAfk.reason || userMentionAfk.timestamp) {
                         const timeago = tools.msg.convertMsToDuration(Date.now() - userMentionAfk.timestamp);
-                        await ctx.reply(formatter.quote(`📴 Jangan tag! Dia sedang AFK ${userMentionAfk.reason ? `dengan alasan "${userMentionAfk.reason}"` : "tanpa alasan"} selama ${timeago}.`));
+                        await ctx.reply(formatter.quote(`📴 Jangan tag! Dia sedang AFK ${userMentionAfk.reason ? `dengan alasan ${formatter.inlineCode(userMentionAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`));
                     }
                 }
             }
@@ -305,7 +306,7 @@ module.exports = (bot) => {
                 const now = Date.now();
                 const spamData = await db.get(`group.${groupId}.spam`) || [];
 
-                const userSpam = spamData.find(s => s.userId === senderId) || {
+                const userSpam = spamData.find(spam => spam.userId === senderId) || {
                     userId: senderId,
                     count: 0,
                     lastMessageTime: 0
@@ -317,7 +318,7 @@ module.exports = (bot) => {
                 userSpam.count = newCount;
                 userSpam.lastMessageTime = now;
 
-                if (!spamData.some(s => s.userId === senderId)) spamData.push(userSpam);
+                if (!spamData.some(spam => spam.userId === senderId)) spamData.push(userSpam);
 
                 await db.set(`group.${groupId}.spam`, spamData);
 
@@ -329,7 +330,7 @@ module.exports = (bot) => {
                     } else {
                         await addWarning(ctx, groupDb, senderJid, groupId);
                     }
-                    const updatedSpamData = spamData.filter(s => s.userId !== senderId);
+                    const updatedSpamData = spamData.filter(spam => spam.userId !== senderId);
                     await db.set(`group.${groupId}.spam`, updatedSpamData);
                 }
             }
@@ -406,6 +407,12 @@ module.exports = (bot) => {
             if (call.status !== "offer") continue;
 
             await bot.core.rejectCall(call.id, call.from);
+            await db.set(`user.${senderId}.banned`, true);
+
+            await ctx.sendMessage(`${config.owner.id}@s.whatsapp.net`, {
+                text: `📢 Akun @${senderId} telah diblokir secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`,
+                mentions: [senderJid]
+            });
 
             const vcard = new VCardBuilder()
                 .setFullName(config.owner.name)

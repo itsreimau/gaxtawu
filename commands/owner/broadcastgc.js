@@ -6,7 +6,7 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || ctx?.quoted?.content || null;
+        const input = ctx.args.join(" ") || ctx?.quoted.content || null;
 
         if (!input) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
@@ -30,7 +30,7 @@ module.exports = {
         }
 
         try {
-            const groupIds = Object.values(await ctx.core.groupFetchAllParticipating()).map(g => g.id);
+            const groupIds = Object.values(await ctx.core.groupFetchAllParticipating()).map(group => group.id);
             const blacklist = await db.get("bot.blacklistBroadcast") || [];
             const filteredGroupIds = groupIds.filter(groupId => !blacklist.includes(groupId));
 
@@ -49,10 +49,11 @@ module.exports = {
                         },
                         externalAdReply: {
                             title: config.bot.name,
-                            body: config.bot.version,
+                            body: `v${require("./package.json").version}`,
                             mediaType: 1,
                             thumbnailUrl: config.bot.thumbnail,
-                            renderLargerThumbnail: true
+                            renderLargerThumbnail: true,
+                            sourceUrl: config.bot.groupLink
                         }
                     };
 

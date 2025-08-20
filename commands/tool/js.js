@@ -10,7 +10,7 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || ctx?.quoted?.content || null;
+        const input = ctx.args.join(" ") || ctx?.quoted.content || null;
 
         if (!input) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
@@ -18,7 +18,7 @@ module.exports = {
         );
 
         try {
-            const restricted = ["require", "eval", "Function", "global", "import"];
+            const restricted = ["eval", "global", "import", "require"];
             for (const r of restricted) {
                 if (input.includes(r)) return await ctx.reply(formatter.quote(`❎ Penggunaan ${r} tidak diperbolehkan dalam kode!`));
             }

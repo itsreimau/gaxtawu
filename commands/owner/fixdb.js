@@ -291,8 +291,8 @@ module.exports = {
                 if (typeof value !== schema.type) return schema.default;
 
                 if (schema.type === "number") {
-                    if (schema.min !== undefined && value < schema.min) return schema.default;
-                    if (schema.max !== undefined && value > schema.max) return schema.default;
+                    if (value < schema.min) return schema.default;
+                    if (value > schema.max) return schema.default;
                 }
 
                 return value;

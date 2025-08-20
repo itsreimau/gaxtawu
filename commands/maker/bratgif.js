@@ -11,7 +11,7 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || ctx?.quoted?.content || null;
+        const input = ctx.args.join(" ") || ctx?.quoted.content || null;
 
         if (!input) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
@@ -22,7 +22,7 @@ module.exports = {
         if (input.length > 1000) return await ctx.reply(formatter.quote("❎ Maksimal 1000 kata!"));
 
         try {
-            const result = tools.api.createUrl("https://api.ypnk.dpdns.org", "/api/video/bratv", {
+            const result = tools.api.createUrl("yp", "/api/video/bratv", {
                 text: input
             });
             const sticker = new Sticker(result, {

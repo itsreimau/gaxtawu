@@ -49,12 +49,12 @@ global.config = {
         admin: Formatter.quote("⛔ Perintah hanya dapat diakses oleh admin grup!"), // Pesan saat perintah hanya untuk admin
         banned: Formatter.quote("⛔ Tidak dapat memproses karena kamu telah dibanned oleh Owner!"), // Pesan untuk pengguna yang dibanned
         botAdmin: Formatter.quote("⛔ Tidak dapat memproses karena bot bukan admin grup ini!"), // Pesan jika bot bukan admin di grup
-        botGroupMembership: Formatter.quote(`⛔ Tidak dapat memproses karena kamu tidak bergabung dengan grup bot! Ketik ${Formatter.inlineCode("/botgroup")} untuk mendapatkan link grup bot.`), // Pesan jika pengguna tidak bergabung dengan grup bot
+        botGroupMembership: Formatter.quote(`⛔ Tidak dapat memproses karena kamu tidak bergabung dengan grup bot!`), // Pesan jika pengguna tidak bergabung dengan grup bot
         coin: Formatter.quote("⛔ Tidak dapat memproses karena koin-mu tidak cukup!"), // Pesan saat koin tidak cukup
         cooldown: Formatter.quote("🔄 Perintah ini sedang dalam cooldown, tunggu..."), // Pesan saat cooldown perintah
         gamerestrict: Formatter.quote("⛔ Tidak dapat memproses karena grup ini membatasi game!"), // Pesan jika grup membatasi game
         group: Formatter.quote("⛔ Perintah hanya dapat diakses dalam grup!"), // Pesan untuk perintah grup
-        groupSewa: Formatter.quote(`⛔ Bot tidak aktif karena grup ini belum melakukan sewa. Ketik ${Formatter.inlineCode("/price")} untuk melihat harga sewa atau ${Formatter.inlineCode("/owner")} untuk menghubungi Owner bot.`), // Pesan jika grup belum melakukan sewa
+        groupSewa: Formatter.quote(`⛔ Bot tidak aktif karena grup ini belum melakukan sewa.`), // Pesan jika grup belum melakukan sewa
         owner: Formatter.quote("⛔ Perintah hanya dapat diakses Owner!"), // Pesan untuk perintah yang hanya owner bisa akses
         premium: Formatter.quote("⛔ Tidak dapat memproses karena kamu bukan pengguna Premium!"), // Pesan jika pengguna bukan Premium
         private: Formatter.quote("⛔ Perintah hanya dapat diakses dalam obrolan pribadi!"), // Pesan untuk perintah obrolan pribadi

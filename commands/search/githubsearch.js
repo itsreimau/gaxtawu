@@ -21,12 +21,12 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result;
 
-            const resultText = result.map(r =>
-                `${formatter.quote(`Nama: ${r.full_name}`)}\n` +
-                `${formatter.quote(`Deskripsi: ${r.description}`)}\n` +
-                `${formatter.quote(`Jumlah: ${r.stars} stargazers, ${r.forks} forks`)}\n` +
-                `${formatter.quote(`Bahasa: ${r.language}`)}\n` +
-                formatter.quote(`URL: ${r.url}`)
+            const resultText = result.map(res =>
+                `${formatter.quote(`Nama: ${res.full_name}`)}\n` +
+                `${formatter.quote(`Deskripsi: ${res.description}`)}\n` +
+                `${formatter.quote(`Jumlah: ${res.stars} stargazers, ${res.forks} forks`)}\n` +
+                `${formatter.quote(`Bahasa: ${res.language}`)}\n` +
+                formatter.quote(`URL: ${res.url}`)
             ).join(
                 "\n" +
                 `${formatter.quote("─────")}\n`

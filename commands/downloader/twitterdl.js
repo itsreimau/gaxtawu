@@ -22,7 +22,7 @@ module.exports = {
             const apiUrl = tools.api.createUrl("davidcyril", "/twitterv2", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result.find(d => d.quality.includes("720p"));
+            const result = (await axios.get(apiUrl)).data.result.find(res => res.quality.includes("720p"));
 
             return await ctx.reply({
                 video: {

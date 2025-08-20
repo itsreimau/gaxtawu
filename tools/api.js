@@ -21,8 +21,14 @@ const APIs = {
     siputzx: {
         baseURL: "https://api.siputzx.my.id"
     },
+    yp: {
+        baseURL: "https://api.ypnk.dpdns.org"
+    },
     zell: {
         baseURL: "https://zellapi.autos"
+    },
+    zenzxz: {
+        baseURL: "https://api.zenzxz.my.id"
     }
 };
 

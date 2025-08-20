@@ -10,7 +10,7 @@ module.exports = {
 
         const [checkMedia, checkQuotedMedia] = await Promise.all([
             tools.cmd.checkMedia(ctx.msg.contentType, ["audio", "document", "image", "video", "sticker"]),
-            tools.cmd.checkQuotedMedia(ctx?.quoted?.contentType, ["audio", "document", "image", "video", "sticker"])
+            tools.cmd.checkQuotedMedia(ctx?.quoted.contentType, ["audio", "document", "image", "video", "sticker"])
         ]);
 
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(

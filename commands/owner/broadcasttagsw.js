@@ -6,7 +6,7 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || ctx?.quoted?.content || null;
+        const input = ctx.args.join(" ") || ctx?.quoted.content || null;
 
         if (!input) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
@@ -16,7 +16,7 @@ module.exports = {
 
         const [checkMedia, checkQuotedMedia] = await Promise.all([
             tools.cmd.checkMedia(ctx.msg.contentType, ["image", "gif", "video"]),
-            tools.cmd.checkQuotedMedia(ctx?.quoted?.contentType, ["image", "gif", "video"])
+            tools.cmd.checkQuotedMedia(ctx?.quoted.contentType, ["image", "gif", "video"])
         ]);
 
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], ["image", "gif", "video"])));
@@ -37,7 +37,7 @@ module.exports = {
         }
 
         try {
-            const groupIds = Object.values(await ctx.core.groupFetchAllParticipating()).map(g => g.id);
+            const groupIds = Object.values(await ctx.core.groupFetchAllParticipating()).map(group => group.id);
             const blacklist = await db.get("bot.blacklistBroadcast") || [];
             const filteredGroupIds = groupIds.filter(groupId => !blacklist.includes(groupId));
 

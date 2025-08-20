@@ -21,10 +21,10 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result;
 
-            const resultText = result.map(r =>
-                `${formatter.quote(`Judul: ${r.trackName}`)}\n` +
-                `${formatter.quote(`Artis: ${r.artistName}`)}\n` +
-                formatter.quote(`URL: ${r.externalUrl}`)
+            const resultText = result.map(res =>
+                `${formatter.quote(`Judul: ${res.trackName}`)}\n` +
+                `${formatter.quote(`Artis: ${res.artistName}`)}\n` +
+                formatter.quote(`URL: ${res.externalUrl}`)
             ).join(
                 "\n" +
                 `${formatter.quote("─────")}\n`

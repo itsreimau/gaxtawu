@@ -7,7 +7,7 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const accountJid = ctx?.quoted?.senderJid || ctx.getMentioned()[0] || null;
+        const accountJid = ctx?.quoted.senderJid || ctx.getMentioned()[0] || null;
 
         if (!accountJid) return await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +

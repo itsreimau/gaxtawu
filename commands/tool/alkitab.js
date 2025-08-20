@@ -31,9 +31,9 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.bible.book;
 
-            const resultText = result.chapter.verses.map(r =>
-                `${formatter.quote(`Ayat: ${r.number}`)}\n` +
-                formatter.quote(`${r.text}`)
+            const resultText = result.chapter.verses.map(vers =>
+                `${formatter.quote(`Ayat: ${vers.number}`)}\n` +
+                formatter.quote(`${vers.text}`)
             ).join(
                 "\n" +
                 `${formatter.quote("─────")}\n`

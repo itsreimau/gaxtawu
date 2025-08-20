@@ -1,6 +1,8 @@
+const axios = require("axios");
+
 module.exports = {
-    name: "hitamkan",
-    aliases: ["hitam", "penghitaman"],
+    name: "image2prompt",
+    aliases: ["imagetoprompt", "img2prompt", "imgtoprompt"],
     category: "ai-misc",
     permissions: {
         coin: 10
@@ -16,18 +18,12 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = await tools.cmd.upload(buffer, "image");
-            const result = tools.api.createUrl("zell", "/ai/hitamkan2", {
-                imageUrl: uploadUrl
+            const apiUrl = tools.api.createUrl("zenzxz", "/tools/toprompt", {
+                url: uploadUrl
             });
+            const result = (await axios.get(apiUrl)).data.result;
 
-            return await ctx.reply({
-                image: {
-                    url: result
-                },
-                mimetype: tools.mime.lookup("png"),
-                caption: formatter.quote("Untukmu, tuan!"),
-                footer: config.msg.footer
-            });
+            return await ctx.reply(result);
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);
         }

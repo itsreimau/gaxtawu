@@ -8,7 +8,7 @@ module.exports = {
         restrict: true
     },
     code: async (ctx) => {
-        const accountJid = ctx?.quoted?.senderJid || ctx.getMentioned()[0] || null;
+        const accountJid = ctx?.quoted.senderJid || ctx.getMentioned()[0] || null;
         const accountId = ctx.getId(accountJid);
 
         if (!accountJid) return await ctx.reply({
@@ -26,7 +26,7 @@ module.exports = {
             const groupDb = await db.get(`group.${groupId}`) || {};
             const warnings = groupDb?.warnings || [];
 
-            const userWarning = warnings.find(w => w.userId === accountId);
+            const userWarning = warnings.find(warning => warning.userId === accountId);
             let currentWarnings = userWarning ? userWarning.count : 0;
             const newWarning = currentWarnings + 1;
 

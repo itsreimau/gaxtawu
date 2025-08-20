@@ -35,11 +35,11 @@
     "axios": "^1.11.0",
     "cfonts": "^3.3.0",
     "didyoumean": "^1.2.2",
+    "guaranteed_security": "^1.0.0",
     "jimp": "^0.22.12",
     "link-preview-js": "^3.1.0",
     "mime-types": "^2.1.35",
     "moment-timezone": "^0.6.0",
-    "safety-safe": "^2.0.0",
     "simpl.db": "^2.13.0",
     "wa-sticker-formatter": "^4.4.4"
   },

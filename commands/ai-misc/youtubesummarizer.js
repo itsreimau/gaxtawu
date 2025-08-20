@@ -24,9 +24,9 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result;
 
-            const resultText = result.keyPoints.map(r =>
-                `${formatter.quote(`Poin: ${r.point}`)}\n` +
-                formatter.quote(r.summary)
+            const resultText = result.keyPoints.map(res =>
+                `${formatter.quote(`Poin: ${res.point}`)}\n` +
+                formatter.quote(res.summary)
             ).join(
                 "\n" +
                 `${formatter.quote("─────")}\n`

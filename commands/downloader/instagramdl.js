@@ -23,20 +23,13 @@ module.exports = {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result.url;
-            const medias = result.flatMap(item =>
-                item.map(media => ({
-                    type: media.type === "mp4" ? "video" : "image",
-                    url: media.url,
-                    mimetype: tools.mime.lookup(media.ext)
-                }))
-            );
-            const album = medias.map(media => {
-                const isVideo = media.type === "video";
+            const album = result.map(res => {
+                const isVideo = res.type === "mp4";
                 return {
                     [isVideo ? "video" : "image"]: {
-                        url: media.url
+                        url: res.url
                     },
-                    mimetype: media.mimetype
+                    mimetype: tools.mime.lookup(res.ext)
                 };
             });
 

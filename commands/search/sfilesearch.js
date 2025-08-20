@@ -21,10 +21,10 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result;
 
-            const resultText = result.map(r =>
-                `${formatter.quote(`Nama: ${r.title}`)}\n` +
-                `${formatter.quote(`Ukuran: ${r.size}`)}\n` +
-                formatter.quote(`URL: ${r.link}`)
+            const resultText = result.map(res =>
+                `${formatter.quote(`Nama: ${res.title}`)}\n` +
+                `${formatter.quote(`Ukuran: ${res.size}`)}\n` +
+                formatter.quote(`URL: ${res.link}`)
             ).join(
                 "\n" +
                 `${formatter.quote("─────")}\n`

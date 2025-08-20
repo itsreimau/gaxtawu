@@ -20,13 +20,13 @@ module.exports = {
 
         const [checkMedia, checkQuotedMedia] = await Promise.all([
             tools.cmd.checkMedia(ctx.msg.contentType, ["image", "sticker"]),
-            tools.cmd.checkQuotedMedia(ctx?.quoted?.contentType, ["image", "sticker"])
+            tools.cmd.checkQuotedMedia(ctx?.quoted.contentType, ["image", "sticker"])
         ]);
 
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], ["image", "sticker"])));
 
         try {
-            let [top, bottom] = input.split("|").map(i => i);
+            let [top, bottom] = input.split("|").map(inp => inp);
             [top, bottom] = bottom ? [top || "_", bottom] : ["_", top || "_"];
 
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();

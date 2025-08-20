@@ -7,7 +7,7 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || ctx?.quoted?.content || null;
+        const input = ctx.args.join(" ") || ctx?.quoted.content || null;
 
         if (!input) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
@@ -16,10 +16,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("neko", "/ai/deepseek-r1", {
-                text: input
+            const apiUrl = tools.api.createUrl("izumi", "/ai/deepseek", {
+                input
             });
-            const result = (await axios.get(apiUrl)).data.result.text;
+            const result = (await axios.get(apiUrl)).data.result.data.message;
 
             return await ctx.reply(result);
         } catch (error) {
