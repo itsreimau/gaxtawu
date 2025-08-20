@@ -109,6 +109,7 @@ global.config = {
         useCoin: true, // Pakai koin
         usePairingCode: false, // Pakai kode pairing untuk koneksi
         customPairingCode: "UMBR4L15", // Kode pairing kustom untuk koneksi (Opsional, jika menggunakan QR code, jika kosong kode pairing akan random)
+        useStore: false, // Store untuk menyimpan pesan masuk
         useServer: false // Jalankan bot dengan server
     }
 };
