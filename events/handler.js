@@ -6,7 +6,7 @@ const {
 const axios = require("axios");
 const {
     analyzeMessage
-} = require("guranteed-security");
+} = require("guaranteed_security");
 const moment = require("moment-timezone");
 const fs = require("node:fs");
 

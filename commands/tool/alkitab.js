@@ -8,9 +8,9 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const [passage, num] = ctx.args;
+        const [passage, number] = ctx.args;
 
-        if (!passage && !num) return await ctx.reply(
+        if (!passage && !number) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
             `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "kej 2:18"))}\n` +
             formatter.quote(tools.msg.generateNotes([`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`]))
@@ -27,7 +27,7 @@ module.exports = {
         try {
             const apiUrl = tools.api.createUrl("https://api-alkitab.vercel.app", `/api/passage`, {
                 passage,
-                num
+                num: number
             });
             const result = (await axios.get(apiUrl)).data.bible.book;
 
