@@ -2,7 +2,7 @@ module.exports = {
     name: "getinput",
     category: "misc",
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || ctx?.quoted.content || null;
+        const input = ctx.args.join(" ") || ctx.quoted?.content || null;
 
         if (!input) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +

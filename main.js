@@ -36,6 +36,7 @@ const bot = new Client({
     phoneNumber: botConfig.phoneNumber,
     usePairingCode: system.usePairingCode,
     customPairingCode: system.customPairingCode,
+    useStore: system.useStore,
     readIncomingMsg: system.autoRead,
     markOnlineOnConnect: system.alwaysOnline,
     prefix: botConfig.prefix,

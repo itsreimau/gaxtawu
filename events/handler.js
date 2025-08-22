@@ -160,14 +160,15 @@ module.exports = (bot) => {
             config.bot.dbSize = fs.existsSync("database.json") ? tools.msg.formatSize(fs.statSync("database.json").size / 1024) : "N/A"; // Penangan pada ukuran database
 
             // Penanganan database pengguna
-            if (isOwner || userDb?.premium) db.set(`user.${senderId}.coin`, 0);
-            if (!userDb?.coin || !Number.isFinite(userDb.coin)) db.set(`user.${senderId}.coin`, 500);
-            if (!userDb?.uid || userDb?.uid !== tools.cmd.generateUID(senderId)) db.set(`user.${senderId}.uid`, tools.cmd.generateUID(senderId));
-            if (!userDb?.username) db.set(`user.${senderId}.username`, `@user_${tools.cmd.generateUID(senderId, false)}`);
+            if (!userDb?.lid) await db.set(`user.${senderId}.lid`, (await ctx.core.onWhatsApp(senderJid))[0].lid);
+            if (!userDb?.username) await db.set(`user.${senderId}.username`, `@user_${tools.cmd.generateUID(senderId, false)}`);
+            if (!userDb?.uid || userDb?.uid !== tools.cmd.generateUID(senderId)) await db.set(`user.${senderId}.uid`, tools.cmd.generateUID(senderId));
             if (userDb?.premium && Date.now() > userDb.premiumExpiration) {
                 await db.delete(`user.${senderId}.premium`);
                 await db.delete(`user.${senderId}.premiumExpiration`);
             }
+            if (isOwner || userDb?.premium) await db.set(`user.${senderId}.coin`, 0);
+            if (!userDb?.coin || !Number.isFinite(userDb.coin)) await db.set(`user.${senderId}.coin`, 500);
 
             // Pengecekan mode bot (group, private, self)
             if (botDb?.mode === "group" && isPrivate && !isOwner && !userDb?.premium) return;
@@ -238,13 +239,13 @@ module.exports = (bot) => {
             }
 
             // Penanganan AFK (Pengguna yang disebutkan atau di-balas/quote)
-            const userMentions = ctx?.quoted.senderJid ? [ctx.getId(ctx?.quoted.senderJid)] : (ctx.getMentioned() || []).map((jid) => ctx.getId(jid)) || [];
-            if (userMentions.length > 0) {
-                for (const userMention of userMentions) {
-                    const userMentionAfk = await db.get(`user.${userMention}.afk`) || {};
-                    if (userMentionAfk.reason || userMentionAfk.timestamp) {
-                        const timeago = tools.msg.convertMsToDuration(Date.now() - userMentionAfk.timestamp);
-                        await ctx.reply(formatter.quote(`📴 Jangan tag! Dia sedang AFK ${userMentionAfk.reason ? `dengan alasan ${formatter.inlineCode(userMentionAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`));
+            const userAfkMentions = await Promise.all((ctx.quoted?.senderJid ? [ctx.getId(ctx.quoted?.senderJid)] : (ctx.getMentioned()).map(lid => tools.cmd.getJidFromLid(lid)).map((jid) => ctx.getId(jid))));
+            if (userAfkMentions.length > 0) {
+                for (const userAfkMention of userAfkMentions) {
+                    const userAfk = await db.get(`user.${userAfkMention}.afk`) || {};
+                    if (userAfk.reason || userAfk.timestamp) {
+                        const timeago = tools.msg.convertMsToDuration(Date.now() - userAfk.timestamp);
+                        await ctx.reply(formatter.quote(`📴 Jangan tag! Dia sedang AFK ${userAfk.reason ? `dengan alasan ${formatter.inlineCode(userAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`));
                     }
                 }
             }
@@ -373,7 +374,7 @@ module.exports = (bot) => {
             // Penanganan menfess
             const allMenfessDb = await db.get("menfess") || {};
             if (!isCmd || isCmd?.didyoumean) {
-                for (const [conversationId, {
+                for (const [menfessId, {
                         from,
                         to
                     }] of Object.entries(allMenfessDb)) {
@@ -385,7 +386,7 @@ module.exports = (bot) => {
                             await ctx.sendMessage(targetId, {
                                 text: replyText
                             });
-                            await db.delete(`menfess.${conversationId}`);
+                            await db.delete(`menfess.${menfessId}`);
                         } else {
                             await ctx.core.sendMessage(targetId, {
                                 forward: m

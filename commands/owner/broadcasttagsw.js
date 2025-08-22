@@ -6,7 +6,7 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || ctx?.quoted.content || null;
+        const input = ctx.args.join(" ") || ctx.quoted?.content || null;
 
         if (!input) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
@@ -16,7 +16,7 @@ module.exports = {
 
         const [checkMedia, checkQuotedMedia] = await Promise.all([
             tools.cmd.checkMedia(ctx.msg.contentType, ["image", "gif", "video"]),
-            tools.cmd.checkQuotedMedia(ctx?.quoted.contentType, ["image", "gif", "video"])
+            tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["image", "gif", "video"])
         ]);
 
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], ["image", "gif", "video"])));
@@ -49,7 +49,7 @@ module.exports = {
                 await delay(500);
                 try {
                     const mediaType = checkMedia || checkQuotedMedia;
-                    const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
+                    const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
 
                     await ctx.core.sendStatusMentions(groupId, {
                         [mediaType]: buffer,

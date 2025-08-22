@@ -11,7 +11,7 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || ctx?.quoted.content || null;
+        const input = ctx.args.join(" ") || ctx.quoted?.content || null;
 
         if (!input) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
@@ -22,9 +22,9 @@ module.exports = {
         if (input.length > 1000) return await ctx.reply(formatter.quote("❎ Maksimal 1000 kata!"));
 
         try {
-            const isQuoted = ctx.args.length === 0 && ctx?.quoted.senderJid;
+            const isQuoted = ctx.args.length === 0 && ctx.quoted?.senderJid;
             const result = tools.api.createUrl("siputzx", "/api/canvas/fake-xnxx", {
-                name: isQuoted ? ctx.quoted.pushName : ctx.sender.pushName,
+                name: isQuoted ? ctx.quoted?.pushName : ctx.sender.pushName,
                 quote: input,
                 likes: Math.floor(Math.random() * 10) + 1,
                 dislikes: 0

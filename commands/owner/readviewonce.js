@@ -10,13 +10,13 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        if (!await tools.cmd.checkQuotedMedia(ctx?.quoted.contentType, ["viewOnce"])) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["reply"], ["viewOnce"])));
+        if (!await tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["viewOnce"])) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["reply"], ["viewOnce"])));
 
         try {
             const quoted = ctx.quoted;
             const quotedType = Object.keys(quoted).find(key => key.endsWith("Message"));
             const msg = quoted[quotedType];
-            const buffer = await ctx.quoted.media.toBuffer();
+            const buffer = await ctx.quoted?.media.toBuffer();
 
             const options = {
                 mimetype: msg.mimetype,

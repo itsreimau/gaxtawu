@@ -6,8 +6,8 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const userJid = ctx?.quoted.senderJid || ctx.getMentioned()[0] || (ctx.args[0] ? `${ctx.args[0].replace(/[^\d]/g, "")}@s.whatsapp.net` : null);
-        const coinAmount = parseInt(ctx.args[ctx?.quoted.senderJid ? 0 : 1], 10) || null;
+        const userJid = ctx.quoted?.senderJid || await tools.cmd.getJidFromLid(ctx.getMentioned()[0]) || (ctx.args[0] ? `${ctx.args[0].replace(/[^\d]/g, "")}@s.whatsapp.net` : null);
+        const coinAmount = parseInt(ctx.args[ctx.quoted?.senderJid ? 0 : 1], 10) || null;
 
         if (!userJid || !coinAmount) return await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +

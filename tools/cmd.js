@@ -102,6 +102,18 @@ function generateUID(id, withBotName = true) {
     return uid;
 }
 
+async function getJidFromLid(lid) {
+    if (!lid) return null;
+
+    const users = await db.get("user");
+    for (const [jid, userDb] of Object.entries(users)) {
+        if (userDb && userDb.lid === lid) {
+            return `${jid}@s.whatsapp.net`;
+        }
+    }
+    return lid;
+}
+
 function getRandomElement(array) {
     if (!array || !array.length) return null;
 
@@ -273,6 +285,7 @@ module.exports = {
     checkQuotedMedia,
     fakeMetaAiQuotedText,
     generateUID,
+    getJidFromLid,
     getRandomElement,
     handleError,
     isCmd,

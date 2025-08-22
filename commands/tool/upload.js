@@ -10,7 +10,7 @@ module.exports = {
 
         const [checkMedia, checkQuotedMedia] = await Promise.all([
             tools.cmd.checkMedia(ctx.msg.contentType, ["audio", "document", "image", "video", "sticker"]),
-            tools.cmd.checkQuotedMedia(ctx?.quoted.contentType, ["audio", "document", "image", "video", "sticker"])
+            tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["audio", "document", "image", "video", "sticker"])
         ]);
 
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(
@@ -41,7 +41,7 @@ module.exports = {
             const type = flag?.type ? flag.type : (checkMedia || checkQuotedMedia);
             const host = flag?.host || config.system.uploaderHost;
 
-            const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
+            const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
             const result = await tools.cmd.upload(buffer, type, host);
 
             return await ctx.reply({

@@ -10,13 +10,13 @@ module.exports = {
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = await Promise.all([
             tools.cmd.checkMedia(ctx.msg.contentType, ["image", "gif", "video"]),
-            tools.cmd.checkQuotedMedia(ctx?.quoted.contentType, ["image", "gif", "video"])
+            tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["image", "gif", "video"])
         ]);
 
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], ["image", "gif", "video"])));
 
         try {
-            const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
+            const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
             const sticker = new Sticker(buffer, {
                 pack: config.sticker.packname,
                 author: config.sticker.author,
