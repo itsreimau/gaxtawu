@@ -39,7 +39,7 @@ module.exports = {
                 }
             }
 
-            return await ctx.reply({
+            await ctx.reply({
                 text: resultText.trim() || config.msg.notFound,
                 footer: config.msg.footer,
                 contextInfo: {
@@ -47,7 +47,7 @@ module.exports = {
                 }
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

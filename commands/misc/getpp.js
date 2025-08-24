@@ -18,7 +18,7 @@ module.exports = {
         try {
             const result = await ctx.core.profilePictureUrl(userJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
 
-            return await ctx.reply({
+            await ctx.reply({
                 image: {
                     url: result
                 },
@@ -27,7 +27,7 @@ module.exports = {
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

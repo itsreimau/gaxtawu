@@ -77,9 +77,9 @@ module.exports = {
 
             await db.set(setKey, newStatus);
             const statusText = newStatus ? "diaktifkan" : "dinonaktifkan";
-            return await ctx.reply(formatter.quote(`✅ Opsi ${formatter.inlineCode(input)} berhasil ${statusText}!`));
+            await ctx.reply(formatter.quote(`✅ Opsi ${formatter.inlineCode(input)} berhasil ${statusText}!`));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

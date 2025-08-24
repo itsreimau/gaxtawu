@@ -171,12 +171,12 @@ module.exports = (bot) => {
                 const oneDay = 24 * 60 * 60 * 1000;
                 if (!lastSentMsg || (now - lastSentMsg) > oneDay) {
                     simulateTyping();
-                    await ctx.reply({
+                    await db.set(`user.${senderId}.lastSentMsg.${key}`, now);
+                    return await ctx.reply({
                         text: msg,
                         footer: formatter.italic(`Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`),
                         buttons: buttons || null
                     });
-                    return await db.set(`user.${senderId}.lastSentMsg.${key}`, now);
                 } else {
                     return await ctx.react(ctx.id, reaction);
                 }
@@ -262,12 +262,12 @@ module.exports = (bot) => {
                 const oneDay = 24 * 60 * 60 * 1000;
                 if (!lastSentMsg || (now - lastSentMsg) > oneDay) {
                     simulateTyping();
-                    await ctx.reply({
+                    await db.set(`user.${senderId}.lastSentMsg.${key}`, now);
+                    return await ctx.reply({
                         text: msg,
                         footer: formatter.italic(`Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`),
                         buttons: buttons || null
                     });
-                    return await db.set(`user.${senderId}.lastSentMsg.${key}`, now);
                 } else {
                     return await ctx.react(ctx.id, reaction);
                 }

@@ -31,14 +31,14 @@ module.exports = {
                 if (content === "y") {
                     await db.delete(`user.${senderId}`);
                     await ctx.reply(formatter.quote("✅ Data-mu berhasil direset, semua data telah dihapus!"));
-                    return collector.stop();
+                    collector.stop();
                 } else if (content === "n") {
                     await ctx.reply(formatter.quote("❌ Proses reset data telah dibatalkan."));
-                    return collector.stop();
+                    collector.stop();
                 }
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

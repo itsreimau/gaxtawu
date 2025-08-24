@@ -32,13 +32,13 @@ module.exports = {
                 resultText += formatter.quote(`${userRank}. ${displayName} - Menang: ${userStats.winGame}, Level: ${userStats.level}\n`);
             }
 
-            return await ctx.reply({
+            await ctx.reply({
                 text: resultText.trim(),
                 mentions: [`${senderId}@s.whatsapp.net`],
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

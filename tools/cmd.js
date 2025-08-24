@@ -132,8 +132,8 @@ async function handleError(ctx, error, useAxios = false, reportErrorToOwner = tr
         text: `${formatter.quote(isGroup ? `⚠️ Terjadi kesalahan dari grup: @${groupJid}, oleh: @${ctx.getId(ctx.sender.jid)}` : `⚠️ Terjadi kesalahan dari: @${ctx.getId(ctx.sender.jid)}`)}\n` +
             `${formatter.quote("─────")}\n` +
             formatter.monospace(errorText),
+        mentions: [ctx.sender.jid],
         contextInfo: {
-            mentionedJid: [ctx.sender.jid],
             groupMentions: isGroup ? [{
                 groupJid,
                 groupSubject
@@ -141,7 +141,7 @@ async function handleError(ctx, error, useAxios = false, reportErrorToOwner = tr
         }
     });
     if (useAxios && error.status !== 200) return await ctx.reply(config.msg.notFound);
-    return await ctx.reply(formatter.quote(`⚠️ Terjadi kesalahan: ${error.message}`));
+    await ctx.reply(formatter.quote(`⚠️ Terjadi kesalahan: ${error.message}`));
 }
 
 function isCmd(content, bot) {
@@ -192,7 +192,7 @@ function isUrl(url) {
 
 function parseFlag(argsString, customRules = {}) {
     if (!argsString) return {
-        input: ""
+        input: null
     };
 
     const options = {};

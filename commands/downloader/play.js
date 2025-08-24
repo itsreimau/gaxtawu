@@ -8,7 +8,21 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || null;
+        const flag = tools.cmd.parseFlag(ctx.args.join(" ") || null, {
+            "-i": {
+                type: "value",
+                key: "index",
+                validator: (val) => !isNaN(val) && parseInt(val) > 0,
+                parser: (val) => parseInt(val) - 1
+            },
+            "-s": {
+                type: "value",
+                key: "source",
+                validator: (val) => true,
+                parser: (val) => val.toLowerCase()
+            }
+        });
+        const input = flag.input;
 
         if (!input) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
@@ -20,29 +34,12 @@ module.exports = {
         );
 
         try {
-            const flag = tools.cmd.parseFlag(input, {
-                "-i": {
-                    type: "value",
-                    key: "index",
-                    validator: (val) => !isNaN(val) && parseInt(val) > 0,
-                    parser: (val) => parseInt(val) - 1
-                },
-                "-s": {
-                    type: "value",
-                    key: "source",
-                    validator: (val) => true,
-                    parser: (val) => val.toLowerCase()
-                }
-            });
-
             const searchIndex = flag?.index || 0;
-            const query = flag?.input;
-            let source = flag?.source || "youtube";
-            if (!["soundcloud", "spotify", "youtube"].includes(source)) source = "youtube";
+            let source = flag?.source || null;
 
             if (source === "soundcloud") {
                 const searchApiUrl = tools.api.createUrl("izumi", "/search/soundcloud", {
-                    query
+                    query: input
                 });
                 const searchResult = (await axios.get(searchApiUrl)).data.result[searchIndex];
 
@@ -57,17 +54,15 @@ module.exports = {
                 });
                 const downloadResult = (await axios.get(downloadApiUrl)).data.result.url;
 
-                return await ctx.reply({
+                await ctx.reply({
                     audio: {
                         url: downloadResult
                     },
                     mimetype: tools.mime.lookup("mp3")
                 });
-            }
-
-            if (source === "spotify") {
+            } else if (source === "spotify") {
                 const searchApiUrl = tools.api.createUrl("diibot", "/api/search/spotify", {
-                    query
+                    query: input
                 });
                 const searchResult = (await axios.get(searchApiUrl)).data.result[searchIndex];
 
@@ -83,17 +78,15 @@ module.exports = {
                 });
                 const downloadResult = (await axios.get(downloadApiUrl)).data.result.audio;
 
-                return await ctx.reply({
+                await ctx.reply({
                     audio: {
                         url: downloadResult
                     },
                     mimetype: tools.mime.lookup("mp3")
                 });
-            }
-
-            if (source === "youtube") {
+            } else {
                 const searchApiUrl = tools.api.createUrl("davidcyril", "/youtube/search", {
-                    query
+                    query: input
                 });
                 const searchResult = (await axios.get(searchApiUrl)).data.results[searchIndex];
 
@@ -109,7 +102,7 @@ module.exports = {
                 });
                 const downloadResult = (await axios.get(downloadApiUrl)).data.result.download;
 
-                return await ctx.reply({
+                await ctx.reply({
                     audio: {
                         url: downloadResult
                     },
@@ -117,7 +110,7 @@ module.exports = {
                 });
             }
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

@@ -29,9 +29,9 @@ module.exports = {
             await db.add(`user.${ctx.getId(userJid)}.coin`, coinAmount);
             await db.subtract(`user.${senderId}.coin`, coinAmount);
 
-            return await ctx.reply(formatter.quote(`✅ Berhasil mentransfer ${coinAmount} koin ke pengguna itu!`));
+            await ctx.reply(formatter.quote(`✅ Berhasil mentransfer ${coinAmount} koin ke pengguna itu!`));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

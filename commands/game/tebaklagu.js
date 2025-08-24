@@ -21,13 +21,13 @@ module.exports = {
 
             session.set(ctx.id, true);
 
-            await ctx.reply({
+            const sentSong = await ctx.reply({
                 audio: {
                     url: result.lagu
                 },
                 mimetype: tools.mime.lookup("mp3"),
             });
-            await ctx.reply({
+            await ctx.sendMessage(ctx.id, {
                 text: `${formatter.quote(`Artis: ${result.artis}`)}\n` +
                     `${formatter.quote(`Bonus: ${game.coin} Koin`)}\n` +
                     formatter.quote(`Batas waktu: ${tools.msg.convertMsToDuration(game.timeout)}`),
@@ -43,6 +43,8 @@ module.exports = {
                         displayText: "Menyerah"
                     }
                 }]
+            }, {
+                quoted: sentSong
             });
 
             const collector = ctx.MessageCollector({
@@ -62,6 +64,7 @@ module.exports = {
 
                 if (participantAnswer === game.answer) {
                     session.delete(ctx.id);
+                    collector.stop();
                     await db.add(`user.${participantId}.coin`, game.coin);
                     await db.add(`user.${participantId}.winGame`, 1);
                     await ctx.sendMessage(ctx.id, {
@@ -72,7 +75,6 @@ module.exports = {
                     }, {
                         quoted: m
                     });
-                    return collector.stop();
                 } else if (participantAnswer === "hint") {
                     const clue = game.answer.replace(/[aiueo]/g, "_");
                     await ctx.sendMessage(ctx.id, {
@@ -82,6 +84,7 @@ module.exports = {
                     });
                 } else if (participantAnswer === "surrender") {
                     session.delete(ctx.id);
+                    collector.stop();
                     await ctx.sendMessage(ctx.id, {
                         text: `${formatter.quote("🏳️ Kamu menyerah!")}\n` +
                             formatter.quote(`Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`),
@@ -90,7 +93,6 @@ module.exports = {
                     }, {
                         quoted: m
                     });
-                    return collector.stop();
                 } else if (didYouMean(participantAnswer, [game.answer]) === game.answer) {
                     await ctx.sendMessage(ctx.id, {
                         text: formatter.quote("🎯 Sedikit lagi!")
@@ -103,7 +105,7 @@ module.exports = {
             collector.on("end", async () => {
                 if (session.has(ctx.id)) {
                     session.delete(ctx.id);
-                    return await ctx.reply({
+                    await ctx.reply({
                         text: `${formatter.quote("⏱ Waktu habis!")}\n` +
                             formatter.quote(`Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`),
                         footer: config.msg.footer,
@@ -112,7 +114,7 @@ module.exports = {
                 }
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

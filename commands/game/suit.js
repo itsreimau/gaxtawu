@@ -13,7 +13,7 @@ module.exports = {
         const senderJid = ctx.sender.jid;
         const senderId = ctx.getId(senderJid);
 
-        if (!accountJid) return await ctx.reply({
+        if (!accountJid) await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
                 `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `@${senderId}`))}\n` +
                 formatter.quote(tools.msg.generateNotes(["Balas atau kutip pesan untuk menjadikan pengirim sebagai akun target."])),
@@ -115,7 +115,7 @@ module.exports = {
                         }, {
                             quoted: m
                         });
-                        return collector.stop();
+
                     }
                 }
 
@@ -179,7 +179,7 @@ module.exports = {
 
                             session.delete(senderJid);
                             session.delete(accountJid);
-                            return collector.stop();
+
                         }
                     }
                 }
@@ -189,11 +189,11 @@ module.exports = {
                 if (session.has(senderJid) || session.has(accountJid)) {
                     session.delete(senderJid);
                     session.delete(accountJid);
-                    return await ctx.reply(formatter.quote("⏱ Waktu habis!"));
+                    await ctx.reply(formatter.quote("⏱ Waktu habis!"));
                 }
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

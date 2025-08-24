@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["thanksto"],
     category: "information",
     code: async (ctx) => {
-        return await ctx.reply({
+        await ctx.reply({
             text: `${formatter.quote("ItsReimau (https://github.com/itsreimau)")}\n` +
                 `${formatter.quote("Jastin Linggar Tama (https://github.com/JastinXyz)")}\n` +
                 `${formatter.quote("RexxHayanasi (https://github.com/RexxHayanasi)")}\n` +

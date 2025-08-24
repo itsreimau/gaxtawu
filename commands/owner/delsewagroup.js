@@ -48,9 +48,9 @@ module.exports = {
                 });
             }
 
-            return await ctx.reply(formatter.quote(`✅ Berhasil menghapus sewa bot untuk grup ini!`));
+            await ctx.reply(formatter.quote(`✅ Berhasil menghapus sewa bot untuk grup ini!`));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

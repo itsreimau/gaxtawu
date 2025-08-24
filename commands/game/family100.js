@@ -69,6 +69,7 @@ module.exports = {
 
                     if (game.answers.size === 0) {
                         session.delete(ctx.id);
+                        collector.stop();
                         for (const participant of game.participants) {
                             await db.add(`user.${participant}.coin`, game.coin.allAnswered);
                             await db.add(`user.${participant}.winGame`, 1);
@@ -80,11 +81,11 @@ module.exports = {
                         }, {
                             quoted: m
                         });
-                        return collector.stop();
                     }
                 } else if (participantAnswer === "surrender") {
                     const remaining = [...game.answers].map(tools.msg.ucwords).join(", ").replace(/, ([^,]*)$/, ", dan $1");
                     session.delete(ctx.id);
+                    collector.stop();
                     await ctx.sendMessage(ctx.id, {
                         text: `${formatter.quote("🏳️ Kamu menyerah!")}\n` +
                             formatter.quote(`Jawaban yang belum terjawab adalah ${remaining}.`),
@@ -93,7 +94,6 @@ module.exports = {
                     }, {
                         quoted: m
                     });
-                    return collector.stop();
                 } else if (didYouMean(participantAnswer, [game.answer]) === game.answer) {
                     await ctx.sendMessage(ctx.id, {
                         text: formatter.quote("🎯 Sedikit lagi!")
@@ -108,7 +108,7 @@ module.exports = {
 
                 if (session.has(ctx.id)) {
                     session.delete(ctx.id);
-                    return await ctx.reply({
+                    await ctx.reply({
                         text: `${formatter.quote("⏱ Waktu habis!")}\n` +
                             formatter.quote(`Jawaban yang belum terjawab adalah ${remaining}`),
                         footer: config.msg.footer,
@@ -117,7 +117,7 @@ module.exports = {
                 }
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

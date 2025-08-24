@@ -11,9 +11,9 @@ module.exports = {
         try {
             const userCoin = userDb?.coin || 0;
 
-            return await ctx.reply(formatter.quote(`💰 Kamu memiliki ${userCoin} koin tersisa.`));
+            await ctx.reply(formatter.quote(`💰 Kamu memiliki ${userCoin} koin tersisa.`));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

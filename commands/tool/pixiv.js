@@ -20,7 +20,7 @@ module.exports = {
             });
             const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result).imageUrl;
 
-            return await ctx.reply({
+            await ctx.reply({
                 image: {
                     url: result
                 },
@@ -35,7 +35,7 @@ module.exports = {
                 }]
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

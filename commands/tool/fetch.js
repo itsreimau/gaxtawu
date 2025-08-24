@@ -33,21 +33,21 @@ module.exports = {
             const contentType = response?.headers?.["content-type"];
 
             if (/image/.test(contentType)) {
-                return await ctx.reply({
+                await ctx.reply({
                     image: response?.data,
                     mimetype: tools.mime.contentType(contentType),
                     caption: formatter.quote("Untukmu, tuan!"),
                     footer: config.msg.footer
                 });
             } else if (/video/.test(contentType)) {
-                return await ctx.reply({
+                await ctx.reply({
                     video: response?.data,
                     mimetype: tools.mime.contentType(contentType),
                     caption: formatter.quote("Untukmu, tuan!"),
                     footer: config.msg.footer
                 });
             } else if (/audio/.test(contentType)) {
-                return await ctx.reply({
+                await ctx.reply({
                     audio: response?.data,
                     mimetype: tools.mime.contentType(contentType),
                     caption: formatter.quote("Untukmu, tuan!")
@@ -62,11 +62,11 @@ module.exports = {
                     quality: 50
                 });
 
-                return await ctx.reply(await sticker.toMessage());
+                await ctx.reply(await sticker.toMessage());
             } else if (!/utf-8|json|html|plain/.test(contentType)) {
                 const fileName = /filename/i.test(response?.headers?.["content-disposition"]) ? response?.headers?.["content-disposition"]?.match(/filename=(.*)/)?.[1]?.replace(/["";]/g, "") : "";
 
-                return await ctx.reply({
+                await ctx.reply({
                     document: response?.data,
                     fileName,
                     mimetype: tools.mime.contentType(contentType)
@@ -82,10 +82,10 @@ module.exports = {
                 }
 
                 const responseText = json ? walkJSON(json) : text;
-                return await ctx.reply(responseText);
+                await ctx.reply(responseText);
             }
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

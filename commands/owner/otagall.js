@@ -19,14 +19,14 @@ module.exports = {
             });
 
             const resultText = mentions.map(mention => mention.tag).join(" ");
-            return await ctx.reply({
+            await ctx.reply({
                 text: `${input}\n` +
                     `${config.msg.readmore}─────\n` +
                     resultText,
                 mentions: mentions.map(mention => mention.mention)
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

@@ -45,9 +45,9 @@ module.exports = {
                 } [inp.toLowerCase()] || inp
             });
 
-            return await ctx.reply(formatter.quote(result));
+            await ctx.reply(formatter.quote(result));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

@@ -23,7 +23,7 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.data;
 
-            return await ctx.reply({
+            await ctx.reply({
                 image: {
                     url: result.gambar
                 },
@@ -33,7 +33,7 @@ module.exports = {
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

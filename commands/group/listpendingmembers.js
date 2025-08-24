@@ -18,12 +18,12 @@ module.exports = {
                 return formatter.quote(`${index + 1}. ${id}`);
             }).join("\n");
 
-            return await ctx.reply({
+            await ctx.reply({
                 text: resultText,
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

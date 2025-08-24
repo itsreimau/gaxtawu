@@ -13,12 +13,12 @@ module.exports = {
             const members = await ctx.group().members();
             const mentions = members.map(member => member.jid);
 
-            return await ctx.reply({
+            await ctx.reply({
                 text: input,
                 mentions
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

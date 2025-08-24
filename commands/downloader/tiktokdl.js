@@ -24,16 +24,16 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result;
 
-            if (result.play && !result.images) return await ctx.reply({
-                video: {
-                    url: result.play
-                },
-                mimetype: tools.mime.lookup("mp4"),
-                caption: formatter.quote(`URL: ${url}`),
-                footer: config.msg.footer
-            });
-
-            if (result.images) {
+            if (result.play && !result.images) {
+                await ctx.reply({
+                    video: {
+                        url: result.play
+                    },
+                    mimetype: tools.mime.lookup("mp4"),
+                    caption: formatter.quote(`URL: ${url}`),
+                    footer: config.msg.footer
+                });
+            } else if (result.images) {
                 const album = result.images.map(imageUrl => ({
                     image: {
                         url: imageUrl
@@ -41,13 +41,13 @@ module.exports = {
                     mimetype: tools.mime.lookup("jpeg")
                 }));
 
-                return await ctx.reply({
+                await ctx.reply({
                     album,
                     caption: formatter.quote(`URL: ${url}`)
                 });
             }
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

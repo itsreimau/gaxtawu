@@ -28,12 +28,12 @@ module.exports = {
                 "\n" +
                 `${formatter.quote("─────")}\n`
             );
-            return await ctx.reply({
+            await ctx.reply({
                 text: resultText || config.msg.notFound,
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

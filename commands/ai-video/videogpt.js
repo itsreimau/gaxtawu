@@ -19,7 +19,7 @@ module.exports = {
                 text: input
             });
 
-            return await ctx.reply({
+            await ctx.reply({
                 video: {
                     url: result
                 },
@@ -34,7 +34,7 @@ module.exports = {
                 }]
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

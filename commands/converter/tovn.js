@@ -11,13 +11,13 @@ module.exports = {
         try {
             const result = await ctx.quoted?.media.toBuffer();
 
-            return await ctx.reply({
+            await ctx.reply({
                 audio: result,
                 mimetype: tools.mime.lookup("mp3"),
                 ptt: true
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

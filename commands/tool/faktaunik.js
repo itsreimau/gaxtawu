@@ -12,7 +12,7 @@ module.exports = {
             const apiUrl = tools.api.createUrl("https://raw.githubusercontent.com", "/HasamiAini/Bot_Takagisan/refs/heads/main/faktanya.txt");
             const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.trim().split("\n").filter(Boolean));
 
-            return await ctx.reply({
+            await ctx.reply({
                 text: result,
                 footer: config.msg.footer,
                 buttons: [{
@@ -23,7 +23,7 @@ module.exports = {
                 }]
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

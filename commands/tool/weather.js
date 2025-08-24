@@ -22,7 +22,7 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result;
 
-            return await ctx.reply({
+            await ctx.reply({
                 text: `${formatter.quote(`Lokasi: ${result.name}, ${result.sys.country}`)}\n` +
                     `${formatter.quote(`Koordinat: ${result.coord.lat}, ${result.coord.lon}`)}\n` +
                     `${formatter.quote(`Terakhir diperbarui: ${moment.unix(result.dt).tz("Asia/Jakarta").format("DD/MM/YYYY HH:mm")} WIB`)}\n` +
@@ -44,7 +44,7 @@ module.exports = {
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

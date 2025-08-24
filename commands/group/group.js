@@ -47,9 +47,9 @@ module.exports = {
                     return await ctx.reply(formatter.quote(`❎ Setelan "${input}" tidak valid!`));
             }
 
-            return await ctx.reply(formatter.quote("✅ Berhasil mengubah setelan grup!"));
+            await ctx.reply(formatter.quote("✅ Berhasil mengubah setelan grup!"));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

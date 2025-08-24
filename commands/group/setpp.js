@@ -19,9 +19,9 @@ module.exports = {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
             await ctx.core.updateProfilePicture(ctx.id, buffer);
 
-            return await ctx.reply(formatter.quote("✅ Berhasil mengubah gambar profil grup!"));
+            await ctx.reply(formatter.quote("✅ Berhasil mengubah gambar profil grup!"));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

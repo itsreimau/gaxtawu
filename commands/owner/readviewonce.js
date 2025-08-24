@@ -41,7 +41,7 @@ module.exports = {
                 });
             }
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

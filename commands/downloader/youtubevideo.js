@@ -8,18 +8,7 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || null;
-
-        if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d -q 720"))}\n` +
-            formatter.quote(tools.msg.generatesFlagInfo({
-                "-d": "Kirim sebagai dokumen",
-                "-q <number>": "Pilihan pada kualitas video (tersedia: 144, 240, 360, 480, 720, 1080 | default: 720)"
-            }))
-        );
-
-        const flag = tools.cmd.parseFlag(input, {
+        const flag = tools.cmd.parseFlag(ctx.args.join(" ") || null, {
             "-d": {
                 type: "boolean",
                 key: "document"
@@ -31,8 +20,16 @@ module.exports = {
                 parser: (val) => parseInt(val)
             }
         });
+        const url = flag.input || null;
 
-        const url = flag?.input || null;
+        if (!url) return await ctx.reply(
+            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d -q 720"))}\n` +
+            formatter.quote(tools.msg.generatesFlagInfo({
+                "-d": "Kirim sebagai dokumen",
+                "-q <number>": "Pilihan pada kualitas video (tersedia: 144, 240, 360, 480, 720, 1080 | default: 720)"
+            }))
+        );
 
         const isUrl = await tools.cmd.isUrl(url);
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
@@ -47,26 +44,28 @@ module.exports = {
             const result = (await axios.get(apiUrl)).data.result;
 
             const document = flag?.document || false;
-            if (document) return await ctx.reply({
-                document: {
-                    url: result.download
-                },
-                fileName: `${result.title}.mp4`,
-                mimetype: tools.mime.lookup("mp4"),
-                caption: formatter.quote(`URL: ${url}`),
-                footer: config.msg.footer
-            });
-
-            return await ctx.reply({
-                video: {
-                    url: result.download
-                },
-                mimetype: tools.mime.lookup("mp4"),
-                caption: formatter.quote(`URL: ${url}`),
-                footer: config.msg.footer
-            });
+            if (document) {
+                await ctx.reply({
+                    document: {
+                        url: result.download
+                    },
+                    fileName: `${result.title}.mp4`,
+                    mimetype: tools.mime.lookup("mp4"),
+                    caption: formatter.quote(`URL: ${url}`),
+                    footer: config.msg.footer
+                });
+            } else {
+                await ctx.reply({
+                    video: {
+                        url: result.download
+                    },
+                    mimetype: tools.mime.lookup("mp4"),
+                    caption: formatter.quote(`URL: ${url}`),
+                    footer: config.msg.footer
+                });
+            }
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

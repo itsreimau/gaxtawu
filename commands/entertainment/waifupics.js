@@ -24,7 +24,7 @@ module.exports = {
             const apiUrl = tools.api.createUrl("https://api.waifu.pics", `/sfw/${waifupics}`);
             const result = (await axios.get(apiUrl)).data.url;
 
-            return await ctx.reply({
+            await ctx.reply({
                 image: {
                     url: result
                 },
@@ -40,7 +40,7 @@ module.exports = {
                 }]
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

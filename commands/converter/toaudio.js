@@ -23,14 +23,14 @@ module.exports = {
                 json: true
             })).data.result;
 
-            return await ctx.reply({
+            await ctx.reply({
                 audio: {
                     url: result
                 },
                 mimetype: tools.mime.lookup("mp3")
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

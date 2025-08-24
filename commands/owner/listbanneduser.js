@@ -25,13 +25,13 @@ module.exports = {
                 userMentions.push(`${userId}@s.whatsapp.net`);
             });
 
-            return await ctx.reply({
+            await ctx.reply({
                 text: resultText.trim() || config.msg.notFound,
                 mentions: userMentions,
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

@@ -12,7 +12,7 @@ module.exports = {
             const apiUrl = tools.api.createUrl("https://sandipbaruwal.onrender.com", "/dp");
             const result = (await axios.get(apiUrl)).data;
 
-            return await ctx.reply({
+            await ctx.reply({
                 album: [{
                     image: {
                         url: result.male
@@ -26,7 +26,7 @@ module.exports = {
                 }]
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

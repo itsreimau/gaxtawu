@@ -24,7 +24,7 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data;
 
-            return await ctx.reply({
+            await ctx.reply({
                 document: result.download_link,
                 fileName: result.name,
                 mimetype: tools.mime.lookup(result.name) || "application/octet-stream",
@@ -32,7 +32,7 @@ module.exports = {
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

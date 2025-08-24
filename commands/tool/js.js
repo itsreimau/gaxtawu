@@ -58,9 +58,9 @@ module.exports = {
                 }, 10000);
             });
 
-            return await ctx.reply(formatter.monospace(output));
+            await ctx.reply(formatter.monospace(output));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

@@ -23,19 +23,19 @@ module.exports = {
 
             const resultText = result.map(res =>
                 `${formatter.quote(`Judul: ${res.title}`)}\n` +
-                `${formatter.quote(`Artis: ${res.artist}`)}\n` +
+                `${formatter.quote(`Pembuat: ${res.artist}`)}\n` +
                 `${formatter.quote(`Durasi: ${res.duration}`)}\n` +
                 formatter.quote(`URL: ${res.url}`)
             ).join(
                 "\n" +
                 `${formatter.quote("─────")}\n`
             );
-            return await ctx.reply({
+            await ctx.reply({
                 text: resultText || config.msg.notFound,
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

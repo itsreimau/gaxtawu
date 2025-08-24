@@ -11,7 +11,7 @@ module.exports = {
             const apiUrl = tools.api.createUrl("https://fufufafapi.vanirvan.my.id", "/api");
             const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data);
 
-            return await ctx.reply({
+            await ctx.reply({
                 image: {
                     url: result.image_url
                 },
@@ -26,7 +26,7 @@ module.exports = {
                 }]
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

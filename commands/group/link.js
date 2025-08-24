@@ -10,9 +10,9 @@ module.exports = {
         try {
             const code = await ctx.group().inviteCode();
 
-            return await ctx.reply(formatter.quote(`https://chat.whatsapp.com/${code}`));
+            await ctx.reply(formatter.quote(`https://chat.whatsapp.com/${code}`));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

@@ -19,7 +19,7 @@ module.exports = {
             const userDb = await db.get(`user.${senderId}`) || {};
             const isOwner = tools.cmd.isOwner(senderId, ctx.msg.key.id);
 
-            return await ctx.reply({
+            await ctx.reply({
                 text: `${formatter.quote(`Nama: ${ctx.sender.pushName} (${userDb?.username})`)}\n` +
                     `${formatter.quote(`Status: ${isOwner ? "Owner" : userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${tools.msg.convertMsToDuration(Date.now() - userDb.premiumExpiration, ["hari"])} tersisa` : "Selamanya"})` : "Freemium"}`)}\n` +
                     `${formatter.quote(`Level: ${userDb?.level || 0} (${userDb?.xp || 0}/100)`)}\n` +
@@ -29,7 +29,7 @@ module.exports = {
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

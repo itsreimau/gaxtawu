@@ -21,11 +21,11 @@ module.exports = {
         if (await ctx.group().isOwner(accountJid)) return await ctx.reply(formatter.quote("❎ Dia adalah owner grup!"));
 
         try {
-            await ctx.group().kick([accountJid]);
+            await ctx.group().kick(accountJid);
 
-            return await ctx.reply(formatter.quote("✅ Berhasil dikeluarkan!"));
+            await ctx.reply(formatter.quote("✅ Berhasil dikeluarkan!"));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

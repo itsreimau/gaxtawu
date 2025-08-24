@@ -28,14 +28,14 @@ module.exports = {
 
             const latency = performance.now() - latencyStart;
 
-            return await ctx.reply({
+            await ctx.reply({
                 text: `${formatter.quote(`Latency: ${tools.msg.convertMsToDuration(latency)}`)}\n` +
                     `${formatter.quote(`Download: ${tools.msg.formatSizePerSecond(downloadSpeed)}`)}\n` +
                     formatter.quote(`Upload: ${tools.msg.formatSizePerSecond(uploadSpeed)}`),
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

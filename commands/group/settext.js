@@ -45,9 +45,9 @@ module.exports = {
             }
 
             await db.set(setKey, text);
-            return await ctx.reply(formatter.quote(`✅ Pesan untuk teks ${formatter.inlineCode(key)} berhasil disimpan!`));
+            await ctx.reply(formatter.quote(`✅ Pesan untuk teks ${formatter.inlineCode(key)} berhasil disimpan!`));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

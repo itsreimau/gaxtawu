@@ -11,9 +11,9 @@ module.exports = {
         );
 
         try {
-            return await ctx.reply(input);
+            await ctx.reply(input);
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

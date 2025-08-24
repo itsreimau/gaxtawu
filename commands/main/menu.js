@@ -2,7 +2,7 @@ const moment = require("moment-timezone");
 
 module.exports = {
     name: "menu",
-    aliases: ["help", "list", "listmenu"],
+    aliases: ["allmenu", "help", "list", "listmenu"],
     category: "main",
     code: async (ctx) => {
         try {
@@ -28,51 +28,7 @@ module.exports = {
                 "misc": "Miscellaneous"
             };
 
-            if (ctx.args[0]) {
-                const category = ctx.args[0].toLowerCase();
-                const cmds = Array.from(cmd.values())
-                    .filter(cmd => cmd.category === category)
-                    .map(cmd => ({
-                        name: cmd.name,
-                        aliases: cmd.aliases,
-                        permissions: cmd.permissions || {}
-                    }));
-
-                if (cmds.length === 0) return await ctx.reply("Menu tidak ditemukan!");
-
-                let text = `◆ ${formatter.bold(tag[category] || category)}\n` +
-                    "\n";
-
-                cmds.forEach(cmd => {
-                    let permissionsText = "";
-                    if (cmd.permissions.coin) permissionsText += "ⓒ";
-                    if (cmd.permissions.group) permissionsText += "Ⓖ";
-                    if (cmd.permissions.owner) permissionsText += "Ⓞ";
-                    if (cmd.permissions.premium) permissionsText += "Ⓟ";
-                    if (cmd.permissions.private) permissionsText += "ⓟ";
-
-                    text += formatter.quote(formatter.monospace(`${ctx.used.prefix + cmd.name} ${permissionsText}`));
-                    text += "\n";
-                });
-
-                return await ctx.reply({
-                    text: text.trim(),
-                    footer: config.msg.footer,
-                    buttons: [{
-                        buttonId: `${ctx.used.prefix}owner`,
-                        buttonText: {
-                            displayText: "Hubungi Owner"
-                        }
-                    }, {
-                        buttonId: `${ctx.used.prefix}donate`,
-                        buttonText: {
-                            displayText: "Donasi"
-                        }
-                    }]
-                });
-            }
-
-            let text = `Halo @${ctx.getId(ctx.sender.jid)}, berikut adalah daftar menu yang tersedia!\n` +
+            let text = `Halo @${ctx.getId(ctx.sender.jid)}, berikut adalah daftar perintah yang tersedia!\n` +
                 "\n" +
                 `${formatter.quote(`Tanggal: ${moment.tz(config.system.timeZone).locale("id").format("dddd, DD MMMM YYYY")}`)}\n` +
                 `${formatter.quote(`Waktu: ${moment.tz(config.system.timeZone).format("HH.mm.ss")}`)}\n` +
@@ -81,9 +37,39 @@ module.exports = {
                 `${formatter.quote(`Database: ${config.bot.dbSize} (Simpl.DB - JSON)`)}\n` +
                 `${formatter.quote("Library: @itsreimau/gktw (Fork of @mengkodingan/ckptw)")}\n` +
                 "\n" +
-                `${formatter.italic("Jangan lupa berdonasi agar bot tetap online!")}\n`;
+                `${formatter.italic("Jangan lupa berdonasi agar bot tetap online!")}\n` +
+                `${config.msg.readmore}\n`;
 
-            return await ctx.reply({
+            for (const category of Object.keys(tag)) {
+                const cmds = Array.from(cmd.values())
+                    .filter(cmd => cmd.category === category)
+                    .map(cmd => ({
+                        name: cmd.name,
+                        aliases: cmd.aliases,
+                        permissions: cmd.permissions || {}
+                    }));
+
+                if (cmds.length > 0) {
+                    text += `◆ ${formatter.bold(tag[category])}\n`;
+
+                    cmds.forEach(cmd => {
+                        let permissionsText = "";
+                        if (cmd.permissions.coin) permissionsText += "ⓒ";
+                        if (cmd.permissions.group) permissionsText += "Ⓖ";
+                        if (cmd.permissions.owner) permissionsText += "Ⓞ";
+                        if (cmd.permissions.premium) permissionsText += "Ⓟ";
+                        if (cmd.permissions.private) permissionsText += "ⓟ";
+
+                        text += formatter.quote(formatter.monospace(`${ctx.used.prefix + cmd.name} ${permissionsText}`));
+                        text += "\n";
+                    });
+                }
+
+                text += "\n";
+
+            }
+
+            await ctx.sendMessage(ctx.id, {
                 image: {
                     url: config.bot.thumbnail
                 },
@@ -92,27 +78,6 @@ module.exports = {
                 mentions: [ctx.sender.jid],
                 footer: config.msg.footer,
                 buttons: [{
-                    buttonId: "action",
-                    buttonText: {
-                        displayText: "Daftar Menu"
-                    },
-                    type: 4,
-                    nativeFlowInfo: {
-                        name: "single_select",
-                        paramsJson: JSON.stringify({
-                            title: "Daftar Menu",
-                            sections: [{
-                                title: "Pilih Kategori Menu",
-                                highlight_label: config.bot.name,
-                                rows: Object.keys(tag).map(category => ({
-                                    title: tag[category],
-                                    description: `Klik untuk melihat perintah ${tag[category]}`,
-                                    id: `.menu ${category}`
-                                }))
-                            }]
-                        })
-                    }
-                }, {
                     buttonId: `${ctx.used.prefix}owner`,
                     buttonText: {
                         displayText: "Hubungi Owner"
@@ -127,7 +92,7 @@ module.exports = {
                 quoted: tools.cmd.fakeMetaAiQuotedText(config.msg.note)
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

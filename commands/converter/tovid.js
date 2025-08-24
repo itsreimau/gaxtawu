@@ -18,14 +18,14 @@ module.exports = {
                 json: true
             })).data.result;
 
-            return await ctx.reply({
+            await ctx.reply({
                 video: {
                     url: result
                 },
                 mimetype: tools.mime.lookup("mp4")
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

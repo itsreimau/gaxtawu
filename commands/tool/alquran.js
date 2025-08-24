@@ -43,45 +43,45 @@ module.exports = {
                         `${vers.text} (${vers.transliteration})\n` +
                         formatter.italic(vers.translation_id)
                     ).join("\n");
-                    return await ctx.reply({
+                    await ctx.reply({
                         text: `${formatter.quote(`Surat: ${result.name}`)}\n` +
                             `${formatter.quote(`Arti: ${result.translate}`)}\n` +
                             `${formatter.quote("─────")}\n` +
                             versesText,
                         footer: config.msg.footer
                     });
+                } else {
+                    const singleAyat = parseInt(ayat);
+                    const verse = verses.find(vers => vers.number === singleAyat);
+
+                    if (isNaN(singleAyat) || singleAyat < 1) return await ctx.reply(formatter.quote("❎ Ayat harus berupa nomor yang valid dan lebih besar dari 0!"));
+                    if (!verse) return await ctx.reply(formatter.quote(`❎ Ayat ${singleAyat} tidak ada!`));
+
+                    await ctx.reply({
+                        text: `${formatter.quote(`Surat: ${result.name}`)}\n` +
+                            `${formatter.quote(`Arti: ${result.translate}`)}\n` +
+                            `${formatter.quote("─────")}\n` +
+                            `${verse.text} (${verse.transliteration})\n` +
+                            formatter.italic(verse.translation_id),
+                        footer: config.msg.footer
+                    });
                 }
-
-                const singleAyat = parseInt(ayat);
-                const verse = verses.find(vers => vers.number === singleAyat);
-
-                if (isNaN(singleAyat) || singleAyat < 1) return await ctx.reply(formatter.quote("❎ Ayat harus berupa nomor yang valid dan lebih besar dari 0!"));
-                if (!verse) return await ctx.reply(formatter.quote(`❎ Ayat ${singleAyat} tidak ada!`));
-
-                return await ctx.reply({
+            } else {
+                const versesText = verses.map(vers =>
+                    `${formatter.quote(`Ayat ${vers.number}:`)}\n` +
+                    `${vers.text} (${vers.transliteration})\n` +
+                    formatter.italic(vers.translation_id)
+                ).join("\n");
+                await ctx.reply({
                     text: `${formatter.quote(`Surat: ${result.name}`)}\n` +
                         `${formatter.quote(`Arti: ${result.translate}`)}\n` +
                         `${formatter.quote("─────")}\n` +
-                        `${verse.text} (${verse.transliteration})\n` +
-                        formatter.italic(verse.translation_id),
+                        versesText,
                     footer: config.msg.footer
                 });
             }
-
-            const versesText = verses.map(vers =>
-                `${formatter.quote(`Ayat ${vers.number}:`)}\n` +
-                `${vers.text} (${vers.transliteration})\n` +
-                formatter.italic(vers.translation_id)
-            ).join("\n");
-            return await ctx.reply({
-                text: `${formatter.quote(`Surat: ${result.name}`)}\n` +
-                    `${formatter.quote(`Arti: ${result.translate}`)}\n` +
-                    `${formatter.quote("─────")}\n` +
-                    versesText,
-                footer: config.msg.footer
-            });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

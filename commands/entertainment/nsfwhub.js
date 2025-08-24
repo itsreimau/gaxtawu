@@ -20,7 +20,7 @@ module.exports = {
             const nsfwhub = listNsfwhub.includes(input) ? input : tools.cmd.getRandomElement(listNsfwhub);
             const result = tools.api.createUrl("neko", `/nsfwhub/${nsfwhub}`);
 
-            return await ctx.reply({
+            await ctx.reply({
                 image: {
                     url: result
                 },
@@ -35,7 +35,7 @@ module.exports = {
                 }]
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

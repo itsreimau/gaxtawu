@@ -38,9 +38,9 @@ module.exports = {
         try {
             await ctx.group().approvePendingMembers([accountJid]);
 
-            return await ctx.reply(formatter.quote("✅ Berhasil disetujui!"));
+            await ctx.reply(formatter.quote("✅ Berhasil disetujui!"));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

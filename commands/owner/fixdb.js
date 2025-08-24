@@ -15,7 +15,7 @@ module.exports = {
 
         if (input.toLowerCase() === "list") {
             const listText = await tools.list.get("fixdb");
-            return await ctx.reply({
+            await ctx.reply({
                 text: listText,
                 footer: config.msg.footer
             });
@@ -324,9 +324,9 @@ module.exports = {
 
             const processedCount = await processData(input, data[input]);
 
-            return await ctx.editMessage(waitMsg.key, formatter.quote(`✅ Berhasil membersihkan ${processedCount} data untuk ${input}!`));
+            await ctx.editMessage(waitMsg.key, formatter.quote(`✅ Berhasil membersihkan ${processedCount} data untuk ${input}!`));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

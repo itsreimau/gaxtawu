@@ -24,9 +24,9 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result.content;
 
-            return await ctx.reply(result);
+            await ctx.reply(result);
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

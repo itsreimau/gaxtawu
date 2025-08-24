@@ -134,7 +134,7 @@ Untuk menambahkan perintah baru, ikuti langkah-langkah berikut:
            private: Boolean // Apakah perintah ini hanya bisa digunakan dalam chat pribadi? (true/false)
        },
        code: async (ctx) => { // Fungsi yang dijalankan saat perintah ini dipanggil
-           return await ctx.reply("Hello, World!"); // Kirim pesan "Hello, World!" kepada pengguna
+           await ctx.reply("Hello, World!"); // Kirim pesan "Hello, World!" kepada pengguna
        }
    };
    ```

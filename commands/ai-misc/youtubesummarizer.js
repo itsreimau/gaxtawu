@@ -31,14 +31,14 @@ module.exports = {
                 "\n" +
                 `${formatter.quote("─────")}\n`
             );
-            return await ctx.reply({
+            await ctx.reply({
                 text: `${formatter.quote(result.summary)}\n` +
                     `${formatter.quote("─────")}\n` +
                     resultText,
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

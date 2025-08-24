@@ -19,11 +19,11 @@ module.exports = {
         if (!await ctx.group().isAdmin(accountJid)) return await ctx.reply(formatter.quote("❎ Dia adalah anggota!"));
 
         try {
-            await ctx.group().demote([accountJid]);
+            await ctx.group().demote(accountJid);
 
-            return await ctx.reply(formatter.quote("✅ Berhasil diturunkan dari admin menjadi anggota!"));
+            await ctx.reply(formatter.quote("✅ Berhasil diturunkan dari admin menjadi anggota!"));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

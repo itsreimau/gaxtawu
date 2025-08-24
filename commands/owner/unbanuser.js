@@ -36,9 +36,9 @@ module.exports = {
                 text: formatter.quote("🎉 Kamu telah diunbanned oleh Owner!")
             });
 
-            return await ctx.reply(formatter.quote("✅ Berhasil diunbanned!"));
+            await ctx.reply(formatter.quote("✅ Berhasil diunbanned!"));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

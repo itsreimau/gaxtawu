@@ -22,9 +22,9 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result.character.name;
 
-            return await ctx.reply(tools.msg.ucwords(result));
+            await ctx.reply(tools.msg.ucwords(result));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

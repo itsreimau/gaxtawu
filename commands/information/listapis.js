@@ -9,13 +9,13 @@ module.exports = {
 
             for (const [name, api] of Object.entries(APIs)) resultText += formatter.quote(`${api.baseURL}\n`);
 
-            return await ctx.reply({
+            await ctx.reply({
                 text: `${formatter.quote("Daftar API yang digunakan:")}\n` +
                     resultText.trim(),
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

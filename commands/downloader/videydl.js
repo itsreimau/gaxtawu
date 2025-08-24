@@ -20,7 +20,7 @@ module.exports = {
             const id = new URL(url).searchParams.get("id");
             const result = `https://cdn.videy.co/${id}.mp4`;
 
-            return await ctx.reply({
+            await ctx.reply({
                 video: {
                     url: result
                 },
@@ -29,7 +29,7 @@ module.exports = {
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

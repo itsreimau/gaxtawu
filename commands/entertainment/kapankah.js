@@ -19,9 +19,9 @@ module.exports = {
             const randomMs = Math.floor(Math.random() * (maxMs - minMs) + minMs);
             const duration = tools.msg.convertMsToDuration(randomMs);
 
-            return await ctx.reply(formatter.quote(`${duration} lagi...`));
+            await ctx.reply(formatter.quote(`${duration} lagi...`));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

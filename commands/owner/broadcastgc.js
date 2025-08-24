@@ -49,7 +49,7 @@ module.exports = {
                         },
                         externalAdReply: {
                             title: config.bot.name,
-                            body: `v${require("./package.json").version}`,
+                            body: `v${require("../../package.json").version}`,
                             mediaType: 1,
                             thumbnailUrl: config.bot.thumbnail,
                             renderLargerThumbnail: true,
@@ -69,9 +69,9 @@ module.exports = {
             }
             const successCount = filteredGroupIds.length - failedGroupIds.length;
 
-            return await ctx.editMessage(waitMsg.key, formatter.quote(`✅ Berhasil mengirim ke ${successCount} grup. Gagal mengirim ke ${failedGroupIds.length} grup, ${blacklist.length} grup dalam blacklist tidak dikirim.`));
+            await ctx.editMessage(waitMsg.key, formatter.quote(`✅ Berhasil mengirim ke ${successCount} grup. Gagal mengirim ke ${failedGroupIds.length} grup, ${blacklist.length} grup dalam blacklist tidak dikirim.`));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

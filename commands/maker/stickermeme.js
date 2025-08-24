@@ -28,7 +28,6 @@ module.exports = {
         try {
             let [top, bottom] = input.split("|").map(inp => inp);
             [top, bottom] = bottom ? [top || "_", bottom] : ["_", top || "_"];
-
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
             const uploadUrl = await tools.cmd.upload(buffer, "image");
             const result = tools.api.createUrl("https://api.memegen.link", `/images/custom/${top}${bottom}.png`, {
@@ -43,9 +42,9 @@ module.exports = {
                 quality: 50
             });
 
-            return await ctx.reply(await sticker.toMessage());
+            await ctx.reply(await sticker.toMessage());
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

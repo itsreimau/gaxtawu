@@ -24,14 +24,14 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result.lyrics;
 
-            return await ctx.reply({
+            await ctx.reply({
                 text: `${formatter.quote(`Judul: ${searchResult.title}`)}\n` +
                     `${formatter.quote("─────")}\n` +
                     result,
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

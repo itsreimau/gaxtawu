@@ -33,19 +33,17 @@ module.exports = {
 
             const newWarning = currentWarnings - 1;
 
-            if (userWarning) {
-                if (newWarning <= 0) {
-                    const updatedWarnings = warnings.filter(warning => warning.userId !== accountId);
-                    await db.set(`group.${groupId}.warnings`, updatedWarnings);
-                } else {
-                    userWarning.count = newWarning;
-                    await db.set(`group.${groupId}.warnings`, warnings);
-                }
+            if (userWarning && newWarning <= 0) {
+                const updatedWarnings = warnings.filter(warning => warning.userId !== accountId);
+                await db.set(`group.${groupId}.warnings`, updatedWarnings);
+            } else {
+                userWarning.count = newWarning;
+                await db.set(`group.${groupId}.warnings`, warnings);
             }
 
-            return await ctx.reply(formatter.quote(`✅ Berhasil mengurangi warning pengguna itu menjadi ${newWarning}/${groupDb?.maxwarnings || 3}.`));
+            await ctx.reply(formatter.quote(`✅ Berhasil mengurangi warning pengguna itu menjadi ${newWarning}/${groupDb?.maxwarnings || 3}.`));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

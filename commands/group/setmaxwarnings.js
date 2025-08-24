@@ -18,9 +18,9 @@ module.exports = {
             const groupId = ctx.getId(ctx.id);
             await db.set(`group.${groupId}.maxwarnings`, input);
 
-            return await ctx.reply(formatter.quote(`✅ Berhasil mengubah max warnings!`));
+            await ctx.reply(formatter.quote(`✅ Berhasil mengubah max warnings!`));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

@@ -31,14 +31,14 @@ module.exports = {
             });
             const result = Buffer.from((await axios.get(apiUrl)).data.result.image.base64, "base64");
 
-            return await ctx.reply({
+            await ctx.reply({
                 image: result,
                 mimetype: tools.mime.lookup("jpeg"),
                 caption: formatter.quote("Untukmu, tuan!"),
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

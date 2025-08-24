@@ -15,13 +15,13 @@ module.exports = {
                 .replace(/%readmore%/g, config.msg.readmore) :
                 formatter.quote("❎ Bot ini tidak memiliki harga.");
 
-            return await ctx.reply({
+            await ctx.reply({
                 text: text,
                 mentions: [ctx.sender.jid],
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

@@ -33,12 +33,12 @@ module.exports = {
                 };
             });
 
-            return await ctx.reply({
+            await ctx.reply({
                 album,
                 caption: formatter.quote(`URL: ${url}`)
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

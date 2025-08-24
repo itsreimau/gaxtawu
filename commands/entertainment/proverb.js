@@ -12,7 +12,7 @@ module.exports = {
             const apiUrl = tools.api.createUrl("http://jagokata-api.hofeda4501.serv00.net", "/peribahasa-acak.php"); // Dihosting sendiri, karena jagokata-api.rf.gd malah error
             const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.data);
 
-            return await ctx.reply({
+            await ctx.reply({
                 text: `${formatter.quote(`Kalimat: ${result.kalimat}`)}\n` +
                     formatter.quote(`Arti: ${result.arti}`),
                 footer: config.msg.footer,
@@ -24,7 +24,7 @@ module.exports = {
                 }]
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

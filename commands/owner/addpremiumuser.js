@@ -45,7 +45,7 @@ module.exports = {
                     text: formatter.quote(`📢 Kamu telah ditambahkan sebagai pengguna Premium oleh Owner selama ${daysAmount} hari!`)
                 });
 
-                return await ctx.reply(formatter.quote(`✅ Berhasil menambahkan Premium selama ${daysAmount} hari kepada pengguna itu!`));
+                await ctx.reply(formatter.quote(`✅ Berhasil menambahkan Premium selama ${daysAmount} hari kepada pengguna itu!`));
             } else {
                 await db.delete(`user.${userId}.premiumExpiration`);
 
@@ -53,10 +53,10 @@ module.exports = {
                     text: formatter.quote("📢 Kamu telah ditambahkan sebagai pengguna Premium selamanya oleh Owner!")
                 });
 
-                return await ctx.reply(formatter.quote("✅ Berhasil menambahkan Premium selamanya kepada pengguna itu!"));
+                await ctx.reply(formatter.quote("✅ Berhasil menambahkan Premium selamanya kepada pengguna itu!"));
             }
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

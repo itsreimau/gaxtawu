@@ -14,9 +14,9 @@ module.exports = {
             const command = ctx.msg.content.slice(2);
             const output = await util.promisify(exec)(command);
 
-            return await ctx.reply(formatter.monospace(output.stdout || output.stderr));
+            await ctx.reply(formatter.monospace(output.stdout || output.stderr));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, false, false);
+            await tools.cmd.handleError(ctx, error, false, false);
         }
     }
 };

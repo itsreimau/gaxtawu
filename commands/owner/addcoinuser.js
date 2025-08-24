@@ -37,9 +37,9 @@ module.exports = {
                 text: formatter.quote(`📢 Kamu telah menerima ${coinAmount} koin dari Owner!`)
             });
 
-            return await ctx.reply(formatter.quote(`✅ Berhasil menambahkan ${coinAmount} koin kepada pengguna itu!`));
+            await ctx.reply(formatter.quote(`✅ Berhasil menambahkan ${coinAmount} koin kepada pengguna itu!`));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

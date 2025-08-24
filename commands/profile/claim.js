@@ -40,9 +40,9 @@ module.exports = {
             await db.set(`user.${senderId}.coin`, rewardCoin);
             await db.set(`user.${senderId}.lastClaim.${input}`, currentTime);
 
-            return await ctx.reply(formatter.quote(`✅ Kamu berhasil mengklaim hadiah ${input} sebesar ${claim.reward} koin! Koin-mu saat ini adalah ${rewardCoin}.`));
+            await ctx.reply(formatter.quote(`✅ Kamu berhasil mengklaim hadiah ${input} sebesar ${claim.reward} koin! Koin-mu saat ini adalah ${rewardCoin}.`));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

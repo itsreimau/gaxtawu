@@ -34,9 +34,9 @@ module.exports = {
                     return await ctx.reply(formatter.quote(`❎ Mode "${input}" tidak valid!`));
             }
 
-            return await ctx.reply(formatter.quote(`✅ Berhasil mengubah mode ke ${input}!`));
+            await ctx.reply(formatter.quote(`✅ Berhasil mengubah mode ke ${input}!`));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

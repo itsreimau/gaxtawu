@@ -33,9 +33,9 @@ module.exports = {
                 quality: 50
             });
 
-            return await ctx.reply(await sticker.toMessage());
+            await ctx.reply(await sticker.toMessage());
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

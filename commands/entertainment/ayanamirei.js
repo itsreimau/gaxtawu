@@ -12,7 +12,7 @@ module.exports = {
             const apiUrl = tools.api.createUrl("https://api.github.com", "/repos/Yashirof/ayanami-bot-discord/contents/images");
             const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data);
 
-            return await ctx.reply({
+            await ctx.reply({
                 image: {
                     url: result.download_url
                 },
@@ -27,7 +27,7 @@ module.exports = {
                 }]
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

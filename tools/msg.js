@@ -37,15 +37,6 @@ function convertMsToDuration(ms, units = []) {
     return result.join(" ") || "0 detik";
 }
 
-function convertSecondToTimecode(seconds) {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    const milliseconds = Math.round((seconds - Math.floor(seconds)) * 1000);
-
-    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}.${milliseconds.toString().padStart(3, "0")}`;
-}
-
 function formatSize(byteCount) {
     if (!byteCount) return "0 yBytes";
 
@@ -159,7 +150,6 @@ function ucwords(text) {
 
 module.exports = {
     convertMsToDuration,
-    convertSecondToTimecode,
     formatSize,
     formatSizePerSecond,
     generateCmdExample,

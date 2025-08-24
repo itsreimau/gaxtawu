@@ -12,7 +12,7 @@ module.exports = {
             const apiUrl = tools.api.createUrl("https://data.bmkg.go.id", "/DataMKG/TEWS/autogempa.json");
             const result = (await axios.get(apiUrl)).data.Infogempa.gempa;
 
-            return await ctx.reply({
+            await ctx.reply({
                 image: {
                     url: tools.api.createUrl("https://data.bmkg.go.id", `/DataMKG/TEWS/${result.Shakemap}`)
                 },
@@ -27,7 +27,7 @@ module.exports = {
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

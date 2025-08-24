@@ -14,7 +14,7 @@ module.exports = {
                 .setNumber(config.owner.id)
                 .build();
 
-            return await ctx.reply({
+            await ctx.reply({
                 contacts: {
                     displayName: config.owner.name,
                     contacts: [{
@@ -23,7 +23,7 @@ module.exports = {
                 }
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

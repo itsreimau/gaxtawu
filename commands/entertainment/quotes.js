@@ -12,7 +12,7 @@ module.exports = {
             const apiUrl = tools.api.createUrl("http://jagokata-api.hofeda4501.serv00.net", "/acak.php"); // Dihosting sendiri, karena jagokata-api.rf.gd malah error
             const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.data.quotes);
 
-            return await ctx.reply({
+            await ctx.reply({
                 text: `${formatter.quote(`“${result.quote}”`)}\n` +
                     `${formatter.quote("─────")}\n` +
                     `${formatter.quote(`Nama: ${result.author.name}`)}\n` +
@@ -26,7 +26,7 @@ module.exports = {
                 }]
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

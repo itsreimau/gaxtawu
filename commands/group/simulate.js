@@ -30,17 +30,17 @@ module.exports = {
             switch (input.toLowerCase()) {
                 case "j":
                 case "join":
-                    return await handleWelcome(ctx, m, Events.UserJoin, true);
+                    await handleWelcome(ctx, m, Events.UserJoin, true);
                     break;
                 case "l":
                 case "leave":
-                    return await handleWelcome(ctx, m, Events.UserLeave, true);
+                    await handleWelcome(ctx, m, Events.UserLeave, true);
                     break;
                 default:
-                    return await ctx.reply(formatter.quote(`❎ Simulasi ${formatter.inlineCode(input)} tidak valid!`));
+                    await ctx.reply(formatter.quote(`❎ Simulasi ${formatter.inlineCode(input)} tidak valid!`));
             }
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

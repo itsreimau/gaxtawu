@@ -41,8 +41,8 @@ async function handleWelcome(bot, m, type, isSimulate = false) {
 
         await bot.core.sendMessage(groupJid, {
             text,
+            mentions: [jid],
             contextInfo: {
-                mentionedJid: [jid],
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
                     newsletterJid: config.bot.newsletterJid,
@@ -50,7 +50,7 @@ async function handleWelcome(bot, m, type, isSimulate = false) {
                 },
                 externalAdReply: {
                     title: config.bot.name,
-                    body: `v${require("./package.json").version}`,
+                    body: `v${require("../package.json").version}`,
                     mediaType: 1,
                     thumbnailUrl: profilePictureUrl,
                     sourceUrl: config.bot.groupLink
@@ -97,7 +97,7 @@ async function addWarning(ctx, groupDb, senderJid, groupId) {
 
     if (currentWarnings >= maxWarnings) {
         await ctx.reply(formatter.quote(`⛔ Kamu telah menerima ${maxWarnings} warning dan akan dikeluarkan dari grup!`));
-        if (!config.system.restrict) await ctx.group().kick([senderJid]);
+        if (!config.system.restrict) await ctx.group().kick(senderJid);
         const updatedWarnings = warnings.filter(warning => warning.userId !== senderId);
         await db.set(`group.${groupId}.warnings`, updatedWarnings);
     }
@@ -258,7 +258,7 @@ module.exports = (bot) => {
                         await ctx.reply(formatter.quote(`⛔ Jangan kirim ${type}!`));
                         await ctx.deleteMessage(m.key);
                         if (groupAutokick) {
-                            await ctx.group().kick([senderJid]);
+                            await ctx.group().kick(senderJid);
                         } else {
                             await addWarning(ctx, groupDb, senderJid, groupId);
                         }
@@ -272,7 +272,7 @@ module.exports = (bot) => {
                     await ctx.reply(formatter.quote("⛔ Jangan kirim link!"));
                     await ctx.deleteMessage(m.key);
                     if (groupAutokick) {
-                        await ctx.group().kick([senderJid]);
+                        await ctx.group().kick(senderJid);
                     } else {
                         await addWarning(ctx, groupDb, senderJid, groupId);
                     }
@@ -294,7 +294,7 @@ module.exports = (bot) => {
                         await ctx.reply(formatter.quote("⛔ Jangan kirim NSFW, dasar cabul!"));
                         await ctx.deleteMessage(m.key);
                         if (groupAutokick) {
-                            await ctx.group().kick([senderJid]);
+                            await ctx.group().kick(senderJid);
                         } else {
                             await addWarning(ctx, groupDb, senderJid, groupId);
                         }
@@ -327,7 +327,7 @@ module.exports = (bot) => {
                     await ctx.reply(formatter.quote("⛔ Jangan spam, ngelag woy!"));
                     await ctx.deleteMessage(m.key);
                     if (groupAutokick) {
-                        await ctx.group().kick([senderJid]);
+                        await ctx.group().kick(senderJid);
                     } else {
                         await addWarning(ctx, groupDb, senderJid, groupId);
                     }
@@ -343,7 +343,7 @@ module.exports = (bot) => {
                     await ctx.reply(formatter.quote(`⛔ Jangan tag grup di SW, gak ada yg peduli!`));
                     await ctx.deleteMessage(m.key);
                     if (groupAutokick) {
-                        await ctx.group().kick([senderJid]);
+                        await ctx.group().kick(senderJid);
                     } else {
                         await addWarning(ctx, groupDb, senderJid, groupId);
                     }
@@ -357,7 +357,7 @@ module.exports = (bot) => {
                     await ctx.reply(formatter.quote("⛔ Jangan toxic!"));
                     await ctx.deleteMessage(m.key);
                     if (groupAutokick) {
-                        await ctx.group().kick([senderJid]);
+                        await ctx.group().kick(senderJid);
                     } else {
                         await addWarning(ctx, groupDb, senderJid, groupId);
                     }
@@ -388,9 +388,7 @@ module.exports = (bot) => {
                             });
                             await db.delete(`menfess.${menfessId}`);
                         } else {
-                            await ctx.core.sendMessage(targetId, {
-                                forward: m
-                            });
+                            await ctx.forwardMessage(targetId, m);
                         }
                     }
                 }
@@ -410,7 +408,7 @@ module.exports = (bot) => {
             await bot.core.rejectCall(call.id, call.from);
             await db.set(`user.${senderId}.banned`, true);
 
-            await ctx.sendMessage(`${config.owner.id}@s.whatsapp.net`, {
+            await bot.core.sendMessage(`${config.owner.id}@s.whatsapp.net`, {
                 text: `📢 Akun @${senderId} telah diblokir secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`,
                 mentions: [senderJid]
             });
@@ -420,7 +418,7 @@ module.exports = (bot) => {
                 .setOrg(config.owner.organization)
                 .setNumber(config.owner.id)
                 .build();
-            return await bot.core.sendMessage(call.from, {
+            await bot.core.sendMessage(call.from, {
                 contacts: {
                     displayName: config.owner.name,
                     contacts: [{

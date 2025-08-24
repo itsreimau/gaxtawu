@@ -37,14 +37,13 @@ module.exports = {
                     parser: (val) => val
                 }
             });
-
             const type = flag?.type ? flag.type : (checkMedia || checkQuotedMedia);
             const host = flag?.host || config.system.uploaderHost;
 
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
             const result = await tools.cmd.upload(buffer, type, host);
 
-            return await ctx.reply({
+            await ctx.reply({
                 text: formatter.quote(`URL: ${result}`),
                 footer: config.msg.footer,
                 interactiveButtons: [{
@@ -56,7 +55,7 @@ module.exports = {
                 }]
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

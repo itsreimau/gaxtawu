@@ -39,9 +39,9 @@ module.exports = {
                 text: formatter.quote("📢 Kamu telah dihapus sebagai pengguna Premium oleh Owner!")
             });
 
-            return await ctx.reply(formatter.quote("✅ Berhasil menghapuskan Premium kepada pengguna itu!"));
+            await ctx.reply(formatter.quote("✅ Berhasil menghapuskan Premium kepada pengguna itu!"));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

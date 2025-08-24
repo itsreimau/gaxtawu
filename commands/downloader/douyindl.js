@@ -24,7 +24,7 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result;
 
-            return await ctx.reply({
+            await ctx.reply({
                 video: {
                     url: result.Video_HD || result.Video
                 },
@@ -33,7 +33,7 @@ module.exports = {
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };

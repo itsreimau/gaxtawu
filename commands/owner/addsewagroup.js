@@ -56,7 +56,7 @@ module.exports = {
                     }
                 });
 
-                return await ctx.reply(formatter.quote(`✅ Berhasil menyewakan bot ke grup ${ctx.isGroup() ? "ini" : "itu"} selama ${daysAmount} hari!`));
+                await ctx.reply(formatter.quote(`✅ Berhasil menyewakan bot ke grup ${ctx.isGroup() ? "ini" : "itu"} selama ${daysAmount} hari!`));
             } else {
                 await db.delete(`group.${groupId}.sewaExpiration`);
 
@@ -67,10 +67,10 @@ module.exports = {
                     }
                 });
 
-                return await ctx.reply(formatter.quote(`✅ Berhasil menyewakan bot ke grup ${ctx.isGroup() ? "ini" : "itu"} selamanya!`));
+                await ctx.reply(formatter.quote(`✅ Berhasil menyewakan bot ke grup ${ctx.isGroup() ? "ini" : "itu"} selamanya!`));
             }
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

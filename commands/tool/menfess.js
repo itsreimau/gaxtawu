@@ -46,13 +46,13 @@ module.exports = {
                 to: targetId
             });
 
-            return await ctx.reply({
+            await ctx.reply({
                 text: formatter.quote(`✅ Pesan berhasil terkirim!`),
                 footer: config.msg.footer,
                 buttons
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

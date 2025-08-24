@@ -15,7 +15,7 @@ module.exports = {
             const load = os.loadavg();
             const cpus = os.cpus();
 
-            return await ctx.reply({
+            await ctx.reply({
                 text: `${formatter.quote(`OS: ${os.type()} (${os.platform()})`)}\n` +
                     `${formatter.quote(`Arch: ${os.arch()}`)}\n` +
                     `${formatter.quote(`Release: ${os.release()}`)}\n` +
@@ -43,7 +43,7 @@ module.exports = {
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

@@ -20,7 +20,7 @@ module.exports = {
 
             const word = tools.cmd.getRandomElement((await axios.get(tools.api.createUrl("https://raw.githubusercontent.com", "/BochilTeam/database/master/kata-kata/bucin.json"))).data);
 
-            return await ctx.reply({
+            await ctx.reply({
                 text: `${formatter.quote(`@${ctx.getId(selected[0])} ❤️ @${ctx.getId(selected[1])}`)}\n` +
                     formatter.quote(word) || config.msg.notFound,
                 mentions: selected,
@@ -33,7 +33,7 @@ module.exports = {
                 }]
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

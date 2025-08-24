@@ -36,7 +36,7 @@ module.exports = {
 
                     const username = `@${input}`
                     await db.set(`user.${senderId}.username`, username);
-                    return await ctx.reply(formatter.quote(`✅ Username berhasil diubah menjadi ${formatter.inlineCode(username)}!`));
+                    await ctx.reply(formatter.quote(`✅ Username berhasil diubah menjadi ${formatter.inlineCode(username)}!`));
                     break;
                 }
                 case "autolevelup": {
@@ -46,14 +46,14 @@ module.exports = {
                     await db.set(setKey, newStatus);
 
                     const statusText = newStatus ? "diaktifkan" : "dinonaktifkan";
-                    return await ctx.reply(formatter.quote(`✅ Autolevelup berhasil ${statusText}!`));
+                    await ctx.reply(formatter.quote(`✅ Autolevelup berhasil ${statusText}!`));
                     break;
                 }
                 default:
-                    return await ctx.reply(formatter.quote(`❎ Setelan ${formatter.inlineCode(input)} tidak valid.`));
+                    await ctx.reply(formatter.quote(`❎ Setelan ${formatter.inlineCode(input)} tidak valid.`));
             }
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

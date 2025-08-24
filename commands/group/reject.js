@@ -38,9 +38,9 @@ module.exports = {
         try {
             await ctx.group().rejectPendingMembers([accountJid]);
 
-            return await ctx.reply(formatter.quote("✅ Berhasil ditolak!"));
+            await ctx.reply(formatter.quote("✅ Berhasil ditolak!"));
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

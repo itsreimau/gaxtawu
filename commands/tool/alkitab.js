@@ -38,7 +38,7 @@ module.exports = {
                 "\n" +
                 `${formatter.quote("─────")}\n`
             );
-            return await ctx.reply({
+            await ctx.reply({
                 text: `${formatter.quote(`Nama: ${result.name}`)}\n` +
                     `${formatter.quote(`Bab: ${result.chapter.chap}`)}\n` +
                     `${formatter.quote("─────")}\n` +
@@ -46,7 +46,7 @@ module.exports = {
                 footer: config.msg.footer
             });
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error, true);
+            await tools.cmd.handleError(ctx, error, true);
         }
     }
 };
