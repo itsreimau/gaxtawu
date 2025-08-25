@@ -1,3 +1,6 @@
+const {
+    Baileys
+} = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
@@ -24,7 +27,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
-            const uploadUrl = await tools.cmd.upload(buffer, "image");
+            const uploadUrl = await Baileys.uploadFile(buffer);
             const apiUrl = tools.api.createUrl("neko", "/ai/gemini-canvas", {
                 text: input,
                 imageUrl: uploadUrl

@@ -1,3 +1,7 @@
+const {
+    Baileys
+} = require("@itsreimau/gktw");
+
 module.exports = {
     name: "oadd",
     category: "owner",
@@ -15,7 +19,7 @@ module.exports = {
             formatter.quote(tools.msg.generateCmdExample(ctx.used, ctx.getId(ctx.sender.jid)))
         );
 
-        const accountJid = `${input.replace(/[^\d]/g, "")}@s.whatsapp.net`;
+        const accountJid = input.replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET;
 
         const isOnWhatsApp = await ctx.core.onWhatsApp(accountJid);
         if (isOnWhatsApp.length === 0) return await ctx.reply(formatter.quote("❎ Akun tidak ada di WhatsApp!"));

@@ -1,9 +1,13 @@
+const {
+    Baileys
+} = require("@itsreimau/gktw");
+
 module.exports = {
     name: "transfer",
     aliases: ["tf"],
     category: "profile",
     code: async (ctx) => {
-        const userJid = ctx.quoted?.senderJid || ctx.getMentioned()[0] || (ctx.args[0] ? `${ctx.args[0].replace(/[^\d]/g, "")}@s.whatsapp.net` : null);
+        const userJid = ctx.quoted?.senderJid || ctx.getMentioned()[0] || (ctx.args[0] ? ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET : null);
         const coinAmount = parseInt(ctx.args[ctx.quoted?.senderJid ? 0 : 1], 10) || null;
 
         const senderJid = ctx.sender.jid;

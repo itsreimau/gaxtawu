@@ -1,3 +1,7 @@
+const {
+    Baileys
+} = require("@itsreimau/gktw");
+
 module.exports = {
     name: "unbanuser",
     aliases: ["ubu", "unban"],
@@ -6,7 +10,7 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const userJid = ctx.quoted?.senderJid || ctx.getMentioned()[0] || (ctx.args[0] ? `${ctx.args[0].replace(/[^\d]/g, "")}@s.whatsapp.net` : null);
+        const userJid = ctx.quoted?.senderJid || ctx.getMentioned()[0] || (ctx.args[0] ? ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET : null);
 
         if (!userJid) return await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +

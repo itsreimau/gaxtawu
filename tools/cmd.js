@@ -1,9 +1,9 @@
 // Impor modul dan dependensi yang diperlukan
 const api = require("./api.js");
 const {
+    Baileys,
     MessageType
 } = require("@itsreimau/gktw");
-const uploader = require("@zanixongroup/uploader");
 const axios = require("axios");
 const didYouMean = require("didyoumean");
 const util = require("node:util");
@@ -76,8 +76,8 @@ function fakeMetaAiQuotedText(text) {
 
     const quoted = {
         key: {
-            remoteJid: "status@broadcast",
-            participant: "13135550002@s.whatsapp.net"
+            remoteJid: Baileys.STORIES_JID,
+            participant: Baileys.META_AI_JID
         },
         message: {
             conversation: text
@@ -116,7 +116,7 @@ async function handleError(ctx, error, useAxios = false, reportErrorToOwner = tr
     const errorText = util.format(error);
 
     consolefy.error(`Error: ${errorText}`);
-    if (config.system.reportErrorToOwner && reportErrorToOwner) await ctx.replyWithJid(`${config.owner.id}@s.whatsapp.net`, {
+    if (config.system.reportErrorToOwner && reportErrorToOwner) await ctx.replyWithJid(config.owner.id + Baileys.S_WHATSAPP_NET, {
         text: `${formatter.quote(isGroup ? `⚠️ Terjadi kesalahan dari grup: @${groupJid}, oleh: @${ctx.getId(ctx.sender.jid)}` : `⚠️ Terjadi kesalahan dari: @${ctx.getId(ctx.sender.jid)}`)}\n` +
             `${formatter.quote("─────")}\n` +
             formatter.monospace(errorText),
@@ -230,44 +230,6 @@ async function translate(text, to) {
     }
 }
 
-async function upload(buffer, type = "any", host = config.system.uploaderHost) {
-    if (!buffer) return null;
-
-    const hostMap = {
-        any: ["FastUrl", "Uguu", "Catbox", "Litterbox", "Cloudku"],
-        image: ["Quax", "Ryzumi", "Pomf"],
-        video: ["Quax", "Ryzumi", "Pomf", "Videy"],
-        audio: ["Quax", "Ryzumi", "Pomf"],
-        document: []
-    };
-
-    if (host && hostMap.any.includes(host)) {
-        try {
-            const url = await uploader[host](buffer);
-            if (url) return url;
-        } catch {}
-    }
-
-    const typeHosts = hostMap[type] || [];
-    for (const h of typeHosts) {
-        try {
-            const url = await uploader[h](buffer);
-            if (url) return url;
-        } catch {}
-    }
-
-    for (const h of hostMap.any) {
-        if (h === host || typeHosts.includes(h)) continue;
-
-        try {
-            const url = await uploader[h](buffer);
-            if (url) return url;
-        } catch {}
-    }
-
-    return null;
-}
-
 module.exports = {
     checkMedia,
     checkQuotedMedia,
@@ -279,6 +241,5 @@ module.exports = {
     isOwner,
     isUrl,
     parseFlag,
-    translate,
-    upload
+    translate
 };

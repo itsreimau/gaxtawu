@@ -1,3 +1,7 @@
+const {
+    Baileys
+} = require("@itsreimau/gktw");
+
 module.exports = {
     name: "listbanneduser",
     aliases: ["listban", "listbanned"],
@@ -22,7 +26,7 @@ module.exports = {
             });
 
             bannedUsers.forEach(userId => {
-                userMentions.push(`${userId}@s.whatsapp.net`);
+                userMentions.push(userId + Baileys.S_WHATSAPP_NET);
             });
 
             await ctx.reply({

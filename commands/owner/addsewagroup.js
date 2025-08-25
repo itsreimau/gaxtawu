@@ -1,3 +1,7 @@
+const {
+    Baileys
+} = require("@itsreimau/gktw");
+
 module.exports = {
     name: "addsewagroup",
     aliases: ["addsewa", "addsewagrup", "adg"],
@@ -6,7 +10,7 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const groupJid = ctx.isGroup() ? ctx.id : (ctx.args[0] ? `${ctx.args[0].replace(/[^\d]/g, "")}@g.us` : null);
+        const groupJid = ctx.isGroup() ? ctx.id : (ctx.args[0] ? ctx.args[0].replace(/[^\d]/g, "") + Baileys.G_US : null);
         const daysAmount = parseInt(ctx.args[ctx.isGroup() ? 0 : 1], 10) || null;
 
         if (!groupJid) return await ctx.reply(

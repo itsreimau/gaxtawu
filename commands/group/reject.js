@@ -1,3 +1,7 @@
+const {
+    Baileys
+} = require("@itsreimau/gktw");
+
 module.exports = {
     name: "reject",
     category: "group",
@@ -30,7 +34,7 @@ module.exports = {
             }
         }
 
-        const accountJid = `${input.replace(/[^\d]/g, "")}@s.whatsapp.net`;
+        const accountJid = input.replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET;
 
         const isPending = pendings.some(pending => pending.jid === accountJid);
         if (!isPending) return await ctx.reply(formatter.quote("❎ Akun tidak ditemukan di daftar anggota yang menunggu persetujuan."));

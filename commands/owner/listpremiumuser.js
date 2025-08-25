@@ -1,3 +1,7 @@
+const {
+    Baileys
+} = require("@itsreimau/gktw");
+
 module.exports = {
     name: "listpremiumuser",
     aliases: ["listprem", "listpremium"],
@@ -23,7 +27,7 @@ module.exports = {
             let userMentions = [];
 
             for (const user of premiumUsers) {
-                userMentions.push(`${user.id}@s.whatsapp.net`);
+                userMentions.push(user.id + Baileys.S_WHATSAPP_NET);
 
                 if (user.expiration) {
                     const daysLeft = tools.msg.convertMsToDuration(Date.now() - user.expiration, ["hari"]);

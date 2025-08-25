@@ -1,3 +1,6 @@
+const {
+    Baileys
+} = require("@itsreimau/gktw");
 module.exports = {
     name: "remini",
     category: "tool",
@@ -14,7 +17,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
-            const uploadUrl = await tools.cmd.upload(buffer, "image");
+            const uploadUrl = await Baileys.uploadFile(buffer);
             const apiUrl = tools.api.createUrl("davidcyril", "/remini", {
                 url: uploadUrl
             });

@@ -1,3 +1,7 @@
+const {
+    Baileys
+} = require("@itsreimau/gktw");
+
 module.exports = {
     name: "menfess",
     aliases: ["conf", "confes", "confess", "menf", "menfes"],
@@ -34,7 +38,7 @@ module.exports = {
                 }
             }];
 
-            await ctx.sendMessage(`${targetId}@s.whatsapp.net`, {
+            await ctx.sendMessage(targetId + Baileys.S_WHATSAPP_NET, {
                 text: menfessText,
                 footer: formatter.italic(`Setiap pesan yang kamu kirim akan diteruskan ke orang tersebut!`),
                 buttons

@@ -1,3 +1,7 @@
+const {
+    Baileys
+} = require("@itsreimau/gktw");
+
 module.exports = {
     name: "editimage",
     aliases: ["editimg"],
@@ -22,7 +26,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
-            const uploadUrl = await tools.cmd.upload(buffer, "image");
+            const uploadUrl = await Baileys.uploadFile(buffer);
             const result = tools.api.createUrl("zell", "/ai/editimg", {
                 imageUrl: uploadUrl,
                 prompt: input

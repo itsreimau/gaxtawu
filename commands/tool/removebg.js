@@ -1,3 +1,6 @@
+const {
+    Baileys
+} = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
@@ -17,7 +20,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
-            const uploadUrl = await tools.cmd.upload(buffer, "image");
+            const uploadUrl = await Baileys.uploadFile(buffer, "image");
             const apiUrl = tools.api.createUrl("izumi", "/tools/removebg", {
                 imageUrl: uploadUrl
             });

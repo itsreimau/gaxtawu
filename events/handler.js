@@ -1,5 +1,6 @@
 // Impor modul dan dependensi yang diperlukan
 const {
+    Baileys
     Events,
     VCardBuilder
 } = require("@itsreimau/gktw");
@@ -123,12 +124,12 @@ module.exports = (bot) => {
         }
 
         // Tetapkan config pada bot
-        const id = bot.getId(m.user.id);
+        const id = ;
         config.bot = {
             ...config.bot,
-            id,
             jid: m.user.id,
-            decodedJid: `${id}@s.whatsapp.net`,
+            decodedJid: bot.decodeJid(m.user.id),
+            id: bot.getId(m.user.id),
             readyAt: bot.readyAt,
             groupLink: await bot.core.groupInviteCode(config.bot.groupJid).then(code => `https://chat.whatsapp.com/${code}`).catch(() => "https://chat.whatsapp.com/FxEYZl2UyzAEI2yhaH34Ye")
         };
@@ -186,7 +187,7 @@ module.exports = (bot) => {
                 await ctx.block(senderJid);
                 await db.set(`user.${senderId}.banned`, true);
 
-                await ctx.sendMessage(`${config.owner.id}@s.whatsapp.net`, {
+                await ctx.sendMessage(config.owner.id + Baileys.S_WHATSAPP_NET, {
                     text: `📢 Akun @${senderId} telah diblokir secara otomatis karena alasan ${formatter.inlineCode(analyze.reason)}.`,
                     mentions: [senderJid]
                 });
@@ -283,7 +284,7 @@ module.exports = (bot) => {
                 const checkMedia = await tools.cmd.checkMedia(ctx.getMessageType(), "image");
                 if (checkMedia) {
                     const buffer = await ctx.msg.media.toBuffer();
-                    const uploadUrl = await tools.cmd.upload(buffer, "image");
+                    const uploadUrl = await Baileys.uploadFile(buffer);
                     const apiUrl = tools.api.createUrl("neko", "/tools/nsfw-checker", {
                         imageUrl: uploadUrl
                     });
@@ -378,7 +379,7 @@ module.exports = (bot) => {
                         to
                     }] of Object.entries(allMenfessDb)) {
                     if (senderId === from || senderId === to) {
-                        const targetId = `${senderId === from ? to : from}@s.whatsapp.net`;
+                        const targetId = senderId === from ? to : from + Baileys.S_WHATSAPP_NET;
                         if (m.content === "delete") {
                             const replyText = formatter.quote("✅ Sesi menfess telah dihapus!");
                             await ctx.reply(replyText);
@@ -407,7 +408,7 @@ module.exports = (bot) => {
             await bot.core.rejectCall(call.id, call.from);
             await db.set(`user.${senderId}.banned`, true);
 
-            await bot.core.sendMessage(`${config.owner.id}@s.whatsapp.net`, {
+            await bot.core.sendMessage(config.owner.id + Baileys.S_WHATSAPP_NET, {
                 text: `📢 Akun @${senderId} telah diblokir secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`,
                 mentions: [senderJid]
             });
