@@ -15,7 +15,7 @@ module.exports = {
             formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://gist.github.com/itsreimau/55792fc0386d183a581f8f723a6e4c73"))
         );
 
-        const isUrl = await tools.cmd.isUrl(url);
+        const isUrl = tools.cmd.isUrl(url);
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {

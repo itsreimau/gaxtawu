@@ -14,7 +14,7 @@ module.exports = {
             formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://www.xnxx.com/video-187eejb8/ova_hentai_evangelion"))
         );
 
-        const isUrl = await tools.cmd.isUrl(url);
+        const isUrl = tools.cmd.isUrl(url);
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {

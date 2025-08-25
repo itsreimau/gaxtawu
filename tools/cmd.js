@@ -14,7 +14,7 @@ const formatBotName = (botName) => {
     return botName.replace(/[aiueo0-9\W_]/g, "");
 };
 
-async function checkMedia(type, required) {
+function checkMedia(type, required) {
     if (!type || !required) return false;
 
     const mediaMap = {
@@ -43,7 +43,7 @@ async function checkMedia(type, required) {
     return false;
 }
 
-async function checkQuotedMedia(type, required) {
+function checkQuotedMedia(type, required) {
     if (!type || !required) return false;
 
     const mediaMap = {

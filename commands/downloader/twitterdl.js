@@ -15,7 +15,7 @@ module.exports = {
             formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://x.com/kaotaro12/status/1459493783964250118/video/1"))
         );
 
-        const isUrl = await tools.cmd.isUrl(url);
+        const isUrl = tools.cmd.isUrl(url);
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {

@@ -15,7 +15,7 @@ module.exports = {
             formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://www.facebook.com/reel/1112151989983701"))
         );
 
-        const isUrl = await tools.cmd.isUrl(url);
+        const isUrl = tools.cmd.isUrl(url);
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {

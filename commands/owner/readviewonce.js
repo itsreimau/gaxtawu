@@ -10,7 +10,7 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        if (!await tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["viewOnce"])) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["reply"], ["viewOnce"])));
+        if (!tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["viewOnce"])) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["reply"], ["viewOnce"])));
 
         try {
             const quoted = ctx.quoted;

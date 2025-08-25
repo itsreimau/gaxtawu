@@ -15,7 +15,7 @@ module.exports = {
             formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://www.mediafire.com/file/on2jvy5540bi22u/humanity-turned-into-lcl-scene.mp4/file"))
         );
 
-        const isUrl = await tools.cmd.isUrl(url);
+        const isUrl = tools.cmd.isUrl(url);
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {

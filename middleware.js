@@ -178,7 +178,7 @@ module.exports = (bot) => {
                         buttons: buttons || null
                     });
                 } else {
-                    return await ctx.react(ctx.id, reaction);
+                    return await ctx.replyReact(reaction);
                 }
             }
         }
@@ -269,7 +269,7 @@ module.exports = (bot) => {
                         buttons: buttons || null
                     });
                 } else {
-                    return await ctx.react(ctx.id, reaction);
+                    return await ctx.replyReact(reaction);
                 }
             }
         }

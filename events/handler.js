@@ -253,7 +253,7 @@ module.exports = (bot) => {
             // Penanganan antimedia
             for (const type of ["audio", "document", "gif", "image", "sticker", "video"]) {
                 if (groupDb?.option?.[`anti${type}`] && !isOwner && !isAdmin) {
-                    const checkMedia = await tools.cmd.checkMedia(ctx.getMessageType(), type);
+                    const checkMedia = tools.cmd.checkMedia(ctx.getMessageType(), type);
                     if (checkMedia) {
                         await ctx.reply(formatter.quote(`⛔ Jangan kirim ${type}!`));
                         await ctx.deleteMessage(m.key);
@@ -268,7 +268,7 @@ module.exports = (bot) => {
 
             // Penanganan antilink
             if (groupDb?.option?.antilink && !isOwner && !isAdmin) {
-                if (m.content && await tools.cmd.isUrl(m.content)) {
+                if (m.content && tools.cmd.isUrl(m.content)) {
                     await ctx.reply(formatter.quote("⛔ Jangan kirim link!"));
                     await ctx.deleteMessage(m.key);
                     if (groupAutokick) {
@@ -281,7 +281,7 @@ module.exports = (bot) => {
 
             // Penanganan antinsfw
             if (groupDb?.option?.antinsfw && !isOwner && !isAdmin) {
-                const checkMedia = await tools.cmd.checkMedia(ctx.getMessageType(), "image");
+                const checkMedia = tools.cmd.checkMedia(ctx.getMessageType(), "image");
                 if (checkMedia) {
                     const buffer = await ctx.msg.media.toBuffer();
                     const uploadUrl = await Baileys.uploadFile(buffer);
@@ -338,7 +338,7 @@ module.exports = (bot) => {
 
             // Penanganan antitagsw
             if (groupDb?.option?.antitagsw && !isOwner && !isAdmin) {
-                const checkMedia = await tools.cmd.checkMedia(ctx.getMessageType(), "groupStatusMention") || m.message?.groupStatusMentionMessage?.protocolMessage?.type === 25;
+                const checkMedia = tools.cmd.checkMedia(ctx.getMessageType(), "groupStatusMention") || m.message?.groupStatusMentionMessage?.protocolMessage?.type === 25;
                 if (checkMedia) {
                     await ctx.reply(formatter.quote(`⛔ Jangan tag grup di SW, gak ada yg peduli!`));
                     await ctx.deleteMessage(m.key);

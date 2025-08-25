@@ -19,7 +19,7 @@ module.exports = {
             formatter.quote(tools.msg.generateCmdExample(ctx.used, config.bot.thumbnail))
         );
 
-        const isUrl = await tools.cmd.isUrl(url);
+        const isUrl = tools.cmd.isUrl(url);
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
