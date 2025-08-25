@@ -14,7 +14,7 @@ module.exports = {
             return await ctx.reply(formatter.quote("✅ Berhasil me-unmute grup ini dari bot!"));
         }
 
-        const accountJid = ctx.quoted?.senderJid || await tools.cmd.getJidFromLid(ctx.getMentioned()[0]) || null;
+        const accountJid = ctx.quoted?.senderJid || ctx.getMentioned()[0] || null;
         const accountId = ctx.getId(accountJid);
 
         if (!accountJid) return await ctx.reply({

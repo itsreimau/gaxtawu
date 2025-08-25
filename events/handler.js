@@ -160,7 +160,6 @@ module.exports = (bot) => {
             config.bot.dbSize = fs.existsSync("database.json") ? tools.msg.formatSize(fs.statSync("database.json").size / 1024) : "N/A"; // Penangan pada ukuran database
 
             // Penanganan database pengguna
-            if (!userDb?.lid) await db.set(`user.${senderId}.lid`, (await ctx.core.onWhatsApp(senderJid))[0].lid);
             if (!userDb?.username) await db.set(`user.${senderId}.username`, `@user_${tools.cmd.generateUID(senderId, false)}`);
             if (!userDb?.uid || userDb?.uid !== tools.cmd.generateUID(senderId)) await db.set(`user.${senderId}.uid`, tools.cmd.generateUID(senderId));
             if (userDb?.premium && Date.now() > userDb.premiumExpiration) {
@@ -239,7 +238,7 @@ module.exports = (bot) => {
             }
 
             // Penanganan AFK (Pengguna yang disebutkan atau di-balas/quote)
-            const userAfkMentions = await Promise.all((ctx.quoted?.senderJid ? [ctx.getId(ctx.quoted?.senderJid)] : (ctx.getMentioned()).map(lid => tools.cmd.getJidFromLid(lid)).map((jid) => ctx.getId(jid))));
+            const userAfkMentions = ctx.quoted?.senderJid ? [ctx.getId(ctx.quoted.senderJid)] : ctx.getMentioned().map(jid => ctx.getId(jid));
             if (userAfkMentions.length > 0) {
                 for (const userAfkMention of userAfkMentions) {
                     const userAfk = await db.get(`user.${userAfkMention}.afk`) || {};
