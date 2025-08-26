@@ -124,7 +124,6 @@ module.exports = (bot) => {
         }
 
         // Tetapkan config pada bot
-        const id = ;
         config.bot = {
             ...config.bot,
             jid: m.user.id,
