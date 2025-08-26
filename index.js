@@ -20,7 +20,7 @@ const c = new Consolefy({
 });
 
 // Inisialisasi SimplDB untuk Database
-const dbFile = path.join(__dirname, "database.json");
+const dbFile = path.resolve(__dirname, "database.json");
 if (!fs.existsSync(dbFile)) fs.writeFileSync(dbFile, "{}", "utf8");
 
 // Tetapkan variabel global

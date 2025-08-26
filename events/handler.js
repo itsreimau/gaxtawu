@@ -1,6 +1,6 @@
 // Impor modul dan dependensi yang diperlukan
 const {
-    Baileys
+    Baileys,
     Events,
     VCardBuilder
 } = require("@itsreimau/gktw");
