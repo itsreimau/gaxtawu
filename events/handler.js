@@ -238,7 +238,7 @@ module.exports = (bot) => {
             }
 
             // Penanganan AFK (Pengguna yang disebutkan atau di-balas/quote)
-            const userAfkMentions = ctx.quoted?.senderJid ? [ctx.getId(ctx.quoted.senderJid)] : ctx.getMentioned().map(jid => ctx.getId(jid));
+            const userAfkMentions = ctx.quoted?.senderJid ? [ctx.getId(ctx.quoted.senderJid)] : (await ctx.getMentioned()).map(jid => ctx.getId(jid));
             if (userAfkMentions.length > 0) {
                 for (const userAfkMention of userAfkMentions) {
                     const userAfk = await db.get(`user.${userAfkMention}.afk`) || {};
