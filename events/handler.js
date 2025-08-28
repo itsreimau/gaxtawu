@@ -99,8 +99,7 @@ async function addWarning(ctx, groupDb, senderJid, groupId) {
     if (currentWarnings >= maxWarnings) {
         await ctx.reply(formatter.quote(`⛔ Kamu telah menerima ${maxWarnings} warning dan akan dikeluarkan dari grup!`));
         if (!config.system.restrict) await ctx.group().kick(senderJid);
-        const updatedWarnings = warnings.filter(warning => warning.userId !== senderId);
-        await db.set(`group.${groupId}.warnings`, updatedWarnings);
+        await db.set(`group.${groupId}.warnings`, warnings.filter(warning => warning.userId !== senderId));
     }
 }
 
@@ -330,8 +329,7 @@ module.exports = (bot) => {
                     } else {
                         await addWarning(ctx, groupDb, senderJid, groupId);
                     }
-                    const updatedSpamData = spamData.filter(spam => spam.userId !== senderId);
-                    await db.set(`group.${groupId}.spam`, updatedSpamData);
+                    await db.set(`group.${groupId}.spam`, spamData.filter(spam => spam.userId !== senderId));
                 }
             }
 

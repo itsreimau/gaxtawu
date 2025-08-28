@@ -34,8 +34,7 @@ module.exports = {
             const newWarning = currentWarnings - 1;
 
             if (userWarning && newWarning <= 0) {
-                const updatedWarnings = warnings.filter(warning => warning.userId !== accountId);
-                await db.set(`group.${groupId}.warnings`, updatedWarnings);
+                await db.set(`group.${groupId}.warnings`, warnings.filter(warning => warning.userId !== accountId));
             } else {
                 userWarning.count = newWarning;
                 await db.set(`group.${groupId}.warnings`, warnings);
