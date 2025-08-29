@@ -28,7 +28,7 @@ module.exports = {
                 "misc": "Miscellaneous"
             };
 
-            let text = `Halo @${ctx.getId(ctx.sender.jid)}, berikut adalah daftar perintah yang tersedia!\n` +
+            let text = `Halo, @${ctx.getId(ctx.sender.jid)}! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}. Saya bisa melakukan banyak perintah, seperti membuat stiker, menggunakan AI untuk pekerjaan tertentu, dan beberapa perintah berguna lainnya.\n` +
                 "\n" +
                 `${formatter.quote(`Tanggal: ${moment.tz(config.system.timeZone).locale("id").format("dddd, DD MMMM YYYY")}`)}\n` +
                 `${formatter.quote(`Waktu: ${moment.tz(config.system.timeZone).format("HH.mm.ss")}`)}\n` +
@@ -37,7 +37,7 @@ module.exports = {
                 `${formatter.quote(`Database: ${config.bot.dbSize} (Simpl.DB - JSON)`)}\n` +
                 `${formatter.quote("Library: @itsreimau/gktw (Fork of @mengkodingan/ckptw)")}\n` +
                 "\n" +
-                `${formatter.italic("Jangan lupa berdonasi agar bot tetap online!")}\n` +
+                `${formatter.italic("Jangan lupa berdonasi agar bot tetap online.")}\n` +
                 `${config.msg.readmore}\n`;
 
             for (const category of Object.keys(tag)) {
@@ -50,7 +50,7 @@ module.exports = {
                     }));
 
                 if (cmds.length > 0) {
-                    text += `◆ ${formatter.bold(tag[category])}\n`;
+                    text += `✾ ${formatter.bold(tag[category])}\n`;
 
                     cmds.forEach(cmd => {
                         let permissionsText = "";

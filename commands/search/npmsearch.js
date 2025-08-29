@@ -30,7 +30,7 @@ module.exports = {
                 formatter.quote(`URL: ${res.links.npm}`)
             ).join(
                 "\n" +
-                `${formatter.quote("─────")}\n`
+                `${formatter.quote("· · ─ ·✶· ─ · ·")}\n`
             );
             await ctx.reply({
                 text: resultText || config.msg.notFound,

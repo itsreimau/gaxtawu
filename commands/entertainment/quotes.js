@@ -14,7 +14,7 @@ module.exports = {
 
             await ctx.reply({
                 text: `${formatter.quote(`“${result.quote}”`)}\n` +
-                    `${formatter.quote("─────")}\n` +
+                    `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
                     `${formatter.quote(`Nama: ${result.author.name}`)}\n` +
                     formatter.quote(`Deskripsi: ${result.author.description}`),
                 footer: config.msg.footer,

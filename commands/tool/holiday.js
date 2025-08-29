@@ -23,7 +23,7 @@ module.exports = {
                     formatter.quote(formattedDate);
             }).join(
                 "\n" +
-                `${formatter.quote("─────")}\n`
+                `${formatter.quote("· · ─ ·✶· ─ · ·")}\n`
             );
             await ctx.reply({
                 text: resultText || config.msg.notFound,

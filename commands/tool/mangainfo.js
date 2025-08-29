@@ -29,7 +29,7 @@ module.exports = {
                     `${formatter.quote(`Bab: ${result.chapters}`)}\n` +
                     `${formatter.quote(`Volume: ${result.volumes}`)}\n` +
                     `${formatter.quote(`URL: ${result.url}`)}\n` +
-                    `${formatter.quote("─────")}\n` +
+                    `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
                     await tools.cmd.translate(result.synopsis, "id"),
                 footer: config.msg.footer
             });

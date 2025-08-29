@@ -36,12 +36,12 @@ module.exports = {
                 formatter.quote(`${vers.text}`)
             ).join(
                 "\n" +
-                `${formatter.quote("─────")}\n`
+                `${formatter.quote("· · ─ ·✶· ─ · ·")}\n`
             );
             await ctx.reply({
                 text: `${formatter.quote(`Nama: ${result.name}`)}\n` +
                     `${formatter.quote(`Bab: ${result.chapter.chap}`)}\n` +
-                    `${formatter.quote("─────")}\n` +
+                    `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
                     resultText,
                 footer: config.msg.footer
             });

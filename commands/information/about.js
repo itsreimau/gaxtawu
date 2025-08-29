@@ -8,7 +8,7 @@ module.exports = {
 
             await ctx.reply({
                 text: `${formatter.quote(`👋 Halo! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}. Saya bisa melakukan banyak perintah, seperti membuat stiker, menggunakan AI untuk pekerjaan tertentu, dan beberapa perintah berguna lainnya. Saya di sini untuk menghibur dan menyenangkan kamu!`)}\n` + // Dapat diubah sesuai keinginan
-                    `${formatter.quote("─────")}\n` +
+                    `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
                     `${formatter.quote(`Nama Bot: ${config.bot.name}`)}\n` +
                     `${formatter.quote(`Versi: ${require("../../package.json").version}`)}\n` +
                     `${formatter.quote(`Owner: ${config.owner.name}`)}\n` +

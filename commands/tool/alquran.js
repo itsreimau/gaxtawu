@@ -46,7 +46,7 @@ module.exports = {
                     await ctx.reply({
                         text: `${formatter.quote(`Surat: ${result.name}`)}\n` +
                             `${formatter.quote(`Arti: ${result.translate}`)}\n` +
-                            `${formatter.quote("─────")}\n` +
+                            `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
                             versesText,
                         footer: config.msg.footer
                     });
@@ -60,7 +60,7 @@ module.exports = {
                     await ctx.reply({
                         text: `${formatter.quote(`Surat: ${result.name}`)}\n` +
                             `${formatter.quote(`Arti: ${result.translate}`)}\n` +
-                            `${formatter.quote("─────")}\n` +
+                            `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
                             `${verse.text} (${verse.transliteration})\n` +
                             formatter.italic(verse.translation_id),
                         footer: config.msg.footer
@@ -75,7 +75,7 @@ module.exports = {
                 await ctx.reply({
                     text: `${formatter.quote(`Surat: ${result.name}`)}\n` +
                         `${formatter.quote(`Arti: ${result.translate}`)}\n` +
-                        `${formatter.quote("─────")}\n` +
+                        `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
                         versesText,
                     footer: config.msg.footer
                 });

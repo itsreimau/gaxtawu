@@ -29,11 +29,11 @@ module.exports = {
                 formatter.quote(res.summary)
             ).join(
                 "\n" +
-                `${formatter.quote("─────")}\n`
+                `${formatter.quote("· · ─ ·✶· ─ · ·")}\n`
             );
             await ctx.reply({
                 text: `${formatter.quote(result.summary)}\n` +
-                    `${formatter.quote("─────")}\n` +
+                    `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
                     resultText,
                 footer: config.msg.footer
             });

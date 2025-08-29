@@ -173,6 +173,12 @@ module.exports = (bot) => {
             if (botDb?.mode === "private" && isGroup && !isOwner && !userDb?.premium) return;
             if (botDb?.mode === "self" && !isOwner) return;
 
+            // Pengecekan mute pada grup
+            if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;
+            if (groupDb?.mutebot === "owner" && !isOwner) return;
+            const muteList = groupDb?.mute || [];
+            if (muteList.includes(senderId)) await ctx.deleteMessage(m.key);
+
             // Pengecekan untuk tidak tersedia pada malam hari
             const now = moment().tz(config.system.timeZone);
             const hour = now.hour();
@@ -223,12 +229,6 @@ module.exports = (bot) => {
 
             // Variabel umum
             const groupAutokick = groupDb?.option?.autokick;
-
-            // Pengecekan mute pada grup
-            if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;
-            if (groupDb?.mutebot === "owner" && !isOwner) return;
-            const muteList = groupDb?.mute || [];
-            if (muteList.includes(senderId)) await ctx.deleteMessage(m.key);
 
             // Penanganan database grup
             if (groupDb?.sewa && Date.now() > userDb?.sewaExpiration) {
