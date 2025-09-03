@@ -20,7 +20,7 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
             const uploadUrl = await Baileys.uploadFile(buffer);
-            const apiUrl = tools.api.createUrl("neko", "/tools/find-waifu", {
+            const apiUrl = tools.api.createUrl("nekolabs", "/tools/find-waifu", {
                 imageUrl: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.result.character.name;

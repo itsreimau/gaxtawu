@@ -18,7 +18,7 @@ async function get(type) {
                 break;
             }
             case "alquran": {
-                const data = (await axios.get(api.createUrl("neko", "/religious/nuquran-listsurah"))).data.result.list;
+                const data = (await axios.get(api.createUrl("nekolabs", "/religious/nuquran-listsurah"))).data.result.list;
                 text = createList(data, list =>
                     `${formatter.quote(`Surah: ${list.name} (${list.id})`)}\n` +
                     `${formatter.quote(`Jumlah Ayat: ${list.verse_count}`)}`

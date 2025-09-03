@@ -2,7 +2,7 @@ module.exports = {
     name: "dalle",
     category: "ai-image",
     permissions: {
-        coin: 10
+        premium: true
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || ctx.quoted?.content || null;
@@ -14,15 +14,15 @@ module.exports = {
         );
 
         try {
-            const result = tools.api.createUrl("davidcyril", "/ai/dalle", {
-                text: input
+            const result = tools.api.createUrl("zell", "/ai/dalle", {
+                prompt: input
             });
 
             await ctx.reply({
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("png"),
+                mimetype: tools.mime.lookup("jpg"),
                 caption: formatter.quote(`Prompt: ${input}`),
                 footer: config.msg.footer,
                 buttons: [{

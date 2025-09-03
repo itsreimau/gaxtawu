@@ -1,6 +1,8 @@
 const {
     Baileys
 } = require("@itsreimau/gktw");
+const axios = require("axios");
+
 module.exports = {
     name: "remini",
     category: "tool",
@@ -18,9 +20,10 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
             const uploadUrl = await Baileys.uploadFile(buffer);
-            const apiUrl = tools.api.createUrl("davidcyril", "/remini", {
+            const apiUrl = tools.api.createUrl("hang", "/imagecreator/remini", {
                 url: uploadUrl
             });
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 image: {

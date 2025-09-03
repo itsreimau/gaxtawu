@@ -283,7 +283,7 @@ module.exports = (bot) => {
                 if (checkMedia) {
                     const buffer = await ctx.msg.media.toBuffer();
                     const uploadUrl = await Baileys.uploadFile(buffer);
-                    const apiUrl = tools.api.createUrl("neko", "/tools/nsfw-checker", {
+                    const apiUrl = tools.api.createUrl("nekolabs", "/tools/nsfw-checker", {
                         imageUrl: uploadUrl
                     });
                     const result = (await axios.get(apiUrl)).data.result.labelName.toLowerCase();

@@ -214,15 +214,16 @@ function parseFlag(argsString, customRules = {}) {
     return options;
 }
 
-async function translate(text, to) {
+async function translate(text, target, source = "auto") {
     if (!text || !to) return null;
 
     try {
-        const apiUrl = api.createUrl("davidcyril", "/tools/translate", {
+        const apiUrl = api.createUrl("siputzx", "/api/tools/translate", {
             text,
-            to
+            source,
+            target
         });
-        const result = (await axios.get(apiUrl)).data.translated_text;
+        const result = (await axios.get(apiUrl)).data.data.translatedText;
         return result;
     } catch (error) {
         consolefy.error(`Error: ${util.format(error)}`);

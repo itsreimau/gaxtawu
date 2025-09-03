@@ -30,7 +30,7 @@ module.exports = {
                     `${formatter.quote(`Volume: ${result.volumes}`)}\n` +
                     `${formatter.quote(`URL: ${result.url}`)}\n` +
                     `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
-                    await tools.cmd.translate(result.synopsis, "id"),
+                    await tools.cmd.translate(result.synopsis, "id", "en"),
                 footer: config.msg.footer
             });
         } catch (error) {

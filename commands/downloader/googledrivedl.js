@@ -19,15 +19,17 @@ module.exports = {
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            const apiUrl = tools.api.createUrl("davidcyril", "/gdrive", {
+            const apiUrl = tools.api.createUrl("hang", "/download/gdrive", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data;
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
-                document: result.download_link,
-                fileName: result.name,
-                mimetype: tools.mime.lookup(result.name) || "application/octet-stream",
+                document: {
+                    url: result.downloadUrl
+                },
+                fileName: result.fileName,
+                mimetype: result.mimetype || "application/octet-stream",
                 caption: formatter.quote(`URL: ${url}`),
                 footer: config.msg.footer
             });

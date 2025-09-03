@@ -16,7 +16,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("neko", "/search/github-search", {
+            const apiUrl = tools.api.createUrl("nekolabs", "/search/github-search", {
                 q: input
             });
             const result = (await axios.get(apiUrl)).data.result;
@@ -24,7 +24,6 @@ module.exports = {
             const resultText = result.map(res =>
                 `${formatter.quote(`Nama: ${res.full_name}`)}\n` +
                 `${formatter.quote(`Deskripsi: ${res.description}`)}\n` +
-                `${formatter.quote(`Jumlah: ${res.stars} stargazers, ${res.forks} forks`)}\n` +
                 `${formatter.quote(`Bahasa: ${res.language}`)}\n` +
                 formatter.quote(`URL: ${res.url}`)
             ).join(

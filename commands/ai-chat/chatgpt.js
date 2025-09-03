@@ -17,10 +17,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("davidcyril", "/ai/chatbot", {
-                query: input
+            const apiUrl = tools.api.createUrl("hang", "/ai/chatgpt4o", {
+                text: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.data;
 
             await ctx.reply(result);
         } catch (error) {

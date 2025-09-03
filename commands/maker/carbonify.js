@@ -15,7 +15,7 @@ module.exports = {
         );
 
         try {
-            const result = tools.api.createUrl("neko", "/maker/carbonify", {
+            const result = tools.api.createUrl("nekolabs", "/maker/carbonify", {
                 text: input
             });
 

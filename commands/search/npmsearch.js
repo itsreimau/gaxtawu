@@ -26,7 +26,7 @@ module.exports = {
 
             const resultText = result.map(res =>
                 `${formatter.quote(`Nama: ${res.title}`)}\n` +
-                `${formatter.quote(`Pengembang: ${res.author}`)}\n` +
+                `${formatter.quote(`Developer: ${res.author}`)}\n` +
                 formatter.quote(`URL: ${res.links.npm}`)
             ).join(
                 "\n" +

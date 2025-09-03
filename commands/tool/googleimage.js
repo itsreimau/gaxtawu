@@ -16,10 +16,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("davidcyril", "/googleimage", {
+            const apiUrl = tools.api.createUrl("diibot", "/api/search/gimage", {
                 query: input
             });
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.results);
+            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result).link;
 
             await ctx.reply({
                 image: {

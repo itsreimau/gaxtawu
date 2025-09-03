@@ -27,7 +27,7 @@ module.exports = {
             await ctx.reply({
                 text: `${formatter.quote(`Judul: ${searchResult.title}`)}\n` +
                     `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
-                    result,
+                    result || config.msg.notFound,
                 footer: config.msg.footer
             });
         } catch (error) {

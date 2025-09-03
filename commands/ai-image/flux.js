@@ -2,7 +2,7 @@ module.exports = {
     name: "flux",
     category: "ai-image",
     permissions: {
-        premium: true
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || ctx.quoted?.content || null;
@@ -14,7 +14,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("davidcyril", "/flux", {
+            const apiUrl = tools.api.createUrl("siputzx", "/api/ai/flux", {
                 prompt: input
             });
 

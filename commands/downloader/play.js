@@ -85,13 +85,14 @@ module.exports = {
                     mimetype: tools.mime.lookup("mp3")
                 });
             } else {
-                const searchApiUrl = tools.api.createUrl("davidcyril", "/youtube/search", {
+                const searchApiUrl = tools.api.createUrl("diibot", "/api/search/youtube", {
                     query: input
                 });
-                const searchResult = (await axios.get(searchApiUrl)).data.results[searchIndex];
+                const searchResult = (await axios.get(searchApiUrl)).data.result[searchIndex];
 
                 await ctx.reply({
                     text: `${formatter.quote(`Judul: ${searchResult.title}`)}\n` +
+                        `${formatter.quote(`Artis: ${searchResult.author.name}`)}\n` +
                         formatter.quote(`URL: ${searchResult.url}`),
                     footer: config.msg.footer
                 });

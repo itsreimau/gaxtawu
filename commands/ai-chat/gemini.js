@@ -16,10 +16,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("davidcyril", "/ai/gemini", {
-                text: input
+            const apiUrl = tools.api.createUrl("izumi", "/ai/geminiai", {
+                messages: input
             });
-            const result = (await axios.get(apiUrl)).data.message;
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply(result);
         } catch (error) {

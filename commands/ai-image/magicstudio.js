@@ -1,32 +1,30 @@
-const axios = require("axios");
-
 module.exports = {
-    name: "devianart",
-    aliases: ["devian"],
-    category: "tool",
+    name: "magicstudio",
+    aliases: ["magic", "magics", "mstudio"],
+    category: "ai-image",
     permissions: {
-        premium: true
+        coin: 10
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || null;
+        const input = ctx.args.join(" ") || ctx.quoted?.content || null;
 
         if (!input) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "rei ayanami"))
+            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "anime girl with short blue hair"))}\n` +
+            formatter.quote(tools.msg.generateNotes(["Balas atau quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."]))
         );
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/search/devianart", {
-                q: input
+            const result = tools.api.createUrl("zell", "/ai/magicstudio", {
+                prompt: input
             });
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result).imageUrl;
 
             await ctx.reply({
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("jpeg"),
-                caption: formatter.quote(`Kueri: ${input}`),
+                mimetype: tools.mime.lookup("jpg"),
+                caption: formatter.quote(`Prompt: ${input}`),
                 footer: config.msg.footer,
                 buttons: [{
                     buttonId: `${ctx.used.prefix + ctx.used.command} ${input}`,
