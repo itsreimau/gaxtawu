@@ -1,7 +1,5 @@
 // Impor modul dan dependensi yang diperlukan
-const {
-    Formatter
-} = require("@itsreimau/gktw");
+const { Formatter } = require("@itsreimau/gktw");
 
 // Konfigurasi
 global.config = {

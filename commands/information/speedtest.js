@@ -30,8 +30,8 @@ module.exports = {
 
             await ctx.reply({
                 text: `${formatter.quote(`Latency: ${tools.msg.convertMsToDuration(latency)}`)}\n` +
-                    `${formatter.quote(`Download: ${tools.msg.formatSizePerSecond(downloadSpeed)}`)}\n` +
-                    formatter.quote(`Upload: ${tools.msg.formatSizePerSecond(uploadSpeed)}`),
+                    `${formatter.quote(`Download: ${tools.msg.formatSize(downloadSpeed, true)}`)}\n` +
+                    formatter.quote(`Upload: ${tools.msg.formatSize(uploadSpeed, true)}`),
                 footer: config.msg.footer
             });
         } catch (error) {

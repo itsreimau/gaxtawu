@@ -1,6 +1,4 @@
-const {
-    Baileys
-} = require("@itsreimau/gktw");
+const { Baileys } = require("@itsreimau/gktw");
 
 module.exports = {
     name: "delsewagroup",

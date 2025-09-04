@@ -1,10 +1,7 @@
 // Impor modul dan dependensi yang diperlukan
 const middleware = require("./middleware.js");
 const events = require("./events/handler.js");
-const {
-    Client,
-    CommandHandler
-} = require("@itsreimau/gktw");
+const { Client, CommandHandler } = require("@itsreimau/gktw");
 const path = require("node:path");
 const util = require("node:util");
 

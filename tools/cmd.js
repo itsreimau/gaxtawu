@@ -1,9 +1,6 @@
 // Impor modul dan dependensi yang diperlukan
 const api = require("./api.js");
-const {
-    Baileys,
-    MessageType
-} = require("@itsreimau/gktw");
+const { Baileys, MessageType } = require("@itsreimau/gktw");
 const axios = require("axios");
 const didYouMean = require("didyoumean");
 const util = require("node:util");

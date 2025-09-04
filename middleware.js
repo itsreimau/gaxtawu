@@ -1,7 +1,5 @@
 // Impor modul dan dependensi yang diperlukan
-const {
-    Cooldown
-} = require("@itsreimau/gktw");
+const { Cooldown } = require("@itsreimau/gktw");
 const moment = require("moment-timezone");
 
 // Fungsi untuk mengecek koin pengguna
@@ -30,13 +28,6 @@ module.exports = (bot) => {
         const userDb = await db.get(`user.${senderId}`) || {};
         const groupDb = await db.get(`group.${groupId}`) || {};
 
-        // Log command masuk
-        if (isGroup && !ctx.msg.key.fromMe) {
-            consolefy.info(`Incoming command: ${ctx.used.command}, from group: ${groupId}, by: ${senderId}`);
-        } else if (isPrivate && !ctx.msg.key.fromMe) {
-            consolefy.info(`Incoming command: ${ctx.used.command}, from: ${senderId}`);
-        }
-
         // Pengecekan mode bot (group, private, self)
         if (botDb?.mode === "group" && isPrivate && !isOwner && !userDb?.premium) return;
         if (botDb?.mode === "private" && isGroup && !isOwner && !userDb?.premium) return;
@@ -47,6 +38,13 @@ module.exports = (bot) => {
         if (groupDb?.mutebot === "owner" && !isOwner) return;
         const muteList = groupDb?.mute || [];
         if (muteList.includes(senderId)) return;
+
+        // Log command masuk
+        if (isGroup && !ctx.msg.key.fromMe) {
+            consolefy.info(`Incoming command: ${ctx.used.command}, from group: ${groupId}, by: ${senderId}`);
+        } else if (isPrivate && !ctx.msg.key.fromMe) {
+            consolefy.info(`Incoming command: ${ctx.used.command}, from: ${senderId}`);
+        }
 
         // Menambah XP pengguna dan menangani level-up
         const xpGain = 10;

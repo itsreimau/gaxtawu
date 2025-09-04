@@ -1,13 +1,7 @@
 // Impor modul dan dependensi yang diperlukan
-const {
-    Baileys,
-    Events,
-    VCardBuilder
-} = require("@itsreimau/gktw");
+const { Baileys, Events, VCardBuilder } = require("@itsreimau/gktw");
 const axios = require("axios");
-const {
-    analyzeMessage
-} = require("guaranteed_security");
+const { analyzeMessage } = require("guaranteed_security");
 const moment = require("moment-timezone");
 const fs = require("node:fs");
 

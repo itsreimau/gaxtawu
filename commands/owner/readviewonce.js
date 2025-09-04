@@ -1,6 +1,4 @@
-const {
-    MessageType
-} = require("@itsreimau/gktw");
+const { MessageType } = require("@itsreimau/gktw");
 
 module.exports = {
     name: "readviewonce",
@@ -10,13 +8,13 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        if (!tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["viewOnce"])) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["reply"], ["viewOnce"])));
+        if (!tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["audio", "image", "video"])) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["reply"], ["viewOnce"])));
 
         try {
             const quoted = ctx.quoted;
-            const quotedType = Object.keys(quoted).find(key => key.endsWith("Message"));
+            const quotedType = quoted.contentType;
             const msg = quoted[quotedType];
-            const buffer = await ctx.quoted?.media.toBuffer();
+            const buffer = await quoted?.media.toBuffer();
 
             const options = {
                 mimetype: msg.mimetype,

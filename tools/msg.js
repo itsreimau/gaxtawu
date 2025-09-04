@@ -1,5 +1,3 @@
-const bytes = ["yBytes", "zBytes", "aBytes", "fBytes", "pBytes", "nBytes", "µBytes", "mBytes", "Bytes", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"];
-
 function convertMsToDuration(ms, units = []) {
     if (!ms || ms <= 0) return "0 hari";
 
@@ -37,11 +35,12 @@ function convertMsToDuration(ms, units = []) {
     return result.join(" ") || "0 detik";
 }
 
-function formatSize(byteCount) {
-    if (!byteCount) return "0 yBytes";
+function formatSize(byteCount, withPerSecond = false) {
+    if (!byteCount) return `0 yBytes${withPerSecond ? "/s" : ""}`;
 
     let index = 8;
     let size = byteCount;
+    const bytes = ["yBytes", "zBytes", "aBytes", "fBytes", "pBytes", "nBytes", "µBytes", "mBytes", "Bytes", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"];
 
     while (size < 1 && index > 0) {
         size *= 1024;
@@ -53,26 +52,7 @@ function formatSize(byteCount) {
         index++;
     }
 
-    return `${size.toFixed(2)} ${bytes[index]}`;
-}
-
-function formatSizePerSecond(byteCount) {
-    if (!byteCount) return "0 yBytes/s";
-
-    let index = 8;
-    let size = byteCount;
-
-    while (size < 1 && index > 0) {
-        size *= 1024;
-        index--;
-    }
-
-    while (size >= 1024 && index < bytes.length - 1) {
-        size /= 1024;
-        index++;
-    }
-
-    return `${size.toFixed(2)} ${bytes[index]}/s`;
+    return `${size.toFixed(2)} ${bytes[index]}${withPerSecond ? "/s" : ""}`;
 }
 
 function generateCmdExample(used, args) {

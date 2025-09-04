@@ -1,12 +1,8 @@
 // Impor modul dan dependensi yang diperlukan
 require("./config.js");
 const pkg = require("./package.json");
-const {
-    Consolefy
-} = require("@mengkodingan/consolefy");
-const {
-    execSync
-} = require("node:child_process");
+const { Consolefy } = require("@mengkodingan/consolefy");
+const { execSync } = require("node:child_process");
 
 // Buat consolefy
 const consolefy = new Consolefy({
