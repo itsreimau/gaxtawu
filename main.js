@@ -26,8 +26,8 @@ consolefy.log("Connecting..."); // Logging proses koneksi
 
 // Buat instance bot
 const bot = new Client({
-    authDir: authAdapter.adapter === "default" ? path.resolve(__dirname, authAdapter.default.authDir) : null,
     authAdapter: selectedAuthAdapter,
+    authDir: authAdapter.adapter === "default" ? path.resolve(__dirname, authAdapter.default.authDir) : null,
     WAVersion: [2, 3000, 1025091846],
     printQRInTerminal: !system.usePairingCode,
     phoneNumber: botConfig.phoneNumber,

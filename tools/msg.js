@@ -131,7 +131,6 @@ function ucwords(text) {
 module.exports = {
     convertMsToDuration,
     formatSize,
-    formatSizePerSecond,
     generateCmdExample,
     generateInstruction,
     generatesFlagInfo,
