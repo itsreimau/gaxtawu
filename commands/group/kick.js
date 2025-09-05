@@ -1,6 +1,6 @@
 module.exports = {
     name: "kick",
-    aliases: ["dor"],
+    aliases: ["dor", "kik"],
     category: "group",
     permissions: {
         admin: true,

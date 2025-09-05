@@ -1,3 +1,5 @@
+const { Baileys } = require("@itsreimau/gktw");
+
 const session = new Map();
 
 module.exports = {
@@ -66,7 +68,7 @@ module.exports = {
                 const participantAnswer = m.content.toLowerCase();
                 const participantJid = m.sender;
                 const participantId = ctx.getId(participantJid);
-                const isGroup = m.jid.endsWith("@g.us");
+                const isGroup = m.jid.endsWith(Baileys.G_US);
 
                 if (!game.started && isGroup && participantId === accountId) {
                     if (participantAnswer === "accept") {

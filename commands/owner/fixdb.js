@@ -320,7 +320,7 @@ module.exports = {
                 return validIds.length;
             };
 
-            if (!mappings[input]) return await ctx.editMessage(waitMsg.key, formatter.quote(`❌ Invalid data type: ${input}`));
+            if (!mappings[input]) return await ctx.editMessage(waitMsg.key, formatter.quote(`❌ Tipe data tidak valid: ${input}`));
 
             const processedCount = await processData(input, data[input]);
 

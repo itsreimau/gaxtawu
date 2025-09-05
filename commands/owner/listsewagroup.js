@@ -1,3 +1,5 @@
+const { Baileys } = require("@itsreimau/gktw");
+
 module.exports = {
     name: "listsewagroup",
     aliases: ["listsewa"],
@@ -23,7 +25,7 @@ module.exports = {
             let groupMentions = [];
 
             for (const group of sewaGroups) {
-                const groupJid = `${group.id}@g.us`;
+                const groupJid = group.id + Baileys.G_US;
                 const groupSubject = await ctx.group(groupJid).name();
 
                 groupMentions.push({

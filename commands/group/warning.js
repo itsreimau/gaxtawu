@@ -1,5 +1,6 @@
 module.exports = {
     name: "warning",
+    aliases: ["warn"],
     category: "group",
     permissions: {
         admin: true,
