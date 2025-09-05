@@ -392,11 +392,14 @@ module.exports = (bot) => {
         if (!config.system.antiCall) return;
 
         for (const call of calls) {
-            consolefy.info(`Incoming call from: ${bot.getId(call.from)}`); // Log panggilan masuk
+            const senderJid = call.from;
+            const senderId = bot.getId(senderJid);
+
+            consolefy.info(`Incoming call from: ${senderId}`); // Log panggilan masuk
 
             if (call.status !== "offer") continue;
 
-            await bot.core.rejectCall(call.id, call.from);
+            await bot.core.rejectCall(call.id, senderJid);
             await db.set(`user.${senderId}.banned`, true);
 
             await bot.core.sendMessage(config.owner.id + Baileys.S_WHATSAPP_NET, {
@@ -409,7 +412,7 @@ module.exports = (bot) => {
                 .setOrg(config.owner.organization)
                 .setNumber(config.owner.id)
                 .build();
-            await bot.core.sendMessage(call.from, {
+            await bot.core.sendMessage(senderJid, {
                 contacts: {
                     displayName: config.owner.name,
                     contacts: [{
