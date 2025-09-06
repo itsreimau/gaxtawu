@@ -370,16 +370,16 @@ module.exports = (bot) => {
                         to
                     }] of Object.entries(allMenfessDb)) {
                     if (senderId === from || senderId === to) {
-                        const targetId = senderId === from ? to : from + Baileys.S_WHATSAPP_NET;
+                        const targetJid = (senderId === from ? to : from) + Baileys.S_WHATSAPP_NET;
                         if (m.content === "delete") {
                             const replyText = formatter.quote("✅ Sesi menfess telah dihapus!");
                             await ctx.reply(replyText);
-                            await ctx.sendMessage(targetId, {
+                            await ctx.sendMessage(targetJid, {
                                 text: replyText
                             });
                             await db.delete(`menfess.${menfessId}`);
                         } else {
-                            await ctx.forwardMessage(targetId, m);
+                            await ctx.forwardMessage(targetJid, m);
                         }
                     }
                 }
