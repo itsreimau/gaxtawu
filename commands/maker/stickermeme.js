@@ -30,7 +30,7 @@ module.exports = {
             const uploadUrl = await Baileys.uploadFile(buffer);
             const result = tools.api.createUrl("nekolabs", `/canvas/meme/get`, {
                 imageUrl: uploadUrl,
-                textT: top
+                textT: top,
                 textB: bottom
             });
             const sticker = new Sticker(result, {
