@@ -15,8 +15,8 @@ module.exports = {
         );
 
         try {
-            const result = tools.api.createUrl("nekolabs", "/maker/carbonify", {
-                text: input
+            const result = tools.api.createUrl("siputzx", "/api/m/carbonify", {
+                input
             });
 
             await ctx.reply({

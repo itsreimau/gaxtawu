@@ -16,18 +16,16 @@ module.exports = {
         );
 
         try {
-            const searchResult = (await axios.get(tools.api.createUrl("https://api.vreden.my.id", "/api/search/genius/find", {
-                lagu: input
-            }))).data.result[0];
-            const apiUrl = tools.api.createUrl("https://api.vreden.my.id", "/api/search/genius/lyrics", {
-                url: searchResult.url
+            const apiUrl = tools.api.createUrl("ryzumi", "api/search/lyrics", {
+                query: input
             });
-            const result = (await axios.get(apiUrl)).data.result.lyrics;
+            const result = (await axios.get(apiUrl)).data[0];
 
             await ctx.reply({
-                text: `${formatter.quote(`Judul: ${searchResult.title}`)}\n` +
+                text: `${formatter.quote(`Judul: ${result.trackName}`)}\n` +
+                    text: `${formatter.quote(`Artis: ${result.artistName}`)}\n` +
                     `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
-                    result || config.msg.notFound,
+                    result.plainLyrics,
                 footer: config.msg.footer
             });
         } catch (error) {

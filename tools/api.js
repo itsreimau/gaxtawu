@@ -13,16 +13,16 @@ const APIs = {
         baseURL: "https://izumiiiiiiii.dpdns.org"
     },
     nekolabs: {
-        baseURL: "https://rynekoo-api.hf.space"
+        baseURL: "https://api.nekolabs.my.id"
+    },
+    ryzumi: {
+        baseURL: "https://api.ryzumi.vip"
     },
     siputzx: {
         baseURL: "https://api.siputzx.my.id"
     },
     zell: {
         baseURL: "https://zellapi.autos"
-    },
-    zenzxz: {
-        baseURL: "https://api.zenzxz.my.id"
     }
 };
 

@@ -16,8 +16,8 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("izumi", "/ai/geminiai", {
-                messages: input
+            const apiUrl = tools.api.createUrl("nekolabs", "/ai/gemini/1.5-flash", {
+                text: input
             });
             const result = (await axios.get(apiUrl)).data.result;
 

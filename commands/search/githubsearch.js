@@ -16,15 +16,16 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/search/github-search", {
+            const apiUrl = tools.api.createUrl("https://api.github.com", "/search/repositories", {
                 q: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.items;
 
             const resultText = result.map(res =>
                 `${formatter.quote(`Nama: ${res.full_name}`)}\n` +
                 `${formatter.quote(`Deskripsi: ${res.description}`)}\n` +
-                `${formatter.quote(`Bahasa: ${res.language}`)}\n` +
+                `${formatter.quote(`Developer: ${res.author}`)}\n` +
+                `${formatter.quote(`Bahasa: ${res.owner.login}`)}\n` +
                 formatter.quote(`URL: ${res.url}`)
             ).join(
                 "\n" +

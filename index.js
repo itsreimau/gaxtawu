@@ -1,34 +1,31 @@
 // Impor modul dan dependensi yang diperlukan
 require("./config.js");
 const pkg = require("./package.json");
-const tools = require("./tools/exports.js");
-const { Formatter } = require("@itsreimau/gktw");
 const { Consolefy } = require("@mengkodingan/consolefy");
 const CFonts = require("cfonts");
 const fs = require("node:fs");
 const http = require("node:http");
 const path = require("node:path");
-const SimplDB = require("simpl.db");
 
 // Inisialisasi Consolefy untuk logging
-const c = new Consolefy({
+const _consolefy = new Consolefy({
     tag: pkg.name
 });
 
-// Inisialisasi SimplDB untuk Database
+// Inisialisasi database
 const dbFile = path.resolve(__dirname, "database.json");
 if (!fs.existsSync(dbFile)) fs.writeFileSync(dbFile, "{}", "utf8");
 
 // Tetapkan variabel global
 Object.assign(global, {
     config,
-    consolefy: c,
-    db: new SimplDB(),
-    formatter: Formatter,
-    tools
+    consolefy: _consolefy,
+    db: new require("simpl.db")(),
+    formatter: require("@itsreimau/gktw").Formatter,
+    tools: require("./tools/exports.js")
 });
 
-c.log("Starting..."); // Logging proses awal
+_consolefy.log("Starting..."); // Logging proses awal
 
 // Tampilkan nama proyek serta deskripsi lain
 CFonts.say(pkg.name, {
@@ -47,7 +44,7 @@ if (config.system.useServer) {
     const {
         port
     } = config.system;
-    http.createServer((_, res) => res.end(`${pkg.name} berjalan di port ${port}`)).listen(port, () => c.success(`${pkg.name} runs on port ${port}`));
+    http.createServer((_, res) => res.end(`${pkg.name} berjalan di port ${port}`)).listen(port, () => _consolefy.success(`${pkg.name} runs on port ${port}`));
 }
 
 require("./main.js"); // Jalankan modul utama

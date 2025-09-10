@@ -277,12 +277,12 @@ module.exports = (bot) => {
                 if (checkMedia) {
                     const buffer = await ctx.msg.media.toBuffer();
                     const uploadUrl = await Baileys.uploadFile(buffer);
-                    const apiUrl = tools.api.createUrl("nekolabs", "/tools/nsfw-checker", {
-                        imageUrl: uploadUrl
+                    const apiUrl = tools.api.createUrl("ryzumi", "/api/tools/nsfw-checker", {
+                        url: uploadUrl
                     });
-                    const result = (await axios.get(apiUrl)).data.result.labelName.toLowerCase();
+                    const result = (await axios.get(apiUrl)).data.data.isNsfw;
 
-                    if (result.nsfw === "porn") {
+                    if (result) {
                         await ctx.reply(formatter.quote("⛔ Jangan kirim NSFW, dasar cabul!"));
                         await ctx.deleteMessage(m.key);
                         if (groupAutokick) {

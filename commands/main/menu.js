@@ -12,7 +12,6 @@ module.exports = {
             const tag = {
                 "ai-chat": "AI (Chat)",
                 "ai-image": "AI (Image)",
-                "ai-video": "AI (Video)",
                 "ai-misc": "AI (Miscellaneous)",
                 "converter": "Converter",
                 "downloader": "Downloader",
@@ -34,8 +33,8 @@ module.exports = {
                 `${formatter.quote(`Waktu: ${moment.tz(config.system.timeZone).format("HH.mm.ss")}`)}\n` +
                 "\n" +
                 `${formatter.quote(`Bot Uptime: ${config.bot.uptime}`)}\n` +
-                `${formatter.quote(`Database: ${config.bot.dbSize} (Simpl.DB - JSON)`)}\n` +
-                `${formatter.quote("Library: @itsreimau/gktw (Fork of @mengkodingan/ckptw)")}\n` +
+                `${formatter.quote(`Database: ${config.bot.dbSize} (Simpl.DB dengan JSON)`)}\n` +
+                `${formatter.quote("Library: @itsreimau/gktw (Fork dari @mengkodingan/ckptw)")}\n` +
                 "\n" +
                 `${formatter.italic("Jangan lupa berdonasi agar bot tetap online.")}\n` +
                 `${config.msg.readmore}\n`;

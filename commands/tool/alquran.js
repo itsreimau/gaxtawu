@@ -24,10 +24,10 @@ module.exports = {
         if (isNaN(surat) || surat < 1 || surat > 114) return await ctx.reply(formatter.quote("❎ Surah harus berupa nomor antara 1 sampai 114!"));
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/religious/nuquran-surah", {
+            const apiUrl = tools.api.createUrl("https://raw.githubusercontent.com", `/penggguna/QuranJSON/master/surah/${surat}.json`, {
                 id: surat
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data;
             const verses = result.verses;
 
             if (ayat) {
@@ -40,12 +40,12 @@ module.exports = {
 
                     const versesText = selectedVerses.map(vers =>
                         `${formatter.quote(`Ayat ${vers.number}:`)}\n` +
-                        `${vers.text} (${vers.transliteration})\n` +
+                        `${vers.text}\n` +
                         formatter.italic(vers.translation_id)
                     ).join("\n");
                     await ctx.reply({
                         text: `${formatter.quote(`Surat: ${result.name}`)}\n` +
-                            `${formatter.quote(`Arti: ${result.translate}`)}\n` +
+                            `${formatter.quote(`Arti: ${result.name_translations.id}`)}\n` +
                             `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
                             versesText,
                         footer: config.msg.footer
@@ -59,9 +59,9 @@ module.exports = {
 
                     await ctx.reply({
                         text: `${formatter.quote(`Surat: ${result.name}`)}\n` +
-                            `${formatter.quote(`Arti: ${result.translate}`)}\n` +
+                            `${formatter.quote(`Arti: ${result.name_translations.id}`)}\n` +
                             `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
-                            `${verse.text} (${verse.transliteration})\n` +
+                            `${verse.text}\n` +
                             formatter.italic(verse.translation_id),
                         footer: config.msg.footer
                     });
@@ -69,12 +69,12 @@ module.exports = {
             } else {
                 const versesText = verses.map(vers =>
                     `${formatter.quote(`Ayat ${vers.number}:`)}\n` +
-                    `${vers.text} (${vers.transliteration})\n` +
+                    `${vers.text}\n` +
                     formatter.italic(vers.translation_id)
                 ).join("\n");
                 await ctx.reply({
                     text: `${formatter.quote(`Surat: ${result.name}`)}\n` +
-                        `${formatter.quote(`Arti: ${result.translate}`)}\n` +
+                        `${formatter.quote(`Arti: ${result.name_translations.id}`)}\n` +
                         `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
                         versesText,
                     footer: config.msg.footer

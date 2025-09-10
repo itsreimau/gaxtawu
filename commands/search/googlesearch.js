@@ -16,14 +16,14 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/search/google", {
-                q: input
+            const apiUrl = tools.api.createUrl("ryzumi", "/api/search/google", {
+                query: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data;
 
             const resultText = result.map(res =>
                 `${formatter.quote(`Judul: ${res.title}`)}\n` +
-                `${formatter.quote(`Deskripsi: ${res.desc}`)}\n` +
+                `${formatter.quote(`Deskripsi: ${res.description}`)}\n` +
                 formatter.quote(`URL: ${res.url}`)
             ).join(
                 "\n" +

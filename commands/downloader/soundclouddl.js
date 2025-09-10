@@ -22,11 +22,11 @@ module.exports = {
             const apiUrl = tools.api.createUrl("izumi", "/downloader/soundcloud", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result.url;
+            const result = (await axios.get(apiUrl)).data.result.sound;
 
             await ctx.reply({
                 audio: {
-                    url: result
+                    url: result.hls_url || result.progressive_url
                 },
                 mimetype: tools.mime.lookup("mp3")
             });

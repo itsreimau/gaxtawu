@@ -18,10 +18,10 @@ async function get(type) {
                 break;
             }
             case "alquran": {
-                const data = (await axios.get(api.createUrl("nekolabs", "/religious/nuquran-listsurah"))).data.result.list;
+                const data = (await axios.get(api.createUrl("https://raw.githubusercontent.com", "/penggguna/QuranJSON/master/quran.json"))).data;
                 text = createList(data, list =>
-                    `${formatter.quote(`Surah: ${list.name} (${list.id})`)}\n` +
-                    `${formatter.quote(`Jumlah Ayat: ${list.verse_count}`)}`
+                    `${formatter.quote(`Surah: ${list.name} (${list.number_of_surah})`)}\n` +
+                    `${formatter.quote(`Jumlah Ayat: ${list.number_of_ayah}`)}`
                 );
                 break;
             }

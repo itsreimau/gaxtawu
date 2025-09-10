@@ -19,23 +19,18 @@ module.exports = {
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            const apiUrl = tools.api.createUrl("izumi", "/twitterv2", {
+            const apiUrl = tools.api.createUrl("izumi", "/downloader/twitter", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result.download;
-            const album = result.map(res => {
-                const isVideo = res.type === "video";
-                return {
-                    [isVideo ? "video" : "image"]: {
-                        url: res.url
-                    },
-                    mimetype: tools.mime.lookup(res.extension) || res.format
-                };
-            });
+            const result = (await axios.get(apiUrl)).data.result[0].link;
 
             await ctx.reply({
-                album,
-                caption: formatter.quote(`URL: ${url}`)
+                video: {
+                    url: result
+                },
+                mimetype: tools.mime.lookup("mp4"),
+                caption: formatter.quote(`URL: ${url}`),
+                footer: config.msg.footer
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

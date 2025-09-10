@@ -19,10 +19,10 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
             const uploadUrl = await Baileys.uploadFile(buffer, "image");
-            const apiUrl = tools.api.createUrl("izumi", "/tools/removebg", {
-                imageUrl: uploadUrl
+            const apiUrl = tools.api.createUrl("hang", "/imagecreator/removebg", {
+                url: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result.imageLink;
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 image: {

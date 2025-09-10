@@ -130,7 +130,7 @@ async function handleError(ctx, error, useAxios = false, reportErrorToOwner = tr
 }
 
 function isCmd(content, bot) {
-    if (!content || !bot) return null;
+    if (!content || !bot) return false;
 
     const prefix = content.charAt(0);
     if (!new RegExp(bot.prefix, "i").test(content)) return false;
@@ -148,7 +148,7 @@ function isCmd(content, bot) {
         input
     };
 
-    const mean = didYouMean(cmdName, cmds.flatMap(cmd => [cmd.name, ...(cmd.aliases || [])]));
+    const mean = didYouMean(cmdName, cmds.map(cmd => [cmd.name, ...(cmd.aliases || [])]));
     return mean ? {
         msg: content,
         prefix,
@@ -212,7 +212,7 @@ function parseFlag(argsString, customRules = {}) {
 }
 
 async function translate(text, target, source = "auto") {
-    if (!text || !to) return null;
+    if (!text || !target) return null;
 
     try {
         const apiUrl = api.createUrl("siputzx", "/api/tools/translate", {

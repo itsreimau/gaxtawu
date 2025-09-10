@@ -17,9 +17,9 @@ module.exports = {
 
         try {
             const apiUrl = tools.api.createUrl("izumi", "/ai/deepseek", {
-                input
+                messages: input
             });
-            const result = (await axios.get(apiUrl)).data.result.data.message;
+            const result = (await axios.get(apiUrl)).data.message;
 
             await ctx.reply(result);
         } catch (error) {
