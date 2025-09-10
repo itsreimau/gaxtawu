@@ -23,7 +23,7 @@ module.exports = {
 
             await ctx.reply({
                 text: `${formatter.quote(`Judul: ${result.trackName}`)}\n` +
-                    text: `${formatter.quote(`Artis: ${result.artistName}`)}\n` +
+                    `${formatter.quote(`Artis: ${result.artistName}`)}\n` +
                     `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
                     result.plainLyrics,
                 footer: config.msg.footer
