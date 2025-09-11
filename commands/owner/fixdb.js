@@ -215,10 +215,6 @@ module.exports = {
                             type: "boolean",
                             default: false
                         },
-                        antinfsw: {
-                            type: "boolean",
-                            default: false
-                        },
                         antisticker: {
                             type: "boolean",
                             default: false

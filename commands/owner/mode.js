@@ -24,6 +24,7 @@ module.exports = {
 
         try {
             switch (input.toLowerCase()) {
+                case "premium":
                 case "group":
                 case "private":
                 case "public":

@@ -19,17 +19,19 @@ module.exports = {
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            const apiUrl = tools.api.createUrl("zell", "/download/instagram", {
+            const apiUrl = tools.api.createUrl("izumi", "/downloader/instagram", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result.url;
-            const album = result.map(res => {
-                const isVideo = res.type === "mp4";
+            const album = result.map(item => {
+                const media = item.url[0];
+                const isVideo = media.type === "mp4";
+
                 return {
                     [isVideo ? "video" : "image"]: {
-                        url: res.url
+                        url: media.url
                     },
-                    mimetype: tools.mime.lookup(res.ext)
+                    mimetype: tools.mime.lookup(media.ext)
                 };
             });
 

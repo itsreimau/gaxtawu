@@ -9,14 +9,12 @@ module.exports = {
             const senderId = ctx.getId(ctx.sender.jid);
             const users = await db.get("user");
 
-            const leaderboardData = Object.entries(users)
-                .map(([id, data]) => ({
-                    id,
-                    username: data.username || "guest",
-                    level: data.level || 0,
-                    winGame: data.winGame || 0
-                }))
-                .sort((a, b) => b.winGame - a.winGame || b.level - a.level);
+            const leaderboardData = Object.entries(users).map(([id, data]) => ({
+                id,
+                username: data.username || "guest",
+                level: data.level || 0,
+                winGame: data.winGame || 0
+            })).sort((a, b) => b.winGame - a.winGame || b.level - a.level);
 
             const userRank = leaderboardData.findIndex(user => user.id === senderId) + 1;
             const topUsers = leaderboardData.slice(0, 10);

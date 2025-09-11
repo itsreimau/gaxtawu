@@ -15,11 +15,11 @@ const APIs = {
     nekolabs: {
         baseURL: "https://api.nekolabs.my.id"
     },
-    ryzumi: {
-        baseURL: "https://api.ryzumi.vip"
-    },
     siputzx: {
         baseURL: "https://api.siputzx.my.id"
+    },
+    vreden: {
+        baseURL: "https://api.vreden.my.id"
     },
     zell: {
         baseURL: "https://zellapi.autos"

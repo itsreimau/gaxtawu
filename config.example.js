@@ -54,13 +54,13 @@ global.config = {
         group: Formatter.quote("⛔ Perintah hanya dapat diakses dalam grup!"), // Pesan untuk perintah grup
         groupSewa: Formatter.quote(`⛔ Bot tidak aktif karena grup ini belum melakukan sewa.`), // Pesan jika grup belum melakukan sewa
         owner: Formatter.quote("⛔ Perintah hanya dapat diakses Owner!"), // Pesan untuk perintah yang hanya owner bisa akses
-        premium: Formatter.quote("⛔ Tidak dapat memproses karena kamu bukan pengguna Premium!"), // Pesan jika pengguna bukan Premium
+        premium: Formatter.quote("⛔ Tidak dapat memproses karena kamu bukan pengguna Premium!"), // Pesan jika pengguna bukan premium
         private: Formatter.quote("⛔ Perintah hanya dapat diakses dalam obrolan pribadi!"), // Pesan untuk perintah obrolan pribadi
-        privatePremiumOnly: Formatter.quote("⛔ Menggunakan bot dalam obrolan pribadi hanya untuk pengguna Premium."), // Pesan jika pengguna bukan Premium menggunakan bot dalam obrolan pribadi
+        privatePremiumOnly: Formatter.quote("⛔ Menggunakan bot dalam obrolan pribadi hanya untuk pengguna Premium."), // Pesan jika pengguna bukan premium menggunakan bot dalam obrolan pribadi
         restrict: Formatter.quote("⛔ Perintah ini telah dibatasi karena alasan keamanan!"), // Pesan pembatasan perintah
         unavailableAtNight: Formatter.quote("⛔ Bot tidak tersedia dari jam 12 malam sampai 6 pagi. Silakan kembali nanti!"), // Pesan jika tidak tersedia pada malam hari
 
-        readmore: "\u200E".repeat(4001), // String read more
+        readmore: "\u200E".repeat(4001), // Read more...
         note: "“Lorem ipsum dolor sit amet, tenebris in umbra, vitae ad mortem.”", // Catatan
         footer: Formatter.italic("Developed by ItsReimau with ❤"), // Catatan kaki
 
@@ -94,7 +94,7 @@ global.config = {
         cooldown: 10 * 1000, // Jeda antar perintah (ms)
         maxListeners: 50, // Max listeners untuk events
         port: 3000, // Port (Jika pakai server)
-        privatePremiumOnly: false, // Pengguna bukan Premium tidak diperbolehkan menggunakan bot dalam percakapan pribadi
+        privatePremiumOnly: false, // Pengguna bukan premium tidak diperbolehkan menggunakan bot dalam percakapan pribadi
         restrict: false, // Batasi akses perintah
         requireBotGroupMembership: false, // Harus gabung grup bot
         requireGroupSewa: false, // Harus sewa bot untuk bisa dipakai di grup

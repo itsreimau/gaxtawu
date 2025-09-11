@@ -40,13 +40,11 @@ module.exports = {
                 `${config.msg.readmore}\n`;
 
             for (const category of Object.keys(tag)) {
-                const cmds = Array.from(cmd.values())
-                    .filter(cmd => cmd.category === category)
-                    .map(cmd => ({
-                        name: cmd.name,
-                        aliases: cmd.aliases,
-                        permissions: cmd.permissions || {}
-                    }));
+                const cmds = Array.from(cmd.values()).filter(cmd => cmd.category === category).map(cmd => ({
+                    name: cmd.name,
+                    aliases: cmd.aliases,
+                    permissions: cmd.permissions || {}
+                }));
 
                 if (cmds.length > 0) {
                     text += `✾ ${formatter.bold(tag[category])}\n`;

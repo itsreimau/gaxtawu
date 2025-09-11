@@ -8,13 +8,11 @@ module.exports = {
             const senderId = ctx.getId(ctx.sender.jid);
             const users = await db.get("user");
 
-            const leaderboardData = Object.entries(users)
-                .map(([id, data]) => ({
-                    id,
-                    winGame: data.winGame || 0,
-                    level: data.level || 0
-                }))
-                .sort((a, b) => b.winGame - a.winGame || b.level - a.level);
+            const leaderboardData = Object.entries(users).map(([id, data]) => ({
+                id,
+                winGame: data.winGame || 0,
+                level: data.level || 0
+            })).sort((a, b) => b.winGame - a.winGame || b.level - a.level);
 
             const userDb = await db.get(`user.${senderId}`) || {};
             const isOwner = tools.cmd.isOwner(senderId, ctx.msg.key.id);

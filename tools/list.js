@@ -82,10 +82,11 @@ async function get(type) {
             }
             case "mode": {
                 const data = [
+                    "premium (Mode premium, hanya merespons pengguna Premium dan Ownernya)",
                     "group (Mode group, hanya merespons dalam obrolan grup)",
                     "private (Mode private, hanya merespons dalam obrolan pribadi)",
                     "public (Mode publik, merespons dalam obrolan grup dan obrolan pribadi)",
-                    "self (Mode self, hanya merespons dirinya sendiri dan ownernya)"
+                    "self (Mode self, hanya merespons dirinya sendiri dan Ownernya)"
                 ];
                 text = createList(data, list => formatter.quote(list));
                 break;
@@ -111,7 +112,6 @@ async function get(type) {
                     "Antigif (Anti GIF)",
                     "Antiimage (Anti gambar)",
                     "antilink (Anti link)",
-                    "antinsfw (Anti NSFW, seperti pornografi)",
                     "antispam (Anti spam)",
                     "antisticker (Anti stiker)",
                     "antivideo (Anti video)",

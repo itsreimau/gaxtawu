@@ -16,16 +16,16 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("ryzumi", "api/search/lyrics", {
+            const apiUrl = tools.api.createUrl("vreden", "api/lirik", {
                 query: input
             });
-            const result = (await axios.get(apiUrl)).data[0];
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
-                text: `${formatter.quote(`Judul: ${result.trackName}`)}\n` +
-                    `${formatter.quote(`Artis: ${result.artistName}`)}\n` +
+                text: `${formatter.quote(`Judul: ${result.judul}`)}\n` +
+                    `${formatter.quote(`Artis: ${result.artis}`)}\n` +
                     `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
-                    result.plainLyrics,
+                    result.lirik,
                 footer: config.msg.footer
             });
         } catch (error) {

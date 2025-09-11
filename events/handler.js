@@ -162,7 +162,8 @@ module.exports = (bot) => {
             if (isOwner || userDb?.premium) await db.set(`user.${senderId}.coin`, 0);
             if (!userDb?.coin || !Number.isFinite(userDb.coin)) await db.set(`user.${senderId}.coin`, 500);
 
-            // Pengecekan mode bot (group, private, self)
+            // Pengecekan mode bot (premium, group, private, self)
+            if (botDb?.mode === "premium" && !isOwner && !userDb?.premium) return;
             if (botDb?.mode === "group" && isPrivate && !isOwner && !userDb?.premium) return;
             if (botDb?.mode === "private" && isGroup && !isOwner && !userDb?.premium) return;
             if (botDb?.mode === "self" && !isOwner) return;
@@ -267,29 +268,6 @@ module.exports = (bot) => {
                         await ctx.group().kick(senderJid);
                     } else {
                         await addWarning(ctx, groupDb, senderJid, groupId);
-                    }
-                }
-            }
-
-            // Penanganan antinsfw
-            if (groupDb?.option?.antinsfw && !isOwner && !isAdmin) {
-                const checkMedia = tools.cmd.checkMedia(ctx.getMessageType(), "image");
-                if (checkMedia) {
-                    const buffer = await ctx.msg.media.toBuffer();
-                    const uploadUrl = await Baileys.uploadFile(buffer);
-                    const apiUrl = tools.api.createUrl("ryzumi", "/api/tools/nsfw-checker", {
-                        url: uploadUrl
-                    });
-                    const result = (await axios.get(apiUrl)).data.data.isNsfw;
-
-                    if (result) {
-                        await ctx.reply(formatter.quote("⛔ Jangan kirim NSFW, dasar cabul!"));
-                        await ctx.deleteMessage(m.key);
-                        if (groupAutokick) {
-                            await ctx.group().kick(senderJid);
-                        } else {
-                            await addWarning(ctx, groupDb, senderJid, groupId);
-                        }
                     }
                 }
             }
