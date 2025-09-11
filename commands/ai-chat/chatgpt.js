@@ -30,7 +30,7 @@ module.exports = {
                 const uploadUrl = await Baileys.uploadFile(buffer);
                 const apiUrl = tools.api.createUrl("nekolabs", "/ai/gpt/5", {
                     text: input,
-                    systemPrompt
+                    systemPrompt,
                     imageUrl: uploadUrl,
                     sessionId: await db.get(`user.${ctx.getId(ctx.sender.jid)}.uid`) || "guest"
                 });
@@ -40,7 +40,7 @@ module.exports = {
             } else {
                 const apiUrl = tools.api.createUrl("nekolabs", "/ai/gpt/5", {
                     text: input,
-                    systemPrompt
+                    systemPrompt,
                     sessionId: await db.get(`user.${ctx.getId(ctx.sender.jid)}.uid`) || "guest"
                 });
                 const result = (await axios.get(apiUrl)).data.result;
