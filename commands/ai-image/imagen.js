@@ -18,7 +18,7 @@ module.exports = {
         try {
             const apiUrl = tools.api.createUrl("nekolabs", "/ai/imagen/4-fast", {
                 prompt: input,
-                ratio tools.cmd.getRandomElement(["1:1", "16:9", "9:16"])
+                ratio: tools.cmd.getRandomElement(["1:1", "16:9", "9:16"])
             });
             const result = (await axios.get(apiUrl)).data.result;
 
