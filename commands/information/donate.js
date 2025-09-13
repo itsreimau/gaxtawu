@@ -28,12 +28,14 @@ module.exports = {
                     mimetype: tools.mime.lookup("jpg"),
                     caption: text,
                     mentions: [ctx.sender.jid],
+                    linkPreview: true,
                     footer: config.msg.footer
                 });
             } else {
                 await ctx.reply({
                     text: text,
                     mentions: [ctx.sender.jid],
+                    linkPreview: true,
                     footer: config.msg.footer
                 });
             }

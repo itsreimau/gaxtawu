@@ -32,244 +32,74 @@ module.exports = {
             const mappings = {
                 user: {
                     afk: {
-                        reason: {
-                            type: "string",
-                            default: ""
-                        },
-                        timestamp: {
-                            type: "number",
-                            default: 0
-                        }
+                        reason: { type: "string", default: "" },
+                        timestamp: { type: "number", default: 0 }
                     },
-                    autolevelup: {
-                        type: "boolean",
-                        default: false
-                    },
-                    banned: {
-                        type: "boolean",
-                        default: false
-                    },
-                    coin: {
-                        type: "number",
-                        default: 0,
-                        min: 0
-                    },
+                    autolevelup: { type: "boolean", default: false },
+                    banned: { type: "boolean", default: false },
+                    coin: { type: "number", default: 0, min: 0 },
                     lastClaim: {
-                        daily: {
-                            type: "number",
-                            default: 0
-                        },
-                        weekly: {
-                            type: "number",
-                            default: 0
-                        },
-                        monthly: {
-                            type: "number",
-                            default: 0
-                        },
-                        yearly: {
-                            type: "number",
-                            default: 0
-                        }
+                        daily: { type: "number", default: 0 },
+                        weekly: { type: "number", default: 0 },
+                        monthly: { type: "number", default: 0 },
+                        yearly: { type: "number", default: 0 }
                     },
                     lastSentMsg: {
-                        banned: {
-                            type: "number",
-                            default: 0
-                        },
-                        cooldown: {
-                            type: "number",
-                            default: 0
-                        },
-                        gamerestrict: {
-                            type: "number",
-                            default: 0
-                        },
-                        privatePremiumOnly: {
-                            type: "number",
-                            default: 0
-                        },
-                        requireBotGroupMembership: {
-                            type: "number",
-                            default: 0
-                        },
-                        requireGroupSewa: {
-                            type: "number",
-                            default: 0
-                        },
-                        unavailableAtNight: {
-                            type: "number",
-                            default: 0
-                        },
-                        admin: {
-                            type: "number",
-                            default: 0
-                        },
-                        botAdmin: {
-                            type: "number",
-                            default: 0
-                        },
-                        coin: {
-                            type: "number",
-                            default: 0
-                        },
-                        group: {
-                            type: "number",
-                            default: 0
-                        },
-                        owner: {
-                            type: "number",
-                            default: 0
-                        },
-                        premium: {
-                            type: "number",
-                            default: 0
-                        },
-                        private: {
-                            type: "number",
-                            default: 0
-                        },
-                        restrict: {
-                            type: "number",
-                            default: 0
-                        }
+                        banned: { type: "number", default: 0 },
+                        cooldown: { type: "number", default: 0 },
+                        gamerestrict: { type: "number", default: 0 },
+                        privatePremiumOnly: { type: "number", default: 0 },
+                        requireBotGroupMembership: { type: "number", default: 0 },
+                        requireGroupSewa: { type: "number", default: 0 },
+                        unavailableAtNight: { type: "number", default: 0 },
+                        admin: { type: "number", default: 0 },
+                        botAdmin: { type: "number", default: 0 },
+                        coin: { type: "number", default: 0 },
+                        group: { type: "number", default: 0 },
+                        owner: { type: "number", default: 0 },
+                        premium: { type: "number", default: 0 },
+                        private: { type: "number", default: 0 },
+                        restrict: { type: "number", default: 0 }
                     },
-                    level: {
-                        type: "number",
-                        default: 0,
-                        min: 0
-                    },
-                    premium: {
-                        type: "boolean",
-                        default: false
-                    },
-                    premiumExpiration: {
-                        type: "number",
-                        default: 0
-                    },
-                    uid: {
-                        type: "string",
-                        default: ""
-                    },
-                    username: {
-                        type: "string",
-                        default: ""
-                    },
-                    winGame: {
-                        type: "number",
-                        default: 0,
-                        min: 0
-                    },
-                    xp: {
-                        type: "number",
-                        default: 0,
-                        min: 0
-                    }
+                    level: { type: "number", default: 0, min: 0 },
+                    premium: { type: "boolean", default: false },
+                    premiumExpiration: { type: "number", default: 0 },
+                    uid: { type: "string", default: "" },
+                    username: { type: "string", default: "" },
+                    winGame: { type: "number", default: 0, min: 0 },
+                    xp: { type: "number", default: 0, min: 0 }
                 },
                 group: {
-                    maxwarnings: {
-                        type: "number",
-                        default: 3,
-                        min: 1
-                    },
-                    mute: {
-                        type: "array",
-                        default: []
-                    },
-                    mutebot: {
-                        type: "boolean",
-                        default: false
-                    },
+                    maxwarnings: { type: "number", default: 3, min: 1 },
+                    mute: { type: "array", default: [] },
+                    mutebot: { type: "boolean", default: false },
                     text: {
-                        goodbye: {
-                            type: "string",
-                            default: ""
-                        },
-                        intro: {
-                            type: "string",
-                            default: ""
-                        },
-                        welcome: {
-                            type: "string",
-                            default: ""
-                        }
+                        goodbye: { type: "string", default: "" },
+                        intro: { type: "string", default: "" },
+                        welcome: { type: "string", default: "" }
                     },
                     option: {
-                        antiaudio: {
-                            type: "boolean",
-                            default: false
-                        },
-                        antidocument: {
-                            type: "boolean",
-                            default: false
-                        },
-                        antigif: {
-                            type: "boolean",
-                            default: false
-                        },
-                        antiimage: {
-                            type: "boolean",
-                            default: false
-                        },
-                        antilink: {
-                            type: "boolean",
-                            default: false
-                        },
-                        antisticker: {
-                            type: "boolean",
-                            default: false
-                        },
-                        antitagsw: {
-                            type: "boolean",
-                            default: false
-                        },
-                        antitoxic: {
-                            type: "boolean",
-                            default: false
-                        },
-                        antivideo: {
-                            type: "boolean",
-                            default: false
-                        },
-                        autokick: {
-                            type: "boolean",
-                            default: false
-                        },
-                        gamerestrict: {
-                            type: "boolean",
-                            default: false
-                        },
-                        welcome: {
-                            type: "boolean",
-                            default: false
-                        }
+                        antiaudio: { type: "boolean", default: false },
+                        antidocument: { type: "boolean", default: false },
+                        antigif: { type: "boolean", default: false },
+                        antiimage: { type: "boolean", default: false },
+                        antilink: { type: "boolean", default: false },
+                        antisticker: { type: "boolean", default: false },
+                        antitagsw: { type: "boolean", default: false },
+                        antitoxic: { type: "boolean", default: false },
+                        antivideo: { type: "boolean", default: false },
+                        autokick: { type: "boolean", default: false },
+                        gamerestrict: { type: "boolean", default: false },
+                        welcome: { type: "boolean", default: false }
                     },
-                    sewa: {
-                        type: "boolean",
-                        default: false
-                    },
-                    sewaExpiration: {
-                        type: "number",
-                        default: 0
-                    },
-                    spam: {
-                        type: "array",
-                        default: []
-                    },
-                    warnings: {
-                        type: "array",
-                        default: []
-                    }
+                    sewa: { type: "boolean", default: false },
+                    sewaExpiration: { type: "number", default: 0 },
+                    spam: { type: "array", default: [] },
+                    warnings: { type: "array", default: [] }
                 },
                 menfess: {
-                    from: {
-                        type: "string",
-                        default: ""
-                    },
-                    to: {
-                        type: "string",
-                        default: ""
-                    }
+                    from: { type: "string", default: "" },
+                    to: { type: "string", default: "" }
                 }
             };
 

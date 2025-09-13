@@ -22,7 +22,7 @@
     "whatsapp",
     "whatsapp-bot"
   ],
-  "author": "Muhamad Ikbal Maulana | ItsReimau",
+  "author": "Ikbal Maulana (ItsReimau)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/itsreimau/gaxtawu/issues"
@@ -31,7 +31,7 @@
   "dependencies": {
     "@itsreimau/gktw": "github:itsreimau/gktw",
     "@mengkodingan/consolefy": "^1.0.1",
-    "axios": "^1.11.0",
+    "axios": "^1.12.1",
     "cfonts": "^3.3.1",
     "didyoumean": "^1.2.2",
     "guaranteed_security": "^1.0.0",

@@ -29,6 +29,7 @@ module.exports = (bot) => {
         const groupDb = await db.get(`group.${groupId}`) || {};
 
         // Pengecekan mode bot (group, private, self)
+        if (botDb?.mode === "premium" && !isOwner && !userDb?.premium) return;
         if (botDb?.mode === "group" && isPrivate && !isOwner && !userDb?.premium) return;
         if (botDb?.mode === "private" && isGroup && !isOwner && !userDb?.premium) return;
         if (botDb?.mode === "self" && !isOwner) return;

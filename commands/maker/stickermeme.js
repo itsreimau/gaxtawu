@@ -24,7 +24,7 @@ module.exports = {
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], ["image", "sticker"])));
 
         try {
-            let [top, bottom] = input.split("|").map(inp => inp);
+            let [top, bottom] = input.split("|").map(_input => _input);
             [top, bottom] = bottom ? [top || "", bottom] : ["", top || ""];
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
             const uploadUrl = await Baileys.uploadFile(buffer);

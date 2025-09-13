@@ -18,6 +18,7 @@ module.exports = {
             await ctx.reply({
                 text: text,
                 mentions: [ctx.sender.jid],
+                linkPreview: true,
                 footer: config.msg.footer
             });
         } catch (error) {

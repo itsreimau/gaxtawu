@@ -10,7 +10,10 @@ module.exports = {
         try {
             const code = await ctx.group().inviteCode();
 
-            await ctx.reply(formatter.quote(`https://chat.whatsapp.com/${code}`));
+            await ctx.reply({
+                text: formatter.quote(`https://chat.whatsapp.com/${code}`),
+                linkPreview: true
+            });
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

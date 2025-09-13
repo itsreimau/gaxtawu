@@ -14,7 +14,7 @@ module.exports = {
         );
 
         try {
-            const result = input.replace(/[a-z]/gi, inp => {
+            const result = input.replace(/[a-z]/gi, _input => {
                 return {
                     "a": "ka",
                     "b": "tu",
@@ -42,7 +42,7 @@ module.exports = {
                     "x": "na",
                     "y": "fu",
                     "z": "zi"
-                } [inp.toLowerCase()] || inp
+                } [_input.toLowerCase()] || _input
             });
 
             await ctx.reply(formatter.quote(result));

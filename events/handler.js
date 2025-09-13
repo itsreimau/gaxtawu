@@ -46,9 +46,10 @@ async function handleWelcome(bot, m, type, isSimulate = false) {
                 externalAdReply: {
                     title: config.bot.name,
                     body: `v${require("../package.json").version}`,
-                    mediaType: 1,
                     thumbnailUrl: profilePictureUrl,
-                    sourceUrl: config.bot.groupLink
+                    sourceUrl: config.bot.groupLink,
+                    mediaType: 1,
+                    renderLargerThumbnail: true
                 }
             }
         }, {
