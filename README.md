@@ -1,6 +1,6 @@
 # gaxtawu - Useless WhatsApp Bot
 
-> [!PERINGATAN]
+> [!WARNING]
 >
 > `gaxtawu` **tidak berafiliasi dengan WhatsApp, Meta, atau pihak terkait mana pun**. Ini adalah **proyek sumber terbuka** yang dibuat untuk tujuan edukasi dan pengembangan.
 >

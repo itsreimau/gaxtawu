@@ -129,7 +129,7 @@ async function handleError(ctx, error, useAxios = false, reportErrorToOwner = tr
     await ctx.reply(formatter.quote(`⚠️ Terjadi kesalahan: ${error.message}`));
 }
 
-function isCmd(content, bot) {
+function isCmd(content = "", bot) {
     if (!content || !bot) return false;
 
     const prefix = content.charAt(0);
@@ -148,7 +148,7 @@ function isCmd(content, bot) {
         input
     };
 
-    const mean = didYouMean(cmdName, cmds.map(cmd => [cmd.name, ...(cmd.aliases || [])]));
+    const mean = didYouMean(cmdName, cmds.map(cmd => [cmd.name, ...(cmd.aliases || [""])]));
     return mean ? {
         msg: content,
         prefix,
