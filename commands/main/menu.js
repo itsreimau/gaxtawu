@@ -11,7 +11,7 @@ module.exports = {
             } = ctx.bot;
             const tag = {
                 "ai-chat": "AI (Chat)",
-                "ai-image": "AI (Image)",
+                "ai-generate": "AI (Generate)",
                 "ai-misc": "AI (Miscellaneous)",
                 "converter": "Converter",
                 "downloader": "Downloader",

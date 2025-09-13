@@ -1,8 +1,9 @@
 module.exports = {
-    name: "dalle",
-    category: "ai-image",
+    name: "text2image",
+    aliases: ["text2img", "texttoimage", "texttoimg"],
+    category: "ai-generate",
     permissions: {
-        premium: true
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || ctx.quoted?.content || null;
@@ -14,8 +15,8 @@ module.exports = {
         );
 
         try {
-            const result = tools.api.createUrl("zell", "/ai/dalle", {
-                prompt: input
+            const result = tools.api.createUrl("kyyokatsu", "/ai/txt2img", {
+                text: input
             });
 
             await ctx.reply({

@@ -1,7 +1,9 @@
+const axios = require("axios");
+
 module.exports = {
-    name: "magicstudio",
-    aliases: ["magic", "magics", "mstudio"],
-    category: "ai-image",
+    name: "deepdreams",
+    aliases: ["deepd"],
+    category: "ai-generate",
     permissions: {
         coin: 10
     },
@@ -15,9 +17,10 @@ module.exports = {
         );
 
         try {
-            const result = tools.api.createUrl("zell", "/ai/magicstudio", {
+            const apiUrl = tools.api.createUrl("zell", "/ai/deepdreams", {
                 prompt: input
             });
+            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result).imageUrl;
 
             await ctx.reply({
                 image: {

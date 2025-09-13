@@ -1,6 +1,6 @@
 module.exports = {
     name: "flux",
-    category: "ai-image",
+    category: "ai-generate",
     permissions: {
         coin: 10
     },

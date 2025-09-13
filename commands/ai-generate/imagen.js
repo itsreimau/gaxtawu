@@ -2,7 +2,7 @@ const axios = require("axios");
 
 module.exports = {
     name: "imagen",
-    category: "ai-image",
+    category: "ai-generate",
     permissions: {
         coin: 10
     },

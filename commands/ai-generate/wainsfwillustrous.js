@@ -1,13 +1,14 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "sora",
-    category: "ai-video",
+    name: "wainsfwillustrous",
+    aliases: ["wai", "illustrous"],
+    category: "ai-generate",
     permissions: {
         premium: true
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || ctx?.quoted?.content || null;
+        const input = ctx.args.join(" ") || ctx.quoted?.content || null;
 
         if (!input) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
@@ -16,16 +17,17 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("kyyokatsu", "/ai/txt2video", {
-                text: input
+            const apiUrl = tools.api.createUrl("nekolabs", "/ai/wai-nsfw-illustrous/v11", {
+                prompt: input,
+                ratio: tools.cmd.getRandomElement(["1:1", "16:9", "9:16"])
             });
-            const result = (await axios.get(apiUrl)).data.videoUrl;
+            const result = (await axios.get(apiUrl)).data.result[0];
 
             await ctx.reply({
-                video: {
+                image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("mp4"),
+                mimetype: tools.mime.lookup("png"),
                 caption: formatter.quote(`Prompt: ${input}`),
                 footer: config.msg.footer,
                 buttons: [{
