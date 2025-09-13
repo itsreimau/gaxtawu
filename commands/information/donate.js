@@ -25,7 +25,7 @@ module.exports = {
                     image: {
                         url: qrisLink
                     },
-                    mimetype: tools.mime.lookup("jpg"),
+                    mimetype: tools.mime.lookup("jpeg"),
                     caption: text,
                     mentions: [ctx.sender.jid],
                     linkPreview: true,

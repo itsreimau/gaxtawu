@@ -12,6 +12,9 @@ const APIs = {
     izumi: {
         baseURL: "https://izumiiiiiiii.dpdns.org"
     },
+    kyyokatsu: {
+        baseURL: "https://okatsu-rolezapiiz.vercel.app"
+    },
     nekolabs: {
         baseURL: "https://api.nekolabs.my.id"
     },
@@ -20,6 +23,9 @@ const APIs = {
     },
     vreden: {
         baseURL: "https://api.vreden.my.id"
+    },
+    yp: {
+        baseURL: "https://api.yupra.my.id"
     },
     zell: {
         baseURL: "https://zellapi.autos"

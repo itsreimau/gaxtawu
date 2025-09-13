@@ -28,7 +28,7 @@ module.exports = {
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("jpg"),
+                mimetype: tools.mime.lookup("jpeg"),
                 caption: `${formatter.quote(`Kategori: ${tools.msg.ucwords(waifupics)}`)}\n` +
                     formatter.quote("Tipe: NSFW"),
                 footer: config.msg.footer,

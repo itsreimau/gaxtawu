@@ -1,6 +1,8 @@
+const axios = require("axios");
+
 module.exports = {
-    name: "ai4chat",
-    aliases: ["ai4"],
+    name: "wainsfwillustrous",
+    aliases: ["wai", "illustrous"],
     category: "ai-image",
     permissions: {
         premium: true
@@ -15,9 +17,11 @@ module.exports = {
         );
 
         try {
-            const result = tools.api.createUrl("nekolabs", "/ai-img/ai4chat", {
-                text: input
+            const apiUrl = tools.api.createUrl("nekolabs", "/ai/wai-nsfw-illustrous/v11", {
+                prompt: input,
+                ratio tools.cmd.getRandomElement(["1:1", "16:9", "9:16"])
             });
+            const result = (await axios.get(apiUrl)).data.result[0];
 
             await ctx.reply({
                 image: {

@@ -1,11 +1,13 @@
+const axios = require("axios");
+
 module.exports = {
-    name: "dalle",
-    category: "ai-image",
+    name: "sora",
+    category: "ai-video",
     permissions: {
         premium: true
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || ctx.quoted?.content || null;
+        const input = ctx.args.join(" ") || ctx?.quoted?.content || null;
 
         if (!input) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
@@ -14,15 +16,16 @@ module.exports = {
         );
 
         try {
-            const result = tools.api.createUrl("zell", "/ai/dalle", {
-                prompt: input
+            const apiUrl = tools.api.createUrl("kyyokatsu", "/ai/txt2video", {
+                text: input
             });
+            const result = (await axios.get(apiUrl)).data.videoUrl;
 
             await ctx.reply({
-                image: {
+                video: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("png"),
+                mimetype: tools.mime.lookup("mp4"),
                 caption: formatter.quote(`Prompt: ${input}`),
                 footer: config.msg.footer,
                 buttons: [{

@@ -25,7 +25,7 @@ module.exports = {
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("jpg"),
+                mimetype: tools.mime.lookup("jpeg"),
                 caption: formatter.quote(`Kueri: ${input}`),
                 footer: config.msg.footer,
                 buttons: [{

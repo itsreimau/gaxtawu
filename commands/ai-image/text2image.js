@@ -15,15 +15,15 @@ module.exports = {
         );
 
         try {
-            const result = tools.api.createUrl("zell", "/ai/text2image", {
-                prompt: input
+            const result = tools.api.createUrl("kyyokatsu", "/ai/txt2img", {
+                text: input
             });
 
             await ctx.reply({
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("jpg"),
+                mimetype: tools.mime.lookup("png"),
                 caption: formatter.quote(`Prompt: ${input}`),
                 footer: config.msg.footer,
                 buttons: [{

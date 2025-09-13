@@ -9,20 +9,20 @@ module.exports = {
     },
     code: async (ctx) => {
         try {
-            const apiUrl = tools.api.createUrl("https://sandipbaruwal.onrender.com", "/dp");
-            const result = (await axios.get(apiUrl)).data;
+            const apiUrl = tools.api.createUrl("kyyokatsu", "/random/ppcp");
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 album: [{
                     image: {
-                        url: result.male
+                        url: result.cowo
                     },
-                    mimetype: tools.mime.lookup("jpg")
+                    mimetype: tools.mime.lookup("jpeg")
                 }, {
                     image: {
-                        url: result.female
+                        url: result.cewe
                     },
-                    mimetype: tools.mime.lookup("jpg")
+                    mimetype: tools.mime.lookup("jpeg")
                 }]
             });
         } catch (error) {

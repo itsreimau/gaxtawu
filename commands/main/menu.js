@@ -70,7 +70,7 @@ module.exports = {
                 image: {
                     url: config.bot.thumbnail
                 },
-                mimetype: tools.mime.lookup("png"),
+                mimetype: tools.mime.lookup("jpeg"),
                 caption: text.trim(),
                 mentions: [ctx.sender.jid],
                 footer: config.msg.footer,

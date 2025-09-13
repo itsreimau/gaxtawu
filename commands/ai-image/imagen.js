@@ -1,8 +1,10 @@
+const axios = require("axios");
+
 module.exports = {
-    name: "dalle",
+    name: "imagen",
     category: "ai-image",
     permissions: {
-        premium: true
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || ctx.quoted?.content || null;
@@ -14,15 +16,17 @@ module.exports = {
         );
 
         try {
-            const result = tools.api.createUrl("zell", "/ai/dalle", {
-                prompt: input
+            const apiUrl = tools.api.createUrl("nekolabs", "/ai/imagen/4-fast", {
+                prompt: input,
+                ratio tools.cmd.getRandomElement(["1:1", "16:9", "9:16"])
             });
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("png"),
+                mimetype: tools.mime.lookup("jpg"),
                 caption: formatter.quote(`Prompt: ${input}`),
                 footer: config.msg.footer,
                 buttons: [{

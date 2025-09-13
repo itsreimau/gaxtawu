@@ -1,33 +1,30 @@
-const { Baileys } = require("@itsreimau/gktw");
-const axios = require("axios");
-
 module.exports = {
-    name: "remini",
-    category: "tool",
+    name: "tomostchreal",
+    aliases: ["jadimosril", "jadimostchreal", "jadisdmtinggi", "mosril", "tomosril", "tosdmtinggi"],
+    category: "ai-misc",
     permissions: {
         coin: 10
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = await Promise.all([
             tools.cmd.checkMedia(ctx.msg.contentType, "image"),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, "image")
+            tools.cmd.checkQuotedMedia(ctx?.quoted?.contentType, "image")
         ]);
 
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], "image")));
 
         try {
-            const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
-            const uploadUrl = await Baileys.uploadFile(buffer);
-            const apiUrl = tools.api.createUrl("hang", "/imagecreator/remini", {
+            const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
+            const uploadUrl = await tools.cmd.upload(buffer, "image");
+            const result = tools.api.createUrl("kyyokatsu", "/maker/tosdmtinggi", {
                 url: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("jpeg"),
+                mimetype: tools.mime.lookup("jpg"),
                 caption: formatter.quote("Untukmu, tuan!"),
                 footer: config.msg.footer
             });

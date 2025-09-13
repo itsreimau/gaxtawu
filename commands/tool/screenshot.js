@@ -28,7 +28,7 @@ module.exports = {
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("jpg"),
+                mimetype: tools.mime.lookup("jpeg"),
                 caption: formatter.quote(`URL: ${url}`),
                 footer: config.msg.footer
             });
