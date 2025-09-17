@@ -77,7 +77,7 @@ module.exports = (bot) => {
         }
 
         // Pemberitahuan migrasi database ke LID
-        if (await db.get(`user.${senderId}`) && ctx.used.command !== = "migrate" && Baileys.isJidUser(senderJid)) await ctx.reply({
+        if (await db.get(`user.${senderId}`) && ctx.used.command !== "migrate" && Baileys.isJidUser(senderJid)) await ctx.reply({
             text: formatter.quote(`📍 Kamu terdaftar di database lama, tetapi bot sekarang menggunakan database yang baru. Apakah kamu ingin bermigrasi ke database yang baru?`),
             footer: config.msg.footer,
             buttons: [{
