@@ -1,6 +1,6 @@
 const moment = require("moment-timezone");
 
-function convertMsToDurationMoment(ms) {
+function convertMsToDuration(ms) {
     if (!ms || ms <= 0) return "0 detik";
 
     const duration = moment.duration(ms);
