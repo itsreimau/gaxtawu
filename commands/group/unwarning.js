@@ -9,7 +9,7 @@ module.exports = {
         restrict: true
     },
     code: async (ctx) => {
-        const accountJid = ctx.quoted?.senderLid || await ctx.convertJid("lid", ctx.getMentioned()[0]) || null;
+        const accountJid = await ctx.quoted?.senderLid() || await ctx.convertJid("lid", ctx.getMentioned()[0]) || null;
         const accountId = ctx.getId(accountJid);
 
         if (!accountJid) return await ctx.reply({

@@ -9,7 +9,7 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const accountJid = await ctx.convertJid("lid", ctx.getMentioned()[0]) || ctx.quoted?.senderLid || null;
+        const accountJid = await ctx.convertJid("lid", ctx.getMentioned()[0]) || await ctx.quoted?.senderLid() || null;
         const accountId = ctx.getId(accountJid);
 
         if (!accountJid) await ctx.reply({
