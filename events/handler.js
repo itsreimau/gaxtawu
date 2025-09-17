@@ -117,7 +117,7 @@ module.exports = (bot) => {
         }
 
         // Tetapkan config pada bot
-        const lid = await bot.core.convertLid("lid", m.user.id);
+        const lid = await bot.convertLid("lid", m.user.id);
         config.bot = {
             ...config.bot,
             jid: m.user.id,
