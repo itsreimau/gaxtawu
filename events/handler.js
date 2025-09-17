@@ -117,7 +117,7 @@ module.exports = (bot) => {
         }
 
         // Tetapkan config pada bot
-        const lid = await bot.convertLid("lid", m.user.id);
+        const lid = await bot.convertJid("lid", m.user.id);
         config.bot = {
             ...config.bot,
             jid: m.user.id,
@@ -130,8 +130,8 @@ module.exports = (bot) => {
         };
         config.owner = {
             ...config.owner,
-            lid: bot.getId((await bot.convertLid("lid", config.owner.id + Baileys.S_WHATSAPP_NET))),
-            _co: await Promise.all(config.owner.co.map(async number => bot.getId((await bot.convertLid("lid", number + Baileys.S_WHATSAPP_NET)))))
+            lid: bot.getId((await bot.convertJid("lid", config.owner.id + Baileys.S_WHATSAPP_NET))),
+            _co: await Promise.all(config.owner.co.map(async number => bot.getId((await bot.convertJid("lid", number + Baileys.S_WHATSAPP_NET)))))
         }
     });
 
