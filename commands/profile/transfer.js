@@ -5,25 +5,21 @@ module.exports = {
     aliases: ["tf"],
     category: "profile",
     code: async (ctx) => {
-        const userJid = ctx.quoted?.senderJid || (await ctx.getMentioned())[0] || (ctx.args[0] ? ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET : null);
-        const coinAmount = parseInt(ctx.args[ctx.quoted?.senderJid ? 0 : 1], 10) || null;
-
-        const senderJid = ctx.sender.jid;
-        const senderId = ctx.getId(senderJid);
+        const userJid = ctx.quoted?.senderLid || await ctx.convertJid("lid", ctx.getMentioned()[0]) || (ctx.args[0] ? await ctx.convertJid("lid", ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET) : null);
+        const coinAmount = parseInt(ctx.args[ctx.quoted ? 0 : 1], 10) || null;
 
         if (!userJid && !coinAmount) return await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `@${senderId} 8`))}\n` +
+                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "@0 8"))}\n` +
                 formatter.quote(tools.msg.generateNotes(["Balas atau kutip pesan untuk menjadikan pengirim sebagai akun target."])),
-            mentions: [senderJid]
+            mentions: [0 + Baileys.S_WHATSAPP_NET]
         });
 
-        const isOnWhatsApp = await ctx.core.onWhatsApp(userJid);
-        if (isOnWhatsApp.length === 0) return await ctx.reply(formatter.quote("❎ Akun tidak ada di WhatsApp!"));
+        const senderId = ctx.getId(ctx.sender.lid);
 
         const userDb = await db.get(`user.${senderId}`) || {};
 
-        if (tools.cmd.isOwner(senderId, ctx.msg.key.id) || userDb?.premium) return await ctx.reply(formatter.quote("❎ Koin tak terbatas tidak dapat ditransfer."));
+        if (tools.cmd.isOwner(ctx.getId(ctx.sender.jid), ctx.msg.key.id) || userDb?.premium) return await ctx.reply(formatter.quote("❎ Koin tak terbatas tidak dapat ditransfer."));
         if (coinAmount <= 0) return await ctx.reply(formatter.quote("❎ Jumlah koin tidak boleh kurang dari atau sama dengan 0!"));
         if (userDb?.coin < coinAmount) return await ctx.reply(formatter.quote("❎ Koin-mu tidak mencukupi untuk transfer ini!"));
 

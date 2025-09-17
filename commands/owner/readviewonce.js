@@ -12,32 +12,14 @@ module.exports = {
 
         try {
             const quoted = ctx.quoted;
-            const quotedType = quoted.contentType;
-            const msg = quoted[quotedType];
-            const buffer = await quoted?.media.toBuffer();
+            const quotedType = quoted.messageType;
 
-            const options = {
-                mimetype: msg.mimetype,
-                caption: msg.caption || ""
-            };
+            if (!quoted[quotedType].viewOnce) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["reply"], ["viewOnce"])));
 
-            if (quotedType === MessageType.audioMessage) {
-                await ctx.reply({
-                    audio: buffer,
-                    mimetype: msg.mimetype,
-                    ptt: true
-                });
-            } else if (quotedType === MessageType.imageMessage) {
-                await ctx.reply({
-                    image: buffer,
-                    ...options
-                });
-            } else if (quotedType === MessageType.videoMessage) {
-                await ctx.reply({
-                    video: buffer,
-                    ...options
-                });
-            }
+            if (quoted[quotedType].viewOnce) delete quoted[quotedType].viewOnce;
+            if (quoted[quotedType].scansSidecar) delete quoted[quotedType].scansSidecar;
+
+            await ctx.forwardMessage(ctx.id, quoted);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

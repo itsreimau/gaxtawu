@@ -129,7 +129,7 @@ async function handleError(ctx, error, useAxios = false, reportErrorToOwner = tr
     await ctx.reply(formatter.quote(`⚠️ Terjadi kesalahan: ${error.message}`));
 }
 
-function isCmd(content = "", bot) {
+function isCmd(content, bot) {
     if (!content || !bot) return false;
 
     const prefix = content.charAt(0);
@@ -148,7 +148,7 @@ function isCmd(content = "", bot) {
         input
     };
 
-    const mean = didYouMean(cmdName, cmds.map(cmd => [cmd.name, ...(cmd.aliases || [""])]));
+    const mean = didYouMean(cmdName, cmds.flatMap(cmd => [cmd.name, ...cmd.aliases]));
     return mean ? {
         msg: content,
         prefix,
@@ -165,7 +165,7 @@ function isOwner(id, messageId) {
         return config.bot.id === id || config.owner.id === id || config.owner.co.includes(id);
     }
 
-    return config.owner.id === id || config.owner.co.includes(id);
+    return config.owner.id === id || config.owner.lid === id || config.owner.co.includes(id) || config.owner._co.includes(id);
 }
 
 function isUrl(url) {

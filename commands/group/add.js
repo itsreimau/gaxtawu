@@ -14,7 +14,7 @@ module.exports = {
 
         if (!input) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, ctx.getId(ctx.sender.jid)))
+            formatter.quote(tools.msg.generateCmdExample(ctx.used, "6281234567891"))
         );
 
         const accountJid = input.replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET;

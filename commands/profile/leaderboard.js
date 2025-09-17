@@ -6,7 +6,7 @@ module.exports = {
     category: "profile",
     code: async (ctx) => {
         try {
-            const senderId = ctx.getId(ctx.sender.jid);
+            const senderId = ctx.getId(ctx.sender.lid);
             const users = await db.get("user");
 
             const leaderboardData = Object.entries(users).map(([id, data]) => ({
@@ -34,7 +34,7 @@ module.exports = {
 
             await ctx.reply({
                 text: resultText.trim(),
-                mentions: [senderId + Baileys.S_WHATSAPP_NET],
+                mentions: [ctx.sender.lid],
                 footer: config.msg.footer
             });
         } catch (error) {

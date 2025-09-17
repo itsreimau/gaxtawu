@@ -25,7 +25,7 @@ module.exports = {
             let userMentions = [];
 
             for (const user of premiumUsers) {
-                userMentions.push(user.id + Baileys.S_WHATSAPP_NET);
+                userMentions.push(user.id + Baileys.LID);
 
                 if (user.expiration) {
                     const daysLeft = tools.msg.convertMsToDuration(Date.now() - user.expiration, ["hari"]);

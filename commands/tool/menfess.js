@@ -13,13 +13,13 @@ module.exports = {
         const targetId = id ? id.replace(/[^\d]/g, "") : null;
         const menfessText = text ? text.join(" ") : null;
 
-        const senderId = ctx.getId(ctx.sender.jid);
-
         if (!targetId && !menfessText) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `${senderId} halo, dunia!`))}\n` +
+            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "6281234567891 halo, dunia!"))}\n` +
             formatter.quote(tools.msg.generateNotes(["Jangan gunakan spasi pada angka. Contoh: +62 8123-4567-8910, seharusnya +628123-4567-8910"]))
         );
+
+        const senderId = ctx.getId(ctx.sender.jid);
 
         if (targetId === config.bot.id) return await ctx.reply(formatter.quote("❎ Tidak dapat digunakan pada bot."));
         if (targetId === senderId) return await ctx.reply(formatter.quote("❎ Tidak dapat digunakan pada diri sendiri."));
@@ -44,8 +44,8 @@ module.exports = {
                 quoted: tools.cmd.fakeMetaAiQuotedText("Seseorang telah mengirimi-mu menfess.")
             });
             await db.set(`menfess.${Date.now()}`, {
-                from: senderId,
-                to: targetId
+                from: ctx.sender.lid,
+                to: await ctx.convertJid("lid", targetId + Baileys.S_WHATSAPP_NET)
             });
 
             await ctx.reply({

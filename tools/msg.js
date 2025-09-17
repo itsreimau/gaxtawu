@@ -1,38 +1,24 @@
-function convertMsToDuration(ms, units = []) {
-    if (!ms || ms <= 0) return "0 hari";
+const moment = require("moment-timezone");
 
-    const timeUnits = {
-        tahun: 31557600000,
-        bulan: 2629800000,
-        minggu: 604800000,
-        hari: 86400000,
-        jam: 3600000,
-        menit: 60000,
-        detik: 1000,
-        milidetik: 1
-    };
+function convertMsToDurationMoment(ms) {
+    if (!ms || ms <= 0) return "0 detik";
 
-    if (units.length > 0) {
-        let result = [];
-        for (const unit of units) {
-            if (timeUnits[unit]) {
-                const value = Math.floor(ms / timeUnits[unit]);
-                if (value > 0) result.push(`${value} ${unit}`);
-                ms %= timeUnits[unit];
-            }
-        }
-        return result.join(" ") || "0 " + units[0];
-    }
+    const duration = moment.duration(ms);
+    const hasLargerUnits = duration.asSeconds() >= 1;
 
-    let result = [];
-    for (const [unit, duration] of Object.entries(timeUnits)) {
-        const value = Math.floor(ms / duration);
-        if (value > 0) {
-            result.push(`${value} ${unit}`);
-            ms %= duration;
-        }
-    }
-    return result.join(" ") || "0 detik";
+    const parts = [];
+
+    if (duration.years() > 0) parts.push(`${duration.years()} tahun`);
+    if (duration.months() > 0) parts.push(`${duration.months()} bulan`);
+    if (duration.weeks() > 0) parts.push(`${duration.weeks()} minggu`);
+    if (duration.days() > 0) parts.push(`${duration.days()} hari`);
+    if (duration.hours() > 0) parts.push(`${duration.hours()} jam`);
+    if (duration.minutes() > 0) parts.push(`${duration.minutes()} menit`);
+    if (duration.seconds() > 0) parts.push(`${duration.seconds()} detik`);
+
+    if (!hasLargerUnits && duration.milliseconds() > 0) parts.push(`${duration.milliseconds()} milidetik`);
+
+    return parts.join(" ") || "0 detik";
 }
 
 function formatSize(byteCount, withPerSecond = false) {

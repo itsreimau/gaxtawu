@@ -8,21 +8,18 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const userJid = ctx.quoted?.senderJid || (await ctx.getMentioned())[0] || (ctx.args[0] ? ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET : null);
-        const coinAmount = parseInt(ctx.args[ctx.quoted?.senderJid ? 0 : 1], 10) || null;
+        const userJid = ctx.quoted?.senderLid || await ctx.convertJid("lid", ctx.getMentioned()[0]) || (ctx.args[0] ? await ctx.convertJid("lid", ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET) : null);
+        const coinAmount = parseInt(ctx.args[ctx.quoted ? 0 : 1], 10) || null;
 
         if (!userJid || !coinAmount) return await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `@${ctx.getId(ctx.sender.jid)} 8`))}\n` +
+                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `@0 8`))}\n` +
                 `${formatter.quote(tools.msg.generateNotes(["Balas atau kutip pesan untuk menjadikan pengirim sebagai akun target."]))}\n` +
                 formatter.quote(tools.msg.generatesFlagInfo({
                     "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
                 })),
-            mentions: [ctx.sender.jid]
+            mentions: [0 + Baileys.S_WHATSAPP_NET]
         });
-
-        const isOnWhatsApp = await ctx.core.onWhatsApp(userJid);
-        if (isOnWhatsApp.length === 0) return await ctx.reply(formatter.quote("❎ Akun tidak ada di WhatsApp!"));
 
         try {
             await db.add(`user.${ctx.getId(userJid)}.coin`, coinAmount);

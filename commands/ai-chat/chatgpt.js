@@ -24,6 +24,7 @@ module.exports = {
 
         try {
             const systemPrompt = `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.` // Dapat diubah sesuai keinginan
+            const senderId = ctx.getId(ctx.sender.lid);
 
             if (checkMedia || checkQuotedMedia) {
                 const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
@@ -32,7 +33,7 @@ module.exports = {
                     text: input,
                     systemPrompt,
                     imageUrl: uploadUrl,
-                    sessionId: await db.get(`user.${ctx.getId(ctx.sender.jid)}.uid`) || "guest"
+                    sessionId: await db.get(`user.${senderId}.uid`) || "guest"
                 });
                 const result = (await axios.get(apiUrl)).data.result;
 
@@ -41,7 +42,7 @@ module.exports = {
                 const apiUrl = tools.api.createUrl("nekolabs", "/ai/gpt/5", {
                     text: input,
                     systemPrompt,
-                    sessionId: await db.get(`user.${ctx.getId(ctx.sender.jid)}.uid`) || "guest"
+                    sessionId: await db.get(`user.${senderId}.uid`) || "guest"
                 });
                 const result = (await axios.get(apiUrl)).data.result;
 

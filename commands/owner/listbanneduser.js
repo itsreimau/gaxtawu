@@ -24,7 +24,7 @@ module.exports = {
             });
 
             bannedUsers.forEach(userId => {
-                userMentions.push(userId + Baileys.S_WHATSAPP_NET);
+                userMentions.push(userId + Baileys.LID);
             });
 
             await ctx.reply({

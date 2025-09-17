@@ -3,10 +3,9 @@ module.exports = {
     aliases: ["koin"],
     category: "profile",
     code: async (ctx) => {
-        const senderId = ctx.getId(ctx.sender.jid);
-        const userDb = await db.get(`user.${senderId}`) || {};
+        const userDb = await db.get(`user.${ctx.getId(ctx.sender.lid)}`) || {};
 
-        if (tools.cmd.isOwner(senderId, ctx.msg.key.id) || userDb?.premium) return await ctx.reply(formatter.quote("🤑 Kamu memiliki koin tak terbatas."));
+        if (tools.cmd.isOwner(ctx.sender.jid, ctx.msg.key.id) || userDb?.premium) return await ctx.reply(formatter.quote("🤑 Kamu memiliki koin tak terbatas."));
 
         try {
             const userCoin = userDb?.coin || 0;

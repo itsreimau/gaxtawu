@@ -9,20 +9,20 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const accountJid = (await ctx.getMentioned())[0] || ctx.quoted?.senderJid || null;
+        const accountJid = await ctx.convertJid("lid", ctx.getMentioned()[0]) || ctx.quoted?.senderLid || null;
         const accountId = ctx.getId(accountJid);
-
-        const senderJid = ctx.sender.jid;
-        const senderId = ctx.getId(senderJid);
 
         if (!accountJid) await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `@${senderId}`))}\n` +
+                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "@0"))}\n` +
                 formatter.quote(tools.msg.generateNotes(["Balas atau kutip pesan untuk menjadikan pengirim sebagai akun target."])),
-            mentions: [senderJid]
+            mentions: [0 + Baileys.S_WHATSAPP_NET]
         });
 
-        if (accountId === config.bot.id) return await ctx.reply(formatter.quote("Tidak bisa menantang bot!"));
+        const senderJid = ctx.sender.lid;
+        const senderId = ctx.getId(senderJid);
+
+        if (accountId === config.bot._lid) return await ctx.reply(formatter.quote("Tidak bisa menantang bot!"));
         if (accountJid === senderJid) return await ctx.reply(formatter.quote("Tidak bisa menantang diri sendiri!"));
 
         const existingGame = [...session.values()].find(game => game.players.includes(senderJid) || game.players.includes(accountJid));
@@ -30,7 +30,7 @@ module.exports = {
 
         try {
             const game = {
-                players: [senderJid, accountJid],
+                players: [senderLid, accountLid],
                 coin: 10,
                 timeout: 120000,
                 choices: new Map(),
@@ -67,8 +67,8 @@ module.exports = {
             collector.on("collect", async (m) => {
                 const participantAnswer = m.content.toLowerCase();
                 const participantJid = m.sender;
-                const participantId = ctx.getId(participantJid);
-                const isGroup = m.jid.endsWith(Baileys.G_US);
+                const participantId = ctx.getId(m.senderLid);
+                const isGroup = Baileys.isJidGroup(m.jid);
 
                 if (!game.started && isGroup && participantId === accountId) {
                     if (participantAnswer === "accept") {

@@ -5,7 +5,7 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         try {
-            await db.set(`user.${ctx.getId(ctx.sender.jid)}.afk`, {
+            await db.set(`user.${ctx.getId(ctx.sender.lid)}.afk`, {
                 reason: input,
                 timestamp: Date.now()
             });
