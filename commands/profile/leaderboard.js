@@ -1,5 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "leaderboard",
     aliases: ["lb", "peringkat"],

@@ -31,7 +31,6 @@ module.exports = {
                     `${formatter.quote(`URL: ${result.url}`)}\n` +
                     `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
                     await tools.cmd.translate(result.synopsis, "id", "en"),
-                linkPreview: true,
                 footer: config.msg.footer
             });
         } catch (error) {

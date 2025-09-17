@@ -1,6 +1,6 @@
 {
   "name": "gaxtawu",
-  "version": "1.4.16+lidmigrate.5",
+  "version": "1.4.16+lidmigrate.6",
   "description": "Useless WhatsApp Bot",
   "main": "index.js",
   "directories": {

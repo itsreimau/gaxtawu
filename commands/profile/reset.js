@@ -6,7 +6,7 @@ module.exports = {
     },
     code: async (ctx) => {
         await ctx.reply({
-            text: formatter.quote(`🤖 Apakah kamu yakin ingin mereset datamu? Langkah ini akan menghapus seluruh data yang tersimpan dan tidak dapat dikembalikan.`),
+            text: formatter.quote(`🤖 Yakin ingin mereset database Anda? Tindakan ini akan menghapus semua data yang tersimpan dan tidak dapat dipulihkan.`),
             footer: config.msg.footer,
             buttons: [{
                 buttonId: `y`,
@@ -30,7 +30,7 @@ module.exports = {
 
                 if (content === "y") {
                     await db.delete(`user.${senderId}`);
-                    await ctx.reply(formatter.quote("✅ Data-mu berhasil direset, semua data telah dihapus!"));
+                    await ctx.reply(formatter.quote("✅ Database Anda telah berhasil direset!"));
                     collector.stop();
                 } else if (content === "n") {
                     await ctx.reply(formatter.quote("❌ Proses reset data telah dibatalkan."));

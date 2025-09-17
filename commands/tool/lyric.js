@@ -16,7 +16,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("vreden", "api/lirik", {
+            const apiUrl = tools.api.createUrl("vreden", "/api/lirik", {
                 query: input
             });
             const result = (await axios.get(apiUrl)).data.result;

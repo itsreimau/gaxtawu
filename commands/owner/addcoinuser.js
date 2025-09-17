@@ -14,7 +14,7 @@ module.exports = {
         if (!userJid || !coinAmount) return await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
                 `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `@0 8`))}\n` +
-                `${formatter.quote(tools.msg.generateNotes(["Balas atau kutip pesan untuk menjadikan pengirim sebagai akun target."]))}\n` +
+                `${formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]))}\n` +
                 formatter.quote(tools.msg.generatesFlagInfo({
                     "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
                 })),
@@ -33,7 +33,7 @@ module.exports = {
 
             const silent = flag?.silent || false;
             if (!silent) await ctx.sendMessage(userJid, {
-                text: formatter.quote(`📢 Kamu telah menerima ${coinAmount} koin dari Owner!`)
+                text: formatter.quote(`📢 Anda telah menerima ${coinAmount} koin dari Owner!`)
             });
 
             await ctx.reply(formatter.quote(`✅ Berhasil menambahkan ${coinAmount} koin kepada pengguna itu!`));

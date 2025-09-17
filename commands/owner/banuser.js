@@ -13,7 +13,7 @@ module.exports = {
         if (!userJid) return await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
                 `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "@0"))}\n` +
-                `${formatter.quote(tools.msg.generateNotes(["Balas atau kutip pesan untuk menjadikan pengirim sebagai akun target."]))}\n` +
+                `${formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]))}\n` +
                 formatter.quote(tools.msg.generatesFlagInfo({
                     "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
                 })),
@@ -32,7 +32,7 @@ module.exports = {
 
             const silent = flag?.silent || false;
             if (!silent) await ctx.sendMessage(userJid, {
-                text: formatter.quote("📢 Kamu telah dibanned oleh Owner!")
+                text: formatter.quote("📢 Anda telah dibanned oleh Owner!")
             });
 
             await ctx.reply(formatter.quote("✅ Berhasil dibanned!"));

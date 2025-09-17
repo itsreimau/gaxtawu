@@ -1,3 +1,5 @@
+const { Baileys } = require("@itsreimau/gktw");
+
 module.exports = {
     name: "opromote",
     category: "owner",
@@ -12,7 +14,7 @@ module.exports = {
         if (!accountJid) return await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
                 `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "@0"))}\n` +
-                formatter.quote(tools.msg.generateNotes(["Balas atau kutip pesan untuk menjadikan pengirim sebagai akun target."])),
+                formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])),
             mentions: [0 + Baileys.S_WHATSAPP_NET]
         });
 

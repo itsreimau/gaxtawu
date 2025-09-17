@@ -59,7 +59,7 @@ module.exports = (bot) => {
             if (userDb?.autolevelup) {
                 const profilePictureUrl = await ctx.core.profilePictureUrl(senderJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
                 await ctx.reply({
-                    text: formatter.quote(`🎊 Selamat! Kamu telah naik ke level ${newUserLevel}.`),
+                    text: formatter.quote(`🎊 Selamat! Anda telah naik ke level ${newUserLevel}.`),
                     footer: config.msg.footer,
                     buttons: [{
                         buttonId: `${ctx.used.prefix}setprofile autolevelup`,
@@ -78,7 +78,7 @@ module.exports = (bot) => {
 
         // Pemberitahuan migrasi database ke LID
         if (await db.get(`user.${senderId}`) && ctx.used.command !== "migrate" && Baileys.isJidUser(senderJid)) await ctx.reply({
-            text: formatter.quote(`📍 Kamu terdaftar di database lama, tetapi bot sekarang menggunakan database yang baru. Apakah kamu ingin bermigrasi ke database yang baru?`),
+            text: formatter.quote(`📍 Anda terdaftar di database lama. Ingin bermigrasi ke database baru?`),
             footer: config.msg.footer,
             buttons: [{
                 buttonId: `${ctx.used.prefix}migrate ${senderId}`,

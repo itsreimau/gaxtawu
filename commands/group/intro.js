@@ -10,10 +10,7 @@ module.exports = {
             const groupId = ctx.getId(ctx.id);
             const introText = await db.get(`group.${groupId}.text.intro`) || formatter.quote("❎ Grup ini tidak memiliki intro.");
 
-            await ctx.reply({
-                text: introText,
-                linkPreview: true
-            });
+            await ctx.reply(introText);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

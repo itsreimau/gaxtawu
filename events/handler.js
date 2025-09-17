@@ -91,7 +91,7 @@ async function addWarning(ctx, senderJid, _senderId, groupDb, groupId) {
     });
 
     if (currentWarnings >= maxWarnings) {
-        await ctx.reply(formatter.quote(`⛔ Kamu telah menerima ${maxWarnings} warning dan akan dikeluarkan dari grup!`));
+        await ctx.reply(formatter.quote(`⛔ Anda telah menerima ${maxWarnings} warning dan akan dikeluarkan dari grup!`));
         if (!config.system.restrict) await ctx.group().kick(senderJid);
         await db.set(`group.${groupId}.warnings`, warnings.filter(warning => warning.userId !== _senderId));
     }
@@ -220,7 +220,7 @@ module.exports = (bot) => {
                 const timeElapsed = Date.now() - userAfk.timestamp;
                 if (timeElapsed > 3000) {
                     const timeago = tools.msg.convertMsToDuration(timeElapsed);
-                    await ctx.reply(formatter.quote(`📴 Kamu telah keluar dari AFK ${userAfk.reason ? `dengan alasan ${formatter.inlineCode(userAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`));
+                    await ctx.reply(formatter.quote(`📴 Anda telah keluar dari AFK ${userAfk.reason ? `dengan alasan ${formatter.inlineCode(userAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`));
                     await db.delete(`user.${_senderId}.afk`);
                 }
             }
@@ -358,7 +358,7 @@ module.exports = (bot) => {
                         to
                     }] of Object.entries(allMenfessDb)) {
                     if (senderLid === from || senderLid === to) {
-                        const targetJid = senderLid === from ? to : from;
+                        const targetJid = (senderLid === from ? to : from) + Baileys.LID;
                         if (m.content === "delete") {
                             const replyText = formatter.quote("✅ Sesi menfess telah dihapus!");
                             await ctx.reply(replyText);
@@ -410,7 +410,7 @@ module.exports = (bot) => {
                     }]
                 }
             }, {
-                quoted: tools.cmd.fakeMetaAiQuotedText(`Bot tidak dapat menerima panggilan ${call.isVideo ? "video" : "suara"}! Jika kamu memerlukan bantuan, silakan menghubungi Owner.`)
+                quoted: tools.cmd.fakeMetaAiQuotedText(`Bot tidak dapat menerima panggilan ${call.isVideo ? "video" : "suara"}! Jika Anda memerlukan bantuan, silakan menghubungi Owner.`)
             });
         }
     });

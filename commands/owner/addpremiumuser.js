@@ -14,7 +14,7 @@ module.exports = {
         if (!userJid) return await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
                 `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "@0 30"))}\n` +
-                `${formatter.quote(tools.msg.generateNotes(["Balas atau kutip pesan untuk menjadikan pengirim sebagai akun target."]))}\n` +
+                `${formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]))}\n` +
                 formatter.quote(tools.msg.generatesFlagInfo({
                     "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
                 })),
@@ -41,7 +41,7 @@ module.exports = {
                 await db.set(`user.${userId}.premiumExpiration`, expirationDate);
 
                 if (!silent) await ctx.sendMessage(userJid, {
-                    text: formatter.quote(`📢 Kamu telah ditambahkan sebagai pengguna Premium oleh Owner selama ${daysAmount} hari!`)
+                    text: formatter.quote(`📢 Anda telah ditambahkan sebagai pengguna Premium oleh Owner selama ${daysAmount} hari!`)
                 });
 
                 await ctx.reply(formatter.quote(`✅ Berhasil menambahkan Premium selama ${daysAmount} hari kepada pengguna itu!`));
@@ -49,7 +49,7 @@ module.exports = {
                 await db.delete(`user.${userId}.premiumExpiration`);
 
                 if (!silent) await ctx.sendMessage(userJid, {
-                    text: formatter.quote("📢 Kamu telah ditambahkan sebagai pengguna Premium selamanya oleh Owner!")
+                    text: formatter.quote("📢 Anda telah ditambahkan sebagai pengguna Premium selamanya oleh Owner!")
                 });
 
                 await ctx.reply(formatter.quote("✅ Berhasil menambahkan Premium selamanya kepada pengguna itu!"));

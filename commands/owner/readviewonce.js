@@ -1,5 +1,3 @@
-const { MessageType } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "readviewonce",
     aliases: ["rvo"],

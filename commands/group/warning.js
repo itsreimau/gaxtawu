@@ -1,3 +1,5 @@
+const { Baileys } = require("@itsreimau/gktw");
+
 module.exports = {
     name: "warning",
     aliases: ["warn"],
@@ -9,13 +11,13 @@ module.exports = {
         restrict: true
     },
     code: async (ctx) => {
-        const accountJid = ctx.quoted?.senderJid || await ctx.convertJid("lid", ctx.getMentioned()[0]) || null;
+        const accountJid = ctx.quoted?.senderLid || await ctx.convertJid("lid", ctx.getMentioned()[0]) || null;
         const accountId = ctx.getId(accountJid);
 
         if (!accountJid) return await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
                 `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "@0"))}\n` +
-                formatter.quote(tools.msg.generateNotes(["Balas atau kutip pesan untuk menjadikan pengirim sebagai akun target."])),
+                formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])),
             mentions: [0 + Baileys.S_WHATSAPP_NET]
         });
 

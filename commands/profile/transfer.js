@@ -11,17 +11,16 @@ module.exports = {
         if (!userJid && !coinAmount) return await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
                 `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "@0 8"))}\n` +
-                formatter.quote(tools.msg.generateNotes(["Balas atau kutip pesan untuk menjadikan pengirim sebagai akun target."])),
+                formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])),
             mentions: [0 + Baileys.S_WHATSAPP_NET]
         });
 
         const senderId = ctx.getId(ctx.sender.lid);
-
         const userDb = await db.get(`user.${senderId}`) || {};
 
         if (tools.cmd.isOwner(ctx.getId(ctx.sender.jid), ctx.msg.key.id) || userDb?.premium) return await ctx.reply(formatter.quote("❎ Koin tak terbatas tidak dapat ditransfer."));
         if (coinAmount <= 0) return await ctx.reply(formatter.quote("❎ Jumlah koin tidak boleh kurang dari atau sama dengan 0!"));
-        if (userDb?.coin < coinAmount) return await ctx.reply(formatter.quote("❎ Koin-mu tidak mencukupi untuk transfer ini!"));
+        if (userDb?.coin < coinAmount) return await ctx.reply(formatter.quote("❎ Koin Anda tidak mencukupi untuk transfer ini!"));
 
         try {
             await db.add(`user.${ctx.getId(userJid)}.coin`, coinAmount);

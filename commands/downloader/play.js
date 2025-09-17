@@ -46,7 +46,6 @@ module.exports = {
                 await ctx.reply({
                     text: `${formatter.quote(`Judul: ${searchResult.title}`)}\n` +
                         formatter.quote(`URL: ${searchResult.url}`),
-                    linkPreview: true,
                     footer: config.msg.footer
                 });
 
@@ -71,7 +70,6 @@ module.exports = {
                     text: `${formatter.quote(`Judul: ${searchResult.trackName}`)}\n` +
                         `${formatter.quote(`Artis: ${searchResult.artistName}`)}\n` +
                         formatter.quote(`URL: ${searchResult.externalUrl}`),
-                    linkPreview: true,
                     footer: config.msg.footer
                 });
 
@@ -96,7 +94,6 @@ module.exports = {
                     text: `${formatter.quote(`Judul: ${searchResult.title}`)}\n` +
                         `${formatter.quote(`Artis: ${searchResult.author.name}`)}\n` +
                         formatter.quote(`URL: ${searchResult.url}`),
-                    linkPreview: true,
                     footer: config.msg.footer
                 });
 

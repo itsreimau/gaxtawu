@@ -3,9 +3,6 @@ module.exports = {
     aliases: ["botgc", "gcbot"],
     category: "information",
     code: async (ctx) => {
-        await ctx.reply({
-            text: formatter.quote(config.bot.groupLink),
-            linkPreview: true
-        });
+        await ctx.reply(formatter.quote(config.bot.groupLink));
     }
 };

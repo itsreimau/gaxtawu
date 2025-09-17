@@ -15,7 +15,7 @@ module.exports = {
         if (!accountJid) await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
                 `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "@0"))}\n` +
-                formatter.quote(tools.msg.generateNotes(["Balas atau kutip pesan untuk menjadikan pengirim sebagai akun target."])),
+                formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])),
             mentions: [0 + Baileys.S_WHATSAPP_NET]
         });
 
@@ -38,7 +38,7 @@ module.exports = {
             };
 
             await ctx.reply({
-                text: `${formatter.quote(`Kamu menantang @${accountId} untuk bermain suit!`)}\n` +
+                text: `${formatter.quote(`Anda menantang @${accountId} untuk bermain suit!`)}\n` +
                     formatter.quote(`Bonus: ${game.coin} Koin`),
                 mentions: [accountJid],
                 footer: config.msg.footer,
@@ -142,7 +142,7 @@ module.exports = {
                         game.choices.set(participantId, choiceData);
 
                         await ctx.sendMessage(participantJid, {
-                            text: formatter.quote(`Kamu memilih: ${choiceData.name}`)
+                            text: formatter.quote(`Anda memilih: ${choiceData.name}`)
                         }, {
                             quoted: m
                         });

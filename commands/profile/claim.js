@@ -25,22 +25,22 @@ module.exports = {
         const userDb = await db.get(`user.${senderId}`) || {};
 
         if (!claim) return await ctx.reply(formatter.quote("❎ Hadiah tidak valid!"));
-        if (tools.cmd.isOwner(ctx.getId(ctx.sender.jid), ctx.msg.key.id) || userDb?.premium) return await ctx.reply(formatter.quote("❎ Kamu sudah memiliki koin tak terbatas, tidak perlu mengklaim lagi."));
-        if (level < claim.level) return await ctx.reply(formatter.quote(`❎ Kamu perlu mencapai level ${claim.level} untuk mengklaim hadiah ini. Levelmu saat ini adalah ${level}.`));
+        if (tools.cmd.isOwner(ctx.getId(ctx.sender.jid), ctx.msg.key.id) || userDb?.premium) return await ctx.reply(formatter.quote("❎ Anda sudah memiliki koin tak terbatas, tidak perlu mengklaim lagi."));
+        if (level < claim.level) return await ctx.reply(formatter.quote(`❎ Anda perlu mencapai level ${claim.level} untuk mengklaim hadiah ini. Levelmu saat ini adalah ${level}.`));
 
         const currentTime = Date.now();
 
         const lastClaim = (userDb?.lastClaim ?? {})[input] || 0;
         const timePassed = currentTime - lastClaim;
         const remainingTime = claim.cooldown - timePassed;
-        if (remainingTime > 0) return await ctx.reply(formatter.quote(`⏳ Kamu telah mengklaim hadiah ${input}. Tunggu ${tools.msg.convertMsToDuration(remainingTime)} untuk mengklaim lagi.`));
+        if (remainingTime > 0) return await ctx.reply(formatter.quote(`⏳ Anda telah mengklaim hadiah ${input}. Tunggu ${tools.msg.convertMsToDuration(remainingTime)} untuk mengklaim lagi.`));
 
         try {
             const rewardCoin = (userDb?.coin || 0) + claim.reward;
             await db.set(`user.${senderId}.coin`, rewardCoin);
             await db.set(`user.${senderId}.lastClaim.${input}`, currentTime);
 
-            await ctx.reply(formatter.quote(`✅ Kamu berhasil mengklaim hadiah ${input} sebesar ${claim.reward} koin! Koin-mu saat ini adalah ${rewardCoin}.`));
+            await ctx.reply(formatter.quote(`✅ Anda berhasil mengklaim hadiah ${input} sebesar ${claim.reward} koin! Koin Anda saat ini adalah ${rewardCoin}.`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

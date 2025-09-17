@@ -14,7 +14,7 @@ module.exports = {
         if (!input) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
             `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "join"))}\n` +
-            formatter.quote(tools.msg.generateNotes([`Selain ${formatter.inlineCode("join")}, gunakan ${formatter.inlineCode("leave")} untuk mensimulasikan keluar dari grup.`]))
+            formatter.quote(tools.msg.generateNotes([`Gunakan ${formatter.inlineCode("leave")} untuk mensimulasikan keluar dari grup.`]))
         );
 
         try {

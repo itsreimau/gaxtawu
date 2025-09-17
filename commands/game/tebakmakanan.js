@@ -82,7 +82,7 @@ module.exports = {
                     session.delete(ctx.id);
                     collector.stop();
                     await ctx.sendMessage(ctx.id, {
-                        text: `${formatter.quote("🏳️ Kamu menyerah!")}\n` +
+                        text: `${formatter.quote("🏳️ Anda menyerah!")}\n` +
                             formatter.quote(`Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`),
                         footer: config.msg.footer,
                         buttons: playAgain

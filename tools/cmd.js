@@ -162,7 +162,7 @@ function isOwner(id, messageId) {
 
     if (config.system.selfOwner || config.bot.id === config.owner.id || config.owner.co.includes(config.bot.id)) {
         if (messageId.startsWith("3EB0")) return false; // Anti rce/injection (aka backdoor) ygy
-        return config.bot.id === id || config.owner.id === id || config.owner.co.includes(id);
+        return config.bot.id === id || config.bot._lid === id || config.owner.id === id || config.owner.lid === id || config.owner.co.includes(id) || config.owner._co.includes(id);
     }
 
     return config.owner.id === id || config.owner.lid === id || config.owner.co.includes(id) || config.owner._co.includes(id);
