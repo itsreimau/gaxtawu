@@ -148,7 +148,7 @@ function isCmd(content, bot) {
         input
     };
 
-    const mean = didYouMean(cmdName, cmds.flatMap(cmd => [cmd.name, ...cmd?.aliases]));
+    const mean = didYouMean(cmdName, cmds.flatMap(cmd => [cmd.name, ...(cmd.aliases || [])]));
     return mean ? {
         msg: content,
         prefix,
