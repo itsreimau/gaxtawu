@@ -1,5 +1,4 @@
 const os = require("node:os");
-const process = require("node:process");
 
 module.exports = {
     name: "server",

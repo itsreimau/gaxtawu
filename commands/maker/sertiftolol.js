@@ -1,6 +1,6 @@
 module.exports = {
     name: "tolol",
-    aliases: ["tlm", "sertiftolol"],
+    aliases: ["sertiftolol"],
     category: "maker",
     permissions: {
         coin: 10
@@ -10,7 +10,7 @@ module.exports = {
 
         if (!input) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "get in the fucking robot, shinji!"))}\n` +
+            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "shinji ikari"))}\n` +
             formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."]))
         );
 

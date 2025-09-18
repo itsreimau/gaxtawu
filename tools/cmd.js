@@ -139,7 +139,7 @@ function isCmd(content, bot) {
     const input = inputArray.join(" ");
 
     const cmds = Array.from(bot.cmd.values());
-    const matchedCmd = cmds.find(cmd => cmd.name === cmdName || cmd.aliases?.includes(cmdName));
+    const matchedCmd = cmds.find(cmd => cmd.name === cmdName || cmd?.aliases?.includes(cmdName));
 
     if (matchedCmd) return {
         msg: content,
@@ -148,7 +148,7 @@ function isCmd(content, bot) {
         input
     };
 
-    const mean = didYouMean(cmdName, cmds.flatMap(cmd => [cmd.name, ...cmd.aliases]));
+    const mean = didYouMean(cmdName, cmds.flatMap(cmd => [cmd.name, ...cmd?.aliases]));
     return mean ? {
         msg: content,
         prefix,

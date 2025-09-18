@@ -1,4 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {

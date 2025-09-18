@@ -196,7 +196,7 @@ module.exports = (bot) => {
         }
 
         // Pengecekan kondisi permissions
-        const command = [...ctx.bot.cmd.values()].find(cmd => [cmd.name, ...(cmd.aliases || [])].includes(ctx.used.command));
+        const command = [...ctx.bot.cmd.values()].find(cmd => [cmd.name, ...(cmd?.aliases || [])].includes(ctx.used.command));
         if (!command) return await next();
         const {
             permissions = {}
