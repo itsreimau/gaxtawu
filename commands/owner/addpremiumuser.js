@@ -8,7 +8,7 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const userJid = await ctx.quoted?.senderLid() || await ctx.convertJid("lid", ctx.getMentioned()[0]) || (ctx.args[0] ? await ctx.convertJid("lid", ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET) : null);
+        const userJid = await ctx.quoted?.senderLid() || await ctx.convertJid(ctx.getMentioned()[0], "lid") || (ctx.args[0] ? await ctx.convertJid(ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET, "lid") : null);
         const daysAmount = parseInt(ctx.args[ctx.quoted ? 0 : 1], 10) || null;
 
         if (!userJid) return await ctx.reply({

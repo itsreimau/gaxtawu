@@ -16,7 +16,7 @@ const APIs = {
         baseURL: "https://okatsu-rolezapiiz.vercel.app"
     },
     nekolabs: {
-        baseURL: "https://rynekoo-api.vercel.app"
+        baseURL: "https://api.nekolabs.my.id"
     },
     siputzx: {
         baseURL: "https://api.siputzx.my.id"

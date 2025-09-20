@@ -11,7 +11,7 @@ module.exports = {
         restrict: true
     },
     code: async (ctx) => {
-        const accountJid = await ctx.quoted?.senderLid() || await ctx.convertJid("lid", ctx.getMentioned()[0]) || null;
+        const accountJid = await ctx.quoted?.senderLid() || await ctx.convertJid(ctx.getMentioned()[0], "lid") || null;
         const accountId = ctx.getId(accountJid);
 
         if (!accountJid) return await ctx.reply({
@@ -21,7 +21,7 @@ module.exports = {
             mentions: [0 + Baileys.S_WHATSAPP_NET]
         });
 
-        if (accountId === config.bot._lid) return await ctx.reply(formatter.quote(`❎ Tidak bisa memberikan warning ke bot!`));
+        if (accountId === config.bot.lidId) return await ctx.reply(formatter.quote(`❎ Tidak bisa memberikan warning ke bot!`));
         if (await ctx.group().isOwner(accountJid)) return await ctx.reply(formatter.quote("❎ Tidak bisa memberikan warning ke admin grup!"));
 
         try {

@@ -9,7 +9,7 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const accountJid = await ctx.convertJid("lid", ctx.getMentioned()[0]) || await ctx.quoted?.senderLid() || null;
+        const accountJid = await ctx.convertJid(ctx.getMentioned()[0], "lid") || await ctx.quoted?.senderLid() || null;
         const accountId = ctx.getId(accountJid);
 
         if (!accountJid) await ctx.reply({
@@ -22,7 +22,7 @@ module.exports = {
         const senderJid = ctx.sender.lid;
         const senderId = ctx.getId(senderJid);
 
-        if (accountId === config.bot._lid) return await ctx.reply(formatter.quote("Tidak bisa menantang bot!"));
+        if (accountId === config.bot.lidId) return await ctx.reply(formatter.quote("Tidak bisa menantang bot!"));
         if (accountJid === senderJid) return await ctx.reply(formatter.quote("Tidak bisa menantang diri sendiri!"));
 
         const existingGame = [...session.values()].find(game => game.players.includes(senderJid) || game.players.includes(accountJid));

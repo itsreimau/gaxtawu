@@ -10,7 +10,7 @@ module.exports = {
     },
     code: async (ctx) => {
         const [id, ...text] = ctx.args;
-        const targetId = id ? ctx.getId(await convertLid("lid", id.replace(/[^\d]/g, ""))) : null;
+        const targetId = id ? ctx.getId(await ctx.convertJid(id.replace(/[^\d]/g, ""), "lid")) : null;
         const menfessText = text ? text.join(" ") : null;
 
         if (!targetId && !menfessText) return await ctx.reply(
@@ -21,7 +21,7 @@ module.exports = {
 
         const senderId = ctx.getId(ctx.sender.lid);
 
-        if (targetId === config.bot._lid) return await ctx.reply(formatter.quote("❎ Tidak dapat digunakan pada bot."));
+        if (targetId === config.bot.lidId) return await ctx.reply(formatter.quote("❎ Tidak dapat digunakan pada bot."));
         if (targetId === senderId) return await ctx.reply(formatter.quote("❎ Tidak dapat digunakan pada diri sendiri."));
 
         const allMenfessDb = await db.get("menfess") || {};
