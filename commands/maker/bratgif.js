@@ -20,8 +20,7 @@ module.exports = {
 
         try {
             const result = tools.api.createUrl("yp", "/api/video/bratv", {
-                text: input,
-                isAnimated: true
+                text: input
             });
             const sticker = new Sticker(result, {
                 pack: config.sticker.packname,

@@ -93,7 +93,7 @@ function generateInstruction(actions, mediaTypes) {
 }
 
 function generatesFlagInfo(flags) {
-    if (typeof flags !== "object" || !flags) return `${formatter.inlineCode("flags")} harus berupa objek!`;
+    if (!flags || typeof flags !== "object") return `${formatter.inlineCode("flags")} harus berupa objek!`;
 
     const flagInfo = "Flag:\n" +
         Object.entries(flags).map(([flag, description]) => formatter.quote(`• ${formatter.inlineCode(flag)}: ${description}`)).join("\n");
@@ -101,7 +101,7 @@ function generatesFlagInfo(flags) {
 }
 
 function generateNotes(notes) {
-    if (!Array.isArray(notes)) return `${formatter.inlineCode("notes")} harus berupa string!`;
+    if (!notes || !Array.isArray(notes)) return `${formatter.inlineCode("notes")} harus berupa string!`;
 
     const notesMsg = "Catatan:\n" +
         notes.map(note => formatter.quote(`• ${note}`)).join("\n");

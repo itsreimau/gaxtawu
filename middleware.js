@@ -15,7 +15,7 @@ module.exports = (bot) => {
     bot.use(async (ctx, next) => {
         // Variabel umum
         const isGroup = ctx.isGroup();
-        const isPrivate = !isGroup;
+        const isPrivate = ctx.isPrivate();
         const senderJid = ctx.sender.jid;
         const senderId = ctx.getId(senderJid);
         const senderLidId = ctx.getId(ctx.sender.lid);

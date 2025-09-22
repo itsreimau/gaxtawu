@@ -19,10 +19,10 @@ module.exports = {
             });
         }
 
-        const claim = claimRewards[input];
-        const level = userDb?.level || 0;
         const senderId = ctx.getId(ctx.sender.lid);
         const userDb = await db.get(`user.${senderId}`) || {};
+        const claim = claimRewards[input];
+        const level = userDb?.level || 0;
 
         if (!claim) return await ctx.reply(formatter.quote("❎ Hadiah tidak valid!"));
         if (tools.cmd.isOwner(ctx.getId(ctx.sender.jid), ctx.msg.key.id) || userDb?.premium) return await ctx.reply(formatter.quote("❎ Anda sudah memiliki koin tak terbatas, tidak perlu mengklaim lagi."));

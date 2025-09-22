@@ -3,6 +3,7 @@ const axios = require("axios");
 
 module.exports = {
     name: "geminiedit",
+    aliases: ["nanobanana"],
     category: "ai-misc",
     permissions: {
         premium: true

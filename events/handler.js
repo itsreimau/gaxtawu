@@ -117,29 +117,31 @@ module.exports = (bot) => {
         }
 
         // Tetapkan config pada bot
-        const lid = await bot.convertJid(m.user.id, "lid");
+        const botLid = await bot.convertJid(m.user.id, "lid");
+        const ownerLid = await bot.convertJid(config.owner.id + Baileys.S_WHATSAPP_NET, "lid");
+        const coLid = config.owner.co.map(async (number) => await bot.convertJid(number + Baileys.S_WHATSAPP_NET, "lid"));
         config.bot = {
             ...config.bot,
             jid: m.user.id,
             decodedJid: bot.decodeJid(m.user.id),
             id: bot.getId(m.user.id),
-            lid,
+            lid: botLid,
             lidId: bot.getId(lid),
             readyAt: bot.readyAt,
             groupLink: await bot.core.groupInviteCode(config.bot.groupJid).then(code => `https://chat.whatsapp.com/${code}`).catch(() => "https://chat.whatsapp.com/FxEYZl2UyzAEI2yhaH34Ye")
         };
         config.owner = {
             ...config.owner,
-            lidId: bot.getId((await bot.convertJid(config.owner.id + Baileys.S_WHATSAPP_NET, "lid"))),
-            coLidId: await Promise.all(config.owner.co.map(async number => bot.getId((await bot.convertJid(number + Baileys.S_WHATSAPP_NET, "lid")))))
-        }
+            lidId: bot.getId(ownerLid),
+            coLidId: coLid.map(lid => bot.getId(lid))
+        };
     });
 
     // Event saat bot menerima pesan
     bot.ev.on(Events.MessagesUpsert, async (m, ctx) => {
         // Variabel umum
         const isGroup = ctx.isGroup();
-        const isPrivate = !isGroup;
+        const isPrivate = ctx.isPrivate();
         const senderJid = ctx.sender.jid;
         const senderLid = ctx.sender.lid;
         const senderId = ctx.getId(senderJid);

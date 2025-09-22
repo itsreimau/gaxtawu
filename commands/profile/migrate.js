@@ -4,12 +4,12 @@ module.exports = {
     code: async (ctx) => {
         try {
             const senderId = ctx.getId(ctx.sender.jid);
-            const _senderId = ctx.getId(ctx.sender.lid);
+            const senderLidId = ctx.getId(ctx.sender.lid);
             const userDb = await db.get(`user.${senderId}`)
-            const _userDb = await db.get(`user.${_senderId}`)
-            await db.set(`user.${_senderId}`, {
+            const userDbLid = await db.get(`user.${senderLidId}`)
+            await db.set(`user.${senderLidId}`, {
                 ...userDb,
-                ..._userDb
+                ...userDbLid
             });
             await db.delete(`user.${senderId}`);
 
