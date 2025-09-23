@@ -11,7 +11,7 @@ module.exports = {
         restrict: true
     },
     code: async (ctx) => {
-        const accountJid = await ctx.quoted?.senderLid() || await ctx.convertJid(ctx.getMentioned()[0], "lid") || null;
+        const accountJid = await ctx.quoted?.senderLid() || await Baileys.getLIDForPN(ctx.getMentioned()[0]) || null;
         const accountId = ctx.getId(accountJid);
 
         if (!accountJid) return await ctx.reply({

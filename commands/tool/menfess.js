@@ -10,7 +10,7 @@ module.exports = {
     },
     code: async (ctx) => {
         const [id, ...text] = ctx.args;
-        const targetId = id ? ctx.getId(await ctx.convertJid(id.replace(/[^\d]/g, ""), "lid")) : null;
+        const targetId = id ? ctx.getId(await Baileys.getLIDForPN(id.replace(/[^\d]/g, ""))) : null;
         const menfessText = text ? text.join(" ") : null;
 
         if (!targetId || !menfessText) return await ctx.reply(
