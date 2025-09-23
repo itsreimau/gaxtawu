@@ -160,12 +160,12 @@ function isCmd(content, bot) {
 function isOwner(id, messageId) {
     if (!id) return false;
 
-    if (config.system.selfOwner || config.bot.id === config.owner.id || config.bot.lidId === config.owner.lidId || config.owner.co.includes(config.bot.id) || config.owner.coLidId.includes(config.bot.lidId)) {
+    if (config.system.selfOwner || config.bot.id === config.owner.id || config.owner.co.includes(config.bot.id)) {
         if (messageId.startsWith("3EB0")) return false;
-        return config.bot.id === id || config.bot.lidId === id || config.owner.id === id || config.owner.lidId === id || config.owner.co.includes(id) || config.owner.coLidId.includes(id);
+        return config.bot.id === id || config.owner.id === id || config.owner.co.includes(id);
     }
 
-    return config.owner.id === id || config.owner.lidId === id || config.owner.co.includes(id) || config.owner.coLidId.includes(id);
+    return config.owner.id === id || config.owner.co.includes(id);
 }
 
 function isUrl(url) {

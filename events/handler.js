@@ -117,23 +117,13 @@ module.exports = (bot) => {
         }
 
         // Tetapkan config pada bot
-        const botLid = await Baileys.getLIDForPN(m.user.id);
-        const ownerLid = await Baileys.getLIDForPN(config.owner.id + Baileys.S_WHATSAPP_NET);
-        const coLid = config.owner.co.map(async (number) => await Baileys.getLIDForPN(number + Baileys.S_WHATSAPP_NET));
         config.bot = {
             ...config.bot,
             jid: m.user.id,
             decodedJid: bot.decodeJid(m.user.id),
             id: bot.getId(m.user.id),
-            lid: botLid,
-            lidId: bot.getId(botLid),
             readyAt: bot.readyAt,
             groupLink: await bot.core.groupInviteCode(config.bot.groupJid).then(code => `https://chat.whatsapp.com/${code}`).catch(() => "https://chat.whatsapp.com/FxEYZl2UyzAEI2yhaH34Ye")
-        };
-        config.owner = {
-            ...config.owner,
-            lidId: bot.getId(ownerLid),
-            coLidId: coLid.map(lid => bot.getId(lid))
         };
     });
 
