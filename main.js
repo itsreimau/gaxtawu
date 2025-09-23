@@ -38,7 +38,6 @@ const bot = new Client({
     markOnlineOnConnect: system.alwaysOnline,
     prefix: botConfig.prefix,
     selfReply: system.selfReply,
-    autoMention: system.autoMention,
     autoAiLabel: system.autoAiLabel
 });
 

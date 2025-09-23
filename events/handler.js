@@ -126,7 +126,7 @@ module.exports = (bot) => {
             decodedJid: bot.decodeJid(m.user.id),
             id: bot.getId(m.user.id),
             lid: botLid,
-            lidId: bot.getId(lid),
+            lidId: bot.getId(botLid),
             readyAt: bot.readyAt,
             groupLink: await bot.core.groupInviteCode(config.bot.groupJid).then(code => `https://chat.whatsapp.com/${code}`).catch(() => "https://chat.whatsapp.com/FxEYZl2UyzAEI2yhaH34Ye")
         };
@@ -158,8 +158,8 @@ module.exports = (bot) => {
         const groupDb = await db.get(`group.${groupId}`) || {};
 
         // Grup atau Pribadi
-        if ((isGroup || isPrivate) && (Baileys.isJidStatusBroadcast(m.key.remoteJid) || Baileys.isJidNewsletter(m.key.remoteJid))) {
-            if (m.key.fromMe) return;
+        if (isGroup || isPrivate) {
+            if (m.key.fromMe || Baileys.isJidStatusBroadcast(m.key.remoteJid) || Baileys.isJidNewsletter(m.key.remoteJid)) return;
 
             config.bot.uptime = tools.msg.convertMsToDuration(Date.now() - config.bot.readyAt); // Penangan pada uptime
             config.bot.dbSize = fs.existsSync("database.json") ? tools.msg.formatSize(fs.statSync("database.json").size / 1024) : "N/A"; // Penangan pada ukuran database
@@ -229,8 +229,8 @@ module.exports = (bot) => {
         }
 
         // Penanganan obrolan grup
-        if (isGroup && (Baileys.isJidStatusBroadcast(m.key.remoteJid) || Baileys.isJidNewsletter(m.key.remoteJid))) {
-            if (m.key.fromMe) return;
+        if (isGroup) {
+            if (m.key.fromMe || Baileys.isJidStatusBroadcast(m.key.remoteJid) || Baileys.isJidNewsletter(m.key.remoteJid)) return;
 
             if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from group: ${groupId}, by: ${Baileys.isLidUser(senderJid) ? `${senderId} (LID)` : senderId}`); // Log pesan masuk
 
@@ -347,8 +347,8 @@ module.exports = (bot) => {
         }
 
         // Penanganan obrolan pribadi
-        if (isPrivate && (Baileys.isJidStatusBroadcast(m.key.remoteJid) || Baileys.isJidNewsletter(m.key.remoteJid))) {
-            if (m.key.fromMe) return;
+        if (isPrivate) {
+            if (m.key.fromMe || Baileys.isJidStatusBroadcast(m.key.remoteJid) || Baileys.isJidNewsletter(m.key.remoteJid)) return;
 
             if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from: ${Baileys.isLidUser(senderJid) ? `${senderId} (LID)` : senderId}`); // Log pesan masuk
 

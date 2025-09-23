@@ -13,7 +13,7 @@ module.exports = {
         const targetId = id ? ctx.getId(await ctx.convertJid(id.replace(/[^\d]/g, ""), "lid")) : null;
         const menfessText = text ? text.join(" ") : null;
 
-        if (!targetId && !menfessText) return await ctx.reply(
+        if (!targetId || !menfessText) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
             `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "6281234567891 halo, dunia!"))}\n` +
             formatter.quote(tools.msg.generateNotes(["Jangan gunakan spasi pada angka. Contoh: +62 8123-4567-8910, seharusnya +628123-4567-8910"]))
