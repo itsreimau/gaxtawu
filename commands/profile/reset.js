@@ -26,7 +26,7 @@ module.exports = {
                 time: 60000
             }).then(async (m) => {
                 const content = m.content.trim().toLowerCase();
-                const senderId = ctx.getId(ctx.sender.lid);
+                const senderId = ctx.getId(ctx.sender.jid);
 
                 if (content === "y") {
                     await db.delete(`user.${senderId}`);

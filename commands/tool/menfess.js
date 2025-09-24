@@ -19,7 +19,7 @@ module.exports = {
             formatter.quote(tools.msg.generateNotes(["Jangan gunakan spasi pada angka. Contoh: +62 8123-4567-8910, seharusnya +628123-4567-8910"]))
         );
 
-        const senderId = ctx.getId(ctx.sender.lid);
+        const senderId = ctx.getId(ctx.sender.jid);
 
         if (targetId === config.bot.lidId) return await ctx.reply(formatter.quote("❎ Tidak dapat digunakan pada bot."));
         if (targetId === senderId) return await ctx.reply(formatter.quote("❎ Tidak dapat digunakan pada diri sendiri."));

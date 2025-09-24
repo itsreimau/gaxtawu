@@ -19,7 +19,7 @@ module.exports = {
             });
         }
 
-        const senderId = ctx.getId(ctx.sender.lid);
+        const senderId = ctx.getId(ctx.sender.jid);
         const userDb = await db.get(`user.${senderId}`) || {};
         const claim = claimRewards[input];
         const level = userDb?.level || 0;

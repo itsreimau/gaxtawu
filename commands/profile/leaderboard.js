@@ -4,7 +4,7 @@ module.exports = {
     category: "profile",
     code: async (ctx) => {
         try {
-            const senderId = ctx.getId(ctx.sender.lid);
+            const senderId = ctx.getId(ctx.sender.jid);
             const users = await db.get("user");
 
             const leaderboardData = Object.entries(users).map(([id, data]) => ({
@@ -32,7 +32,7 @@ module.exports = {
 
             await ctx.reply({
                 text: resultText.trim(),
-                mentions: [ctx.sender.lid],
+                mentions: [ctx.sender.jid],
                 footer: config.msg.footer
             });
         } catch (error) {

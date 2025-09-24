@@ -1,4 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
@@ -18,7 +17,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
-            const uploadUrl = await Baileys.uploadFile(buffer, "image");
+            const uploadUrl = await tools.cmd.uploadFile(buffer, "image");
             const apiUrl = tools.api.createUrl("hang", "/imagecreator/removebg", {
                 url: uploadUrl
             });

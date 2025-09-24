@@ -5,7 +5,7 @@ module.exports = {
     permissions: {},
     code: async (ctx) => {
         try {
-            const senderId = ctx.getId(ctx.sender.lid);
+            const senderId = ctx.getId(ctx.sender.jid);
             const users = await db.get("user");
 
             const leaderboardData = Object.entries(users).map(([id, data]) => ({

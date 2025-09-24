@@ -20,7 +20,7 @@ module.exports = {
         }
 
         try {
-            const senderId = ctx.getId(ctx.sender.lid);
+            const senderId = ctx.getId(ctx.sender.jid);
             const args = ctx.args;
             const command = args[0]?.toLowerCase();
 

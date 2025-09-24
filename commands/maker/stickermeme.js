@@ -1,4 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
 module.exports = {
@@ -27,7 +26,7 @@ module.exports = {
             let [top, bottom] = input.split("|").map(_input => _input);
             [top, bottom] = bottom ? [top || "", bottom] : ["", top || ""];
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
-            const uploadUrl = await Baileys.uploadFile(buffer);
+            const uploadUrl = await tools.cmd.uploadFile(buffer);
             const result = tools.api.createUrl("nekolabs", `/canvas/meme/get`, {
                 imageUrl: uploadUrl,
                 textT: top,

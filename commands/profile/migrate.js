@@ -4,7 +4,7 @@ module.exports = {
     code: async (ctx) => {
         try {
             const senderId = ctx.getId(ctx.sender.jid);
-            const senderLidId = ctx.getId(ctx.sender.lid);
+            const senderLidId = ctx.getId(ctx.sender.jid);
             const userDb = await db.get(`user.${senderId}`)
             const userDbLid = await db.get(`user.${senderLidId}`)
             await db.set(`user.${senderLidId}`, {

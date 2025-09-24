@@ -9,7 +9,7 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const accountJid = await Baileys.getLIDForPN(ctx.getMentioned()[0]) || await ctx.quoted?.senderLid() || null;
+        const accountJid = await ctx.getLIDForPN(ctx.getMentioned()[0]) || await ctx.quoted?.sender || null;
         const accountId = ctx.getId(accountJid);
 
         if (!accountJid) await ctx.reply({
@@ -19,7 +19,7 @@ module.exports = {
             mentions: [0 + Baileys.S_WHATSAPP_NET]
         });
 
-        const senderJid = ctx.sender.lid;
+        const senderJid = ctx.sender.jid;
         const senderId = ctx.getId(senderJid);
 
         if (accountId === config.bot.lidId) return await ctx.reply(formatter.quote("Tidak bisa menantang bot!"));

@@ -1,4 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
@@ -23,11 +22,11 @@ module.exports = {
 
         try {
             const systemPrompt = `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.` // Dapat diubah sesuai keinginan
-            const senderId = ctx.getId(ctx.sender.lid);
+            const senderId = ctx.getId(ctx.sender.jid);
 
             if (checkMedia || checkQuotedMedia) {
                 const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-                const uploadUrl = await Baileys.uploadFile(buffer);
+                const uploadUrl = await tools.cmd.uploadFile(buffer);
                 const apiUrl = tools.api.createUrl("nekolabs", "/ai/gemini/1.5-flash", {
                     text: input,
                     systemPrompt,
