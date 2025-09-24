@@ -8,17 +8,17 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const userJid = await ctx.quoted?.sender || await ctx.getLIDForPN(ctx.getMentioned()[0]) || (ctx.args[0] ? await Baileys.getLIDForPN(ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET) : null);
+        const userJid = await ctx.quoted?.sender || await ctx.getLIDForPN(ctx.getMentioned()[0]) || (ctx.args[0] ? await ctx.getLIDForPN(ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET) : null);
         const coinAmount = parseInt(ctx.args[ctx.quoted ? 0 : 1], 10) || null;
 
         if (!userJid || !coinAmount) return await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `@0 8`))}\n` +
+                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `@${ctx.getId(Baileys.OFFICIAL_BIZ_JID)} 8`))}\n` +
                 `${formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]))}\n` +
                 formatter.quote(tools.msg.generatesFlagInfo({
                     "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
                 })),
-            mentions: [0 + Baileys.S_WHATSAPP_NET]
+            mentions: [Baileys.OFFICIAL_BIZ_JID]
         });
 
         try {

@@ -16,12 +16,12 @@ module.exports = {
 
         if (!accountJid) return await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "@0"))}\n` +
+                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `@${ctx.getId(Baileys.OFFICIAL_BIZ_JID)}`))}\n` +
                 formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])),
-            mentions: [0 + Baileys.S_WHATSAPP_NET]
+            mentions: [Baileys.OFFICIAL_BIZ_JID]
         });
 
-        if (accountId === config.bot.lidId) return await ctx.reply(formatter.quote(`❎ Tidak bisa mengubah warning bot!`));
+        if (accountId === ctx.me.id) return await ctx.reply(formatter.quote(`❎ Tidak bisa mengubah warning bot!`));
         if (await ctx.group().isOwner(accountJid)) return await ctx.reply(formatter.quote("❎ Tidak bisa mengubah warning admin grup!"));
 
         try {

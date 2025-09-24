@@ -21,7 +21,7 @@ module.exports = {
 
         const senderId = ctx.getId(ctx.sender.jid);
 
-        if (targetId === config.bot.lidId) return await ctx.reply(formatter.quote("❎ Tidak dapat digunakan pada bot."));
+        if (targetId === ctx.me.id) return await ctx.reply(formatter.quote("❎ Tidak dapat digunakan pada bot."));
         if (targetId === senderId) return await ctx.reply(formatter.quote("❎ Tidak dapat digunakan pada diri sendiri."));
 
         const allMenfessDb = await db.get("menfess") || {};
