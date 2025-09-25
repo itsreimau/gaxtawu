@@ -4,7 +4,6 @@ module.exports = {
     category: "profile",
     code: async (ctx) => {
         try {
-            const senderId = ctx.getId(ctx.sender.jid);
             const users = await db.get("user");
 
             const leaderboardData = Object.entries(users).map(([id, data]) => ({
@@ -14,19 +13,19 @@ module.exports = {
                 winGame: data.winGame || 0
             })).sort((a, b) => b.winGame - a.winGame || b.level - a.level);
 
-            const userRank = leaderboardData.findIndex(user => user.id === senderId) + 1;
+            const userRank = leaderboardData.findIndex(user => user.id === ctx.keyDb.user) + 1;
             const topUsers = leaderboardData.slice(0, 10);
             let resultText = "";
 
             topUsers.forEach((user, index) => {
-                const isSelf = user.id === senderId;
+                const isSelf = user.id === ctx.keyDb.user;
                 const displayName = isSelf ? `@${user.id}` : user.username ? user.username : `${user.id}`;
                 resultText += formatter.quote(`${index + 1}. ${displayName} - Menang: ${user.winGame}, Level: ${user.level}\n`);
             });
 
             if (userRank > 10) {
                 const userStats = leaderboardData[userRank - 1];
-                const displayName = `@${senderId}`;
+                const displayName = `@${ctx.keyDb.user}`;
                 resultText += formatter.quote(`${userRank}. ${displayName} - Menang: ${userStats.winGame}, Level: ${userStats.level}\n`);
             }
 

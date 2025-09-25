@@ -1,3 +1,5 @@
+const { Baileys } = require("@itsreimau/gktw");
+
 module.exports = {
     name: "tomostchreal",
     aliases: ["jadimosril", "jadimostchreal", "jadisdmtinggi", "mosril", "tomosril", "tosdmtinggi"],
@@ -6,7 +8,7 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = await Promise.all([
+        const [checkMedia, checkQuotedMedia] = Promise.all([
             tools.cmd.checkMedia(ctx.msg.contentType, "image"),
             tools.cmd.checkQuotedMedia(ctx?.quoted?.contentType, "image")
         ]);
@@ -15,7 +17,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const uploadUrl = await tools.cmd.upload(buffer, "image");
+            const uploadUrl = await Baileys.uploadFile(buffer);
             const result = tools.api.createUrl("kyyokatsu", "/maker/tosdmtinggi", {
                 url: uploadUrl
             });

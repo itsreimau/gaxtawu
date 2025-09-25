@@ -11,35 +11,6 @@ global.config = {
         thumbnail: "https://repository-images.githubusercontent.com/753096396/3f4b7686-0f1d-43f2-8293-2ae1b4487220", // Gambar thumbnail bot
         groupJid: "", // JID untuk group bot (Tidak perlu diisi jika tidak menggunakan requireBotGroupMembership)
         newsletterJid: "120363416372653441@newsletter", // JID untuk saluran bot
-
-        // Konfigurasi autentikasi sesi bot
-        authAdapter: {
-            adapter: "default", // Adapter untuk menyimpan sesi (Pilihan adapter: default, mysql, mongo, firebase)
-
-            // Konfigurasi default
-            default: {
-                authDir: "state"
-            },
-
-            // Konfigurasi MySQL
-            mysql: {
-                host: "localhost:3306", // Nama host
-                user: "root", // Nama pengguna
-                password: "admin123", // Kata sandi
-                database: "gaxtawu" // Nama database
-            },
-
-            // Konfigurasi MongoDB
-            mongodb: {
-                url: "mongodb://localhost:27017/gaxtawu" // URL
-            },
-
-            // Konfigurasi Firebase
-            firebase: {
-                tableName: "gaxtawu", // Nama tabel
-                session: "state" // Nama sesi
-            }
-        }
     },
 
     // Pesan bot yang disesuaikan untuk situasi tertentu

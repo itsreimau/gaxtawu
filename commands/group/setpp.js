@@ -8,7 +8,7 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = await Promise.all([
+        const [checkMedia, checkQuotedMedia] = Promise.all([
             tools.cmd.checkMedia(ctx.msg.contentType, "image"),
             tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, "image")
         ]);

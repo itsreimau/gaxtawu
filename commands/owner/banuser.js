@@ -8,7 +8,7 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const userJid = await ctx.quoted?.sender || await ctx.getLIDForPN(ctx.getMentioned()[0]) || (ctx.args[0] ? await ctx.getLIDForPN(ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET) : null);
+        const userJid = await ctx.quoted?.sender || ctx.getMentioned()[0] || (ctx.args[0] ? (await ctx.core.getLidUser(ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET))[0].lid : null);
 
         if (!userJid) return await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
@@ -21,7 +21,7 @@ module.exports = {
         });
 
         try {
-            await db.set(`user.${ctx.getId(userJid)}.banned`, true);
+            await db.set(`user.${ctx.keyDb.user}.banned`, true);
 
             const flag = tools.cmd.parseFlag(ctx.args.join(" "), {
                 "-s": {

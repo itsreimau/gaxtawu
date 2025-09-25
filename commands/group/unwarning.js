@@ -11,7 +11,7 @@ module.exports = {
         restrict: true
     },
     code: async (ctx) => {
-        const accountJid = await ctx.quoted?.sender || await ctx.getLIDForPN(ctx.getMentioned()[0]) || null;
+        const accountJid = ctx.quoted?.sender || ctx.getMentioned()[0] || null;
         const accountId = ctx.getId(accountJid);
 
         if (!accountJid) return await ctx.reply({

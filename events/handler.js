@@ -1,20 +1,19 @@
 // Impor modul dan dependensi yang diperlukan
 const { Baileys, Events, VCardBuilder } = require("@itsreimau/gktw");
 const axios = require("axios");
-const { analyzeMessage } = require("guaranteed_security");
 const moment = require("moment-timezone");
 const fs = require("node:fs");
 
 // Fungsi untuk menangani event pengguna bergabung/keluar grup
 async function handleWelcome(bot, m, type, isSimulate = false) {
     const groupJid = m.id;
-    const groupId = bot.getId(m.id);
-    const groupDb = await db.get(`group.${groupId}`) || {};
+    const groupDb = await db.get(`group.${bot.getId(groupJid)}`) || {};
     const botDb = await db.get("bot") || {};
 
     if (!isSimulate && groupDb?.mutebot) return;
     if (!isSimulate && !groupDb?.option?.welcome) return;
     if (!isSimulate && ["private", "self"].includes(botDb?.mode)) return;
+
     const now = moment().tz(config.system.timeZone);
     const hour = now.hour();
     if (!isSimulate && hour >= 0 && hour < 6) return;
@@ -66,12 +65,13 @@ async function handleWelcome(bot, m, type, isSimulate = false) {
 }
 
 // Fungsi untuk menambahkan warning
-async function addWarning(ctx, senderJid, senderId, groupDb, groupId) {
-    const maxWarnings = groupDb?.maxwarnings || 3;
+async function addWarning(ctx, senderJid, groupDb, groupId) {
+    const ctx.keyDb.user = ctx.getId(senderJid);
 
+    const maxWarnings = groupDb?.maxwarnings || 3;
     const warnings = groupDb?.warnings || [];
 
-    const userWarning = warnings.find(warning => warning.userId === senderId);
+    const userWarning = warnings.find(warning => warning.userId === ctx.keyDb.user);
     let currentWarnings = userWarning ? userWarning.count : 0;
     currentWarnings += 1;
 
@@ -79,21 +79,21 @@ async function addWarning(ctx, senderJid, senderId, groupDb, groupId) {
         userWarning.count = currentWarnings;
     } else {
         warnings.push({
-            userId: senderId,
+            userId: ctx.keyDb.user,
             count: currentWarnings
         });
     }
 
     await db.set(`group.${groupId}.warnings`, warnings);
     await ctx.reply({
-        text: formatter.quote(`⚠️ Warning ${currentWarnings}/${maxWarnings} untuk @${ctx.getId(senderJid)}!`),
+        text: formatter.quote(`⚠️ Warning ${currentWarnings}/${maxWarnings} untuk @${ctx.keyDb.user}!`),
         mentions: [senderJid]
     });
 
     if (currentWarnings >= maxWarnings) {
         await ctx.reply(formatter.quote(`⛔ Anda telah menerima ${maxWarnings} warning dan akan dikeluarkan dari grup!`));
         if (!config.system.restrict) await ctx.group().kick(senderJid);
-        await db.set(`group.${groupId}.warnings`, warnings.filter(warning => warning.userId !== senderId));
+        await db.set(`group.${groupId}.warnings`, warnings.filter(warning => warning.userId !== ctx.keyDb.user));
     }
 }
 
@@ -119,7 +119,6 @@ module.exports = (bot) => {
         // Tetapkan config pada bot
         config.bot = {
             ...config.bot,
-            id: bot.getId(m.user.id),
             groupLink: await bot.core.groupInviteCode(config.bot.groupJid).then(code => `https://chat.whatsapp.com/${code}`).catch(() => "https://chat.whatsapp.com/FxEYZl2UyzAEI2yhaH34Ye")
         };
     });
@@ -130,17 +129,16 @@ module.exports = (bot) => {
         const isGroup = ctx.isGroup();
         const isPrivate = ctx.isPrivate();
         const senderJid = ctx.sender.jid;
-        const senderId = ctx.getId(senderJid);
         const senderPnId = ctx.getId(ctx.sender.pn);
         const groupJid = isGroup ? ctx.id : null;
         const groupId = isGroup ? ctx.getId(groupJid) : null;
-        const isOwner = tools.cmd.isOwner(senderPnId, m.key.id);
+        const isOwner = tools.cmd.isOwner(senderPnId, ctx.getId(ctx.me.id), m.key.id);
         const isCmd = tools.cmd.isCmd(m.content, ctx.bot);
         const isAdmin = isGroup ? await ctx.group().isAdmin(senderJid) : false;
 
         // Mengambil database
         const botDb = await db.get("bot") || {};
-        const userDb = await db.get(`user.${senderId}`) || {};
+        const userDb = await db.get(`user.${ctx.keyDb.user}`) || {};
         const groupDb = await db.get(`group.${groupId}`) || {};
 
         // Grup atau Pribadi
@@ -151,14 +149,14 @@ module.exports = (bot) => {
             config.bot.dbSize = fs.existsSync("database.json") ? tools.msg.formatSize(fs.statSync("database.json").size / 1024) : "N/A"; // Penangan pada ukuran database
 
             // Penanganan database pengguna
-            if (!userDb?.username) await db.set(`user.${senderId}.username`, `@user_${tools.cmd.generateUID(senderId, false)}`);
-            if (!userDb?.uid || userDb?.uid !== tools.cmd.generateUID(senderId)) await db.set(`user.${senderId}.uid`, tools.cmd.generateUID(senderId));
+            if (!userDb?.username) await db.set(`user.${ctx.keyDb.user}.username`, `@user_${tools.cmd.generateUID(ctx.keyDb.user, false)}`);
+            if (!userDb?.uid || userDb?.uid !== tools.cmd.generateUID(ctx.keyDb.user)) await db.set(`user.${ctx.keyDb.user}.uid`, tools.cmd.generateUID(ctx.keyDb.user));
             if (userDb?.premium && Date.now() > userDb.premiumExpiration) {
-                await db.delete(`user.${senderId}.premium`);
-                await db.delete(`user.${senderId}.premiumExpiration`);
+                await db.delete(`user.${ctx.keyDb.user}.premium`);
+                await db.delete(`user.${ctx.keyDb.user}.premiumExpiration`);
             }
-            if (isOwner || userDb?.premium) await db.set(`user.${senderId}.coin`, 0);
-            if (!userDb?.coin || !Number.isFinite(userDb.coin)) await db.set(`user.${senderId}.coin`, 500);
+            if (isOwner || userDb?.premium) await db.set(`user.${ctx.keyDb.user}.coin`, 0);
+            if (!userDb?.coin || !Number.isFinite(userDb.coin)) await db.set(`user.${ctx.keyDb.user}.coin`, 500);
 
             // Pengecekan mode bot (premium, group, private, self)
             if (botDb?.mode === "premium" && !isOwner && !userDb?.premium) return;
@@ -170,7 +168,7 @@ module.exports = (bot) => {
             if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;
             if (groupDb?.mutebot === "owner" && !isOwner) return;
             const muteList = groupDb?.mute || [];
-            if (muteList.includes(senderId)) await ctx.deleteMessage(m.key);
+            if (muteList.includes(ctx.keyDb.user)) await ctx.deleteMessage(m.key);
 
             // Pengecekan untuk tidak tersedia pada malam hari
             const now = moment().tz(config.system.timeZone);
@@ -178,14 +176,14 @@ module.exports = (bot) => {
             if (hour >= 0 && hour < 6 && !isOwner && !userDb?.premium) return;
 
             // Penanganan bug hama!
-            const analyze = analyzeMessage(m.message);
+            const analyze = Baileys.analyzeBug(m.message);
             if (analyze.isMalicious) {
                 await ctx.deleteMessage(m.key);
                 await ctx.block(senderJid);
-                await db.set(`user.${senderId}.banned`, true);
+                await db.set(`user.${ctx.keyDb.user}.banned`, true);
 
                 await ctx.sendMessage(config.owner.id + Baileys.S_WHATSAPP_NET, {
-                    text: `📢 Akun @${senderId} telah diblokir secara otomatis karena alasan ${formatter.inlineCode(analyze.reason)}.`,
+                    text: `📢 Akun @${ctx.keyDb.user} telah diblokir secara otomatis karena alasan ${formatter.inlineCode(analyze.reason)}.`,
                     mentions: [senderJid]
                 });
             }
@@ -209,7 +207,7 @@ module.exports = (bot) => {
                 if (timeElapsed > 3000) {
                     const timeago = tools.msg.convertMsToDuration(timeElapsed);
                     await ctx.reply(formatter.quote(`📴 Anda telah keluar dari AFK ${userAfk.reason ? `dengan alasan ${formatter.inlineCode(userAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`));
-                    await db.delete(`user.${senderId}.afk`);
+                    await db.delete(`user.${ctx.keyDb.user}.afk`);
                 }
             }
         }
@@ -251,7 +249,7 @@ module.exports = (bot) => {
                         if (groupAutokick) {
                             await ctx.group().kick(senderJid);
                         } else {
-                            await addWarning(ctx, senderJid, senderId, groupDb, groupId);
+                            await addWarning(ctx, senderJid, ctx.keyDb.user, groupDb, groupId);
                         }
                     }
                 }
@@ -265,7 +263,7 @@ module.exports = (bot) => {
                     if (groupAutokick) {
                         await ctx.group().kick(senderJid);
                     } else {
-                        await addWarning(ctx, senderJid, senderId, groupDb, groupId);
+                        await addWarning(ctx, senderJid, ctx.keyDb.user, groupDb, groupId);
                     }
                 }
             }
@@ -275,8 +273,8 @@ module.exports = (bot) => {
                 const now = Date.now();
                 const spamData = await db.get(`group.${groupId}.spam`) || [];
 
-                const userSpam = spamData.find(spam => spam.userId === senderId) || {
-                    userId: senderId,
+                const userSpam = spamData.find(spam => spam.userId === ctx.keyDb.user) || {
+                    userId: ctx.keyDb.user,
                     count: 0,
                     lastMessageTime: 0
                 };
@@ -287,7 +285,7 @@ module.exports = (bot) => {
                 userSpam.count = newCount;
                 userSpam.lastMessageTime = now;
 
-                if (!spamData.some(spam => spam.userId === senderId)) spamData.push(userSpam);
+                if (!spamData.some(spam => spam.userId === ctx.keyDb.user)) spamData.push(userSpam);
 
                 await db.set(`group.${groupId}.spam`, spamData);
 
@@ -297,9 +295,9 @@ module.exports = (bot) => {
                     if (groupAutokick) {
                         await ctx.group().kick(senderJid);
                     } else {
-                        await addWarning(ctx, senderJid, senderId, groupDb, groupId);
+                        await addWarning(ctx, senderJid, ctx.keyDb.user, groupDb, groupId);
                     }
-                    await db.set(`group.${groupId}.spam`, spamData.filter(spam => spam.userId !== senderId));
+                    await db.set(`group.${groupId}.spam`, spamData.filter(spam => spam.userId !== ctx.keyDb.user));
                 }
             }
 
@@ -312,7 +310,7 @@ module.exports = (bot) => {
                     if (groupAutokick) {
                         await ctx.group().kick(senderJid);
                     } else {
-                        await addWarning(ctx, senderJid, senderId, groupDb, groupId);
+                        await addWarning(ctx, senderJid, ctx.keyDb.user, groupDb, groupId);
                     }
                 }
             }
@@ -326,7 +324,7 @@ module.exports = (bot) => {
                     if (groupAutokick) {
                         await ctx.group().kick(senderJid);
                     } else {
-                        await addWarning(ctx, senderJid, senderId, groupDb, groupId);
+                        await addWarning(ctx, senderJid, ctx.keyDb.user, groupDb, groupId);
                     }
                 }
             }
@@ -346,16 +344,16 @@ module.exports = (bot) => {
                         to
                     }] of Object.entries(allMenfessDb)) {
                     if (sender === from || sender === to) {
-                        const targetJid = (sender === from ? to : from) + Baileys.LID;
+                        const target = (sender === from ? to : from) + Baileys.LID;
                         if (m.content === "delete") {
                             const replyText = formatter.quote("✅ Sesi menfess telah dihapus!");
                             await ctx.reply(replyText);
-                            await ctx.sendMessage(targetJid, {
+                            await ctx.sendMessage(target, {
                                 text: replyText
                             });
                             await db.delete(`menfess.${menfessId}`);
                         } else {
-                            await ctx.forwardMessage(targetJid, m);
+                            await ctx.forwardMessage(target, m);
                         }
                     }
                 }
@@ -373,7 +371,7 @@ module.exports = (bot) => {
             const senderJid = call.from;
             const senderId = bot.getId(senderJid);
 
-            consolefy.info(`Incoming call from: ${senderId} (LID)`); // Log panggilan masuk
+            consolefy.info(`Incoming call from: ${ctx.getId(await bot.core.getLidUser(senderJid)[0].lid)}`); // Log panggilan masuk
 
             if (call.status !== "offer") continue;
 

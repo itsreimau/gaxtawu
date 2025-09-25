@@ -12,15 +12,10 @@ const _consolefy = new Consolefy({
     tag: pkg.name
 });
 
-// Inisialisasi database
-const dbFile = path.resolve(__dirname, "database.json");
-if (!fs.existsSync(dbFile)) fs.writeFileSync(dbFile, "{}", "utf8");
-
 // Tetapkan variabel global
 Object.assign(global, {
     config,
     consolefy: _consolefy,
-    db: new require("simpl.db")(),
     formatter: require("@itsreimau/gktw").Formatter,
     tools: require("./tools/exports.js")
 });

@@ -1,3 +1,4 @@
+const { Baileys } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
@@ -8,7 +9,7 @@ module.exports = {
         premium: true
     },
     code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = await Promise.all([
+        const [checkMedia, checkQuotedMedia] = Promise.all([
             tools.cmd.checkMedia(ctx.msg.contentType, "image"),
             tools.cmd.checkQuotedMedia(ctx?.quoted?.contentType, "image")
         ]);
@@ -17,7 +18,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const uploadUrl = await tools.cmd.upload(buffer, "image");
+            const uploadUrl = await Baileys.uploadFile(buffer);
             const apiUrl = tools.api.createUrl("nekolabs", "/ai/convert/tofigure", {
                 imageUrl: uploadUrl
             });

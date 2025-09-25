@@ -1,3 +1,5 @@
+const { Baileys } = require("@itsreimau/gktw");
+
 module.exports = {
     name: "upload",
     aliases: ["tourl"],
@@ -6,7 +8,7 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = await Promise.all([
+        const [checkMedia, checkQuotedMedia] = Promise.all([
             tools.cmd.checkMedia(ctx.msg.contentType, ["audio", "document", "image", "video", "sticker"]),
             tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["audio", "document", "image", "video", "sticker"])
         ]);
@@ -15,7 +17,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
-            const result = await tools.cmd.uploadFile(buffer);
+            const result = await Baileys.uploadFile(buffer);
 
             await ctx.reply({
                 text: formatter.quote(`URL: ${result}`),

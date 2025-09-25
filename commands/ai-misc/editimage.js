@@ -1,3 +1,5 @@
+const { Baileys } = require("@itsreimau/gktw");
+
 module.exports = {
     name: "editimage",
     aliases: ["editimg"],
@@ -13,7 +15,7 @@ module.exports = {
             formatter.quote(tools.msg.generateCmdExample(ctx.used, "make it evangelion art style"))
         );
 
-        const [checkMedia, checkQuotedMedia] = await Promise.all([
+        const [checkMedia, checkQuotedMedia] = Promise.all([
             tools.cmd.checkMedia(ctx.msg.contentType, "image"),
             tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, "image")
         ]);
@@ -22,7 +24,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
-            const uploadUrl = await tools.cmd.uploadFile(buffer);
+            const uploadUrl = await Baileys.uploadFile(buffer);
             const result = tools.api.createUrl("zell", "/ai/editimg", {
                 imageUrl: uploadUrl,
                 prompt: input

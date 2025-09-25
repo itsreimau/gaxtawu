@@ -2,7 +2,6 @@
 const api = require("./api.js");
 const { Baileys, MessageType } = require("@itsreimau/gktw");
 const axios = require("axios");
-const didYouMean = require("didyoumean");
 const util = require("node:util");
 
 const formatBotName = (botName) => {
@@ -148,7 +147,7 @@ function isCmd(content, bot) {
         input
     };
 
-    const mean = didYouMean(cmdName, cmds.flatMap(cmd => [cmd.name, ...(cmd.aliases || [])]));
+    const mean = Baileys.didYouMean(cmdName, cmds.flatMap(cmd => [cmd.name, ...(cmd.aliases || [])]));
     return mean ? {
         msg: content,
         prefix,
@@ -157,12 +156,12 @@ function isCmd(content, bot) {
     } : false;
 }
 
-function isOwner(id, messageId) {
+function isOwner(id, botId, messageId) {
     if (!id) return false;
 
-    if (config.system.selfOwner || config.bot.id === config.owner.id || config.owner.co.includes(config.bot.id)) {
+    if (config.system.selfOwner || botId === config.owner.id || config.owner.co.includes(botId)) {
         if (messageId.startsWith("3EB0")) return false;
-        return config.bot.id === id || config.owner.id === id || config.owner.co.includes(id);
+        return botId === id || config.owner.id === id || config.owner.co.includes(id);
     }
 
     return config.owner.id === id || config.owner.co.includes(id);

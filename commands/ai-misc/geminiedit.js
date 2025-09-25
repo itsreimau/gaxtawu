@@ -1,3 +1,4 @@
+const { Baileys } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
@@ -15,7 +16,7 @@ module.exports = {
             formatter.quote(tools.msg.generateCmdExample(ctx.used, "make it evangelion art style"))
         );
 
-        const [checkMedia, checkQuotedMedia] = await Promise.all([
+        const [checkMedia, checkQuotedMedia] = Promise.all([
             tools.cmd.checkMedia(ctx.msg.contentType, "image"),
             tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, "image")
         ]);
@@ -24,7 +25,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
-            const uploadUrl = await tools.cmd.uploadFile(buffer);
+            const uploadUrl = await Baileys.uploadFile(buffer);
             const apiUrl = tools.api.createUrl("nekolabs", "/ai/gemini/nano-banana", {
                 prompt: input,
                 imageUrl: uploadUrl

@@ -1,3 +1,5 @@
+const { Baileys } = require("@itsreimau/gktw");
+
 module.exports = {
     name: "hd",
     category: "tool",
@@ -5,7 +7,7 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = await Promise.all([
+        const [checkMedia, checkQuotedMedia] = Promise.all([
             tools.cmd.checkMedia(ctx.msg.contentType, "image"),
             tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, "image")
         ]);
@@ -14,7 +16,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
-            const uploadUrl = await tools.cmd.uploadFile(buffer);
+            const uploadUrl = await Baileys.uploadFile(buffer);
             const result = tools.api.createUrl("siputzx", "/api/iloveimg/upscale", {
                 image: uploadUrl,
                 scale: "4"

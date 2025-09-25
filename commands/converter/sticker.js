@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["s", "stiker"],
     category: "converter",
     code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = await Promise.all([
+        const [checkMedia, checkQuotedMedia] = Promise.all([
             tools.cmd.checkMedia(ctx.msg.contentType, ["image", "gif", "video"]),
             tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["image", "gif", "video"])
         ]);

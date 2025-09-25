@@ -1,3 +1,4 @@
+const { Baileys } = require("@itsreimau/gktw");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
 module.exports = {
@@ -15,7 +16,7 @@ module.exports = {
             formatter.quote(tools.msg.generateCmdExample(ctx.used, "get in the fucking robot|shinji!"))
         );
 
-        const [checkMedia, checkQuotedMedia] = await Promise.all([
+        const [checkMedia, checkQuotedMedia] = Promise.all([
             tools.cmd.checkMedia(ctx.msg.contentType, ["image", "sticker"]),
             tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["image", "sticker"])
         ]);
@@ -26,7 +27,7 @@ module.exports = {
             let [top, bottom] = input.split("|").map(_input => _input);
             [top, bottom] = bottom ? [top || "", bottom] : ["", top || ""];
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
-            const uploadUrl = await tools.cmd.uploadFile(buffer);
+            const uploadUrl = await Baileys.uploadFile(buffer);
             const result = tools.api.createUrl("nekolabs", `/canvas/meme/get`, {
                 imageUrl: uploadUrl,
                 textT: top,

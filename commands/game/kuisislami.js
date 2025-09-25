@@ -1,5 +1,5 @@
+const { Baileys } = require("@itsreimau/gktw");
 const axios = require("axios");
-const didYouMean = require("didyoumean");
 
 const session = new Map();
 
@@ -88,7 +88,7 @@ module.exports = {
                     }, {
                         quoted: m
                     });
-                } else if (didYouMean(participantAnswer, [game.answer]) === game.answer) {
+                } else if (Baileys.didYouMean(participantAnswer, [game.answer]) === game.answer) {
                     await ctx.sendMessage(ctx.id, {
                         text: formatter.quote("🎯 Sedikit lagi!")
                     }, {

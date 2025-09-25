@@ -5,7 +5,6 @@ module.exports = {
     permissions: {},
     code: async (ctx) => {
         try {
-            const senderId = ctx.getId(ctx.sender.jid);
             const users = await db.get("user");
 
             const leaderboardData = Object.entries(users).map(([id, data]) => ({
@@ -14,8 +13,8 @@ module.exports = {
                 level: data.level || 0
             })).sort((a, b) => b.winGame - a.winGame || b.level - a.level);
 
-            const userDb = await db.get(`user.${senderId}`) || {};
-            const isOwner = tools.cmd.isOwner(senderId, ctx.msg.key.id);
+            const userDb = await db.get(`user.${ctx.keyDb.user}`) || {};
+            const isOwner = tools.cmd.isOwner(ctx.keyDb.user, ctx.getId(ctx.me.id), ctx.msg.key.id);
 
             await ctx.reply({
                 text: `${formatter.quote(`Nama: ${ctx.sender.pushName} (${userDb?.username})`)}\n` +
@@ -23,7 +22,7 @@ module.exports = {
                     `${formatter.quote(`Level: ${userDb?.level || 0} (${userDb?.xp || 0}/100)`)}\n` +
                     `${formatter.quote(`Koin: ${isOwner || userDb?.premium ? "Tak terbatas" : userDb?.coin}`)}\n` +
                     `${formatter.quote(`Menang: ${userDb?.winGame || 0}`)}\n` +
-                    formatter.quote(`Peringkat: ${leaderboardData.findIndex(user => user.id === senderId) + 1}`),
+                    formatter.quote(`Peringkat: ${leaderboardData.findIndex(user => user.id === ctx.keyDb.user) + 1}`),
                 footer: config.msg.footer
             });
         } catch (error) {

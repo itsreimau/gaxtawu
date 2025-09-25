@@ -10,7 +10,6 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install:adapter": "node install-adapter.js",
     "start": "node .",
     "start:pm2": "pm2 start ./index.js --name $(basename $(pwd))"
   },
@@ -33,18 +32,9 @@
     "@mengkodingan/consolefy": "^1.0.1",
     "axios": "^1.12.2",
     "cfonts": "^3.3.1",
-    "didyoumean": "^1.2.2",
-    "guaranteed_security": "^1.0.0",
     "jimp": "^0.22.12",
     "link-preview-js": "^3.1.0",
-    "mime-types": "^2.1.35",
     "moment-timezone": "^0.6.0",
-    "simpl.db": "^2.13.0",
     "wa-sticker-formatter": "^4.4.4"
-  },
-  "optionalDependencies": {
-    "baileys-mysql": "^1.0.4",
-    "baileys-mongodb": "^1.0.9",
-    "baileys-firebase": "^1.0.1"
   }
 }
