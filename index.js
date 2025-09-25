@@ -12,6 +12,9 @@ const _consolefy = new Consolefy({
     tag: pkg.name
 });
 
+// Inisialisasi database untuk
+if (!fs.existsSync(this.databasePath)) fs.writeFileSync(path.resolve(__dirname, "database.json"), "{}", "utf8");
+
 // Tetapkan variabel global
 Object.assign(global, {
     config,
