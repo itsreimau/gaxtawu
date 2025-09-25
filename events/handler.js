@@ -71,7 +71,7 @@ async function addWarning(ctx, senderJid, groupDb, groupId) {
     const maxWarnings = groupDb?.maxwarnings || 3;
     const warnings = groupDb?.warnings || [];
 
-    const userWarning = warnings.find(warning => warning.userId === ctx.keyDb.user);
+    const userWarning = warnings.find(warning => warning.userId === senderId);
     let currentWarnings = userWarning ? userWarning.count : 0;
     currentWarnings += 1;
 
@@ -79,21 +79,21 @@ async function addWarning(ctx, senderJid, groupDb, groupId) {
         userWarning.count = currentWarnings;
     } else {
         warnings.push({
-            userId: ctx.keyDb.user,
+            userId: senderId,
             count: currentWarnings
         });
     }
 
     await db.set(`group.${groupId}.warnings`, warnings);
     await ctx.reply({
-        text: formatter.quote(`⚠️ Warning ${currentWarnings}/${maxWarnings} untuk @${ctx.keyDb.user}!`),
+        text: formatter.quote(`⚠️ Warning ${currentWarnings}/${maxWarnings} untuk @${senderId}!`),
         mentions: [senderJid]
     });
 
     if (currentWarnings >= maxWarnings) {
         await ctx.reply(formatter.quote(`⛔ Anda telah menerima ${maxWarnings} warning dan akan dikeluarkan dari grup!`));
         if (!config.system.restrict) await ctx.group().kick(senderJid);
-        await db.set(`group.${groupId}.warnings`, warnings.filter(warning => warning.userId !== ctx.keyDb.user));
+        await db.set(`group.${groupId}.warnings`, warnings.filter(warning => warning.userId !== senderId));
     }
 }
 

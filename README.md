@@ -33,30 +33,6 @@ npm install
 
 Ubah nama `config.example.js` menjadi `config.js` dan sesuaikan konfigurasi termasuk nama bot, pesan default, nomor pemilik, dll.
 
-## 🔌 Authentication Adapter
-
-`gaxtawu` mendukung penyimpanan sesi autentikasi menggunakan **MySQL**, **MongoDB**, atau **Firebase**. Konfigurasikan database pilihan Anda:
-
-### 1. Select Database Adapter
-
-Di file `config.js`, konfigurasikan bagian `authAdapter` dengan adapter database pilihan Anda.
-
-### 2. Install Database Module (Optional)
-
-Setelah memilih adapter, jalankan perintah berikut untuk menginstal modul yang diperlukan:
-
-```bash
-npm run install:adapter
-```
-
-### 3. Ensure Database Availability
-
-Pastikan server database Anda aktif dan dapat diakses sebelum menjalankan bot:
-
-- Untuk **MySQL**, verifikasi kredensial pengguna dan nama database
-- Untuk **MongoDB**, pastikan URL koneksi benar
-- Untuk **Firebase**, konfirmasi bahwa kredensial akun layanan dikonfigurasi dengan benar
-
 ## ▶️ Running the Bot
 
 Setelah konfigurasi, Anda dapat menjalankan bot menggunakan salah satu metode:
@@ -135,7 +111,7 @@ Untuk dokumentasi lengkap, silakan kunjungi:
 
 - [@mengkodingan/ckptw](https://www.npmjs.com/package/@mengkodingan/ckptw) - Referensi struktur perintah dasar
 - [itsreimau/gktw](https://github.com/itsreimau/gktw) - Dokumentasi fork kustom
-- [@yupra/baileys](https://www.npmjs.com/package/@yupra/baileys) - Panduan pengiriman pesan/media
+- [@itsukichan/baileys](https://www.npmjs.com/package/@itsukichan/baileys) - Panduan pengiriman pesan/media
 
 ## 🤝 Contribution
 

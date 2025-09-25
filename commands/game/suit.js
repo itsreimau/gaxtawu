@@ -67,12 +67,12 @@ module.exports = {
                 const participantAnswer = m.content.toLowerCase();
                 const participantJid = m.sender;
                 const participantId = ctx.getId(m.sender);
-                const isGroup = Baileys.isJidGroup(m.jid);
+                const isGroup = Baileys.isJidGroup(m.id);
 
                 if (!game.started && isGroup && participantId === accountId) {
                     if (participantAnswer === "accept") {
                         game.started = true;
-                        await ctx.sendMessage(m.jid, {
+                        await ctx.sendMessage(m.id, {
                             text: formatter.quote(`@${accountId} menerima tantangan! Silahkan pilih di obrolan pribadi.`),
                             mentions: [accountJid]
                         }, {
@@ -110,7 +110,7 @@ module.exports = {
                     } else if (participantAnswer === "reject") {
                         session.delete(senderJid);
                         session.delete(accountJid);
-                        await ctx.sendMessage(m.jid, {
+                        await ctx.sendMessage(m.id, {
                             text: formatter.quote(`@${accountId} menolak tantangan suit.`),
                             mentions: [accountJid]
                         }, {

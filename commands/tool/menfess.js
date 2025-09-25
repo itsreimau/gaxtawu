@@ -19,11 +19,13 @@ module.exports = {
             formatter.quote(tools.msg.generateNotes(["Jangan gunakan spasi pada angka. Contoh: +62 8123-4567-8910, seharusnya +628123-4567-8910"]))
         );
 
+        const senderId = ctx.getId(ctx.sender.pn);
+
         if (targetId === ctx.getId(ctx.me.id)) return await ctx.reply(formatter.quote("❎ Tidak dapat digunakan pada bot."));
-        if (targetId === ctx.keyDb.user) return await ctx.reply(formatter.quote("❎ Tidak dapat digunakan pada diri sendiri."));
+        if (targetId === senderId) return await ctx.reply(formatter.quote("❎ Tidak dapat digunakan pada diri sendiri."));
 
         const allMenfessDb = await db.get("menfess") || {};
-        if (Object.values(allMenfessDb).some(menfess => menfess.from === ctx.keyDb.user || menfess.to === ctx.keyDb.user)) return await ctx.reply(formatter.quote("❎ Anda tidak dapat mengirim menfess karena sedang terlibat dalam percakapan lain."));
+        if (Object.values(allMenfessDb).some(menfess => menfess.from === senderId || menfess.to === senderId)) return await ctx.reply(formatter.quote("❎ Anda tidak dapat mengirim menfess karena sedang terlibat dalam percakapan lain."));
         if (Object.values(allMenfessDb).some(menfess => menfess.from === targetId || menfess.to === targetId)) return await ctx.reply(formatter.quote("❎ Anda tidak dapat mengirim menfess, karena dia sedang terlibat dalam percakapan lain."));
 
         try {
@@ -42,7 +44,7 @@ module.exports = {
                 quoted: tools.cmd.fakeMetaAiQuotedText("Seseorang telah mengirimi Anda menfess.")
             });
             await db.set(`menfess.${Date.now()}`, {
-                from: ctx.keyDb.user,
+                from: senderId,
                 to: targetId
             });
 

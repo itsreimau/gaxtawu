@@ -14,7 +14,7 @@ module.exports = {
             })).sort((a, b) => b.winGame - a.winGame || b.level - a.level);
 
             const userDb = await db.get(`user.${ctx.keyDb.user}`) || {};
-            const isOwner = tools.cmd.isOwner(ctx.keyDb.user, ctx.getId(ctx.me.id), ctx.msg.key.id);
+            const isOwner = tools.cmd.isOwner(ctx.getId(ctx.sender.pn), ctx.getId(ctx.me.id), ctx.msg.key.id);
 
             await ctx.reply({
                 text: `${formatter.quote(`Nama: ${ctx.sender.pushName} (${userDb?.username})`)}\n` +

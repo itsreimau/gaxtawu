@@ -4,7 +4,7 @@ module.exports = {
     name: /^==> |^=> /,
     type: "hears",
     code: async (ctx) => {
-        const isOwner = tools.cmd.isOwner(ctx.keyDb.user, ctx.getId(ctx.me.id), ctx.msg.key.id);
+        const isOwner = tools.cmd.isOwner(ctx.getId(ctx.sender.pn), ctx.getId(ctx.me.id), ctx.msg.key.id);
         if (!isOwner) return;
 
         try {

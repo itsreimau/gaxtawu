@@ -5,7 +5,7 @@ module.exports = {
     code: async (ctx) => {
         const userDb = await db.get(`user.${ctx.keyDb.user}`) || {};
 
-        if (tools.cmd.isOwner(ctx.keyDb.user, ctx.getId(ctx.me.id), ctx.msg.key.id) || userDb?.premium) return await ctx.reply(formatter.quote("🤑 Anda memiliki koin tak terbatas."));
+        if (tools.cmd.isOwner(ctx.getId(ctx.sender.pn), ctx.getId(ctx.me.id), ctx.msg.key.id) || userDb?.premium) return await ctx.reply(formatter.quote("🤑 Anda memiliki koin tak terbatas."));
 
         try {
             const userCoin = userDb?.coin || 0;
