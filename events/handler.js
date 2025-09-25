@@ -66,7 +66,7 @@ async function handleWelcome(bot, m, type, isSimulate = false) {
 
 // Fungsi untuk menambahkan warning
 async function addWarning(ctx, senderJid, groupDb, groupId) {
-    const ctx.keyDb.user = ctx.getId(senderJid);
+    const senderId = ctx.getId(senderJid);
 
     const maxWarnings = groupDb?.maxwarnings || 3;
     const warnings = groupDb?.warnings || [];
@@ -117,10 +117,7 @@ module.exports = (bot) => {
         }
 
         // Tetapkan config pada bot
-        config.bot = {
-            ...config.bot,
-            groupLink: await bot.core.groupInviteCode(config.bot.groupJid).then(code => `https://chat.whatsapp.com/${code}`).catch(() => "https://chat.whatsapp.com/FxEYZl2UyzAEI2yhaH34Ye")
-        };
+        config.bot.groupLink: await bot.core.groupInviteCode(config.bot.groupJid).then(code => `https://chat.whatsapp.com/${code}`).catch(() => "https://chat.whatsapp.com/FxEYZl2UyzAEI2yhaH34Ye");
     });
 
     // Event saat bot menerima pesan
