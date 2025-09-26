@@ -28,7 +28,8 @@ module.exports = {
                 const content = m.content.trim().toLowerCase();
 
                 if (content === "y") {
-                    await db.delete(`user.${ctx.keyDb.user}`);
+                    const usersDb = ctx.db.users;
+                    usersDb.reset(u => u.jid === ctx.sender.jid || u.alt || ctx.sender.jid);
                     await ctx.reply(formatter.quote("✅ Database Anda telah berhasil direset!"));
                     collector.stop();
                 } else if (content === "n") {

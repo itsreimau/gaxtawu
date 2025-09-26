@@ -13,11 +13,13 @@ module.exports = {
 
         try {
             const waitMsg = await ctx.reply(config.msg.wait);
-            await db.set("bot.restart", {
+            const botDb = ctx.db.bot;
+            botDb.restart = {
                 jid: ctx.id,
                 key: waitMsg.key,
                 timestamp: Date.now()
-            });
+            };
+            await botDb.save();
 
             await util.promisify(exec)("pm2 restart $(basename $(pwd))"); // Hanya berfungsi saat menggunakan PM2
         } catch (error) {

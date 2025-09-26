@@ -16,13 +16,14 @@ module.exports = {
             formatter.quote(tools.msg.generateNotes(["AI ini dapat melihat gambar.", "Balas/quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."]))
         );
 
-        const [checkMedia, checkQuotedMedia] = Promise.all([
+        const [checkMedia, checkQuotedMedia] = [
             tools.cmd.checkMedia(ctx.msg.contentType, "image"),
             tools.cmd.checkQuotedMedia(ctx?.quoted?.contentType, "image")
-        ]);
+        ];
 
         try {
             const systemPrompt = `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.` // Dapat diubah sesuai keinginan
+            const uid = (ctx.db.user).uid;
 
             if (checkMedia || checkQuotedMedia) {
                 const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
@@ -31,7 +32,7 @@ module.exports = {
                     text: input,
                     systemPrompt,
                     imageUrl: uploadUrl,
-                    sessionId: await db.get(`user.${ctx.keyDb.user}.uid`) || "guest"
+                    sessionId: uid || "guest"
                 });
                 const result = (await axios.get(apiUrl)).data.result;
 
@@ -40,7 +41,7 @@ module.exports = {
                 const apiUrl = tools.api.createUrl("nekolabs", "/ai/gemini/1.5-flash", {
                     text: input,
                     systemPrompt,
-                    sessionId: await db.get(`user.${ctx.keyDb.user}.uid`) || "guest"
+                    sessionId: uid || "guest"
                 });
                 const result = (await axios.get(apiUrl)).data.result;
 

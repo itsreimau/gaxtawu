@@ -26,15 +26,19 @@ const bot = new Client({
     markOnlineOnConnect: system.alwaysOnline,
     prefix: botConfig.prefix,
     selfReply: system.selfReply,
-    autoAiLabel: system.autoAiLabel
+    autoAiLabel: system.autoAiLabel,
+    databaseDir: path.resolve(__dirname, "database"),
+    citation: {
+        owner: [config.owner.id, ...config.owner.co]
+    }
 });
 
-// Tetapkan database
-global.db = bot.db();
+// Tetapkan variabel bot secara global
+global.bot = bot;
 
 // Inisialisasi event dan middleware
-events(bot);
-middleware(bot);
+events();
+middleware();
 
 // Muat dan jalankan command handler
 const cmd = new CommandHandler(bot, path.resolve(__dirname, "commands"));

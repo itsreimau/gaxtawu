@@ -8,10 +8,11 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const groupId = ctx.getId(ctx.id);
+        const groupDb = ctx.db.group;
 
         if (ctx.args[0]?.toLowerCase() === "bot") {
-            await db.set(`group.${groupId}.mutebot`, true);
+            groupDb.mutebot = false;
+            await groupDb.save();
             return await ctx.reply(formatter.quote("✅ Berhasil me-unmute grup ini dari bot!"));
         }
 
@@ -29,9 +30,10 @@ module.exports = {
         if (await ctx.group().isOwner(accountJid)) return await ctx.reply(formatter.quote("❎ Dia adalah Owner grup!"));
 
         try {
-            let muteList = await db.get(`group.${groupId}.mute`) || [];
-            muteList = muteList.filter(mute => mute !== accountId);
-            await db.set(`group.${groupId}.mute`, muteList);
+            const groupDb = ctx.db.group;
+            const muteList = groupDb?.mute || [];
+            groupDb?.mute = muteList;
+            await groupDb.save();
 
             await ctx.reply(formatter.quote("✅ Berhasil me-unmute pengguna itu dari grup ini!"));
         } catch (error) {

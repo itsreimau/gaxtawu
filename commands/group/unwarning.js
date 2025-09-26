@@ -12,7 +12,6 @@ module.exports = {
     },
     code: async (ctx) => {
         const accountJid = ctx.quoted?.sender || ctx.getMentioned()[0] || null;
-        const accountId = ctx.getId(accountJid);
 
         if (!accountJid) return await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
@@ -21,15 +20,14 @@ module.exports = {
             mentions: [Baileys.OFFICIAL_BIZ_JID]
         });
 
-        if (accountId === ctx.me.id) return await ctx.reply(formatter.quote(`❎ Tidak bisa mengubah warning bot!`));
+        if (accountJid === ctx.me.id || accountJid === ctx.me.lid) return await ctx.reply(formatter.quote(`❎ Tidak bisa mengubah warning bot!`));
         if (await ctx.group().isOwner(accountJid)) return await ctx.reply(formatter.quote("❎ Tidak bisa mengubah warning admin grup!"));
 
         try {
-            const groupId = ctx.getId(ctx.id);
-            const groupDb = await db.get(`group.${groupId}`) || {};
+            const groupDb = ctx.db.group;
             const warnings = groupDb?.warnings || [];
 
-            const userWarning = warnings.find(warning => warning.userId === accountId);
+            const userWarning = warnings.find(warning => warning.userJid === accountJid);
             let currentWarnings = userWarning ? userWarning.count : 0;
 
             if (currentWarnings <= 0) return await ctx.reply(formatter.quote("✅ Pengguna itu tidak memiliki warning."));
@@ -37,11 +35,12 @@ module.exports = {
             const newWarning = currentWarnings - 1;
 
             if (userWarning && newWarning <= 0) {
-                await db.set(`group.${groupId}.warnings`, warnings.filter(warning => warning.userId !== accountId));
+                groupDb.warning = warnings.filter(warning => warning.userJid !== accountJid)
             } else {
                 userWarning.count = newWarning;
-                await db.set(`group.${groupId}.warnings`, warnings);
+                groupDb.warning = warnings;
             }
+            await groupDb.save();
 
             await ctx.reply(formatter.quote(`✅ Berhasil mengurangi warning pengguna itu menjadi ${newWarning}/${groupDb?.maxwarnings || 3}.`));
         } catch (error) {

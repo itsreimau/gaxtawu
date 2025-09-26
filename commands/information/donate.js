@@ -4,8 +4,9 @@ module.exports = {
     category: "information",
     code: async (ctx) => {
         try {
-            const qrisLink = await db.get("bot.text.qris") || null;
-            const customText = await db.get("bot.text.donate") || null;
+            const botDb = ctx.db.bot || {};
+            const qrisLink = botDb?.text?.qris || null;
+            const customText = botDb?.text?.donate || null;
             const text = customText ?
                 customText
                 .replace(/%tag%/g, `@${ctx.getId(ctx.sender.jid)}`)

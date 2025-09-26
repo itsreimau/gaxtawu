@@ -14,24 +14,26 @@ module.exports = {
             formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru.", `Gunakan ${formatter.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`]))
         );
 
-        if (ctx.args[0]?.toLowerCase() === "blacklist" && ctx.isGroup()) {
-            let blacklist = await db.get("bot.blacklistBroadcast") || [];
+        const botDb = ctx.db.bot;
+        let blacklist = botDb?.blacklistBroadcast || [];
 
+        if (ctx.args[0]?.toLowerCase() === "blacklist" && ctx.isGroup()) {
             const groupIndex = blacklist.indexOf(ctx.id);
             if (groupIndex > -1) {
                 blacklist.splice(groupIndex, 1);
-                await db.set("bot.blacklistBroadcast", blacklist);
+                botDb.blacklistBroadcast = blacklist;
+                await botDb.save()
                 return await ctx.reply(formatter.quote("✅ Grup ini telah dihapus dari blacklist broadcast"));
             } else {
                 blacklist.push(ctx.id);
-                await db.set("bot.blacklistBroadcast", blacklist);
+                botDb.blacklistBroadcast = blacklist;
+                await botDb.save()
                 return await ctx.reply(formatter.quote("✅ Grup ini telah ditambahkan ke blacklist broadcast"));
             }
         }
 
         try {
             const groupIds = Object.values(await ctx.core.groupFetchAllParticipating()).map(group => group.id);
-            const blacklist = await db.get("bot.blacklistBroadcast") || [];
             const filteredGroupIds = groupIds.filter(groupId => !blacklist.includes(groupId));
 
             const waitMsg = await ctx.reply(formatter.quote(`🔄 Mengirim siaran ke ${filteredGroupIds.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(filteredGroupIds.length * 0.5 * 1000)}`));

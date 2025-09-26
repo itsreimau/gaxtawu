@@ -21,10 +21,11 @@ module.exports = {
         });
 
         try {
-            const userId = ctx.getId(userJid);
+            const userDb = ctx.getDb("users", userJid);
 
-            await db.delete(`user.${userId}.premium`);
-            await db.delete(`user.${userId}.premiumExpiration`);
+            delete userDb.premium;
+            delete userDb.premiumExpiration;
+            await userDb.save();
 
             const flag = tools.cmd.parseFlag(ctx.args.join(" "), {
                 "-s": {

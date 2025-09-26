@@ -1,14 +1,11 @@
-const {
-    exec
-} = require("node:child_process");
+const { exec } = require("node:child_process");
 const util = require("node:util");
 
 module.exports = {
     name: /^\$ /,
     type: "hears",
     code: async (ctx) => {
-        const isOwner = tools.cmd.isOwner(ctx.getId(ctx.sender.pn), ctx.getId(ctx.me.id), ctx.msg.key.id);
-        if (!isOwner) return;
+        if (!ctx.citation.isOwner) return;
 
         try {
             const command = ctx.msg.content.slice(2);

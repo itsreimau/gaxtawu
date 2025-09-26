@@ -22,10 +22,11 @@ module.exports = {
         if (!await ctx.group(groupJid)) return await ctx.reply(formatter.quote("❎ Grup tidak valid atau bot tidak ada di grup tersebut!"));
 
         try {
-            const groupId = ctx.getId(groupJid);
+            const groupDb = ctx.getDb("users", groupJid);
 
-            await db.delete(`group.${groupId}.sewa`);
-            await db.delete(`group.${groupId}.sewaExpiration`);
+            delete groupDb.premium;
+            delete groupDb.premiumExpiration;
+            await groupDb.save();
 
             const flag = tools.cmd.parseFlag(ctx.args.join(" "), {
                 "-s": {

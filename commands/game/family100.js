@@ -54,13 +54,14 @@ module.exports = {
 
             collector.on("collect", async (m) => {
                 const participantAnswer = m.content.toLowerCase();
-                const participantId = ctx.getId(m.sender);
+                const participantDb = ctx.getDb("users", m.sender);
 
                 if (game.answers.has(participantAnswer)) {
                     game.answers.delete(participantAnswer);
                     game.participants.add(participantId);
 
-                    await db.add(`user.${participantId}.coin`, game.coin.answered);
+                    participantDb.coin += game.coin.answered;
+                    await participantDb.save();
                     await ctx.sendMessage(ctx.id, {
                         text: formatter.quote(`✅ ${tools.msg.ucwords(participantAnswer)} benar! Jawaban tersisa: ${game.answers.size}`)
                     }, {
@@ -71,8 +72,9 @@ module.exports = {
                         session.delete(ctx.id);
                         collector.stop();
                         for (const participant of game.participants) {
-                            await db.add(`user.${participant}.coin`, game.coin.allAnswered);
-                            await db.add(`user.${participant}.winGame`, 1);
+                            participantDb.coin += game.coin.allAnswered;
+                            participantDb.winGame += 1
+                            await participantDb.save();
                         }
                         await ctx.sendMessage(ctx.id, {
                             text: formatter.quote(`🎉 Selamat! Semua jawaban telah terjawab! Setiap anggota yang menjawab mendapat ${game.coin.allAnswered} koin.`),

@@ -10,7 +10,7 @@ global.config = {
         phoneNumber: "", // Nomor telepon bot (Tidak perlu diisi jika menggunakan QR code)
         thumbnail: "https://repository-images.githubusercontent.com/753096396/3f4b7686-0f1d-43f2-8293-2ae1b4487220", // Gambar thumbnail bot
         groupJid: "", // JID untuk group bot (Tidak perlu diisi jika tidak menggunakan requireBotGroupMembership)
-        newsletterJid: "120363416372653441@newsletter", // JID untuk saluran bot
+        newsletterJid: "120363416372653441@newsletter" // JID untuk saluran bot
     },
 
     // Pesan bot yang disesuaikan untuk situasi tertentu

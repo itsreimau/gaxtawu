@@ -20,6 +20,7 @@ module.exports = {
         }
 
         try {
+            const userDb = ctx.db.user;
             const args = ctx.args;
             const command = args[0]?.toLowerCase();
 
@@ -34,15 +35,17 @@ module.exports = {
                     if (usernameTaken) return await ctx.reply(formatter.quote("❎ Username tersebut sudah digunakan oleh pengguna lain."));
 
                     const username = `@${input}`
-                    await db.set(`user.${ctx.keyDb.user}.username`, username);
+                    userDb.username = username;
+                    await userDb.save();
+
                     await ctx.reply(formatter.quote(`✅ Username berhasil diubah menjadi ${formatter.inlineCode(username)}!`));
                     break;
                 }
                 case "autolevelup": {
-                    const setKey = `user.${ctx.keyDb.user}.autolevelup`;
-                    const currentStatus = await db.get(setKey) || false;
+                    const currentStatus = userDb?.autolevelup || false;
                     const newStatus = !currentStatus;
-                    await db.set(setKey, newStatus);
+                    userDb.autolevelup = newStatus;
+                    await userDb.save();
 
                     const statusText = newStatus ? "diaktifkan" : "dinonaktifkan";
                     await ctx.reply(formatter.quote(`✅ Autolevelup berhasil ${statusText}!`));

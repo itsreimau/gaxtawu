@@ -5,10 +5,10 @@ module.exports = {
     aliases: ["s", "stiker"],
     category: "converter",
     code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = Promise.all([
+        const [checkMedia, checkQuotedMedia] = [
             tools.cmd.checkMedia(ctx.msg.contentType, ["image", "gif", "video"]),
             tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["image", "gif", "video"])
-        ]);
+        ];
 
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], ["image", "gif", "video"])));
 

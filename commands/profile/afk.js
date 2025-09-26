@@ -5,10 +5,12 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         try {
-            await db.set(`user.${ctx.keyDb.user}.afk`, {
+            const userDb = ctx.db.user;
+            userDb.afk = {
                 reason: input,
                 timestamp: Date.now()
-            });
+            };
+            await userDb.save();
 
             await ctx.reply(formatter.quote(`📴 Anda akan AFK, ${input ? `dengan alasan ${formatter.inlineCode(input)}` : "tanpa alasan apapun"}.`));
         } catch (error) {

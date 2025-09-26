@@ -24,7 +24,7 @@ module.exports = {
         if (daysAmount && daysAmount <= 0) return await ctx.reply(formatter.quote("❎ Durasi Premium (dalam hari) harus diisi dan lebih dari 0!"));
 
         try {
-            const userId = ctx.getId(userJid);
+            const userDb = ctx.getDb("users", userJid);
 
             const flag = tools.cmd.parseFlag(ctx.args.join(" "), {
                 "-s": {
@@ -35,10 +35,11 @@ module.exports = {
 
             const silent = flag?.silent || false;
 
-            await db.set(`user.${userId}.premium`, true);
+            userDb.premium = true;
             if (daysAmount && daysAmount > 0) {
                 const expirationDate = Date.now() + (daysAmount * 24 * 60 * 60 * 1000);
-                await db.set(`user.${userId}.premiumExpiration`, expirationDate);
+                userDb.premiumExpiration = expirationDate;
+                await userDb.save();
 
                 if (!silent) await ctx.sendMessage(userJid, {
                     text: formatter.quote(`📢 Anda telah ditambahkan sebagai pengguna Premium oleh Owner selama ${daysAmount} hari!`)
@@ -46,7 +47,8 @@ module.exports = {
 
                 await ctx.reply(formatter.quote(`✅ Berhasil menambahkan Premium selama ${daysAmount} hari kepada pengguna itu!`));
             } else {
-                await db.delete(`user.${userId}.premiumExpiration`);
+                delete userDb.premiumExpiration;
+                await userDb.save();
 
                 if (!silent) await ctx.sendMessage(userJid, {
                     text: formatter.quote("📢 Anda telah ditambahkan sebagai pengguna Premium selamanya oleh Owner!")

@@ -128,16 +128,16 @@ async function handleError(ctx, error, useAxios = false, reportErrorToOwner = tr
     await ctx.reply(formatter.quote(`⚠️ Terjadi kesalahan: ${error.message}`));
 }
 
-function isCmd(content, bot) {
-    if (!content || !bot) return false;
+function isCmd(content, ctxBot) {
+    if (!content || !ctxBot) return false;
 
     const prefix = content.charAt(0);
-    if (!new RegExp(bot.prefix, "i").test(content)) return false;
+    if (!new RegExp(ctxBot.prefix, "i").test(content)) return false;
 
     const [cmdName, ...inputArray] = content.slice(1).trim().toLowerCase().split(/\s+/);
     const input = inputArray.join(" ");
 
-    const cmds = Array.from(bot.cmd.values());
+    const cmds = Array.from(ctxBot.cmd.values());
     const matchedCmd = cmds.find(cmd => cmd.name === cmdName || cmd?.aliases?.includes(cmdName));
 
     if (matchedCmd) return {
@@ -154,17 +154,6 @@ function isCmd(content, bot) {
         didyoumean: mean,
         input
     } : false;
-}
-
-function isOwner(id, botId, messageId) {
-    if (!id) return false;
-
-    if (config.system.selfOwner || botId === config.owner.id || config.owner.co.includes(botId)) {
-        if (messageId.startsWith("3EB0")) return false;
-        return botId === id || config.owner.id === id || config.owner.co.includes(id);
-    }
-
-    return config.owner.id === id || config.owner.co.includes(id);
 }
 
 function isUrl(url) {
@@ -235,7 +224,6 @@ module.exports = {
     getRandomElement,
     handleError,
     isCmd,
-    isOwner,
     isUrl,
     parseFlag,
     translate

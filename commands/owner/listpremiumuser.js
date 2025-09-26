@@ -1,5 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "listpremiumuser",
     aliases: ["listprem", "listpremium"],
@@ -9,14 +7,14 @@ module.exports = {
     },
     code: async (ctx) => {
         try {
-            const users = await db.get("user");
+            const users = ctx.db.users.getMany(user => user.premium === true);
             const premiumUsers = [];
 
-            for (const userId in users) {
-                if (users[userId].premium === true) {
+            for (const user of users) {
+                if (user.premium === true) {
                     premiumUsers.push({
-                        id: userId,
-                        expiration: users[userId].premiumExpiration
+                        jid: user.jid,
+                        expiration: user.premiumExpiration
                     });
                 }
             }
@@ -25,13 +23,16 @@ module.exports = {
             let userMentions = [];
 
             for (const user of premiumUsers) {
-                userMentions.push(user.id + Baileys.LID);
+                const userJid = user.jid;
+                const userId = ctx.getID(user.jid);
+                userMentions.push(userJid);
 
                 if (user.expiration) {
-                    const daysLeft = tools.msg.convertMsToDuration(Date.now() - user.expiration, ["hari"]);
-                    resultText += `${formatter.quote(`@${user.id} (${daysLeft} tersisa)`)}\n`;
+                    const timeDiff = user.expiration - Date.now();
+                    const daysLeft = tools.msg.convertMsToDuration(timeDiff, ["hari"]);
+                    resultText += `${formatter.quote(`@${userId} (${daysLeft} tersisa)`)}\n`;
                 } else {
-                    resultText += `${formatter.quote(`@${user.id} (Premium permanen)`)}\n`;
+                    resultText += `${formatter.quote(`@${userId} (Premium permanen)`)}\n`;
                 }
             }
 

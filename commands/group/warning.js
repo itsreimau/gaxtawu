@@ -12,7 +12,6 @@ module.exports = {
     },
     code: async (ctx) => {
         const accountJid = ctx.quoted?.sender || ctx.getMentioned()[0] || null;
-        const accountId = ctx.getId(accountJid);
 
         if (!accountJid) return await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
@@ -21,15 +20,14 @@ module.exports = {
             mentions: [Baileys.OFFICIAL_BIZ_JID]
         });
 
-        if (accountId === ctx.me.id) return await ctx.reply(formatter.quote(`❎ Tidak bisa memberikan warning ke bot!`));
+        if (accountJid === ctx.me.id || accountJid === ctx.me.lid) return await ctx.reply(formatter.quote(`❎ Tidak bisa memberikan warning ke bot!`));
         if (await ctx.group().isOwner(accountJid)) return await ctx.reply(formatter.quote("❎ Tidak bisa memberikan warning ke admin grup!"));
 
         try {
-            const groupId = ctx.getId(ctx.id);
-            const groupDb = await db.get(`group.${groupId}`) || {};
+            const groupDb = ctx.db.group;
             const warnings = groupDb?.warnings || [];
 
-            const userWarning = warnings.find(warning => warning.userId === accountId);
+            const userWarning = warnings.find(warning => warning.userJid === accountJid);
             let currentWarnings = userWarning ? userWarning.count : 0;
             const newWarning = currentWarnings + 1;
 
@@ -37,12 +35,13 @@ module.exports = {
                 userWarning.count = newWarning;
             } else {
                 warnings.push({
-                    userId: accountId,
+                    userJid: accountJid,
                     count: newWarning
                 });
             }
 
-            await db.set(`group.${groupId}.warnings`, warnings);
+            groupDb.warnings = warnings;
+            await groupDb.save();
             await ctx.reply(formatter.quote(`✅ Berhasil menambahkan warning pengguna itu menjadi ${newWarning}/${groupDb?.maxwarnings || 3}.`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

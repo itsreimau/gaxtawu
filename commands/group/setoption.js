@@ -26,7 +26,7 @@ module.exports = {
 
         if (input.toLowerCase() === "status") {
             const groupId = ctx.getId(ctx.id);
-            const groupOption = await db.get(`group.${groupId}.option`) || {};
+            const groupOption = ctx.db.group?.option || {};
 
             return await ctx.reply({
                 text: `${formatter.quote(`Antiaudio: ${groupOption.antiaudio ? "Aktif" : "Nonaktif"}`)}\n` +
@@ -47,7 +47,7 @@ module.exports = {
         }
 
         try {
-            const groupId = ctx.getId(ctx.id);
+            const groupDb = ctx.db.group;
             let setKey;
 
             switch (input.toLowerCase()) {
@@ -65,16 +65,17 @@ module.exports = {
                 case "autokick":
                 case "gamerestrict":
                 case "welcome":
-                    setKey = `group.${groupId}.option.${input.toLowerCase()}`;
+                    setKey = input.toLowerCase();
                     break;
                 default:
                     return await ctx.reply(formatter.quote(`❎ Opsi ${formatter.inlineCode(input)} tidak valid!`));
             }
 
-            const currentStatus = await db.get(setKey);
+            const currentStatus = groupDb?.option[setKey];
             const newStatus = !currentStatus;
 
-            await db.set(setKey, newStatus);
+            groupDb?.option[setKey] = newStatus;
+            await groupDb.save();
             const statusText = newStatus ? "diaktifkan" : "dinonaktifkan";
             await ctx.reply(formatter.quote(`✅ Opsi ${formatter.inlineCode(input)} berhasil ${statusText}!`));
         } catch (error) {

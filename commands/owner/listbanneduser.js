@@ -9,23 +9,23 @@ module.exports = {
     },
     code: async (ctx) => {
         try {
-            const users = await db.get("user");
+            const users = ctx.db.users.getMany(user => user.banned === true);
             const bannedUsers = [];
 
-            for (const userId in users) {
-                if (users[userId].banned === true) bannedUsers.push(userId);
+            for (const user of users) {
+                if (user.banned === true) {
+                    bannedUsers.push(user.jid);
+                }
             }
 
             let resultText = "";
             let userMentions = [];
 
-            bannedUsers.forEach(userId => {
+            for (const userJid of bannedUsers) {
+                const userId = ctx.getId(userJid);
                 resultText += `${formatter.quote(`@${userId}`)}\n`;
-            });
-
-            bannedUsers.forEach(userId => {
-                userMentions.push(userId + Baileys.LID);
-            });
+                userMentions.push(userId);
+            }
 
             await ctx.reply({
                 text: resultText.trim() || config.msg.notFound,

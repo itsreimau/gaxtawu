@@ -26,25 +26,27 @@ module.exports = {
         );
 
         try {
-            const groupId = ctx.getId(ctx.id);
+            const groupDb = ctx.db.group;
             let setKey;
 
             switch (key.toLowerCase()) {
                 case "goodbye":
                 case "intro":
                 case "welcome":
-                    setKey = `group.${groupId}.text.${key.toLowerCase()}`;
+                    setKey = key.toLowerCase();
                     break;
                 default:
                     return await ctx.reply(formatter.quote(`❎ Teks ${formatter.inlineCode(key)} tidak valid!`));
             }
 
             if (text.toLowerCase() === "delete") {
-                await db.delete(setKey);
+                delete groupDb?.text[setKey];
+                await groupDb.save();
                 return await ctx.reply(formatter.quote(`🗑️ Pesan untuk teks ${formatter.inlineCode(key)} berhasil dihapus!`));
             }
 
-            await db.set(setKey, text);
+            groupDb?.text[setKey] = text;
+            await groupDb.save();
             await ctx.reply(formatter.quote(`✅ Pesan untuk teks ${formatter.inlineCode(key)} berhasil disimpan!`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

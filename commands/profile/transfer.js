@@ -15,15 +15,18 @@ module.exports = {
             mentions: [Baileys.OFFICIAL_BIZ_JID]
         });
 
-        const userDb = await db.get(`user.${ctx.keyDb.user}`) || {};
+        const userDb = ctx.db.user;
 
-        if (tools.cmd.isOwner(ctx.keyDb.user, ctx.getId(ctx.me.id), ctx.msg.key.id) || userDb?.premium) return await ctx.reply(formatter.quote("❎ Koin tak terbatas tidak dapat ditransfer."));
+        if (ctx.citation.isOwner) return await ctx.reply(formatter.quote("❎ Koin tak terbatas tidak dapat ditransfer."));
         if (coinAmount <= 0) return await ctx.reply(formatter.quote("❎ Jumlah koin tidak boleh kurang dari atau sama dengan 0!"));
         if (userDb?.coin < coinAmount) return await ctx.reply(formatter.quote("❎ Koin Anda tidak mencukupi untuk transfer ini!"));
 
         try {
-            await db.add(`user.${ctx.getId(userJid)}.coin`, coinAmount);
-            await db.subtract(`user.${ctx.keyDb.user}.coin`, coinAmount);
+            const anotherUserDb = ctx.getDb("users", userJid);
+            anotherUserDb.coin += coinAmount;
+            userDb.coin -= coinAmount;
+            await anotherUserDb.save();
+            await userDb.save();
 
             await ctx.reply(formatter.quote(`✅ Berhasil mentransfer ${coinAmount} koin ke pengguna itu!`));
         } catch (error) {

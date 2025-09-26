@@ -21,7 +21,9 @@ module.exports = {
         });
 
         try {
-            await db.set(`user.${ctx.keyDb.user}.banned`, true);
+            const userDb = ctx.getDb("users", userJid);
+            userDb.banned = true;
+            await userDb.save();
 
             const flag = tools.cmd.parseFlag(ctx.args.join(" "), {
                 "-s": {

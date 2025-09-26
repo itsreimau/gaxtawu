@@ -7,8 +7,7 @@ module.exports = {
     },
     code: async (ctx) => {
         try {
-            const groupId = ctx.getId(ctx.id);
-            const introText = await db.get(`group.${groupId}.text.intro`) || formatter.quote("❎ Grup ini tidak memiliki intro.");
+            const introText = ctx.db.group?.text?.intro || formatter.quote("❎ Grup ini tidak memiliki intro.");
 
             await ctx.reply(introText);
         } catch (error) {

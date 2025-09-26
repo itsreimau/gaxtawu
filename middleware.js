@@ -3,29 +3,31 @@ const { Baileys, Cooldown } = require("@itsreimau/gktw");
 const moment = require("moment-timezone");
 
 // Fungsi untuk mengecek koin pengguna
-async function checkCoin(requiredCoin, userDb, senderId, isOwner) {
+async function checkCoin(requiredCoin, userDb, isOwner) {
     if (isOwner || userDb?.premium) return false;
     if (userDb?.coin < requiredCoin) return true;
-    await db.subtract(`user.${senderId}.coin`, requiredCoin);
+    userDb.coin -= requiredCoin;
+    await userDb.save();
     return false;
 }
 
 // Middleware utama bot
-module.exports = (bot) => {
+module.exports = () => {
     bot.use(async (ctx, next) => {
         // Variabel umum
         const isGroup = ctx.isGroup();
         const isPrivate = ctx.isPrivate();
         const senderJid = ctx.sender.jid;
+        const senderId = ctx.getId(senderJid);
         const groupJid = isGroup ? ctx.id : null;
         const groupId = isGroup ? ctx.getId(groupJid) : null;
-        const isOwner = tools.cmd.isOwner(ctx.keyDb.userPn, ctx.getId(ctx.me.id), ctx.msg.key.id);
+        const isOwner = ctx.citation.isOwner;
         const isAdmin = isGroup ? await ctx.group().isAdmin(senderJid) : false;
 
         // Mengambil database
-        const botDb = await db.get("bot") || {};
-        const userDb = await db.get(`user.${ctx.keyDb.user}`) || {};
-        const groupDb = await db.get(`group.${groupId}`) || {};
+        const botDb = ctx.db.bot;
+        const userDb = ctx.db.user;
+        const groupDb = ctx.db.group;
 
         // Pengecekan mode bot (group, private, self)
         if (botDb?.mode === "premium" && !isOwner && !userDb?.premium) return;
@@ -37,13 +39,13 @@ module.exports = (bot) => {
         if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;
         if (groupDb?.mutebot === "owner" && !isOwner) return;
         const muteList = groupDb?.mute || [];
-        if (muteList.includes(ctx.keyDb.user)) return;
+        if (muteList.includes(senderJid)) return;
 
         // Log command masuk
         if (isGroup && !ctx.msg.key.fromMe) {
-            consolefy.info(`Incoming command: ${ctx.used.command}, from group: ${groupId}, by: ${ctx.keyDb.userPn}`);
+            consolefy.info(`Incoming command: ${ctx.used.command}, from group: ${groupId}, by: ${Baileys.isLidUser(senderJid) ? `${senderId} (LID)` : senderId}`);
         } else if (isPrivate && !ctx.msg.key.fromMe) {
-            consolefy.info(`Incoming command: ${ctx.used.command}, from: ${ctx.keyDb.userPn}`);
+            consolefy.info(`Incoming command: ${ctx.used.command}, from: ${Baileys.isLidUser(senderJid) ? `${senderId} (LID)` : senderId}`);
         }
 
         // Menambah XP pengguna dan menangani level-up
@@ -68,23 +70,13 @@ module.exports = (bot) => {
                 });
             }
 
-            await db.set(`user.${ctx.keyDb.user}.xp`, newUserXp);
-            await db.set(`user.${ctx.keyDb.user}.level`, newUserLevel);
+            userDb.xp = newUserXp;
+            userDb.level = newUserLevel;
+            await userDb.save();
         } else {
-            await db.set(`user.${ctx.keyDb.user}.xp`, newUserXp);
+            userDb.xp = newUserXp;
+            await userDb.save();
         }
-
-        // Pemberitahuan migrasi database ke LID
-        if (await db.get(`user.${ctx.keyDb.userPn}`) && ctx.used.command !== "migrate") await ctx.reply({
-            text: formatter.quote(`📍 Anda terdaftar di database lama. Ingin bermigrasi ke database baru?`),
-            footer: config.msg.footer,
-            buttons: [{
-                buttonId: `${ctx.used.prefix}migrate ${ctx.keyDb.userPn}`,
-                buttonText: {
-                    displayText: "Ya, ingin!"
-                }
-            }]
-        });
 
         // Simulasi mengetik
         const simulateTyping = () => {
@@ -181,7 +173,8 @@ module.exports = (bot) => {
                 const oneDay = 24 * 60 * 60 * 1000;
                 if (!lastSentMsg || (now - lastSentMsg) > oneDay) {
                     simulateTyping();
-                    await db.set(`user.${ctx.keyDb.user}.lastSentMsg.${key}`, now);
+                    userDb.lastSentMsg[key] = now;
+                    await userDb.save();
                     return await ctx.reply({
                         text: msg,
                         footer: formatter.italic(`Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`),
@@ -211,7 +204,7 @@ module.exports = (bot) => {
             reaction: "🤖"
         }, {
             key: "coin",
-            condition: permissions.coin && config.system.useCoin && await checkCoin(permissions.coin, userDb, ctx.keyDb.user, isOwner),
+            condition: permissions.coin && config.system.useCoin && await checkCoin(permissions.coin, userDb, isOwner),
             msg: config.msg.coin,
             buttons: [{
                 buttonId: `${ctx.used.prefix}coin`,
@@ -272,7 +265,8 @@ module.exports = (bot) => {
                 const oneDay = 24 * 60 * 60 * 1000;
                 if (!lastSentMsg || (now - lastSentMsg) > oneDay) {
                     simulateTyping();
-                    await db.set(`user.${ctx.keyDb.user}.lastSentMsg.${key}`, now);
+                    userDb.lastSentMsg[key] = now;
+                    await userDb.save();
                     return await ctx.reply({
                         text: msg,
                         footer: formatter.italic(`Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`),

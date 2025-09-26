@@ -1,5 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "listsewagroup",
     aliases: ["listsewa"],
@@ -9,14 +7,14 @@ module.exports = {
     },
     code: async (ctx) => {
         try {
-            const groups = await db.get("group");
+            const groups = ctx.db.groups.getMany(group => group.sewa === true);
             const sewaGroups = [];
 
-            for (const groupId in groups) {
-                if (groups[groupId].sewa === true) {
+            for (const group of groups) {
+                if (group.sewa === true) {
                     sewaGroups.push({
-                        id: groupId,
-                        expiration: groups[groupId].sewaExpiration
+                        jid: group.jid,
+                        expiration: group.sewaExpiration
                     });
                 }
             }
@@ -25,7 +23,7 @@ module.exports = {
             let groupMentions = [];
 
             for (const group of sewaGroups) {
-                const groupJid = group.id + Baileys.G_US;
+                const groupJid = group.jid;
                 const groupSubject = await ctx.group(groupJid).name();
 
                 groupMentions.push({
@@ -34,7 +32,8 @@ module.exports = {
                 });
 
                 if (group.expiration) {
-                    const daysLeft = tools.msg.convertMsToDuration(Date.now() - group.expiration, ["hari"]);
+                    const timeDiff = group.expiration - Date.now();
+                    const daysLeft = tools.msg.convertMsToDuration(timeDiff, ["hari"]);
                     resultText += `${formatter.quote(`@${groupJid} (${daysLeft} tersisa)`)}\n`;
                 } else {
                     resultText += `${formatter.quote(`@${groupJid} (Sewa permanen)`)}\n`;

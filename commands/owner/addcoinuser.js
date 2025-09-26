@@ -22,7 +22,9 @@ module.exports = {
         });
 
         try {
-            await db.add(`user.${ctx.keyDb.user}.coin`, coinAmount);
+            const userDb = ctx.getDb("users", userJid);
+            userDb.coin = coinAmount;
+            await userDb.save();
 
             const flag = tools.cmd.parseFlag(ctx.args.join(" "), {
                 "-s": {

@@ -5,10 +5,10 @@ const moment = require("moment-timezone");
 const fs = require("node:fs");
 
 // Fungsi untuk menangani event pengguna bergabung/keluar grup
-async function handleWelcome(bot, m, type, isSimulate = false) {
+async function handleWelcome(m, type, isSimulate = false) {
     const groupJid = m.id;
-    const groupDb = await db.get(`group.${bot.getId(groupJid)}`) || {};
-    const botDb = await db.get("bot") || {};
+    const groupDb = bot.getDb("groups", groupJid);
+    const botDb = bot.getDb("bot", Baileys.jidNormalizedUser(bot.client.user.lid));
 
     if (!isSimulate && groupDb?.mutebot) return;
     if (!isSimulate && !groupDb?.option?.welcome) return;
@@ -71,7 +71,7 @@ async function addWarning(ctx, senderJid, groupDb, groupId) {
     const maxWarnings = groupDb?.maxwarnings || 3;
     const warnings = groupDb?.warnings || [];
 
-    const userWarning = warnings.find(warning => warning.userId === senderId);
+    const userWarning = warnings.find(warning => warning.userJid === senderId);
     let currentWarnings = userWarning ? userWarning.count : 0;
     currentWarnings += 1;
 
@@ -79,12 +79,12 @@ async function addWarning(ctx, senderJid, groupDb, groupId) {
         userWarning.count = currentWarnings;
     } else {
         warnings.push({
-            userId: senderId,
+            userJid: senderId,
             count: currentWarnings
         });
     }
 
-    await db.set(`group.${groupId}.warnings`, warnings);
+    groupDb.warnings = warnings;
     await ctx.reply({
         text: formatter.quote(`⚠️ Warning ${currentWarnings}/${maxWarnings} untuk @${senderId}!`),
         mentions: [senderJid]
@@ -93,7 +93,7 @@ async function addWarning(ctx, senderJid, groupDb, groupId) {
     if (currentWarnings >= maxWarnings) {
         await ctx.reply(formatter.quote(`⛔ Anda telah menerima ${maxWarnings} warning dan akan dikeluarkan dari grup!`));
         if (!config.system.restrict) await ctx.group().kick(senderJid);
-        await db.set(`group.${groupId}.warnings`, warnings.filter(warning => warning.userId !== senderId));
+        groupDb.warnings = warnings.filter(warning => warning.userJid !== senderId);
     }
 }
 
@@ -106,14 +106,16 @@ module.exports = (bot) => {
         consolefy.success(`${config.bot.name} by ${config.owner.name}, ready at ${m.user.id}`);
 
         // Mulai ulang bot
-        const botRestart = await db.get("bot.restart") || {};
+        const botDb = bot.getDb("bot", Baileys.jidNormalizedUser(bot.client.user.lid));
+        const botRestart = botDb?.restart || {};
         if (botRestart?.jid && botRestart?.timestamp) {
             const timeago = tools.msg.convertMsToDuration(Date.now() - botRestart.timestamp);
             await bot.core.sendMessage(botRestart.jid, {
                 text: formatter.quote(`✅ Berhasil dimulai ulang! Membutuhkan waktu ${timeago}.`),
                 edit: botRestart.key
             });
-            await db.delete("bot.restart");
+            delete botDb.restart;
+            await botDb.save();
         }
 
         // Tetapkan config pada bot
@@ -126,17 +128,17 @@ module.exports = (bot) => {
         const isGroup = ctx.isGroup();
         const isPrivate = ctx.isPrivate();
         const senderJid = ctx.sender.jid;
-        const senderPnId = ctx.getId(ctx.sender.pn);
+        const senderId = ctx.getId(senderJid);
         const groupJid = isGroup ? ctx.id : null;
         const groupId = isGroup ? ctx.getId(groupJid) : null;
-        const isOwner = tools.cmd.isOwner(senderPnId, ctx.getId(ctx.me.id), m.key.id);
+        const isOwner = ctx.citation.isOwner;
         const isCmd = tools.cmd.isCmd(m.content, ctx.bot);
         const isAdmin = isGroup ? await ctx.group().isAdmin(senderJid) : false;
 
         // Mengambil database
-        const botDb = await db.get("bot") || {};
-        const userDb = await db.get(`user.${ctx.keyDb.user}`) || {};
-        const groupDb = await db.get(`group.${groupId}`) || {};
+        const botDb = ctx.db.bot;
+        const userDb = ctx.db.user;
+        const groupDb = ctx.db.group;
 
         // Grup atau Pribadi
         if (isGroup || isPrivate) {
@@ -146,14 +148,15 @@ module.exports = (bot) => {
             config.bot.dbSize = fs.existsSync("database.json") ? tools.msg.formatSize(fs.statSync("database.json").size / 1024) : "N/A"; // Penangan pada ukuran database
 
             // Penanganan database pengguna
-            if (!userDb?.username) await db.set(`user.${ctx.keyDb.user}.username`, `@user_${tools.cmd.generateUID(ctx.keyDb.user, false)}`);
-            if (!userDb?.uid || userDb?.uid !== tools.cmd.generateUID(ctx.keyDb.user)) await db.set(`user.${ctx.keyDb.user}.uid`, tools.cmd.generateUID(ctx.keyDb.user));
+            if (!userDb?.username) userDb.username = `@user_${tools.cmd.generateUID(senderId, false)}`;
+            if (!userDb?.uid || userDb?.uid !== tools.cmd.generateUID(senderId)) userDb.uid = tools.cmd.generateUID(senderId);
             if (userDb?.premium && Date.now() > userDb.premiumExpiration) {
-                await db.delete(`user.${ctx.keyDb.user}.premium`);
-                await db.delete(`user.${ctx.keyDb.user}.premiumExpiration`);
+                delete userDb.premium;
+                delete userDb.premiumExpiration;
             }
-            if (isOwner || userDb?.premium) await db.set(`user.${ctx.keyDb.user}.coin`, 0);
-            if (!userDb?.coin || !Number.isFinite(userDb.coin)) await db.set(`user.${ctx.keyDb.user}.coin`, 500);
+            if (isOwner || userDb?.premium) userDb.coin = 0;
+            if (!userDb?.coin || !Number.isFinite(userDb.coin)) userDb.coin = 500;
+            await userDb.save();
 
             // Pengecekan mode bot (premium, group, private, self)
             if (botDb?.mode === "premium" && !isOwner && !userDb?.premium) return;
@@ -165,7 +168,7 @@ module.exports = (bot) => {
             if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;
             if (groupDb?.mutebot === "owner" && !isOwner) return;
             const muteList = groupDb?.mute || [];
-            if (muteList.includes(ctx.keyDb.user)) await ctx.deleteMessage(m.key);
+            if (muteList.includes(senderJid)) await ctx.deleteMessage(m.key);
 
             // Pengecekan untuk tidak tersedia pada malam hari
             const now = moment().tz(config.system.timeZone);
@@ -177,10 +180,11 @@ module.exports = (bot) => {
             if (analyze.isMalicious) {
                 await ctx.deleteMessage(m.key);
                 await ctx.block(senderJid);
-                await db.set(`user.${ctx.keyDb.user}.banned`, true);
+                userDb.banned = true;
+                await userDb.save();
 
                 await ctx.sendMessage(config.owner.id + Baileys.S_WHATSAPP_NET, {
-                    text: `📢 Akun @${ctx.keyDb.user} telah diblokir secara otomatis karena alasan ${formatter.inlineCode(analyze.reason)}.`,
+                    text: `📢 Akun @${senderId} telah diblokir secara otomatis karena alasan ${formatter.inlineCode(analyze.reason)}.`,
                     mentions: [senderJid]
                 });
             }
@@ -204,7 +208,8 @@ module.exports = (bot) => {
                 if (timeElapsed > 3000) {
                     const timeago = tools.msg.convertMsToDuration(timeElapsed);
                     await ctx.reply(formatter.quote(`📴 Anda telah keluar dari AFK ${userAfk.reason ? `dengan alasan ${formatter.inlineCode(userAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`));
-                    await db.delete(`user.${ctx.keyDb.user}.afk`);
+                    delete userDb.afk;
+                    await userDb.save();
                 }
             }
         }
@@ -213,22 +218,23 @@ module.exports = (bot) => {
         if (isGroup) {
             if (m.key.fromMe || Baileys.isJidStatusBroadcast(m.key.remoteJid) || Baileys.isJidNewsletter(m.key.remoteJid)) return;
 
-            if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from group: ${groupId}, by: ${senderPnId}`); // Log pesan masuk
+            if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from group: ${groupId}, by: ${Baileys.isLidUser(senderJid) ? `${senderId} (LID)` : senderId}`); // Log pesan masuk
 
             // Variabel umum
             const groupAutokick = groupDb?.option?.autokick;
 
             // Penanganan database grup
             if (groupDb?.sewa && Date.now() > userDb?.sewaExpiration) {
-                await db.delete(`group.${groupId}.sewa`);
-                await db.delete(`group.${groupId}.sewaExpiration`);
+                delete groupDb.sewa;
+                delete groupDb.sewaExpiration;
+                await groupDb.save();
             }
 
             // Penanganan AFK (Pengguna yang disebutkan atau di-balas/quote)
             const userAfkMentions = ctx.quoted ? [ctx.getId(ctx.quoted.sender)] : ctx.getMentioned().map(jid => ctx.getId(jid));
             if (userAfkMentions.length > 0) {
                 for (const userAfkMention of userAfkMentions) {
-                    const userAfk = await db.get(`user.${userAfkMention}.afk`) || {};
+                    const userAfk = userDb?.afk || {};
                     if (userAfk.reason || userAfk.timestamp) {
                         const timeago = tools.msg.convertMsToDuration(Date.now() - userAfk.timestamp);
                         await ctx.reply(formatter.quote(`📴 Jangan tag! Dia sedang AFK ${userAfk.reason ? `dengan alasan ${formatter.inlineCode(userAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`));
@@ -246,7 +252,7 @@ module.exports = (bot) => {
                         if (groupAutokick) {
                             await ctx.group().kick(senderJid);
                         } else {
-                            await addWarning(ctx, senderJid, ctx.keyDb.user, groupDb, groupId);
+                            await addWarning(ctx, senderJid, groupDb);
                         }
                     }
                 }
@@ -260,7 +266,7 @@ module.exports = (bot) => {
                     if (groupAutokick) {
                         await ctx.group().kick(senderJid);
                     } else {
-                        await addWarning(ctx, senderJid, ctx.keyDb.user, groupDb, groupId);
+                        await addWarning(ctx, senderJid, groupDb);
                     }
                 }
             }
@@ -268,10 +274,10 @@ module.exports = (bot) => {
             // Penanganan antispam
             if (groupDb?.option?.antispam && !isOwner && !isAdmin) {
                 const now = Date.now();
-                const spamData = await db.get(`group.${groupId}.spam`) || [];
+                const spamData = groupDb?.spam || [];
 
-                const userSpam = spamData.find(spam => spam.userId === ctx.keyDb.user) || {
-                    userId: ctx.keyDb.user,
+                const userSpam = spamData.find(spam => spam.userJid === senderJid) || {
+                    userJid: senderJid,
                     count: 0,
                     lastMessageTime: 0
                 };
@@ -282,9 +288,9 @@ module.exports = (bot) => {
                 userSpam.count = newCount;
                 userSpam.lastMessageTime = now;
 
-                if (!spamData.some(spam => spam.userId === ctx.keyDb.user)) spamData.push(userSpam);
+                if (!spamData.some(spam => spam.userJid === senderJid)) spamData.push(userSpam);
 
-                await db.set(`group.${groupId}.spam`, spamData);
+                groupDb?.spam = spamData;
 
                 if (newCount > 5) {
                     await ctx.reply(formatter.quote("⛔ Jangan spam, ngelag woy!"));
@@ -292,10 +298,11 @@ module.exports = (bot) => {
                     if (groupAutokick) {
                         await ctx.group().kick(senderJid);
                     } else {
-                        await addWarning(ctx, senderJid, ctx.keyDb.user, groupDb, groupId);
+                        await addWarning(ctx, senderJid, groupDb);
                     }
-                    await db.set(`group.${groupId}.spam`, spamData.filter(spam => spam.userId !== ctx.keyDb.user));
+                    groupDb.spam = spamData.filter(spam => spam.userJid !== senderJid);
                 }
+                await groupDb.save();
             }
 
             // Penanganan antitagsw
@@ -307,7 +314,7 @@ module.exports = (bot) => {
                     if (groupAutokick) {
                         await ctx.group().kick(senderJid);
                     } else {
-                        await addWarning(ctx, senderJid, ctx.keyDb.user, groupDb, groupId);
+                        await addWarning(ctx, senderJid, groupDb);
                     }
                 }
             }
@@ -321,7 +328,7 @@ module.exports = (bot) => {
                     if (groupAutokick) {
                         await ctx.group().kick(senderJid);
                     } else {
-                        await addWarning(ctx, senderJid, ctx.keyDb.user, groupDb, groupId);
+                        await addWarning(ctx, senderJid, groupDb);
                     }
                 }
             }
@@ -331,30 +338,9 @@ module.exports = (bot) => {
         if (isPrivate) {
             if (m.key.fromMe || Baileys.isJidStatusBroadcast(m.key.remoteJid) || Baileys.isJidNewsletter(m.key.remoteJid)) return;
 
-            if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from: ${senderPnId}`); // Log pesan masuk
+            if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from: ${Baileys.isLidUser(senderJid) ? `${senderId} (LID)` : senderId}`); // Log pesan masuk
 
-            // Penanganan menfess
-            const allMenfessDb = await db.get("menfess") || {};
-            if (!isCmd || isCmd?.didyoumean) {
-                for (const [menfessId, {
-                        from,
-                        to
-                    }] of Object.entries(allMenfessDb)) {
-                    if (sender === from || sender === to) {
-                        const target = (sender === from ? to : from) + Baileys.LID;
-                        if (m.content === "delete") {
-                            const replyText = formatter.quote("✅ Sesi menfess telah dihapus!");
-                            await ctx.reply(replyText);
-                            await ctx.sendMessage(target, {
-                                text: replyText
-                            });
-                            await db.delete(`menfess.${menfessId}`);
-                        } else {
-                            await ctx.forwardMessage(target, m);
-                        }
-                    }
-                }
-            }
+            // Apa yaa...
         }
     });
 
@@ -368,12 +354,14 @@ module.exports = (bot) => {
             const senderJid = call.from;
             const senderId = bot.getId(senderJid);
 
-            consolefy.info(`Incoming call from: ${ctx.getId(await bot.core.getLidUser(senderJid)[0].lid)}`); // Log panggilan masuk
+            consolefy.info(`Incoming call from: ${Baileys.isLidUser(senderJid) ? `${senderId} (LID)` : senderId}`); // Log panggilan masuk
 
             if (call.status !== "offer") continue;
 
             await bot.core.rejectCall(call.id, senderJid);
-            await db.set(`user.${senderId}.banned`, true);
+            const userDb = bot.getDb("users", senderJid);
+            userDb.banned = true;
+            await userDb.save();
 
             await bot.core.sendMessage(config.owner.id + Baileys.S_WHATSAPP_NET, {
                 text: `📢 Akun @${senderId} telah diblokir secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`,

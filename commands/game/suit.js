@@ -148,30 +148,34 @@ module.exports = {
 
                         if (game.choices.size === 2) {
                             const [sChoice, aChoice] = [
-                                game.choices.get(ctx.keyDb.user),
+                                game.choices.get(ctx.getId(ctx.sender.jid)),
                                 game.choices.get(accountId)
                             ];
 
                             const result = (3 + sChoice.index - aChoice.index) % 3;
                             let winnerText, coinText = "Tak seorang pun menang, tak seorang pun mendapat koin";
+                            const userDb = ctx.db.user;
+                            const participantDb = ctx.getDb("users", accountId);
 
                             if (result === 0) {
                                 winnerText = "Seri!";
                             } else if (result === 1) {
-                                winnerText = `@${ctx.keyDb.user} menang!`;
-                                await db.add(`user.${ctx.keyDb.user}.coin`, game.coin);
-                                await db.add(`user.${ctx.keyDb.user}.winGame`, 1);
-                                coinText = `+${game.coin} Koin untuk @${ctx.keyDb.user}`;
+                                winnerText = `@${ctx.getId(ctx.sender.jid)} menang!`;
+                                userDb.coin += game.coin;
+                                userDb.winGame += 1
+                                await userDb.save();
+                                coinText = `+${game.coin} Koin untuk @${ctx.getId(ctx.sender.jid)}`;
                             } else {
                                 winnerText = `@${accountId} menang!`;
-                                await db.add(`user.${accountId}.coin`, game.coin);
-                                await db.add(`user.${accountId}.winGame`, 1);
+                                participantDb.coin += game.coin;
+                                participantDb.winGame += 1
+                                await participantDb.save();
                                 coinText = `+${game.coin} Koin untuk @${accountId}`;
                             }
 
                             await ctx.reply({
                                 text: `${formatter.quote("Hasil suit:")}\n` +
-                                    `${formatter.quote(`@${ctx.keyDb.user}: ${sChoice.name}`)}\n` +
+                                    `${formatter.quote(`@${ctx.getId(ctx.sender.jid)}: ${sChoice.name}`)}\n` +
                                     `${formatter.quote(`@${accountId}: ${aChoice.name}`)}\n` +
                                     `${formatter.quote(winnerText)}\n` +
                                     formatter.quote(coinText),

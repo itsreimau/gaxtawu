@@ -53,13 +53,14 @@ module.exports = {
 
             collector.on("collect", async (m) => {
                 const participantAnswer = m.content.toLowerCase();
-                const participantId = ctx.getId(m.sender);
+                const participantDb = ctx.getDb("users", m.sender);
 
                 if (participantAnswer === game.answer) {
                     session.delete(ctx.id);
                     collector.stop();
-                    await db.add(`user.${participantId}.coin`, game.coin);
-                    await db.add(`user.${participantId}.winGame`, 1);
+                    participantDb.coin += game.coin;
+                    participantDb.winGame += 1
+                    await participantDb.save();
                     await ctx.sendMessage(ctx.id, {
                         text: `${formatter.quote("💯 Benar!")}\n` +
                             formatter.quote(`+${game.coin} Koin`),
