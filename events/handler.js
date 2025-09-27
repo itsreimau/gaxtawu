@@ -290,7 +290,7 @@ module.exports = (bot) => {
 
                 if (!spamData.some(spam => spam.userJid === senderJid)) spamData.push(userSpam);
 
-                groupDb?.spam = spamData;
+                groupDb.spam = spamData;
 
                 if (newCount > 5) {
                     await ctx.reply(formatter.quote("⛔ Jangan spam, ngelag woy!"));
