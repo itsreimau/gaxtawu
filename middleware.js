@@ -12,7 +12,7 @@ async function checkCoin(requiredCoin, userDb, isOwner) {
 }
 
 // Middleware utama bot
-module.exports = () => {
+module.exports = (bot) => {
     bot.use(async (ctx, next) => {
         // Variabel umum
         const isGroup = ctx.isGroup();
