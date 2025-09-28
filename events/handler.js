@@ -57,7 +57,16 @@ async function handleWelcome(ctxBot, m, type, isSimulate = false) {
 
         if (isWelcome && groupDb?.text?.intro) await ctxBot.core.sendMessage(groupJid, {
             text: groupDb.text.intro,
-            mentions: [jid]
+            mentions: [jid],
+            footer: config.msg.footer,
+            interactiveButtons: [{
+                name: "cta_copy",
+                buttonParamsJson: JSON.stringify({
+                    display_text: "Salin Teks",
+                    id: "copy_text",
+                    copy_code: text
+                })
+            }]
         }, {
             quoted: tools.cmd.fakeMetaAiQuotedText("Jangan lupa untuk mengisi intro!")
         });
@@ -152,7 +161,7 @@ module.exports = (bot) => {
             if (m.key.fromMe || Baileys.isJidStatusBroadcast(m.key.remoteJid) || Baileys.isJidNewsletter(m.key.remoteJid)) return;
 
             config.bot.uptime = tools.msg.convertMsToDuration(Date.now() - config.bot.readyAt); // Penangan pada uptime
-            config.bot.dbSize = fs.existsSync("database.json") ? tools.msg.formatSize(fs.statSync("database.json").size / 1024) : "N/A"; // Penangan pada ukuran database
+            config.bot.dbSize = fs.existsSync(ctx.bot.databaseDir) ? tools.msg.formatSize(fs.statSync(ctx.bot.databaseDir).size / 1024) : "N/A"; // Penangan pada ukuran database
 
             // Penanganan database pengguna
             if (!userDb?.username) userDb.username = `@user_${tools.cmd.generateUID(senderId, false)}`;
@@ -175,7 +184,7 @@ module.exports = (bot) => {
             if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;
             if (groupDb?.mutebot === "owner" && !isOwner) return;
             const muteList = groupDb?.mute || [];
-            if (muteList.includes(senderJid)) await ctx.deleteMessage(m.key);
+            if (muteList.some(user => user.jid === senderJid || user.alt === senderJid)) await ctx.deleteMessage(m.key);
 
             // Pengecekan untuk tidak tersedia pada malam hari
             const now = moment().tz(config.system.timeZone);
@@ -191,7 +200,7 @@ module.exports = (bot) => {
                 await userDb.save();
 
                 await ctx.sendMessage(config.owner.id + Baileys.S_WHATSAPP_NET, {
-                    text: `📢 Akun @${senderId} telah diblokir secara otomatis karena alasan ${formatter.inlineCode(analyze.reason)}.`,
+                    text: `📢 Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode(analyze.reason)}.`,
                     mentions: [senderJid]
                 });
             }
@@ -282,9 +291,9 @@ module.exports = (bot) => {
             if (groupDb?.option?.antispam && !isOwner && !isAdmin) {
                 const now = Date.now();
                 const spamData = groupDb?.spam || [];
-
-                const userSpam = spamData.find(spam => spam.userJid === senderJid) || {
-                    userJid: senderJid,
+                const keyJid = Baileys.isLidUser(senderJid) ? "jid" : "alt";
+                const userSpam = spamData.find(spam => spam[keyJid] === senderJid) || {
+                    [keyJid]: senderJid,
                     count: 0,
                     lastMessageTime: 0
                 };
@@ -295,7 +304,7 @@ module.exports = (bot) => {
                 userSpam.count = newCount;
                 userSpam.lastMessageTime = now;
 
-                if (!spamData.some(spam => spam.userJid === senderJid)) spamData.push(userSpam);
+                if (!spamData.some(spam => spam[keyJid] === senderJid)) spamData.push(userSpam);
 
                 groupDb.spam = spamData;
 
@@ -307,7 +316,7 @@ module.exports = (bot) => {
                     } else {
                         await addWarning(ctx, senderJid, groupDb);
                     }
-                    groupDb.spam = spamData.filter(spam => spam.userJid !== senderJid);
+                    groupDb.spam = spamData.filter(spam => spam[keyJid] !== senderJid);
                 }
                 await groupDb.save();
             }
@@ -371,24 +380,18 @@ module.exports = (bot) => {
             await userDb.save();
 
             await bot.core.sendMessage(config.owner.id + Baileys.S_WHATSAPP_NET, {
-                text: `📢 Akun @${senderId} telah diblokir secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`,
+                text: `📢 Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`,
                 mentions: [senderJid]
             });
-
-            const vcard = new VCardBuilder()
-                .setFullName(config.owner.name)
-                .setOrg(config.owner.organization)
-                .setNumber(config.owner.id)
-                .build();
-            await bot.core.sendMessage(senderJid, {
-                contacts: {
-                    displayName: config.owner.name,
-                    contacts: [{
-                        vcard
-                    }]
-                }
-            }, {
-                quoted: tools.cmd.fakeMetaAiQuotedText(`Bot tidak dapat menerima panggilan ${call.isVideo ? "video" : "suara"}! Jika Anda memerlukan bantuan, silakan menghubungi Owner.`)
+            await bot.core.sendMessage(config.owner.id + Baileys.S_WHATSAPP_NET, {
+                text: footer.quote("Anda telah dibanned secara otomatis karena melanggar aturan!"),
+                footer: config.msg.footer,
+                buttons: [{
+                    buttonId: `/owner`,
+                    buttonText: {
+                        displayText: "Hubungi Owner"
+                    }
+                }]
             });
         }
     });

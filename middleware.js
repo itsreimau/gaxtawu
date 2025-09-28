@@ -39,7 +39,7 @@ module.exports = (bot) => {
         if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;
         if (groupDb?.mutebot === "owner" && !isOwner) return;
         const muteList = groupDb?.mute || [];
-        if (muteList.includes(senderJid)) return;
+        if (muteList.some(user => user.jid === senderJid || user.alt === senderJid)) return;
 
         // Log command masuk
         if (isGroup && !ctx.msg.key.fromMe) {
