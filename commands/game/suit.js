@@ -21,7 +21,7 @@ module.exports = {
 
         const senderJid = ctx.sender.jid;
 
-        if (accountJid === ctx.me.decodedId) return await ctx.reply(formatter.quote("Tidak bisa menantang bot!"));
+        if (accountJid === ctx.me.id || accountJid === ctx.me.lid) return await ctx.reply(formatter.quote("Tidak bisa menantang bot!"));
         if (accountJid === senderJid) return await ctx.reply(formatter.quote("Tidak bisa menantang diri sendiri!"));
 
         const existingGame = [...session.values()].find(game => game.players.includes(senderJid) || game.players.includes(accountJid));

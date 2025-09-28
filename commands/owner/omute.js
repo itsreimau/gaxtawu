@@ -25,7 +25,7 @@ module.exports = {
             mentions: [Baileys.OFFICIAL_BIZ_JID]
         });
 
-        if (accountJid === ctx.me.id) return await ctx.reply(formatter.quote(`❎ Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`));
+        if (accountJid === ctx.me.id || accountJid === ctx.me.lid) return await ctx.reply(formatter.quote(`❎ Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`));
         if (await ctx.group().isOwner(accountJid)) return await ctx.reply(formatter.quote("❎ Dia adalah Owner grup!"));
 
         try {

@@ -5,10 +5,10 @@ const moment = require("moment-timezone");
 const fs = require("node:fs");
 
 // Fungsi untuk menangani event pengguna bergabung/keluar grup
-async function handleWelcome(bot, m, type, isSimulate = false) {
+async function handleWelcome(ctxBot, m, type, isSimulate = false) {
     const groupJid = m.id;
-    const groupDb = bot.getDb("groups", groupJid);
-    const botDb = bot.getDb("bot", Baileys.jidNormalizedUser(bot.core.user.lid));
+    const groupDb = ctxBot.getDb("groups", groupJid);
+    const botDb = ctxBot.getDb("bot", Baileys.jidNormalizedUser(ctxBot.core.user.lid));
 
     if (!isSimulate && groupDb?.mutebot) return;
     if (!isSimulate && !groupDb?.option?.welcome) return;
@@ -20,9 +20,9 @@ async function handleWelcome(bot, m, type, isSimulate = false) {
 
     for (const jid of m.participants) {
         const isWelcome = type === Events.UserJoin;
-        const userTag = `@${bot.getId(jid)}`;
+        const userTag = `@${ctxBot.getId(jid)}`;
         const customText = isWelcome ? groupDb?.text?.welcome : groupDb?.text?.goodbye;
-        const metadata = await bot.core.groupMetadata(groupJid);
+        const metadata = await ctxBot.core.groupMetadata(groupJid);
         const text = customText ?
             customText
             .replace(/%tag%/g, userTag)
@@ -31,9 +31,9 @@ async function handleWelcome(bot, m, type, isSimulate = false) {
             (isWelcome ?
                 formatter.quote(`👋 Selamat datang ${userTag} di grup ${metadata.subject}!`) :
                 formatter.quote(`👋 Selamat tinggal, ${userTag}!`));
-        const profilePictureUrl = await bot.core.profilePictureUrl(jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
+        const profilePictureUrl = await ctxBot.core.profilePictureUrl(jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
 
-        await bot.core.sendMessage(groupJid, {
+        await ctxBot.core.sendMessage(groupJid, {
             text,
             mentions: [jid],
             contextInfo: {
@@ -55,7 +55,7 @@ async function handleWelcome(bot, m, type, isSimulate = false) {
             quoted: tools.cmd.fakeMetaAiQuotedText(config.msg.footer)
         });
 
-        if (isWelcome && groupDb?.text?.intro) await bot.core.sendMessage(groupJid, {
+        if (isWelcome && groupDb?.text?.intro) await ctxBot.core.sendMessage(groupJid, {
             text: groupDb.text.intro,
             mentions: [jid]
         }, {
