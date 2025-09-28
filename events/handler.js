@@ -5,7 +5,7 @@ const moment = require("moment-timezone");
 const fs = require("node:fs");
 
 // Fungsi untuk menangani event pengguna bergabung/keluar grup
-async function handleWelcome(m, type, isSimulate = false) {
+async function handleWelcome(bot, m, type, isSimulate = false) {
     const groupJid = m.id;
     const groupDb = bot.getDb("groups", groupJid);
     const botDb = bot.getDb("bot", Baileys.jidNormalizedUser(bot.client.user.lid));
