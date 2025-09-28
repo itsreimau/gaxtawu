@@ -66,12 +66,16 @@ async function handleWelcome(m, type, isSimulate = false) {
 
 // Fungsi untuk menambahkan warning
 async function addWarning(ctx, senderJid, groupDb, groupId) {
-    const senderId = ctx.getId(senderJid);
-
     const maxWarnings = groupDb?.maxwarnings || 3;
     const warnings = groupDb?.warnings || [];
 
-    const userWarning = warnings.find(warning => warning.userJid === senderId);
+    const userIdentifier = Baileys.isLidUser(senderJid) ? {
+        jid: senderJid
+    } : {
+        alt: senderJid
+    };
+    const userWarning = warnings.find(warning => (warning.jid && warning.jid === senderJid) || (warning.alt && warning.alt === senderJid));
+
     let currentWarnings = userWarning ? userWarning.count : 0;
     currentWarnings += 1;
 
@@ -79,22 +83,25 @@ async function addWarning(ctx, senderJid, groupDb, groupId) {
         userWarning.count = currentWarnings;
     } else {
         warnings.push({
-            userJid: senderId,
+            ...userIdentifier,
             count: currentWarnings
         });
     }
 
     groupDb.warnings = warnings;
+
     await ctx.reply({
-        text: formatter.quote(`⚠️ Warning ${currentWarnings}/${maxWarnings} untuk @${senderId}!`),
+        text: formatter.quote(`⚠️ Warning ${currentWarnings}/${maxWarnings} untuk @${ctx.getId(senderJid)}!`),
         mentions: [senderJid]
     });
 
     if (currentWarnings >= maxWarnings) {
         await ctx.reply(formatter.quote(`⛔ Anda telah menerima ${maxWarnings} warning dan akan dikeluarkan dari grup!`));
         if (!config.system.restrict) await ctx.group().kick(senderJid);
-        groupDb.warnings = warnings.filter(warning => warning.userJid !== senderId);
+        groupDb.warnings = warnings.filter(warning => !((warning.jid && warning.jid === senderJid) || (warning.alt && warning.alt === senderJid)));
     }
+
+    await groupDb.save();
 }
 
 // Events utama bot

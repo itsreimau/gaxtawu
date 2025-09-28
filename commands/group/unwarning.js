@@ -27,19 +27,18 @@ module.exports = {
             const groupDb = ctx.db.group;
             const warnings = groupDb?.warnings || [];
 
-            const userWarning = warnings.find(warning => warning.userJid === accountJid);
+            const userWarning = warnings.find(warning => (warning.jid && warning.jid === accountJid) || (warning.alt && warning.alt === accountJid));
             let currentWarnings = userWarning ? userWarning.count : 0;
 
             if (currentWarnings <= 0) return await ctx.reply(formatter.quote("✅ Pengguna itu tidak memiliki warning."));
 
             const newWarning = currentWarnings - 1;
-
             if (userWarning && newWarning <= 0) {
-                groupDb.warning = warnings.filter(warning => warning.userJid !== accountJid)
+                groupDb.warnings = warnings.filter(warning => !((warning.jid && warning.jid === accountJid) || (warning.alt && warning.alt === accountJid)));
             } else {
                 userWarning.count = newWarning;
-                groupDb.warning = warnings;
             }
+
             await groupDb.save();
 
             await ctx.reply(formatter.quote(`✅ Berhasil mengurangi warning pengguna itu menjadi ${newWarning}/${groupDb?.maxwarnings || 3}.`));

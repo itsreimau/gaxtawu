@@ -9,7 +9,7 @@ module.exports = {
         if (!tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["audio"])) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["reply"], ["audio"])));
 
         try {
-            const result = await ctx.quoted?.media.toBuffer();
+            const result = await ctx.quoted.media.toBuffer();
 
             await ctx.reply({
                 audio: result,

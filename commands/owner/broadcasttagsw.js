@@ -51,7 +51,7 @@ module.exports = {
                 await delay(500);
                 try {
                     const mediaType = checkMedia || checkQuotedMedia;
-                    const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
+                    const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
 
                     await ctx.core.sendStatusMentions(groupId, {
                         [mediaType]: buffer,

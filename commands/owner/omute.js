@@ -17,7 +17,6 @@ module.exports = {
         }
 
         const accountJid = ctx.quoted?.sender || ctx.getMentioned()[0] || null;
-        const accountId = ctx.getId(accountJid);
 
         if (!accountJid) return await ctx.reply({
             text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
@@ -26,14 +25,23 @@ module.exports = {
             mentions: [Baileys.OFFICIAL_BIZ_JID]
         });
 
-        if (accountId === ctx.me.id) return await ctx.reply(formatter.quote(`❎ Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`));
+        if (accountJid === ctx.me.id) return await ctx.reply(formatter.quote(`❎ Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`));
         if (await ctx.group().isOwner(accountJid)) return await ctx.reply(formatter.quote("❎ Dia adalah Owner grup!"));
 
         try {
             const groupDb = ctx.db.group;
             const muteList = groupDb?.mute || [];
-            if (!muteList.includes(accountId)) muteList.push(accountId);
-            groupDb?.mute = muteList;
+
+            const isAlreadyMuted = muteList.some(user => (user.jid && user.jid === accountJid) || (user.alt && user.alt === accountJid));
+            if (isAlreadyMuted) return await ctx.reply(formatter.quote("❎ Pengguna sudah di-mute sebelumnya!"));
+
+            const muteData = Baileys.isLidUser(accountJid) ? {
+                jid: accountJid
+            } : {
+                alt: accountJid
+            };
+            muteList.push(muteData);
+            groupDb.mute = muteList;
             await groupDb.save();
 
             await ctx.reply(formatter.quote("✅ Berhasil me-mute pengguna itu dari grup ini!"));

@@ -29,7 +29,7 @@ module.exports = {
 
         try {
             const game = {
-                players: [senderLid, accountLid],
+                players: [senderJid, accountJid],
                 coin: 10,
                 timeout: 120000,
                 choices: new Map(),

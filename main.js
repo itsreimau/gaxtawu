@@ -33,12 +33,9 @@ const bot = new Client({
     }
 });
 
-// Tetapkan variabel bot secara global
-global.bot = bot;
-
 // Inisialisasi event dan middleware
-events();
-middleware();
+events(bot);
+middleware(bot);
 
 // Muat dan jalankan command handler
 const cmd = new CommandHandler(bot, path.resolve(__dirname, "commands"));

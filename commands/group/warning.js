@@ -21,13 +21,19 @@ module.exports = {
         });
 
         if (accountJid === ctx.me.id || accountJid === ctx.me.lid) return await ctx.reply(formatter.quote(`❎ Tidak bisa memberikan warning ke bot!`));
-        if (await ctx.group().isOwner(accountJid)) return await ctx.reply(formatter.quote("❎ Tidak bisa memberikan warning ke admin grup!"));
+        if (await ctx.group().isOwner(accountJid)) return await ctx.reply(formatter.quote("❎ Tidak bisa memberikan warning ke Owner grup!"));
 
         try {
             const groupDb = ctx.db.group;
             const warnings = groupDb?.warnings || [];
 
-            const userWarning = warnings.find(warning => warning.userJid === accountJid);
+            const userIdentifier = Baileys.isLidUser(accountJid) ? {
+                jid: accountJid
+            } : {
+                alt: accountJid
+            };
+            const userWarning = warnings.find(warning => (warning.jid && warning.jid === accountJid) || (warning.alt && warning.alt === accountJid));
+
             let currentWarnings = userWarning ? userWarning.count : 0;
             const newWarning = currentWarnings + 1;
 
@@ -35,13 +41,14 @@ module.exports = {
                 userWarning.count = newWarning;
             } else {
                 warnings.push({
-                    userJid: accountJid,
+                    ...userIdentifier,
                     count: newWarning
                 });
             }
 
             groupDb.warnings = warnings;
             await groupDb.save();
+
             await ctx.reply(formatter.quote(`✅ Berhasil menambahkan warning pengguna itu menjadi ${newWarning}/${groupDb?.maxwarnings || 3}.`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

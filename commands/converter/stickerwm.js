@@ -18,7 +18,7 @@ module.exports = {
         if (!tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["sticker"])) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], ["sticker"])));
 
         try {
-            const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
+            const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const [packname, author] = input.split("|");
             const sticker = new Sticker(buffer, {
                 pack: packname || "",

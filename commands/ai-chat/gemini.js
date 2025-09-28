@@ -8,7 +8,7 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || ctx?.quoted?.content || null;
+        const input = ctx.args.join(" ") || ctx.quoted?.content || null;
 
         if (!input) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
@@ -18,7 +18,7 @@ module.exports = {
 
         const [checkMedia, checkQuotedMedia] = [
             tools.cmd.checkMedia(ctx.msg.contentType, "image"),
-            tools.cmd.checkQuotedMedia(ctx?.quoted?.contentType, "image")
+            tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, "image")
         ];
 
         try {

@@ -23,7 +23,7 @@ module.exports = {
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], "image")));
 
         try {
-            const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted?.media.toBuffer();
+            const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = await Baileys.uploadFile(buffer);
             const result = tools.api.createUrl("zell", "/ai/editimg", {
                 imageUrl: uploadUrl,
