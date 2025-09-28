@@ -29,7 +29,7 @@ const bot = new Client({
     autoAiLabel: system.autoAiLabel,
     databaseDir: path.resolve(__dirname, "database"),
     citation: {
-        owner: [config.owner.id, ...config.owner.co]
+        owner: [config.owner.id, ...config.owner.co.map(co => co[1])]
     }
 });
 
