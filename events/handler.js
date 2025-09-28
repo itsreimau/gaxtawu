@@ -8,7 +8,7 @@ const fs = require("node:fs");
 async function handleWelcome(bot, m, type, isSimulate = false) {
     const groupJid = m.id;
     const groupDb = bot.getDb("groups", groupJid);
-    const botDb = bot.getDb("bot", Baileys.jidNormalizedUser(bot.client.user.lid));
+    const botDb = bot.getDb("bot", Baileys.jidNormalizedUser(bot.core.user.lid));
 
     if (!isSimulate && groupDb?.mutebot) return;
     if (!isSimulate && !groupDb?.option?.welcome) return;
