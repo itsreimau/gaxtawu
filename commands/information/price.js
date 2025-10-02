@@ -4,7 +4,7 @@ module.exports = {
     category: "information",
     code: async (ctx) => {
         try {
-            const customText = (ctx.db.bot).text.price || null;
+            const customText = (ctx.db.bot).text?.price || null;
             const text = customText ?
                 customText
                 .replace(/%tag%/g, `@${ctx.getId(ctx.sender.jid)}`)

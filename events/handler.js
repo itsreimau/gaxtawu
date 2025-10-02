@@ -160,7 +160,7 @@ module.exports = (bot) => {
         if (isGroup || isPrivate) {
             if (m.key.fromMe || Baileys.isJidStatusBroadcast(m.key.remoteJid) || Baileys.isJidNewsletter(m.key.remoteJid)) return;
 
-            config.bot.uptime = tools.msg.convertMsToDuration(Date.now() - config.bot.readyAt); // Penangan pada uptime
+            config.bot.uptime = tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt); // Penangan pada uptime
             config.bot.dbSize = fs.existsSync(ctx.bot.databaseDir) ? tools.msg.formatSize(fs.statSync(ctx.bot.databaseDir).size / 1024) : "N/A"; // Penangan pada ukuran database
 
             // Penanganan database pengguna

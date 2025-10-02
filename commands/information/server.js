@@ -5,7 +5,6 @@ module.exports = {
     category: "information",
     code: async (ctx) => {
         try {
-            const startTime = config.bot.readyAt;
             const memory = process.memoryUsage();
             const totalMem = os.totalmem();
             const freeMem = os.freemem();

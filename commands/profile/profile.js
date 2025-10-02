@@ -5,7 +5,7 @@ module.exports = {
     permissions: {},
     code: async (ctx) => {
         try {
-            const users = ctx.db.users.getAll();
+            const users = await ctx.db.users.getAll();
 
             const leaderboardData = users.map(user => ({
                 jid: user.jid,

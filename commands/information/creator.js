@@ -22,7 +22,7 @@ module.exports = {
                         .setNumber(coNumber)
                         .build()
                 };
-            });
+            }).filter(Boolean);
 
             await ctx.reply({
                 contacts: {

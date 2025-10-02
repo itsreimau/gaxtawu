@@ -37,7 +37,7 @@ module.exports = {
         try {
             const rewardCoin = (userDb?.coin || 0) + claim.reward;
             userDb.coin = rewardCoin;
-            userDb.lastClaim[input] = currentTime;
+            (userDb.lastClaim ||= {})[input] = currentTime;
             await userDb.save();
 
             await ctx.reply(formatter.quote(`✅ Anda berhasil mengklaim hadiah ${input} sebesar ${claim.reward} koin! Koin Anda saat ini adalah ${rewardCoin}.`));

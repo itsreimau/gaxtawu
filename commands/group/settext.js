@@ -45,7 +45,7 @@ module.exports = {
                 return await ctx.reply(formatter.quote(`🗑️ Pesan untuk teks ${formatter.inlineCode(key)} berhasil dihapus!`));
             }
 
-            groupDb.text[setKey] = text;
+            (groupDb.text ||= {})[setKey] = text;
             await groupDb.save();
             await ctx.reply(formatter.quote(`✅ Pesan untuk teks ${formatter.inlineCode(key)} berhasil disimpan!`));
         } catch (error) {

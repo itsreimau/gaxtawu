@@ -7,7 +7,7 @@ module.exports = {
     },
     code: async (ctx) => {
         try {
-            const groups = ctx.db.groups.getMany(group => group.sewa === true);
+            const groups = await ctx.db.groups.getMany(group => group.sewa === true);
             const sewaGroups = [];
 
             for (const group of groups) {

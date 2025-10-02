@@ -24,7 +24,7 @@ module.exports = {
             const userDb = ctx.getDb("users", userJid);
 
             delete userDb.premium;
-            delete userDb.premiumExpiration;
+            delete userDb?.premiumExpiration;
             await userDb.save();
 
             const flag = tools.cmd.parseFlag(ctx.args.join(" "), {

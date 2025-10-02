@@ -47,7 +47,7 @@ module.exports = {
 
                 await ctx.reply(formatter.quote(`✅ Berhasil menambahkan Premium selama ${daysAmount} hari kepada pengguna itu!`));
             } else {
-                delete userDb.premiumExpiration;
+                delete userDb?.premiumExpiration;
                 await userDb.save();
 
                 if (!silent) await ctx.sendMessage(userJid, {

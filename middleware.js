@@ -79,8 +79,8 @@ module.exports = (bot) => {
         }
 
         // Simulasi mengetik
-        const simulateTyping = () => {
-            if (config.system.autoTypingOnCmd) ctx.simulateTyping();
+        const simulateTyping = async () => {
+            if (config.system.autoTypingOnCmd) await ctx.simulateTyping();
         };
 
         // Pengecekan kondisi restrictions
@@ -172,8 +172,8 @@ module.exports = (bot) => {
                 const lastSentMsg = userDb?.lastSentMsg?.[key] || 0;
                 const oneDay = 24 * 60 * 60 * 1000;
                 if (!lastSentMsg || (now - lastSentMsg) > oneDay) {
-                    simulateTyping();
-                    userDb.lastSentMsg[key] = now;
+                    await simulateTyping();
+                    (userDb.lastSentMsg ||= {})[key] = now;
                     await userDb.save();
                     return await ctx.reply({
                         text: msg,
@@ -264,8 +264,8 @@ module.exports = (bot) => {
                 const lastSentMsg = userDb?.lastSentMsg?.[key] || 0;
                 const oneDay = 24 * 60 * 60 * 1000;
                 if (!lastSentMsg || (now - lastSentMsg) > oneDay) {
-                    simulateTyping();
-                    userDb.lastSentMsg[key] = now;
+                    await simulateTyping();
+                    (userDb.lastSentMsg ||= {})[key] = now;
                     await userDb.save();
                     return await ctx.reply({
                         text: msg,
@@ -278,7 +278,7 @@ module.exports = (bot) => {
             }
         }
 
-        simulateTyping();
+        await simulateTyping();
         await next(); // Lanjut ke proses berikutnya
     });
 };

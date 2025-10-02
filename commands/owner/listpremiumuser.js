@@ -7,7 +7,7 @@ module.exports = {
     },
     code: async (ctx) => {
         try {
-            const users = ctx.db.users.getMany(user => user.premium === true);
+            const users = await ctx.db.users.getMany(user => user.premium === true);
             const premiumUsers = [];
 
             for (const user of users) {

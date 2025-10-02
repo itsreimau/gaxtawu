@@ -4,7 +4,7 @@ module.exports = {
     category: "profile",
     code: async (ctx) => {
         try {
-            const users = ctx.db.users.getAll();
+            const users = await ctx.db.users.getAll();
             const senderJid = ctx.sender.jid;
 
             const leaderboardData = users.map(user => ({
