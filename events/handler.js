@@ -8,7 +8,7 @@ const fs = require("node:fs");
 async function handleWelcome(ctxBot, m, type, isSimulate = false) {
     const groupJid = m.id;
     const groupDb = ctxBot.getDb("groups", groupJid);
-    const botDb = ctxBot.getDb("bot", Baileys.jidNormalizedUser(ctxBot.core.user.lid));
+    const botDb = ctxBot.getDb("bot", Baileys.jidNormalizedUser(ctxBot.core.user?.lid));
 
     if (!isSimulate && groupDb?.mutebot) return;
     if (!isSimulate && !groupDb?.option?.welcome) return;
@@ -383,7 +383,7 @@ module.exports = (bot) => {
                 text: `📢 Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`,
                 mentions: [senderJid]
             });
-            await bot.core.sendMessage(config.owner.id + Baileys.S_WHATSAPP_NET, {
+            await bot.core.sendMessage(senderJid, {
                 text: footer.quote("Anda telah dibanned secara otomatis karena melanggar aturan!"),
                 footer: config.msg.footer,
                 buttons: [{

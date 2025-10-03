@@ -29,7 +29,7 @@ module.exports = {
 
                 if (content === "y") {
                     const usersDb = ctx.db.users;
-                    usersDb.reset(u => u.jid === ctx.sender.jid || u.alt || ctx.sender.jid);
+                    usersDb.reset(u => u.jid === ctx.sender.jid || u.alt === ctx.sender.jid);
                     await ctx.reply(formatter.quote("✅ Database Anda telah berhasil direset!"));
                     collector.stop();
                 } else if (content === "n") {
