@@ -22,7 +22,8 @@ module.exports = {
                     url: result
                 },
                 mimetype: tools.mime.lookup("jpeg"),
-                caption: formatter.quote("Untukmu, tuan!"),
+                caption: formatter.quote(`Akun: @${userJid}`),
+                mentions: [userJid],
                 footer: config.msg.footer
             });
         } catch (error) {

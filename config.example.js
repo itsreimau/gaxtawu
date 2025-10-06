@@ -44,10 +44,12 @@ global.config = {
     owner: {
         name: "Budi", // Nama owner bot
         organization: "PT. Pencari Cinta Sejati", // Nama organisasi owner bot
-        id: "123456789", // Nomor telepon owner bot
-        co: [
-            ["Budi Jr.", "987654321"]
-        ] // Nomor co-owner bot
+        id: "62123456789", // Nomor telepon owner bot
+        co: [{
+            name: "Budi Jr.",
+            organization: "PT. Pencari Cinta Sejati II",
+            id "62987654321"
+        }] // Nomor co-owner bot
     },
 
     // Stiker bot

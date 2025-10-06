@@ -24,11 +24,11 @@ module.exports = {
 
         try {
             const systemPrompt = `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.` // Dapat diubah sesuai keinginan
-            const uid = (ctx.db.user).uid;
+            const uid = ctx.db.user.uid;
 
             if (checkMedia || checkQuotedMedia) {
                 const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-                const uploadUrl = await Baileys.uploadFile(buffer);
+                const uploadUrl = (await Baileys.uploadFile(buffer)).url;
                 const apiUrl = tools.api.createUrl("nekolabs", "/ai/gpt/5", {
                     text: input,
                     systemPrompt,

@@ -27,7 +27,7 @@ module.exports = {
             let [top, bottom] = input.split("|").map(_input => _input);
             [top, bottom] = bottom ? [top || "", bottom] : ["", top || ""];
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const uploadUrl = await Baileys.uploadFile(buffer);
+            const uploadUrl = (await Baileys.uploadFile(buffer)).url;
             const result = tools.api.createUrl("nekolabs", `/canvas/meme/get`, {
                 imageUrl: uploadUrl,
                 textT: top,

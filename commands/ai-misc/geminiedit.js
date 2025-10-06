@@ -25,7 +25,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const uploadUrl = await Baileys.uploadFile(buffer);
+            const uploadUrl = (await Baileys.uploadFile(buffer)).url;
             const apiUrl = tools.api.createUrl("nekolabs", "/ai/gemini/nano-banana", {
                 prompt: input,
                 imageUrl: uploadUrl

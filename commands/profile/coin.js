@@ -6,7 +6,7 @@ module.exports = {
         if (ctx.citation.isOwner) return await ctx.reply(formatter.quote("🤑 Anda memiliki koin tak terbatas."));
 
         try {
-            const userCoin = (ctx.db.user).coin || 0;
+            const userCoin = ctx.db.user.coin || 0;
 
             await ctx.reply(formatter.quote(`💰 Anda memiliki ${userCoin} koin tersisa.`));
         } catch (error) {

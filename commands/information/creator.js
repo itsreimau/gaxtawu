@@ -11,18 +11,17 @@ module.exports = {
                 .setOrg(config.owner.organization)
                 .setNumber(config.owner.id)
                 .build();
+
             const coOwners = config.owner.co.map(co => {
-                const coName = co[0];
-                const coNumber = co[1];
                 return {
-                    displayName: coName,
+                    displayName: co.name,
                     vcard: new VCardBuilder()
-                        .setFullName(coName)
-                        .setOrg(config.owner.organization)
-                        .setNumber(coNumber)
+                        .setFullName(co.name)
+                        .setOrg(co.organization || config.owner.organization)
+                        .setNumber(co.id)
                         .build()
                 };
-            }).filter(Boolean);
+            });
 
             await ctx.reply({
                 contacts: {

@@ -26,7 +26,7 @@ module.exports = {
 
         if (input.toLowerCase() === "status") {
             const groupId = ctx.getId(ctx.id);
-            const groupOption = ctx.db.group?.option || {};
+            const groupOption = ctx.db.group.option || {};
 
             return await ctx.reply({
                 text: `${formatter.quote(`Antiaudio: ${groupOption.antiaudio ? "Aktif" : "Nonaktif"}`)}\n` +
@@ -71,7 +71,7 @@ module.exports = {
                     return await ctx.reply(formatter.quote(`❎ Opsi ${formatter.inlineCode(input)} tidak valid!`));
             }
 
-            const currentStatus = groupDb?.option[setKey];
+            const currentStatus = groupDb?.option?.[setKey] || false;
             const newStatus = !currentStatus;
 
             (groupDb.option ||= {})[setKey] = newStatus;

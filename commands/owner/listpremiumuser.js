@@ -24,7 +24,7 @@ module.exports = {
 
             for (const user of premiumUsers) {
                 const userJid = user.jid;
-                const userId = ctx.getID(user.jid);
+                const userId = ctx.getId(user.jid);
                 userMentions.push(userJid);
 
                 if (user.expiration) {
