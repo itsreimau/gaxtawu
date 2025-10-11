@@ -11,8 +11,7 @@ module.exports = {
                 .setOrg(config.owner.organization)
                 .setNumber(config.owner.id)
                 .build();
-
-            const coOwners = config.owner.co.map(co => {
+            const coOwners = config.owner.co && Array.isArray(config.owner.co) && config.owner.co.length > 0 ? config.owner.co.map(co => {
                 return {
                     displayName: co.name,
                     vcard: new VCardBuilder()
@@ -21,11 +20,11 @@ module.exports = {
                         .setNumber(co.id)
                         .build()
                 };
-            });
+            }) : [];
 
             await ctx.reply({
                 contacts: {
-                    displayName: "Owner Bot",
+                    displayName: coOwners.length > 0 ? "Owner Bot" : config.owner.name,
                     contacts: [{
                         displayName: config.owner.name,
                         vcard: owner

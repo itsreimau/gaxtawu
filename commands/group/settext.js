@@ -40,13 +40,13 @@ module.exports = {
             }
 
             if (text.toLowerCase() === "delete") {
-                delete groupDb?.text[setKey];
-                await groupDb.save();
+                delete groupDb?.text?.[setKey];
+                groupDb.save();
                 return await ctx.reply(formatter.quote(`🗑️ Pesan untuk teks ${formatter.inlineCode(key)} berhasil dihapus!`));
             }
 
             (groupDb.text ||= {})[setKey] = text;
-            await groupDb.save();
+            groupDb.save();
             await ctx.reply(formatter.quote(`✅ Pesan untuk teks ${formatter.inlineCode(key)} berhasil disimpan!`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

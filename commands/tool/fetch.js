@@ -50,16 +50,18 @@ module.exports = {
                     caption: formatter.quote("Untukmu, tuan!")
                 });
             } else if (/webp/.test(contentType)) {
-                const sticker = new Sticker(response?.data, {
-                    pack: config.sticker.packname,
-                    author: config.sticker.author,
-                    type: StickerTypes.FULL,
-                    categories: ["🌕"],
-                    id: ctx.id,
-                    quality: 50
-                });
+                const sticker = await new Sticker(response?.data)
+                    .setPack(config.sticker.packname)
+                    .setAuthor(config.sticker.author)
+                    .setType(StickerTypes.FULL)
+                    .setCategories(["🌕"])
+                    .setId(ctx.msg.key.id)
+                    .setQuality(50)
+                    .build()
 
-                await ctx.reply(await sticker.toMessage());
+                await ctx.reply({
+                    sticker
+                });
             } else if (!/utf-8|json|html|plain/.test(contentType)) {
                 const fileName = /filename/i.test(response?.headers?.["content-disposition"]) ? response?.headers?.["content-disposition"]?.match(/filename=(.*)/)?.[1]?.replace(/["";]/g, "") : "";
 

@@ -21,7 +21,7 @@ module.exports = {
 
         try {
             const isQuoted = ctx.args.length === 0 && ctx.quoted;
-            const profilePictureUrl = await ctx.core.profilePictureUrl(isQuoted ? ctx.quoted?.senderJid : ctx.sender.jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
+            const profilePictureUrl = await ctx.core.profilePictureUrl(isQuoted ? ctx.quoted?.sender : ctx.sender.jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
             const payload = {
                 backgroundColor: "#111b21",
                 scale: 2,
@@ -41,16 +41,18 @@ module.exports = {
             const result = (await axios.post(apiurl, payload, {
                 responseType: "arraybuffer"
             })).data;
-            const sticker = new Sticker(result, {
-                pack: config.sticker.packname,
-                author: config.sticker.author,
-                type: StickerTypes.FULL,
-                categories: ["🌕"],
-                id: ctx.id,
-                quality: 50
-            });
+            const sticker = await new Sticker(result)
+                .setPack(config.sticker.packname)
+                .setAuthor(config.sticker.author)
+                .setType(StickerTypes.FULL)
+                .setCategories(["🌕"])
+                .setId(ctx.msg.key.id)
+                .setQuality(50)
+                .build()
 
-            await ctx.reply(await sticker.toMessage());
+            await ctx.reply({
+                sticker
+            });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

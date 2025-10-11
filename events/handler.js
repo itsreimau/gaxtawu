@@ -2,13 +2,12 @@
 const { Baileys, Events, VCardBuilder } = require("@itsreimau/gktw");
 const axios = require("axios");
 const moment = require("moment-timezone");
-const fs = require("node:fs");
 
 // Fungsi untuk menangani event pengguna bergabung/keluar grup
 async function handleWelcome(ctxBot, m, type, isSimulate = false) {
     const groupJid = m.id;
     const groupDb = ctxBot.getDb("groups", groupJid);
-    const botDb = ctxBot.getDb("bot", Baileys.jidNormalizedUser(ctxBot.core.user?.lid));
+    const botDb = ctxBot.getDb("bot", Baileys.jidNormalizedUser(ctxBot.core.user.lid));
 
     if (!isSimulate && groupDb?.mutebot) return;
     if (!isSimulate && !groupDb?.option?.welcome) return;
@@ -77,13 +76,9 @@ async function handleWelcome(ctxBot, m, type, isSimulate = false) {
 async function addWarning(ctx, senderJid, groupDb, groupId) {
     const maxWarnings = groupDb?.maxwarnings || 3;
     const warnings = groupDb?.warnings || [];
+    const targetJid = Baileys.isJidUser(accountJid) ? (await ctx.core.getLidUser(accountJid))?.[0].lid || accountJid : accountJid;
 
-    const userIdentifier = Baileys.isLidUser(senderJid) ? {
-        jid: senderJid
-    } : {
-        alt: senderJid
-    };
-    const userWarning = warnings.find(warning => (warning.jid && warning.jid === senderJid) || (warning.alt && warning.alt === senderJid));
+    const userWarning = warnings.find(warning => warning.jid === targetJid);
 
     let currentWarnings = userWarning ? userWarning.count : 0;
     currentWarnings += 1;
@@ -92,7 +87,7 @@ async function addWarning(ctx, senderJid, groupDb, groupId) {
         userWarning.count = currentWarnings;
     } else {
         warnings.push({
-            ...userIdentifier,
+            jid: targetJid,
             count: currentWarnings
         });
     }
@@ -100,17 +95,17 @@ async function addWarning(ctx, senderJid, groupDb, groupId) {
     groupDb.warnings = warnings;
 
     await ctx.reply({
-        text: formatter.quote(`⚠️ Warning ${currentWarnings}/${maxWarnings} untuk @${ctx.getId(senderJid)}!`),
-        mentions: [senderJid]
+        text: formatter.quote(`⚠️ Warning ${currentWarnings}/${maxWarnings} untuk @${ctx.getId(targetJid)}!`),
+        mentions: [targetJid]
     });
 
     if (currentWarnings >= maxWarnings) {
         await ctx.reply(formatter.quote(`⛔ Anda telah menerima ${maxWarnings} warning dan akan dikeluarkan dari grup!`));
-        if (!config.system.restrict) await ctx.group().kick(senderJid);
-        groupDb.warnings = warnings.filter(warning => !((warning.jid && warning.jid === senderJid) || (warning.alt && warning.alt === senderJid)));
+        if (!config.system.restrict) await ctx.group().kick(targetJid);
+        groupDb.warnings = warnings.filter(warning => warning.jid !== targetJid);
     }
 
-    await groupDb.save();
+    groupDb.save();
 }
 
 // Events utama bot
@@ -131,7 +126,7 @@ module.exports = (bot) => {
                 edit: botRestart.key
             });
             delete botDb.restart;
-            await botDb.save();
+            botDb.save();
         }
 
         // Tetapkan config pada bot
@@ -160,9 +155,6 @@ module.exports = (bot) => {
         if (isGroup || isPrivate) {
             if (m.key.fromMe || Baileys.isJidStatusBroadcast(m.key.remoteJid) || Baileys.isJidNewsletter(m.key.remoteJid)) return;
 
-            config.bot.uptime = tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt); // Penangan pada uptime
-            config.bot.dbSize = fs.existsSync(ctx.bot.databaseDir) ? tools.msg.formatSize(fs.statSync(ctx.bot.databaseDir).size / 1024) : "N/A"; // Penangan pada ukuran database
-
             // Penanganan database pengguna
             if (!userDb?.username) userDb.username = `@user_${tools.cmd.generateUID(senderId, false)}`;
             if (!userDb?.uid || userDb?.uid !== tools.cmd.generateUID(senderId)) userDb.uid = tools.cmd.generateUID(senderId);
@@ -172,7 +164,7 @@ module.exports = (bot) => {
             }
             if (isOwner || userDb?.premium) userDb.coin = 0;
             if (!userDb?.coin || !Number.isFinite(userDb.coin)) userDb.coin = 500;
-            await userDb.save();
+            userDb.save();
 
             // Pengecekan mode bot (premium, group, private, self)
             if (botDb?.mode === "premium" && !isOwner && !userDb?.premium) return;
@@ -184,7 +176,7 @@ module.exports = (bot) => {
             if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;
             if (groupDb?.mutebot === "owner" && !isOwner) return;
             const muteList = groupDb?.mute || [];
-            if (muteList.some(user => user.jid === senderJid || user.alt === senderJid)) await ctx.deleteMessage(m.key);
+            if (muteList.includes(Baileys.isJidUser(senderJid) ? (await ctx.core.getLidUser(senderJid))?.[0].lid || senderJid : senderJid)) await ctx.deleteMessage(m.key);
 
             // Pengecekan untuk tidak tersedia pada malam hari
             const now = moment().tz(config.system.timeZone);
@@ -197,7 +189,7 @@ module.exports = (bot) => {
                 await ctx.deleteMessage(m.key);
                 await ctx.block(senderJid);
                 userDb.banned = true;
-                await userDb.save();
+                userDb.save();
 
                 await ctx.sendMessage(config.owner.id + Baileys.S_WHATSAPP_NET, {
                     text: `📢 Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode(analyze.reason)}.`,
@@ -225,7 +217,7 @@ module.exports = (bot) => {
                     const timeago = tools.msg.convertMsToDuration(timeElapsed);
                     await ctx.reply(formatter.quote(`📴 Anda telah keluar dari AFK ${userAfk.reason ? `dengan alasan ${formatter.inlineCode(userAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`));
                     delete userDb.afk;
-                    await userDb.save();
+                    userDb.save();
                 }
             }
         }
@@ -243,7 +235,7 @@ module.exports = (bot) => {
             if (groupDb?.sewa && Date.now() > userDb?.sewaExpiration) {
                 delete groupDb.sewa;
                 delete groupDb.sewaExpiration;
-                await groupDb.save();
+                groupDb.save();
             }
 
             // Penanganan AFK (Pengguna yang disebutkan atau di-balas/quote)
@@ -291,9 +283,9 @@ module.exports = (bot) => {
             if (groupDb?.option?.antispam && !isOwner && !isAdmin) {
                 const now = Date.now();
                 const spamData = groupDb?.spam || [];
-                const keyJid = Baileys.isLidUser(senderJid) ? "jid" : "alt";
-                const userSpam = spamData.find(spam => spam[keyJid] === senderJid) || {
-                    [keyJid]: senderJid,
+                const senderLid = Baileys.isJidUser(senderJid) ? (await ctx.core.getLidUser(senderJid))?.[0].lid || senderJid : senderJid;
+                const userSpam = spamData.find(spam => spam.jid === senderLid) || {
+                    jid: senderLid,
                     count: 0,
                     lastMessageTime: 0
                 };
@@ -304,7 +296,7 @@ module.exports = (bot) => {
                 userSpam.count = newCount;
                 userSpam.lastMessageTime = now;
 
-                if (!spamData.some(spam => spam[keyJid] === senderJid)) spamData.push(userSpam);
+                if (!spamData.some(spam => spam.jid === senderLid)) spamData.push(userSpam);
 
                 groupDb.spam = spamData;
 
@@ -316,9 +308,10 @@ module.exports = (bot) => {
                     } else {
                         await addWarning(ctx, senderJid, groupDb);
                     }
-                    groupDb.spam = spamData.filter(spam => spam[keyJid] !== senderJid);
+                    groupDb.spam = spamData.filter(spam => spam.jid !== senderLid);
                 }
-                await groupDb.save();
+
+                groupDb.save();
             }
 
             // Penanganan antitagsw
@@ -365,19 +358,17 @@ module.exports = (bot) => {
         if (!config.system.antiCall) return;
 
         for (const call of calls) {
-            if (Baileys.isJidGroup(call.chatId)) return;
+            if (Baileys.isJidGroup(call.id)) return;
 
             const senderJid = call.from;
             const senderId = bot.getId(senderJid);
 
             consolefy.info(`Incoming call from: ${Baileys.isLidUser(senderJid) ? `${senderId} (LID)` : senderId}`); // Log panggilan masuk
 
-            if (call.status !== "offer") continue;
-
             await bot.core.rejectCall(call.id, senderJid);
             const userDb = bot.getDb("users", senderJid);
             userDb.banned = true;
-            await userDb.save();
+            userDb.save();
 
             await bot.core.sendMessage(config.owner.id + Baileys.S_WHATSAPP_NET, {
                 text: `📢 Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`,

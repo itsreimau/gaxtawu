@@ -21,7 +21,7 @@ module.exports = {
 
         const senderJid = ctx.sender.jid;
 
-        if (accountJid === ctx.me.id || accountJid === ctx.me.lid) return await ctx.reply(formatter.quote("Tidak bisa menantang bot!"));
+        if (accountJid === ctx.me.lid || accountJid === ctx.me.id) return await ctx.reply(formatter.quote("Tidak bisa menantang bot!"));
         if (accountJid === senderJid) return await ctx.reply(formatter.quote("Tidak bisa menantang diri sendiri!"));
 
         const existingGame = [...session.values()].find(game => game.players.includes(senderJid) || game.players.includes(accountJid));
@@ -163,13 +163,13 @@ module.exports = {
                                 winnerText = `@${ctx.getId(ctx.sender.jid)} menang!`;
                                 userDb.coin += game.coin;
                                 userDb.winGame += 1
-                                await userDb.save();
+                                userDb.save();
                                 coinText = `+${game.coin} Koin untuk @${ctx.getId(ctx.sender.jid)}`;
                             } else {
                                 winnerText = `@${accountId} menang!`;
                                 participantDb.coin += game.coin;
                                 participantDb.winGame += 1
-                                await participantDb.save();
+                                participantDb.save();
                                 coinText = `+${game.coin} Koin untuk @${accountId}`;
                             }
 

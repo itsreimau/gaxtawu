@@ -26,19 +26,20 @@ module.exports = {
             mentions: [Baileys.OFFICIAL_BIZ_JID]
         });
 
-        if (accountJid === ctx.me.id || accountJid === ctx.me.lid) return await ctx.reply(formatter.quote(`❎ Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-unmute bot.`));
+        if (accountJid === ctx.me.lid || accountJid === ctx.me.id) return await ctx.reply(formatter.quote(`❎ Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-unmute bot.`));
         if (await ctx.group().isOwner(accountJid)) return await ctx.reply(formatter.quote("❎ Dia adalah Owner grup!"));
 
         try {
             const groupDb = ctx.db.group;
             const muteList = groupDb?.mute || [];
+            const targetJid = Baileys.isJidUser(accountJid) ? (await ctx.core.getLidUser(accountJid))?.[0].lid || accountJid : accountJid;
 
-            const filteredMuteList = muteList.filter(user => !((user.jid && user.jid === accountJid) || (user.alt && user.alt === accountJid)));
+            const index = muteList.indexOf(targetJid);
+            if (index === -1) return await ctx.reply(formatter.quote("❎ Pengguna tidak ditemukan dalam daftar mute!"));
 
-            if (filteredMuteList.length === muteList.length) return await ctx.reply(formatter.quote("❎ Pengguna tidak ditemukan dalam daftar mute!"));
-
-            groupDb.mute = filteredMuteList;
-            await groupDb.save();
+            muteList.splice(index, 1);
+            groupDb.mute = muteList;
+            groupDb.save();
 
             await ctx.reply(formatter.quote("✅ Berhasil me-unmute pengguna itu dari grup ini!"));
         } catch (error) {

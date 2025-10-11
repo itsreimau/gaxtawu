@@ -1,4 +1,6 @@
 const moment = require("moment-timezone");
+const fs = require("node:fs");
+const path = require("node:path");
 
 module.exports = {
     name: "menu",
@@ -32,8 +34,8 @@ module.exports = {
                 `${formatter.quote(`Tanggal: ${moment.tz(config.system.timeZone).locale("id").format("dddd, DD MMMM YYYY")}`)}\n` +
                 `${formatter.quote(`Waktu: ${moment.tz(config.system.timeZone).format("HH.mm.ss")}`)}\n` +
                 "\n" +
-                `${formatter.quote(`Bot Uptime: ${config.bot.uptime}`)}\n` +
-                `${formatter.quote(`Database: ${config.bot.dbSize} (Simpl.DB dengan JSON)`)}\n` +
+                `${formatter.quote(`Bot Uptime: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}`)}\n` +
+                `${formatter.quote(`Database: ${fs.existsSync(ctx.bot.databaseDir) ? tools.msg.formatSize(fs.readdirSync(ctx.bot.databaseDir).reduce((total, file) => total + fs.statSync(path.join(ctx.bot.databaseDir, file)).size, 0) / 1024) : "N/A"} (Simpl.DB dengan JSON)`)}\n` +
                 `${formatter.quote("Library: @itsreimau/gktw (Fork dari @mengkodingan/ckptw)")}\n` +
                 "\n" +
                 `${formatter.italic("Jangan lupa berdonasi agar bot tetap online.")}\n` +

@@ -10,7 +10,7 @@ module.exports = {
     code: async (ctx) => {
         const pending = await ctx.group().pendingMembers();
 
-        if (!pending || pending.length === 0) return await ctx.reply(formatter.quote("✅ Tidak ada anggota yang menunggu persetujuan."));
+        if (!pending.length === 0) return await ctx.reply(formatter.quote("✅ Tidak ada anggota yang menunggu persetujuan."));
 
         try {
             const resultText = pending.map((member, index) => {

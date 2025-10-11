@@ -20,16 +20,18 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const [packname, author] = input.split("|");
-            const sticker = new Sticker(buffer, {
-                pack: packname || "",
-                author: author || "",
-                type: StickerTypes.FULL,
-                categories: ["🌕"],
-                id: ctx.id,
-                quality: 50
-            });
+            const sticker = await new Sticker(buffer)
+                .setPack(packname || "")
+                .setAuthor(author || "")
+                .setType(StickerTypes.FULL)
+                .setCategories(["🌕"])
+                .setId(ctx.msg.key.id)
+                .setQuality(50)
+                .build()
 
-            await ctx.reply(await sticker.toMessage());
+            await ctx.reply({
+                sticker
+            });
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

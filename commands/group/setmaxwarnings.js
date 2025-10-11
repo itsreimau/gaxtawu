@@ -17,7 +17,7 @@ module.exports = {
         try {
             const groupDb = ctx.db.group;
             groupDb.maxwarnings = input;
-            await groupDb.save();
+            groupDb.save();
 
             await ctx.reply(formatter.quote(`✅ Berhasil mengubah max warnings!`));
         } catch (error) {

@@ -39,7 +39,7 @@ module.exports = {
             if (daysAmount && daysAmount > 0) {
                 const expirationDate = Date.now() + (daysAmount * 24 * 60 * 60 * 1000);
                 userDb.premiumExpiration = expirationDate;
-                await userDb.save();
+                userDb.save();
 
                 if (!silent) await ctx.sendMessage(userJid, {
                     text: formatter.quote(`📢 Anda telah ditambahkan sebagai pengguna Premium oleh Owner selama ${daysAmount} hari!`)
@@ -48,7 +48,7 @@ module.exports = {
                 await ctx.reply(formatter.quote(`✅ Berhasil menambahkan Premium selama ${daysAmount} hari kepada pengguna itu!`));
             } else {
                 delete userDb?.premiumExpiration;
-                await userDb.save();
+                userDb.save();
 
                 if (!silent) await ctx.sendMessage(userJid, {
                     text: formatter.quote("📢 Anda telah ditambahkan sebagai pengguna Premium selamanya oleh Owner!")

@@ -2,15 +2,6 @@
 const { Baileys, Cooldown } = require("@itsreimau/gktw");
 const moment = require("moment-timezone");
 
-// Fungsi untuk mengecek koin pengguna
-async function checkCoin(requiredCoin, userDb, isOwner) {
-    if (isOwner || userDb?.premium) return false;
-    if (userDb?.coin < requiredCoin) return true;
-    userDb.coin -= requiredCoin;
-    await userDb.save();
-    return false;
-}
-
 // Middleware utama bot
 module.exports = (bot) => {
     bot.use(async (ctx, next) => {
@@ -39,7 +30,7 @@ module.exports = (bot) => {
         if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;
         if (groupDb?.mutebot === "owner" && !isOwner) return;
         const muteList = groupDb?.mute || [];
-        if (muteList.some(user => user.jid === senderJid || user.alt === senderJid)) return;
+        if (muteList.includes(Baileys.isJidUser(senderJid) ? (await ctx.core.getLidUser(senderJid))?.[0].lid || senderJid : senderJid)) return;
 
         // Log command masuk
         if (isGroup && !ctx.msg.key.fromMe) {
@@ -72,10 +63,10 @@ module.exports = (bot) => {
 
             userDb.xp = newUserXp;
             userDb.level = newUserLevel;
-            await userDb.save();
+            userDb.save();
         } else {
             userDb.xp = newUserXp;
-            await userDb.save();
+            userDb.save();
         }
 
         // Simulasi mengetik
@@ -102,7 +93,7 @@ module.exports = (bot) => {
             reaction: "💤"
         }, {
             key: "gamerestrict",
-            condition: groupDb?.option?.gamerestrict && isGroup && !isAdmin && ctx.bot.cmd.get(ctx.used.command).category === "game",
+            condition: groupDb?.option?.gamerestrict && isGroup && !isAdmin && !isOwner && ctx.bot.cmd.get(ctx.used.command).category === "game",
             msg: config.msg.gamerestrict,
             reaction: "🎮"
         }, {
@@ -174,7 +165,7 @@ module.exports = (bot) => {
                 if (!lastSentMsg || (now - lastSentMsg) > oneDay) {
                     await simulateTyping();
                     (userDb.lastSentMsg ||= {})[key] = now;
-                    await userDb.save();
+                    userDb.save();
                     return await ctx.reply({
                         text: msg,
                         footer: formatter.italic(`Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`),
@@ -194,7 +185,7 @@ module.exports = (bot) => {
         } = command;
         const permissionChecks = [{
             key: "admin",
-            condition: isGroup && !isAdmin,
+            condition: isGroup && !isAdmin && !isOwner,
             msg: config.msg.admin,
             reaction: "🛡️"
         }, {
@@ -204,7 +195,13 @@ module.exports = (bot) => {
             reaction: "🤖"
         }, {
             key: "coin",
-            condition: permissions.coin && config.system.useCoin && await checkCoin(permissions.coin, userDb, isOwner),
+            condition: (() => {
+                if (!config.system.useCoin || isOwner || userDb?.premium) return false;
+                if (userDb?.coin < requiredCoin) return true;
+                userDb.coin -= requiredCoin;
+                userDb.save();
+                return false;
+            })(),
             msg: config.msg.coin,
             buttons: [{
                 buttonId: `${ctx.used.prefix}coin`,
@@ -225,7 +222,7 @@ module.exports = (bot) => {
             reaction: "👑"
         }, {
             key: "premium",
-            condition: !isOwner && !userDb?.premium,
+            condition: !userDb?.premium && !isOwner,
             msg: config.msg.premium,
             buttons: [{
                 buttonId: `${ctx.used.prefix}price`,
@@ -266,7 +263,7 @@ module.exports = (bot) => {
                 if (!lastSentMsg || (now - lastSentMsg) > oneDay) {
                     await simulateTyping();
                     (userDb.lastSentMsg ||= {})[key] = now;
-                    await userDb.save();
+                    userDb.save();
                     return await ctx.reply({
                         text: msg,
                         footer: formatter.italic(`Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`),
@@ -279,6 +276,6 @@ module.exports = (bot) => {
         }
 
         await simulateTyping();
-        await next(); // Lanjut ke proses berikutnya
+        next(); // Lanjut ke proses berikutnya
     });
 };

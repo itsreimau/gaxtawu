@@ -25,8 +25,8 @@ module.exports = {
             const anotherUserDb = ctx.getDb("users", userJid);
             anotherUserDb.coin += coinAmount;
             userDb.coin -= coinAmount;
-            await anotherUserDb.save();
-            await userDb.save();
+            anotherUserDb.save();
+            userDb.save();
 
             await ctx.reply(formatter.quote(`✅ Berhasil mentransfer ${coinAmount} koin ke pengguna itu!`));
         } catch (error) {

@@ -20,19 +20,15 @@ module.exports = {
             mentions: [Baileys.OFFICIAL_BIZ_JID]
         });
 
-        if (accountJid === ctx.me.id || accountJid === ctx.me.lid) return await ctx.reply(formatter.quote(`❎ Tidak bisa memberikan warning ke bot!`));
+        if (accountJid === ctx.me.lid || accountJid === ctx.me.id) return await ctx.reply(formatter.quote(`❎ Tidak bisa mengubah warning bot!`));
         if (await ctx.group().isOwner(accountJid)) return await ctx.reply(formatter.quote("❎ Tidak bisa memberikan warning ke Owner grup!"));
 
         try {
             const groupDb = ctx.db.group;
             const warnings = groupDb?.warnings || [];
+            const targetJid = Baileys.isJidUser(accountJid) ? (await ctx.core.getLidUser(accountJid))?.[0].lid || accountJid : accountJid;
 
-            const userIdentifier = Baileys.isLidUser(accountJid) ? {
-                jid: accountJid
-            } : {
-                alt: accountJid
-            };
-            const userWarning = warnings.find(warning => (warning.jid && warning.jid === accountJid) || (warning.alt && warning.alt === accountJid));
+            const userWarning = warnings.find(warning => warning.jid === targetJid);
 
             let currentWarnings = userWarning ? userWarning.count : 0;
             const newWarning = currentWarnings + 1;
@@ -41,13 +37,13 @@ module.exports = {
                 userWarning.count = newWarning;
             } else {
                 warnings.push({
-                    ...userIdentifier,
+                    jid: targetJid,
                     count: newWarning
                 });
             }
 
             groupDb.warnings = warnings;
-            await groupDb.save();
+            groupDb.save();
 
             await ctx.reply(formatter.quote(`✅ Berhasil menambahkan warning pengguna itu menjadi ${newWarning}/${groupDb?.maxwarnings || 3}.`));
         } catch (error) {

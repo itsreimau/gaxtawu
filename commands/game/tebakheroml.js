@@ -63,7 +63,7 @@ module.exports = {
                     collector.stop();
                     participantDb.coin += game.coin;
                     participantDb.winGame += 1
-                    await participantDb.save();
+                    participantDb.save();
                     await ctx.sendMessage(ctx.id, {
                         text: `${formatter.quote("💯 Benar!")}\n` +
                             formatter.quote(`+${game.coin} Koin`),

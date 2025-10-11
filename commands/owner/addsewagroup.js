@@ -48,7 +48,7 @@ module.exports = {
             if (daysAmount && daysAmount > 0) {
                 const expirationDate = Date.now() + (daysAmount * 24 * 60 * 60 * 1000);
                 groupDb.sewaExpiration = expirationDate;
-                await groupDb.save();
+                groupDb.save();
 
                 if (!silent && groupOwner) await ctx.sendMessage(groupOwner, {
                     text: formatter.quote(`📢 Bot berhasil disewakan ke grup @${groupMentions.groupJid} selama ${daysAmount} hari!`),
@@ -60,7 +60,7 @@ module.exports = {
                 await ctx.reply(formatter.quote(`✅ Berhasil menyewakan bot ke grup ${ctx.isGroup() ? "ini" : "itu"} selama ${daysAmount} hari!`));
             } else {
                 delete groupDb?.sewaExpiration;
-                await groupDb.save();
+                groupDb.save();
 
                 if (!silent && groupOwner) await ctx.sendMessage(groupOwner, {
                     text: formatter.quote(`📢 Bot berhasil disewakan ke grup @${groupMentions.groupJid} selamanya!`),

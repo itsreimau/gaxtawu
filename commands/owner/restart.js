@@ -19,7 +19,7 @@ module.exports = {
                 key: waitMsg.key,
                 timestamp: Date.now()
             };
-            await botDb.save();
+            botDb.save();
 
             await util.promisify(exec)("pm2 restart $(basename $(pwd))"); // Hanya berfungsi saat menggunakan PM2
         } catch (error) {

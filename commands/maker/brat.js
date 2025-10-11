@@ -22,16 +22,18 @@ module.exports = {
             const result = tools.api.createUrl("yp", "/api/image/brat", {
                 text: input
             });
-            const sticker = new Sticker(result, {
-                pack: config.sticker.packname,
-                author: config.sticker.author,
-                type: StickerTypes.FULL,
-                categories: ["🌕"],
-                id: ctx.id,
-                quality: 50
-            });
+            const sticker = await new Sticker(result)
+                .setPack(config.sticker.packname)
+                .setAuthor(config.sticker.author)
+                .setType(StickerTypes.FULL)
+                .setCategories(["🌕"])
+                .setId(ctx.msg.key.id)
+                .setQuality(50)
+                .build()
 
-            await ctx.reply(await sticker.toMessage());
+            await ctx.reply({
+                sticker
+            });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

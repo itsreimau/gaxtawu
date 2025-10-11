@@ -61,7 +61,7 @@ module.exports = {
                     game.participants.add(participantId);
 
                     participantDb.coin += game.coin.answered;
-                    await participantDb.save();
+                    participantDb.save();
                     await ctx.sendMessage(ctx.id, {
                         text: formatter.quote(`✅ ${tools.msg.ucwords(participantAnswer)} benar! Jawaban tersisa: ${game.answers.size}`)
                     }, {
@@ -74,7 +74,7 @@ module.exports = {
                         for (const participant of game.participants) {
                             participantDb.coin += game.coin.allAnswered;
                             participantDb.winGame += 1
-                            await participantDb.save();
+                            participantDb.save();
                         }
                         await ctx.sendMessage(ctx.id, {
                             text: formatter.quote(`🎉 Selamat! Semua jawaban telah terjawab! Setiap anggota yang menjawab mendapat ${game.coin.allAnswered} koin.`),

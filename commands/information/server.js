@@ -1,4 +1,6 @@
+const fs = require("node:fs");
 const os = require("node:os");
+const path = require("node:path");
 
 module.exports = {
     name: "server",
@@ -35,8 +37,8 @@ module.exports = {
                     `${formatter.quote(`Jalur Exec: ${process.execPath}`)}\n` +
                     `${formatter.quote(`PID: ${process.pid}`)}\n` +
                     `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
-                    `${formatter.quote(`Bot Uptime: ${config.bot.uptime}`)}\n` +
-                    `${formatter.quote(`Database: ${config.bot.dbSize} (Simpl.DB dengan JSON)`)}\n` +
+                    `${formatter.quote(`Bot Uptime: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}`)}\n` +
+                    `${formatter.quote(`Database: ${fs.existsSync(ctx.bot.databaseDir) ? tools.msg.formatSize(fs.readdirSync(ctx.bot.databaseDir).reduce((total, file) => total + fs.statSync(path.join(ctx.bot.databaseDir, file)).size, 0) / 1024) : "N/A"} (Simpl.DB dengan JSON)`)}\n` +
                     formatter.quote("Library: @itsreimau/gktw (Fork dari @mengkodingan/ckptw)"),
                 footer: config.msg.footer
             });

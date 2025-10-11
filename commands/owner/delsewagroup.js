@@ -26,7 +26,7 @@ module.exports = {
 
             delete groupDb.premium;
             delete groupDb.premiumExpiration;
-            await groupDb.save();
+            groupDb.save();
 
             const flag = tools.cmd.parseFlag(ctx.args.join(" "), {
                 "-s": {

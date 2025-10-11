@@ -75,7 +75,7 @@ module.exports = {
             const newStatus = !currentStatus;
 
             (groupDb.option ||= {})[setKey] = newStatus;
-            await groupDb.save();
+            groupDb.save();
             const statusText = newStatus ? "diaktifkan" : "dinonaktifkan";
             await ctx.reply(formatter.quote(`✅ Opsi ${formatter.inlineCode(input)} berhasil ${statusText}!`));
         } catch (error) {

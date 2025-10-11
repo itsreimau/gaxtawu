@@ -23,7 +23,7 @@ module.exports = {
         try {
             const userDb = ctx.getDb("users", userJid);
             userDb.banned = true;
-            await userDb.save();
+            userDb.save();
 
             const flag = tools.cmd.parseFlag(ctx.args.join(" "), {
                 "-s": {

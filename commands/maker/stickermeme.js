@@ -27,22 +27,24 @@ module.exports = {
             let [top, bottom] = input.split("|").map(_input => _input);
             [top, bottom] = bottom ? [top || "", bottom] : ["", top || ""];
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const uploadUrl = (await Baileys.uploadFile(buffer)).url;
+            const uploadUrl = (await Baileys.uploadFile(buffer)).data.url;
             const result = tools.api.createUrl("nekolabs", `/canvas/meme/get`, {
                 imageUrl: uploadUrl,
                 textT: top,
                 textB: bottom
             });
-            const sticker = new Sticker(result, {
-                pack: config.sticker.packname,
-                author: config.sticker.author,
-                type: StickerTypes.FULL,
-                categories: ["🌕"],
-                id: ctx.id,
-                quality: 50
-            });
+            const sticker = await new Sticker(result)
+                .setPack(config.sticker.packname)
+                .setAuthor(config.sticker.author)
+                .setType(StickerTypes.FULL)
+                .setCategories(["🌕"])
+                .setId(ctx.msg.key.id)
+                .setQuality(50)
+                .build()
 
-            await ctx.reply(await sticker.toMessage());
+            await ctx.reply({
+                sticker
+            });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

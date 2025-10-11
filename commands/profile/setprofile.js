@@ -31,12 +31,12 @@ module.exports = {
                     if (!input) return await ctx.reply(formatter.quote("❎ Mohon masukkan username yang ingin digunakan."));
                     if (/[^a-zA-Z0-9._-]/.test(input)) return await ctx.reply(formatter.quote("❎ Username hanya boleh berisi huruf, angka, titik (.), underscore (_) atau tanda hubung (-)."));
 
-                    const usernameTaken = Object.values(await db.get("user") || {}).some(user => user.username === input);
+                    const usernameTaken = ctx.db.users.getMany(user => user.username === input).length > 0;
                     if (usernameTaken) return await ctx.reply(formatter.quote("❎ Username tersebut sudah digunakan oleh pengguna lain."));
 
                     const username = `@${input}`
                     userDb.username = username;
-                    await userDb.save();
+                    userDb.save();
 
                     await ctx.reply(formatter.quote(`✅ Username berhasil diubah menjadi ${formatter.inlineCode(username)}!`));
                     break;
@@ -45,7 +45,7 @@ module.exports = {
                     const currentStatus = userDb?.autolevelup || false;
                     const newStatus = !currentStatus;
                     userDb.autolevelup = newStatus;
-                    await userDb.save();
+                    userDb.save();
 
                     const statusText = newStatus ? "diaktifkan" : "dinonaktifkan";
                     await ctx.reply(formatter.quote(`✅ Autolevelup berhasil ${statusText}!`));

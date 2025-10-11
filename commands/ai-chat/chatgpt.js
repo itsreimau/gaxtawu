@@ -28,7 +28,7 @@ module.exports = {
 
             if (checkMedia || checkQuotedMedia) {
                 const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-                const uploadUrl = (await Baileys.uploadFile(buffer)).url;
+                const uploadUrl = (await Baileys.uploadFile(buffer)).data.url;
                 const apiUrl = tools.api.createUrl("nekolabs", "/ai/gpt/5", {
                     text: input,
                     systemPrompt,

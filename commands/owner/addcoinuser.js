@@ -23,8 +23,8 @@ module.exports = {
 
         try {
             const userDb = ctx.getDb("users", userJid);
-            userDb.coin = coinAmount;
-            await userDb.save();
+            userDb.coin += coinAmount;
+            userDb.save();
 
             const flag = tools.cmd.parseFlag(ctx.args.join(" "), {
                 "-s": {

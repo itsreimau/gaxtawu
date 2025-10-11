@@ -25,7 +25,7 @@ module.exports = {
 
             delete userDb.premium;
             delete userDb?.premiumExpiration;
-            await userDb.save();
+            userDb.save();
 
             const flag = tools.cmd.parseFlag(ctx.args.join(" "), {
                 "-s": {

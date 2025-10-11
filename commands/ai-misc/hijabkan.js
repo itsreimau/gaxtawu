@@ -17,7 +17,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const uploadUrl = (await Baileys.uploadFile(buffer)).url;
+            const uploadUrl = (await Baileys.uploadFile(buffer)).data.url;
             const result = tools.api.createUrl("zell", "/ai/hijabkan", {
                 imageUrl: uploadUrl
             });

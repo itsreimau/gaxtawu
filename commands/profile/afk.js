@@ -10,7 +10,7 @@ module.exports = {
                 reason: input,
                 timestamp: Date.now()
             };
-            await userDb.save();
+            userDb.save();
 
             await ctx.reply(formatter.quote(`📴 Anda akan AFK, ${input ? `dengan alasan ${formatter.inlineCode(input)}` : "tanpa alasan apapun"}.`));
         } catch (error) {
