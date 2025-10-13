@@ -358,14 +358,16 @@ module.exports = (bot) => {
         if (!config.system.antiCall) return;
 
         for (const call of calls) {
-            if (Baileys.isJidGroup(call.id)) return;
+            const callId = call.id;
+
+            if (Baileys.isJidGroup(callId)) return;
 
             const senderJid = call.from;
             const senderId = bot.getId(senderJid);
 
             consolefy.info(`Incoming call from: ${Baileys.isLidUser(senderJid) ? `${senderId} (LID)` : senderId}`); // Log panggilan masuk
 
-            await bot.core.rejectCall(call.id, senderJid);
+            await bot.core.rejectCall(callId, senderJid);
             const userDb = bot.getDb("users", senderJid);
             userDb.banned = true;
             userDb.save();
@@ -375,7 +377,7 @@ module.exports = (bot) => {
                 mentions: [senderJid]
             });
             await bot.core.sendMessage(senderJid, {
-                text: footer.quote("Anda telah dibanned secara otomatis karena melanggar aturan!"),
+                text: formatter.quote("Anda telah dibanned secara otomatis karena melanggar aturan!"),
                 footer: config.msg.footer,
                 buttons: [{
                     buttonId: `/owner`,

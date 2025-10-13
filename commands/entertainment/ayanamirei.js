@@ -16,7 +16,7 @@ module.exports = {
                 image: {
                     url: result.download_url
                 },
-                mimetype: tools.mime.lookup("jpeg"),
+                mimetype: tools.mime.lookup("png"),
                 caption: formatter.quote("Those who hate themselves, cannot love or trust others."),
                 footer: config.msg.footer,
                 buttons: [{

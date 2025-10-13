@@ -1,3 +1,5 @@
+const axios = require("axios");
+
 module.exports = {
     name: "flux",
     category: "ai-generate",
@@ -14,9 +16,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("siputzx", "/api/ai/flux", {
+            const apiUrl = tools.api.createUrl("zell", "/ai/flux", {
                 prompt: input
             });
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 image: {

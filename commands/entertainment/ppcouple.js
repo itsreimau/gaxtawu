@@ -9,20 +9,20 @@ module.exports = {
     },
     code: async (ctx) => {
         try {
-            const apiUrl = tools.api.createUrl("kyyokatsu", "/random/ppcp");
-            const result = (await axios.get(apiUrl)).data.result;
+            const apiUrl = tools.api.createUrl("https://raw.githubusercontent.com", "/ArdyBotzz/ardy-api/refs/heads/master/src/ppcouple.json");
+            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data);
 
             await ctx.reply({
                 album: [{
                     image: {
-                        url: result.cowo
+                        url: result.female
                     },
-                    mimetype: tools.mime.lookup("jpeg")
+                    mimetype: tools.mime.lookup("png")
                 }, {
                     image: {
-                        url: result.cewe
+                        url: result.male
                     },
-                    mimetype: tools.mime.lookup("jpeg")
+                    mimetype: tools.mime.lookup("png")
                 }]
             });
         } catch (error) {

@@ -1,6 +1,8 @@
+const axios = require("axios");
+
 module.exports = {
-    name: "text2image",
-    aliases: ["text2img", "texttoimage", "texttoimg"],
+    name: "stablediffusion",
+    aliases: ["diffusion", "sd"],
     category: "ai-generate",
     permissions: {
         coin: 10
@@ -15,9 +17,11 @@ module.exports = {
         );
 
         try {
-            const result = tools.api.createUrl("zell", "/ai/text2image", {
-                prompt: input
+            const apiUrl = tools.api.createUrl("nekolabs", "/ai/stable-diffusion/3.5-large-turbo", {
+                prompt: input,
+                ratio: tools.cmd.getRandomElement(["1:1", "16:9", "9:16"])
             });
+            const result = (await axios.get(apiUrl)).data.result[0];
 
             await ctx.reply({
                 image: {

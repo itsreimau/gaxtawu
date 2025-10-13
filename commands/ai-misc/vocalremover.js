@@ -2,34 +2,32 @@ const { Baileys } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
-    name: "removewm",
+    name: "vocalremover",
     category: "ai-misc",
     permissions: {
-        premium: true
+        premium: 10
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.contentType, "image"),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, "image")
+            tools.cmd.checkMedia(ctx.msg.contentType, "audio"),
+            tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, "audio")
         ];
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], "image")));
+        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], "audio")));
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = (await Baileys.uploadFile(buffer)).data.url;
-            const apiUrl = tools.api.createUrl("zell", "/ai/removewm", {
+            const apiUrl = tools.api.createUrl("zell", "/tools/vocalremover", {
                 imageUrl: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.instrumental_path;
 
             await ctx.reply({
-                image: {
+                audio: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("png"),
-                caption: formatter.quote("Untukmu, tuan!"),
-                footer: config.msg.footer
+                mimetype: tools.mime.lookup("mp3")
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

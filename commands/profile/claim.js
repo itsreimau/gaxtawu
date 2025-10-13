@@ -24,7 +24,7 @@ module.exports = {
         const level = userDb?.level || 0;
 
         if (!claim) return await ctx.reply(formatter.quote("❎ Hadiah tidak valid!"));
-        if (ctx.citation.isOwner) return await ctx.reply(formatter.quote("❎ Anda sudah memiliki koin tak terbatas, tidak perlu mengklaim lagi."));
+        if (ctx.citation.isOwner) return await ctx.reply(formatter.quote("❎ Anda sudah memiliki koin tak terbatas!"));
         if (level < claim.level) return await ctx.reply(formatter.quote(`❎ Anda perlu mencapai level ${claim.level} untuk mengklaim hadiah ini. Levelmu saat ini adalah ${level}.`));
 
         const currentTime = Date.now();

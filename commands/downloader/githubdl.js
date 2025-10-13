@@ -19,17 +19,17 @@ module.exports = {
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            const apiUrl = tools.api.createUrl("diibot", "/api/download/gitclone", {
+            const apiUrl = tools.api.createUrl("bagus", "/api/download/github", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.data;
 
             await ctx.reply({
                 document: {
-                    url: result.urllink
+                    url: result.download_url
                 },
-                fileName: result.filename,
-                mimetype: tools.mime.lookup(result.filename) || "application/octet-stream",
+                fileName: `${result.owner}-${result.repo}.zip`,
+                mimetype: tools.mime.lookup("zip") || "application/octet-stream",
                 caption: formatter.quote(`URL: ${url}`),
                 footer: config.msg.footer
             });

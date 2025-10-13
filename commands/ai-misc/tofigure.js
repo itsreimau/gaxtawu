@@ -19,16 +19,16 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = (await Baileys.uploadFile(buffer)).data.url;
-            const apiUrl = tools.api.createUrl("nekolabs", "/ai/convert/tofigure", {
+            const apiUrl = tools.api.createUrl("izumi", "/ai-image/tofigure", {
                 imageUrl: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.download;
 
             await ctx.reply({
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("jpeg"),
+                mimetype: tools.mime.lookup("png"),
                 caption: formatter.quote("Untukmu, tuan!"),
                 footer: config.msg.footer
             });

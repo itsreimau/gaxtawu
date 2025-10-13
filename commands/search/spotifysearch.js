@@ -16,15 +16,15 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("diibot", "/api/search/spotify", {
-                query: input
+            const apiUrl = tools.api.createUrl("yp", "/api/search/spotify", {
+                q: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.data;
 
             const resultText = result.map(res =>
-                `${formatter.quote(`Judul: ${res.trackName}`)}\n` +
-                `${formatter.quote(`Artis: ${res.artistName}`)}\n` +
-                formatter.quote(`URL: ${res.externalUrl}`)
+                `${formatter.quote(`Judul: ${res.title}`)}\n` +
+                `${formatter.quote(`Artis: ${res.artist}`)}\n` +
+                formatter.quote(`URL: ${res.url}`)
             ).join(
                 "\n" +
                 `${formatter.quote("· · ─ ·✶· ─ · ·")}\n`

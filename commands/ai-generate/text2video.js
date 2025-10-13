@@ -1,11 +1,11 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "deepdreams",
-    aliases: ["deepd"],
+    name: "text2video",
+    aliases: ["text2vid", "texttovideo", "texttovid"],
     category: "ai-generate",
     permissions: {
-        coin: 10
+        premium: true
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || ctx.quoted?.content || null;
@@ -17,16 +17,16 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("zell", "/ai/deepdreams", {
+            const apiUrl = tools.api.createUrl("bagus", "/api/tools/text2video", {
                 prompt: input
             });
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result).imageUrl;
+            const result = (await axios.get(apiUrl)).data.video.url;
 
             await ctx.reply({
-                image: {
+                video: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("jpg"),
+                mimetype: tools.mime.lookup("mp4"),
                 caption: formatter.quote(`Prompt: ${input}`),
                 footer: config.msg.footer,
                 buttons: [{

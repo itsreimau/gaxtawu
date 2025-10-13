@@ -23,7 +23,7 @@ module.exports = {
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("jpg"),
+                mimetype: tools.mime.lookup("png"),
                 caption: formatter.quote(`Prompt: ${input}`),
                 footer: config.msg.footer,
                 buttons: [{

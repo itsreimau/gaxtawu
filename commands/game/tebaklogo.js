@@ -25,18 +25,18 @@ module.exports = {
                 image: {
                     url: result.img
                 },
-                mimetype: tools.mime.lookup("jpeg"),
+                mimetype: tools.mime.lookup("png"),
                 caption: `${formatter.quote(`Deskripsi: ${result.deskripsi}`)}\n` +
                     `${formatter.quote(`Bonus: ${game.coin} Koin`)}\n` +
                     formatter.quote(`Batas waktu: ${tools.msg.convertMsToDuration(game.timeout)}`),
                 footer: config.msg.footer,
                 buttons: [{
-                    buttonId: "hint",
+                    buttonId: `hint_${ctx.used.command}`,
                     buttonText: {
                         displayText: "Petunjuk"
                     }
                 }, {
-                    buttonId: "surrender",
+                    buttonId: `surrender_${ctx.used.command}`,
                     buttonText: {
                         displayText: "Menyerah"
                     }
@@ -72,14 +72,14 @@ module.exports = {
                     }, {
                         quoted: m
                     });
-                } else if (participantAnswer === "hint") {
+                } else if (participantAnswer === `hint_${ctx.used.command}`) {
                     const clue = game.answer.replace(/[aiueo]/g, "_");
                     await ctx.sendMessage(ctx.id, {
                         text: formatter.monospace(clue.toUpperCase())
                     }, {
                         quoted: m
                     });
-                } else if (participantAnswer === "surrender") {
+                } else if (participantAnswer === `surrender_${ctx.used.command}`) {
                     session.delete(ctx.id);
                     collector.stop();
                     await ctx.sendMessage(ctx.id, {

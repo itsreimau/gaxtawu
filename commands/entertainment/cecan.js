@@ -18,13 +18,13 @@ module.exports = {
         try {
             const listCecan = ["china", "indonesia", "japan", "korea", "thailand", "vietnam"];
             const cecan = listCecan.includes(input) ? input : tools.cmd.getRandomElement(listCecan);
-            const result = tools.api.createUrl("siputzx", `/api/r/cecan/${cecan}`);
+            const result = tools.api.createUrl("nekolabs", `/random/girl/${cecan}`);
 
             await ctx.reply({
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("jpeg"),
+                mimetype: tools.mime.lookup("png"),
                 caption: formatter.quote(`Kategori: ${tools.msg.ucwords(cecan)}`),
                 footer: config.msg.footer,
                 buttons: [{

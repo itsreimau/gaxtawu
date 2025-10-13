@@ -19,16 +19,16 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = (await Baileys.uploadFile(buffer)).data.url;
-            const apiUrl = tools.api.createUrl("kyyokatsu", "/tools/img2sketch", {
-                url: uploadUrl
+            const apiUrl = tools.api.createUrl("bagus", "/api/edits/tosketch", {
+                image: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result.result;
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("jpeg"),
+                mimetype: tools.mime.lookup("png"),
                 caption: formatter.quote("Untukmu, tuan!"),
                 footer: config.msg.footer
             });

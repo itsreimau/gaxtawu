@@ -17,9 +17,8 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = (await Baileys.uploadFile(buffer)).data.url;
-            const result = tools.api.createUrl("siputzx", "/api/iloveimg/upscale", {
-                image: uploadUrl,
-                scale: "4"
+            const result = tools.api.createUrl("yp", "/api/tools/hd", {
+                url: uploadUrl
             });
 
             await ctx.reply({

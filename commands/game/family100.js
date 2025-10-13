@@ -34,7 +34,7 @@ module.exports = {
                     formatter.quote(`Batas waktu: ${tools.msg.convertMsToDuration(game.timeout)}`),
                 footer: config.msg.footer,
                 buttons: [{
-                    buttonId: "surrender",
+                    buttonId: `surrender_${ctx.used.command}`,
                     buttonText: {
                         displayText: "Menyerah"
                     }
@@ -84,7 +84,7 @@ module.exports = {
                             quoted: m
                         });
                     }
-                } else if (participantAnswer === "surrender") {
+                } else if (participantAnswer === `surrender_${ctx.used.command}`) {
                     const remaining = [...game.answers].map(tools.msg.ucwords).join(", ").replace(/, ([^,]*)$/, ", dan $1");
                     session.delete(ctx.id);
                     collector.stop();

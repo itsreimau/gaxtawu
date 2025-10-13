@@ -16,7 +16,7 @@ module.exports = {
                 image: {
                     url: result.url
                 },
-                mimetype: tools.mime.lookup("jpeg"),
+                mimetype: tools.mime.lookup("png"),
                 caption: formatter.quote(`Sumber: ${result.source}`),
                 footer: config.msg.footer,
                 buttons: [{

@@ -197,10 +197,12 @@ module.exports = (bot) => {
             key: "coin",
             condition: (() => {
                 if (!config.system.useCoin || isOwner || userDb?.premium) return false;
-                if (userDb?.coin < requiredCoin) return true;
-                userDb.coin -= requiredCoin;
-                userDb.save();
-                return false;
+                if (userDb?.coin >= permissions.coin) {
+                    userDb.coin -= permissions.coin;
+                    userDb.save();
+                    return false;
+                }
+                return true;
             })(),
             msg: config.msg.coin,
             buttons: [{

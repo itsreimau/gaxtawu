@@ -25,7 +25,7 @@ module.exports = {
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("jpeg"),
+                mimetype: tools.mime.lookup("png"),
                 footer: config.msg.footer
             });
         } catch (error) {

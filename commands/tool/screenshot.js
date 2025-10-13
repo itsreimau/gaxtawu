@@ -1,6 +1,8 @@
+const axios = require("axios");
+
 module.exports = {
     name: "screenshot",
-    aliases: ["ss", "sshp", "sspc", "sstab", "ssweb"],
+    aliases: ["ss", "sspc", "ssweb"],
     category: "tool",
     permissions: {
         coin: 10
@@ -17,18 +19,16 @@ module.exports = {
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            let endpoint = "/api/tools/sspc";
-            if (ctx.used.command == "sshp") endpoint = "/api/tools/sshp";
-            if (ctx.used.command == "sstab") endpoint = "/api/tools/sstab";
-            const result = tools.api.createUrl("diibot", endpoint, {
+            const apiUrl = tools.api.createUrl("bagus", "/api/tools/ssweb", {
                 url
             });
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("jpeg"),
+                mimetype: tools.mime.lookup("png"),
                 caption: formatter.quote(`URL: ${url}`),
                 footer: config.msg.footer
             });

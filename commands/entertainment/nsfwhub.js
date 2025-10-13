@@ -24,7 +24,7 @@ module.exports = {
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("jpeg"),
+                mimetype: tools.mime.lookup("png"),
                 caption: formatter.quote(`Kategori: ${tools.msg.ucwords(nsfwhub)}`),
                 footer: config.msg.footer,
                 buttons: [{

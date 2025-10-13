@@ -16,16 +16,16 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("diibot", "/api/search/youtube", {
-                query: input
+            const apiUrl = tools.api.createUrl("yp", "/api/search/youtube", {
+                q: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.results;
 
             const resultText = result.map(res =>
                 `${formatter.quote(`Judul: ${res.title}`)}\n` +
                 `${formatter.quote(`Deskripsi: ${res.description}`)}\n` +
-                `${formatter.quote(`Channel: ${res.author.name}`)}\n` +
-                `${formatter.quote(`Durasi: ${res.timestamp}`)}\n` +
+                `${formatter.quote(`Channel: ${res.channel}`)}\n` +
+                `${formatter.quote(`Durasi: ${res.duration}`)}\n` +
                 formatter.quote(`URL: ${res.url}`)
             ).join(
                 "\n" +

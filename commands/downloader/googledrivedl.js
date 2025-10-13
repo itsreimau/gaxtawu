@@ -19,7 +19,7 @@ module.exports = {
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            const apiUrl = tools.api.createUrl("hang", "/download/gdrive", {
+            const apiUrl = tools.api.createUrl("izumi", "/downloader/gdrive", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;

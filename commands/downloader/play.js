@@ -61,22 +61,22 @@ module.exports = {
                     mimetype: tools.mime.lookup("mp3")
                 });
             } else if (source === "spotify") {
-                const searchApiUrl = tools.api.createUrl("diibot", "/api/search/spotify", {
-                    query: input
+                const searchApiUrl = tools.api.createUrl("yp", "/api/search/spotify", {
+                    q: input
                 });
                 const searchResult = (await axios.get(searchApiUrl)).data.result[searchIndex];
 
                 await ctx.reply({
-                    text: `${formatter.quote(`Judul: ${searchResult.trackName}`)}\n` +
-                        `${formatter.quote(`Artis: ${searchResult.artistName}`)}\n` +
-                        formatter.quote(`URL: ${searchResult.externalUrl}`),
+                    text: `${formatter.quote(`Judul: ${searchResult.title}`)}\n` +
+                        `${formatter.quote(`Artis: ${searchResult.artist}`)}\n` +
+                        formatter.quote(`URL: ${searchResult.url}`),
                     footer: config.msg.footer
                 });
 
-                const downloadApiUrl = tools.api.createUrl("diibot", "/api/download/spotify", {
-                    url: searchResult.externalUrl
+                const downloadApiUrl = tools.api.createUrl("izumi", "/downloader/spotify", {
+                    url: searchResult.url
                 });
-                const downloadResult = (await axios.get(downloadApiUrl)).data.result.audio;
+                const downloadResult = (await axios.get(downloadApiUrl)).data.result.download;
 
                 await ctx.reply({
                     audio: {
@@ -85,14 +85,14 @@ module.exports = {
                     mimetype: tools.mime.lookup("mp3")
                 });
             } else {
-                const searchApiUrl = tools.api.createUrl("diibot", "/api/search/youtube", {
-                    query: input
+                const searchApiUrl = tools.api.createUrl("yp", "/api/search/youtube", {
+                    q: input
                 });
-                const searchResult = (await axios.get(searchApiUrl)).data.result[searchIndex];
+                const searchResult = (await axios.get(searchApiUrl)).data.results[searchIndex];
 
                 await ctx.reply({
                     text: `${formatter.quote(`Judul: ${searchResult.title}`)}\n` +
-                        `${formatter.quote(`Artis: ${searchResult.author.name}`)}\n` +
+                        `${formatter.quote(`Artis: ${searchResult.channel}`)}\n` +
                         formatter.quote(`URL: ${searchResult.url}`),
                     footer: config.msg.footer
                 });

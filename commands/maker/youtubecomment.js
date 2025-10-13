@@ -1,8 +1,8 @@
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
 module.exports = {
-    name: "xnxxcomment",
-    aliases: ["xnxxc"],
+    name: "youtubecomment",
+    aliases: ["ytc", "ytcomment"],
     category: "maker",
     permissions: {
         coin: 10
@@ -20,11 +20,11 @@ module.exports = {
 
         try {
             const isQuoted = ctx.args.length === 0 && ctx.quoted;
-            const result = tools.api.createUrl("deline", "/maker/fake-xnxx", {
-                name: isQuoted ? ctx.quoted?.pushName : ctx.sender.pushName,
-                quote: input,
-                likes: Math.floor(Math.random() * 10) + 1,
-                dislikes: 0
+            const profilePictureUrl = await ctx.core.profilePictureUrl(isQuoted ? ctx.quoted?.sender : ctx.sender.jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
+            const result = tools.api.createUrl("deline", "/maker/ytcomment", {
+                text: input,
+                username: isQuoted ? ctx.quoted?.pushName : ctx.sender.pushName,
+                avatar: profilePictureUrl
             });
             const sticker = await new Sticker(result)
                 .setPack(config.sticker.packname)

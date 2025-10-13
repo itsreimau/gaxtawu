@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["editimg"],
     category: "ai-misc",
     permissions: {
-        premium: true
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || null;

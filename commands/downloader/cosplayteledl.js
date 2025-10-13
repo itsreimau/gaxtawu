@@ -1,8 +1,8 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "douyindl",
-    aliases: ["douyin"],
+    name: "cosplayteledl",
+    aliases: ["cosplaytele"],
     category: "downloader",
     permissions: {
         premium: true
@@ -12,25 +12,28 @@ module.exports = {
 
         if (!url) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://v.douyin.com/YEdqwg7JeAQ"))
+            formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://cosplaytele.com/rei-ayanami"))
         );
 
         const isUrl = tools.cmd.isUrl(url);
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            const apiUrl = tools.api.createUrl("diibot", "/api/download/douyin", {
+            const apiUrl = tools.api.createUrl("zell", "/download/cosplaytele", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.gallery_images;
+
+            const album = result.images.map(imageUrl => ({
+                image: {
+                    url: imageUrl
+                },
+                mimetype: tools.mime.lookup("png")
+            }));
 
             await ctx.reply({
-                video: {
-                    url: result.Video_HD || result.Video
-                },
-                mimetype: tools.mime.lookup("mp4"),
-                caption: formatter.quote(`URL: ${url}`),
-                footer: config.msg.footer
+                album,
+                caption: formatter.quote(`URL: ${url}`)
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

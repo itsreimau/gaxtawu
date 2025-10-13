@@ -48,7 +48,7 @@ module.exports = {
                 .setCategories(["🌕"])
                 .setId(ctx.msg.key.id)
                 .setQuality(50)
-                .build()
+                .build();
 
             await ctx.reply({
                 sticker

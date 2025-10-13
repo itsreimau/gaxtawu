@@ -19,10 +19,10 @@ module.exports = {
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            const apiUrl = tools.api.createUrl("diibot", "/api/download/spotify", {
+            const apiUrl = tools.api.createUrl("izumi", "/downloader/spotify", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result.audio;
+            const result = (await axios.get(apiUrl)).data.result.download;
 
             await ctx.reply({
                 audio: {

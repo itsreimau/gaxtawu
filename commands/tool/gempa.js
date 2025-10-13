@@ -9,14 +9,15 @@ module.exports = {
     },
     code: async (ctx) => {
         try {
-            const apiUrl = tools.api.createUrl("https://data.bmkg.go.id", "/DataMKG/TEWS/autogempa.json");
+            const bmkgUrl = "https://data.bmkg.go.id";
+            const apiUrl = tools.api.createUrl(bmkgUrl, "/DataMKG/TEWS/autogempa.json");
             const result = (await axios.get(apiUrl)).data.Infogempa.gempa;
 
             await ctx.reply({
                 image: {
-                    url: tools.api.createUrl("https://data.bmkg.go.id", `/DataMKG/TEWS/${result.Shakemap}`)
+                    url: tools.api.createUrl(bmkgUrl, `/DataMKG/TEWS/${result.Shakemap}`)
                 },
-                mimetype: tools.mime.lookup("jpeg"),
+                mimetype: tools.mime.lookup("png"),
                 caption: `${formatter.quote(`Wilayah: ${result.Wilayah}`)}\n` +
                     `${formatter.quote(`Tanggal: ${result.Tanggal}`)}\n` +
                     `${formatter.quote(`Potensi: ${result.Potensi}`)}\n` +

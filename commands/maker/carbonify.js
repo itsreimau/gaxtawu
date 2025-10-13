@@ -15,8 +15,8 @@ module.exports = {
         );
 
         try {
-            const result = tools.api.createUrl("siputzx", "/api/m/carbonify", {
-                input
+            const result = tools.api.createUrl("nekolabs", "/canvas/carbonify", {
+                code: input
             });
 
             await ctx.reply({

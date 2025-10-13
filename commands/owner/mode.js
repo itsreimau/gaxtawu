@@ -32,7 +32,7 @@ module.exports = {
                 case "public":
                 case "self":
                     botDb.mode = input.toLowerCase();
-                    await botDb.save();
+                    botDb.save();
                     break;
                 default:
                     return await ctx.reply(formatter.quote(`❎ Mode "${input}" tidak valid!`));

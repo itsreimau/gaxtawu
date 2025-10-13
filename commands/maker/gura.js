@@ -1,9 +1,12 @@
 const { Baileys } = require("@itsreimau/gktw");
+const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
 module.exports = {
-    name: "getpp",
-    aliases: ["geticon"],
-    category: "misc",
+    name: "gura",
+    category: "maker",
+    permissions: {
+        coin: 10
+    },
     code: async (ctx) => {
         const userJid = ctx.quoted?.sender || ctx.getMentioned()[0] || (ctx.args[0] ? ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET : null);
 
@@ -15,16 +18,21 @@ module.exports = {
         });
 
         try {
-            const result = await ctx.core.profilePictureUrl(userJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
+            const profilePictureUrl = await ctx.core.profilePictureUrl(userJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
+            const result = tools.api.createUrl("nekolabs", "/canvas/gura", {
+                imageUrl: profilePictureUrl
+            });
+            const sticker = await new Sticker(result)
+                .setPack(config.sticker.packname)
+                .setAuthor(config.sticker.author)
+                .setType(StickerTypes.FULL)
+                .setCategories(["🌕"])
+                .setId(ctx.msg.key.id)
+                .setQuality(50)
+                .build();
 
             await ctx.reply({
-                image: {
-                    url: result
-                },
-                mimetype: tools.mime.lookup("png"),
-                caption: formatter.quote(`Akun: @${ctx.getId(userJid)}`),
-                mentions: [userJid],
-                footer: config.msg.footer
+                sticker
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

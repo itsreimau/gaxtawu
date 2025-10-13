@@ -199,16 +199,15 @@ function parseFlag(argsString, customRules = {}) {
     return options;
 }
 
-async function translate(text, target, source = "auto") {
+async function translate(text, target) {
     if (!text || !target) return null;
 
     try {
-        const apiUrl = api.createUrl("siputzx", "/api/tools/translate", {
+        const apiUrl = api.createUrl("deline", "/tools/translate", {
             text,
-            source,
             target
         });
-        const result = (await axios.get(apiUrl)).data.data.translatedText;
+        const result = (await axios.get(apiUrl)).data.data.hasil_terjemahan;
         return result;
     } catch (error) {
         consolefy.error(`Error: ${util.format(error)}`);

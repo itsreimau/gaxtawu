@@ -22,12 +22,12 @@ module.exports = {
             if (groupIndex > -1) {
                 blacklist.splice(groupIndex, 1);
                 botDb.blacklistBroadcast = blacklist;
-                botDb.save()
+                botDb.save();
                 return await ctx.reply(formatter.quote("✅ Grup ini telah dihapus dari blacklist broadcast"));
             } else {
                 blacklist.push(ctx.id);
                 botDb.blacklistBroadcast = blacklist;
-                botDb.save()
+                botDb.save();
                 return await ctx.reply(formatter.quote("✅ Grup ini telah ditambahkan ke blacklist broadcast"));
             }
         }
