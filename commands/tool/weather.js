@@ -32,7 +32,7 @@ module.exports = {
                     `${formatter.quote(`Kelembaban: ${result.cuaca.kelembapan}%`)}\n` +
                     `${formatter.quote(`Angin: ${result.angin.kecepatan} (dari ${result.cuaca.angin.dari} ke ${result.cuaca.angin.ke})`)}\n` +
                     `${formatter.quote(`Awan: ${result.cuaca.tutupanAwan}`)}\n` +
-                    formatter.quote(`Jarak Pandang: ${result.cuaca.jarakPandang.teks}`)
+                    formatter.quote(`Jarak Pandang: ${result.cuaca.jarakPandang.teks}`),
                 footer: config.msg.footer
             });
         } catch (error) {
