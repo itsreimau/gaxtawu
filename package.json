@@ -1,6 +1,6 @@
 {
   "name": "gaxtawu",
-  "version": "1.4.18-beta.5",
+  "version": "1.4.19-unstable.1",
   "description": "Useless WhatsApp Bot",
   "main": "index.js",
   "directories": {
@@ -13,20 +13,12 @@
     "start": "node .",
     "start:pm2": "pm2 start ./index.js --name $(basename $(pwd))"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/itsreimau/gaxtawu.git"
-  },
   "keywords": [
     "whatsapp",
     "whatsapp-bot"
   ],
   "author": "Ikbal Maulana (ItsReimau)",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/itsreimau/gaxtawu/issues"
-  },
-  "homepage": "https://github.com/itsreimau/gaxtawu#readme",
   "dependencies": {
     "@itsreimau/gktw": "github:itsreimau/gktw",
     "@mengkodingan/consolefy": "^1.0.1",
