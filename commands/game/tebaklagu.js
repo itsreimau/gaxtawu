@@ -25,7 +25,7 @@ module.exports = {
                 audio: {
                     url: result.lagu
                 },
-                mimetype: tools.mime.lookup("mp3"),
+                mimetype: tools.mime.lookup("mp3")
             });
             await ctx.sendMessage(ctx.id, {
                 text: `${formatter.quote(`Artis: ${result.artis}`)}\n` +

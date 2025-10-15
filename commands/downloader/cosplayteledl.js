@@ -23,7 +23,6 @@ module.exports = {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result.gallery_images;
-
             const album = result.images.map(imageUrl => ({
                 image: {
                     url: imageUrl

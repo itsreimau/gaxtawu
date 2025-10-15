@@ -25,7 +25,7 @@ module.exports = {
                 .setAuthor(author || "")
                 .setType(StickerTypes.FULL)
                 .setCategories(["🌕"])
-                .setId(ctx.msg.key.id)
+                .setID(ctx.msg.key.id)
                 .setQuality(50)
                 .build();
 

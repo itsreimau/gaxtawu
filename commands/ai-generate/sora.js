@@ -16,7 +16,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("https://okatsu-rolezapiiz.vercel.app", "/ai/txt2video", {
+            const apiUrl = tools.api.createUrl("https://kyyokatsurestapi.my.id", "/ai/txt2video", {
                 text: input
             });
             const result = (await axios.get(apiUrl)).data.videoUrl;

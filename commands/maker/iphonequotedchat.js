@@ -1,8 +1,9 @@
+const moment = require("moment-timezone");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
 module.exports = {
-    name: "bratgif",
-    aliases: ["bratg", "bratv", "bratvid", "bratvideo", "sbratgif", "sbratvid", "sbratvideo", "stickerbratgif", "stickerbratvid", "stickerbratvideo", "stikerbratgif", "stikerbratvid", "stikerbratvideo"],
+    name: "iphonequotedchat",
+    aliases: ["iqc"],
     category: "maker",
     permissions: {
         coin: 10
@@ -19,8 +20,10 @@ module.exports = {
         if (input.length > 1000) return await ctx.reply(formatter.quote("❎ Maksimal 1000 kata!"));
 
         try {
-            const result = tools.api.createUrl("yp", "/api/video/bratv", {
-                text: input
+            const result = tools.api.createUrl("deline", "/maker/iqc", {
+                text: input,
+                chatTime: moment().tz("Asia/Tokyo").format("HH:mm"),
+                statusBarTime: moment().tz("Asia/Jakarta").format("HH:mm")
             });
             const sticker = await new Sticker(result)
                 .setPack(config.sticker.packname)

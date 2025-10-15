@@ -19,7 +19,7 @@ module.exports = {
             const apiUrl = tools.api.createUrl("yp", "/api/search/youtube", {
                 q: input
             });
-            const result = (await axios.get(apiUrl)).data.results;
+            const result = (await axios.get(apiUrl)).data.results.filter(res => res.videoId);;
 
             const resultText = result.map(res =>
                 `${formatter.quote(`Judul: ${res.title}`)}\n` +

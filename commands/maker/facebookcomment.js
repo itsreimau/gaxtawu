@@ -1,8 +1,8 @@
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
 module.exports = {
-    name: "bratgif",
-    aliases: ["bratg", "bratv", "bratvid", "bratvideo", "sbratgif", "sbratvid", "sbratvideo", "stickerbratgif", "stickerbratvid", "stickerbratvideo", "stikerbratgif", "stikerbratvid", "stikerbratvideo"],
+    name: "facebookcomment",
+    aliases: ["fbc", "fbcomment"],
     category: "maker",
     permissions: {
         coin: 10
@@ -19,8 +19,12 @@ module.exports = {
         if (input.length > 1000) return await ctx.reply(formatter.quote("❎ Maksimal 1000 kata!"));
 
         try {
-            const result = tools.api.createUrl("yp", "/api/video/bratv", {
-                text: input
+            const isQuoted = ctx.args.length === 0 && ctx.quoted;
+            const profilePictureUrl = await ctx.core.profilePictureUrl(isQuoted ? ctx.quoted?.sender : ctx.sender.jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
+            const result = tools.api.createUrl("https://api.zenzxz.my.id", "/api/maker/fakefb", {
+                name: isQuoted ? ctx.quoted?.pushName : ctx.sender.pushName,
+                comment: input,
+                ppurl: profilePictureUrl
             });
             const sticker = await new Sticker(result)
                 .setPack(config.sticker.packname)

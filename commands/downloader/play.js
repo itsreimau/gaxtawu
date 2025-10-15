@@ -88,7 +88,7 @@ module.exports = {
                 const searchApiUrl = tools.api.createUrl("yp", "/api/search/youtube", {
                     q: input
                 });
-                const searchResult = (await axios.get(searchApiUrl)).data.results[searchIndex];
+                const searchResult = ((await axios.get(searchApiUrl)).data.results.filter(res => res.videoId))[searchIndex];
 
                 await ctx.reply({
                     text: `${formatter.quote(`Judul: ${searchResult.title}`)}\n` +

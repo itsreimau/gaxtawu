@@ -38,7 +38,7 @@ module.exports = {
                         .setAuthor(config.sticker.author)
                         .setType(StickerTypes.FULL)
                         .setCategories([sticker.emoji])
-                        .setId(`${ctx.msg.key.id}_${packIndex}_${i}`)
+                        .setID(`${ctx.msg.key.id}_${packIndex}_${i}`)
                         .setQuality(50)
                         .build();
                     stickersPack.push({
@@ -60,7 +60,7 @@ module.exports = {
                             .setAuthor(config.sticker.author)
                             .setType(StickerTypes.FULL)
                             .setCategories([result.stickers[0].emoji])
-                            .setId(ctx.msg.key.id)
+                            .setID(ctx.msg.key.id)
                             .setQuality(50)
                             .build(),
                         stickers: stickersPack

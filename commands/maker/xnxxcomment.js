@@ -31,7 +31,7 @@ module.exports = {
                 .setAuthor(config.sticker.author)
                 .setType(StickerTypes.FULL)
                 .setCategories(["🌕"])
-                .setId(ctx.msg.key.id)
+                .setID(ctx.msg.key.id)
                 .setQuality(50)
                 .build();
 
