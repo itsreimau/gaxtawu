@@ -1,6 +1,6 @@
 {
   "name": "gaxtawu",
-  "version": "1.4.19-unstable.1",
+  "version": "1.4.19-unstable.2",
   "description": "Useless WhatsApp Bot",
   "main": "index.js",
   "directories": {
@@ -21,7 +21,6 @@
   "license": "MIT",
   "dependencies": {
     "@itsreimau/gktw": "github:itsreimau/gktw",
-    "@mengkodingan/consolefy": "^1.0.1",
     "axios": "^1.12.2",
     "cfonts": "^3.3.1",
     "jimp": "^0.22.12",

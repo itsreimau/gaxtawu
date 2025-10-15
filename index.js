@@ -1,7 +1,7 @@
 // Impor modul dan dependensi yang diperlukan
 require("./config.js");
 const pkg = require("./package.json");
-const { Consolefy } = require("@mengkodingan/consolefy");
+const { Consolefy } = require("@itsreimau/gktw");
 const CFonts = require("cfonts");
 const fs = require("node:fs");
 const http = require("node:http");
