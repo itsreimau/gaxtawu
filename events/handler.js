@@ -134,26 +134,28 @@ module.exports = (bot) => {
 
     // Event saat bot menerima pesan
     bot.ev.on(Events.MessagesUpsert, async (m, ctx) => {
+        if (!m.key.fromMe) return;
+
         // Variabel umum
         const isGroup = ctx.isGroup();
         const isPrivate = ctx.isPrivate();
-        const senderJid = ctx.sender.jid;
-        const senderId = ctx.getId(senderJid);
-        const senderLid = Baileys.isJidUser(senderJid) ? m.key.participantAlt || m.key.remoteJidAlt : senderJid;
-        const groupJid = isGroup ? ctx.id : null;
-        const groupId = isGroup ? ctx.getId(groupJid) : null;
-        const isOwner = ctx.citation.isOwner;
-        const isCmd = tools.cmd.isCmd(m.content, ctx.bot);
-        const isAdmin = isGroup ? await ctx.group().isAdmin(senderJid) : false;
-
-        // Mengambil database
-        const botDb = ctx.db.bot;
-        const userDb = ctx.db.user;
-        const groupDb = ctx.db.group;
 
         // Grup atau Pribadi
         if (isGroup || isPrivate) {
-            if (m.key.fromMe || Baileys.isJidStatusBroadcast(m.key.remoteJid) || Baileys.isJidNewsletter(m.key.remoteJid)) return;
+            // Variabel umum
+            const senderJid = ctx.sender.jid;
+            const senderId = ctx.getId(senderJid);
+            const senderLid = Baileys.isJidUser(senderJid) ? m.key.participantAlt || m.key.remoteJidAlt : senderJid;
+            const groupJid = isGroup ? ctx.id : null;
+            const groupId = isGroup ? ctx.getId(groupJid) : null;
+            const isOwner = ctx.citation.isOwner;
+            const isCmd = tools.cmd.isCmd(m.content, ctx.bot);
+            const isAdmin = isGroup ? await ctx.group().isAdmin(senderJid) : false;
+
+            // Mengambil database
+            const botDb = ctx.db.bot;
+            const userDb = ctx.db.user;
+            const groupDb = ctx.db.group;
 
             // Penanganan database pengguna
             if (!userDb?.username) userDb.username = `@user_${tools.cmd.generateUID(senderId, false)}`;
@@ -220,42 +222,115 @@ module.exports = (bot) => {
                     userDb.save();
                 }
             }
-        }
 
-        // Penanganan obrolan grup
-        if (isGroup) {
-            if (m.key.fromMe || Baileys.isJidStatusBroadcast(m.key.remoteJid) || Baileys.isJidNewsletter(m.key.remoteJid)) return;
+            // Penanganan obrolan grup
+            if (isGroup) {
+                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from group: ${groupId}, by: ${Baileys.isLidUser(senderJid) ? `${senderId} (LID)` : senderId}`); // Log pesan masuk
 
-            if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from group: ${groupId}, by: ${Baileys.isLidUser(senderJid) ? `${senderId} (LID)` : senderId}`); // Log pesan masuk
+                // Variabel umum
+                const groupAutokick = groupDb?.option?.autokick;
 
-            // Variabel umum
-            const groupAutokick = groupDb?.option?.autokick;
+                // Penanganan database grup
+                if (groupDb?.sewa && Date.now() > userDb?.sewaExpiration) {
+                    delete groupDb.sewa;
+                    delete groupDb.sewaExpiration;
+                    groupDb.save();
+                }
 
-            // Penanganan database grup
-            if (groupDb?.sewa && Date.now() > userDb?.sewaExpiration) {
-                delete groupDb.sewa;
-                delete groupDb.sewaExpiration;
-                groupDb.save();
-            }
-
-            // Penanganan AFK (Pengguna yang disebutkan atau di-balas/quote)
-            const userAfkMentions = ctx.quoted ? [ctx.getId(ctx.quoted.sender)] : ctx.getMentioned().map(jid => ctx.getId(jid));
-            if (userAfkMentions.length > 0) {
-                for (const userAfkMention of userAfkMentions) {
-                    const userAfk = userDb?.afk || {};
-                    if (userAfk.reason || userAfk.timestamp) {
-                        const timeago = tools.msg.convertMsToDuration(Date.now() - userAfk.timestamp);
-                        await ctx.reply(formatter.quote(`📴 Jangan tag! Dia sedang AFK ${userAfk.reason ? `dengan alasan ${formatter.inlineCode(userAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`));
+                // Penanganan AFK (Pengguna yang disebutkan atau di-balas/quote)
+                const userAfkMentions = ctx.quoted ? [ctx.getId(ctx.quoted.sender)] : ctx.getMentioned().map(jid => ctx.getId(jid));
+                if (userAfkMentions.length > 0) {
+                    for (const userAfkMention of userAfkMentions) {
+                        const userAfk = userDb?.afk || {};
+                        if (userAfk.reason || userAfk.timestamp) {
+                            const timeago = tools.msg.convertMsToDuration(Date.now() - userAfk.timestamp);
+                            await ctx.reply(formatter.quote(`📴 Jangan tag! Dia sedang AFK ${userAfk.reason ? `dengan alasan ${formatter.inlineCode(userAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`));
+                        }
                     }
                 }
-            }
 
-            // Penanganan antimedia
-            for (const type of ["audio", "document", "gif", "image", "sticker", "video"]) {
-                if (groupDb?.option?.[`anti${type}`] && !isOwner && !isAdmin) {
-                    const checkMedia = tools.cmd.checkMedia(ctx.getMessageType(), type);
+                // Penanganan antimedia
+                for (const type of ["audio", "document", "gif", "image", "sticker", "video"]) {
+                    if (groupDb?.option?.[`anti${type}`] && !isOwner && !isAdmin) {
+                        const checkMedia = tools.cmd.checkMedia(ctx.getMessageType(), type);
+                        if (checkMedia) {
+                            await ctx.reply(formatter.quote(`⛔ Jangan kirim ${type}!`));
+                            await ctx.deleteMessage(m.key);
+                            if (groupAutokick) {
+                                await ctx.group().kick(senderJid);
+                            } else {
+                                await addWarning(ctx, senderLid, groupDb);
+                            }
+                        }
+                    }
+                }
+
+                // Penanganan antilink
+                if (groupDb?.option?.antilink && !isOwner && !isAdmin) {
+                    if (m.content && tools.cmd.isUrl(m.content)) {
+                        await ctx.reply(formatter.quote("⛔ Jangan kirim link!"));
+                        await ctx.deleteMessage(m.key);
+                        if (groupAutokick) {
+                            await ctx.group().kick(senderJid);
+                        } else {
+                            await addWarning(ctx, senderLid, groupDb);
+                        }
+                    }
+                }
+
+                // Penanganan antispam
+                if (groupDb?.option?.antispam && !isOwner && !isAdmin) {
+                    const now = Date.now();
+                    const spamData = groupDb?.spam || [];
+                    const userSpam = spamData.find(spam => spam.jid === senderLid) || {
+                        jid: senderLid,
+                        count: 0,
+                        lastMessageTime: 0
+                    };
+
+                    const timeDiff = now - userSpam.lastMessageTime;
+                    const newCount = timeDiff < 5000 ? userSpam.count + 1 : 1;
+
+                    userSpam.count = newCount;
+                    userSpam.lastMessageTime = now;
+
+                    if (!spamData.some(spam => spam.jid === senderLid)) spamData.push(userSpam);
+
+                    groupDb.spam = spamData;
+
+                    if (newCount > 5) {
+                        await ctx.reply(formatter.quote("⛔ Jangan spam, ngelag woy!"));
+                        await ctx.deleteMessage(m.key);
+                        if (groupAutokick) {
+                            await ctx.group().kick(senderJid);
+                        } else {
+                            await addWarning(ctx, senderLid, groupDb);
+                        }
+                        groupDb.spam = spamData.filter(spam => spam.jid !== senderLid);
+                    }
+
+                    groupDb.save();
+                }
+
+                // Penanganan antitagsw
+                if (groupDb?.option?.antitagsw && !isOwner && !isAdmin) {
+                    const checkMedia = tools.cmd.checkMedia(ctx.getMessageType(), "groupStatusMention") || m.message?.groupStatusMentionMessage?.protocolMessage?.type === 25;
                     if (checkMedia) {
-                        await ctx.reply(formatter.quote(`⛔ Jangan kirim ${type}!`));
+                        await ctx.reply(formatter.quote(`⛔ Jangan tag grup di SW, gak ada yg peduli!`));
+                        await ctx.deleteMessage(m.key);
+                        if (groupAutokick) {
+                            await ctx.group().kick(senderJid);
+                        } else {
+                            await addWarning(ctx, senderLid, groupDb);
+                        }
+                    }
+                }
+
+                // Penanganan antitoxic
+                if (groupDb?.option?.antitoxic && !isOwner && !isAdmin) {
+                    const toxicRegex = /anj(k|g)|ajn?(g|k)|a?njin(g|k)|bajingan|b(a?n)?gsa?t|ko?nto?l|me?me?(k|q)|pe?pe?(k|q)|meki|titi(t|d)|pe?ler|tetek|toket|ngewe|go?blo?k|to?lo?l|idiot|(k|ng)e?nto?(t|d)|jembut|bego|dajj?al|janc(u|o)k|pantek|puki ?(mak)?|kimak|kampang|lonte|col(i|mek?)|pelacur|henceu?t|nigga|fuck|dick|bitch|tits|bastard|asshole|dontol|kontoi|ontol/i;
+                    if (m.content && toxicRegex.test(m.content)) {
+                        await ctx.reply(formatter.quote("⛔ Jangan toxic!"));
                         await ctx.deleteMessage(m.key);
                         if (groupAutokick) {
                             await ctx.group().kick(senderJid);
@@ -266,89 +341,12 @@ module.exports = (bot) => {
                 }
             }
 
-            // Penanganan antilink
-            if (groupDb?.option?.antilink && !isOwner && !isAdmin) {
-                if (m.content && tools.cmd.isUrl(m.content)) {
-                    await ctx.reply(formatter.quote("⛔ Jangan kirim link!"));
-                    await ctx.deleteMessage(m.key);
-                    if (groupAutokick) {
-                        await ctx.group().kick(senderJid);
-                    } else {
-                        await addWarning(ctx, senderLid, groupDb);
-                    }
-                }
+            // Penanganan obrolan pribadi
+            if (isPrivate) {
+                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from: ${Baileys.isLidUser(senderJid) ? `${senderId} (LID)` : senderId}`); // Log pesan masuk
+
+                // Apa yaa...
             }
-
-            // Penanganan antispam
-            if (groupDb?.option?.antispam && !isOwner && !isAdmin) {
-                const now = Date.now();
-                const spamData = groupDb?.spam || [];
-                const userSpam = spamData.find(spam => spam.jid === senderLid) || {
-                    jid: senderLid,
-                    count: 0,
-                    lastMessageTime: 0
-                };
-
-                const timeDiff = now - userSpam.lastMessageTime;
-                const newCount = timeDiff < 5000 ? userSpam.count + 1 : 1;
-
-                userSpam.count = newCount;
-                userSpam.lastMessageTime = now;
-
-                if (!spamData.some(spam => spam.jid === senderLid)) spamData.push(userSpam);
-
-                groupDb.spam = spamData;
-
-                if (newCount > 5) {
-                    await ctx.reply(formatter.quote("⛔ Jangan spam, ngelag woy!"));
-                    await ctx.deleteMessage(m.key);
-                    if (groupAutokick) {
-                        await ctx.group().kick(senderJid);
-                    } else {
-                        await addWarning(ctx, senderLid, groupDb);
-                    }
-                    groupDb.spam = spamData.filter(spam => spam.jid !== senderLid);
-                }
-
-                groupDb.save();
-            }
-
-            // Penanganan antitagsw
-            if (groupDb?.option?.antitagsw && !isOwner && !isAdmin) {
-                const checkMedia = tools.cmd.checkMedia(ctx.getMessageType(), "groupStatusMention") || m.message?.groupStatusMentionMessage?.protocolMessage?.type === 25;
-                if (checkMedia) {
-                    await ctx.reply(formatter.quote(`⛔ Jangan tag grup di SW, gak ada yg peduli!`));
-                    await ctx.deleteMessage(m.key);
-                    if (groupAutokick) {
-                        await ctx.group().kick(senderJid);
-                    } else {
-                        await addWarning(ctx, senderLid, groupDb);
-                    }
-                }
-            }
-
-            // Penanganan antitoxic
-            if (groupDb?.option?.antitoxic && !isOwner && !isAdmin) {
-                const toxicRegex = /anj(k|g)|ajn?(g|k)|a?njin(g|k)|bajingan|b(a?n)?gsa?t|ko?nto?l|me?me?(k|q)|pe?pe?(k|q)|meki|titi(t|d)|pe?ler|tetek|toket|ngewe|go?blo?k|to?lo?l|idiot|(k|ng)e?nto?(t|d)|jembut|bego|dajj?al|janc(u|o)k|pantek|puki ?(mak)?|kimak|kampang|lonte|col(i|mek?)|pelacur|henceu?t|nigga|fuck|dick|bitch|tits|bastard|asshole|dontol|kontoi|ontol/i;
-                if (m.content && toxicRegex.test(m.content)) {
-                    await ctx.reply(formatter.quote("⛔ Jangan toxic!"));
-                    await ctx.deleteMessage(m.key);
-                    if (groupAutokick) {
-                        await ctx.group().kick(senderJid);
-                    } else {
-                        await addWarning(ctx, senderLid, groupDb);
-                    }
-                }
-            }
-        }
-
-        // Penanganan obrolan pribadi
-        if (isPrivate) {
-            if (m.key.fromMe || Baileys.isJidStatusBroadcast(m.key.remoteJid) || Baileys.isJidNewsletter(m.key.remoteJid)) return;
-
-            if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from: ${Baileys.isLidUser(senderJid) ? `${senderId} (LID)` : senderId}`); // Log pesan masuk
-
-            // Apa yaa...
         }
     });
 

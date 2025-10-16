@@ -24,7 +24,7 @@ module.exports = {
             for (const userJid of bannedUsers) {
                 const userId = ctx.getId(userJid);
                 resultText += `${formatter.quote(`@${userId}`)}\n`;
-                userMentions.push(userId);
+                userMentions.push(userJid);
             }
 
             await ctx.reply({

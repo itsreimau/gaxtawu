@@ -69,6 +69,25 @@ module.exports = (bot) => {
             userDb.save();
         }
 
+        // Fungsi untuk mengecek membership
+        const checkBotGroupMembership = async () => {
+            if (!config.bot.groupJid) return true;
+
+            const now = Date.now();
+            const duration = 24 * 60 * 60 * 1000;
+
+            if (userDb?.botGroupMembership && (now - userDb.botGroupMembership.timestamp) < duration) return userDb.botGroupMembership.isMember;
+
+            const isMember = await ctx.group(config.bot.groupJid).isMemberExist(senderJid);
+            userDb.botGroupMembership = {
+                isMember: isMember,
+                timestamp: now
+            };
+            userDb.save();
+
+            return isMember;
+        };
+
         // Simulasi mengetik
         const simulateTyping = async () => {
             if (config.system.autoTypingOnCmd) await ctx.simulateTyping();
@@ -88,7 +107,7 @@ module.exports = (bot) => {
             reaction: "🚫"
         }, {
             key: "cooldown",
-            condition: new Cooldown(ctx, config.system.cooldown).onCooldown && !isOwner && !userDb?.premium,
+            condition: new Cooldown(ctx, config.system.cooldown, "multi").onCooldown && !isOwner && !userDb?.premium,
             msg: config.msg.cooldown,
             reaction: "💤"
         }, {
@@ -114,7 +133,7 @@ module.exports = (bot) => {
             reaction: "💎"
         }, {
             key: "requireBotGroupMembership",
-            condition: config.system.requireBotGroupMembership && !isOwner && !userDb?.premium && ctx.used.command !== "botgroup" && config.bot.groupJid && !await ctx.group(config.bot.groupJid).isMemberExist(senderJid),
+            condition: config.system.requireBotGroupMembership && !isOwner && !userDb?.premium && ctx.used.command !== "botgroup" && config.bot.groupJid && !await checkBotGroupMembership(),
             msg: config.msg.botGroupMembership,
             buttons: [{
                 buttonId: `${ctx.used.prefix}botgroup`,

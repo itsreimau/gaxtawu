@@ -64,7 +64,7 @@ module.exports = {
                 const searchApiUrl = tools.api.createUrl("yp", "/api/search/spotify", {
                     q: input
                 });
-                const searchResult = (await axios.get(searchApiUrl)).data.result[searchIndex];
+                const searchResult = (await axios.get(searchApiUrl)).data.data[searchIndex];
 
                 await ctx.reply({
                     text: `${formatter.quote(`Judul: ${searchResult.title}`)}\n` +
