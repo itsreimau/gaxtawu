@@ -158,7 +158,7 @@ module.exports = (bot) => {
             const groupDb = ctx.db.group;
 
             // Penanganan database pengguna
-            if (Object.keys(userDb).length > 0) {
+            if (userDb) {
                 if (!userDb?.username) userDb.username = `@user_${tools.cmd.generateUID(senderId, false)}`;
                 if (!userDb?.uid || userDb?.uid !== tools.cmd.generateUID(senderId)) userDb.uid = tools.cmd.generateUID(senderId);
                 if (userDb?.premium && Date.now() > userDb.premiumExpiration) {
