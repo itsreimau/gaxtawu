@@ -2,36 +2,29 @@ const { Baileys } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
-    name: "toghibli",
-    aliases: ["jadighibli"],
+    name: "image2prompt",
+    aliases: ["imagetoprompt", "img2prompt", "imgtoprompt"],
     category: "ai-misc",
     permissions: {
-        premium: true
+        coin: 10
     },
     code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
+        const [checkMedia, checkQuotedMedia] = await Promise.all([
             tools.cmd.checkMedia(ctx.msg.contentType, "image"),
             tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, "image")
-        ];
+        ]);
 
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], "image")));
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = (await Baileys.uploadFile(buffer)).data.url;
-            const apiUrl = tools.api.createUrl("nekolabs", "/tools/convert/toghibli/v2", {
-                imageUrl: uploadUrl
+            const apiUrl = tools.api.createUrl("deline", "/ai/toprompt", {
+                url: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.original;
 
-            await ctx.reply({
-                image: {
-                    url: result
-                },
-                mimetype: tools.mime.lookup("png"),
-                caption: formatter.quote("Untukmu, tuan!"),
-                footer: config.msg.footer
-            });
+            await ctx.reply(result);
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

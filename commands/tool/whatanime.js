@@ -2,11 +2,10 @@ const { Baileys } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
-    name: "toghibli",
-    aliases: ["jadighibli"],
-    category: "ai-misc",
+    name: "whatanime",
+    category: "tool",
     permissions: {
-        premium: true
+        coin: 10
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
@@ -19,17 +18,18 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = (await Baileys.uploadFile(buffer)).data.url;
-            const apiUrl = tools.api.createUrl("nekolabs", "/tools/convert/toghibli/v2", {
-                imageUrl: uploadUrl
+            const apiUrl = tools.api.createUrl("deline", "/tools/whatanime", {
+                url: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
-                image: {
-                    url: result
-                },
-                mimetype: tools.mime.lookup("png"),
-                caption: formatter.quote("Untukmu, tuan!"),
+                text: `${formatter.quote(`Judul: ${result.title}`)}\n` +
+                    `${formatter.quote(`Genre: ${result.genres[0]}`)}\n` +
+                    `${formatter.quote(`Sinopsis: ${await tools.cmd.translate(result.synopsis, "id")}`)}\n` +
+                    `${formatter.quote(`Karakter: ${result.character}`)}\n` +
+                    `${formatter.quote(`Deskripsi Karakter: ${await tools.cmd.translate(result.description, "id")}`)}\n` +
+                    formatter.quote(`Referensi: ${result.references[0]}`)
                 footer: config.msg.footer
             });
         } catch (error) {

@@ -16,10 +16,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("izumi", "/ai/deepseek", {
-                messages: input
+            const apiUrl = tools.api.createUrl("deline", "/ai/deepseek", {
+                text: input
             });
-            const result = (await axios.get(apiUrl)).data.message;
+            const result = (await axios.get(apiUrl)).data.result.reply;
 
             await ctx.reply(result);
         } catch (error) {

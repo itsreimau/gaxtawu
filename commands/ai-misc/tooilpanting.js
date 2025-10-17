@@ -2,8 +2,8 @@ const { Baileys } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
-    name: "toghibli",
-    aliases: ["jadighibli"],
+    name: "tooilpanting",
+    aliases: ["jadioilpanting"],
     category: "ai-misc",
     permissions: {
         premium: true
@@ -19,7 +19,7 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = (await Baileys.uploadFile(buffer)).data.url;
-            const apiUrl = tools.api.createUrl("nekolabs", "/tools/convert/toghibli/v2", {
+            const apiUrl = tools.api.createUrl("nekolabs", "/tools/convert/tooilpanting", {
                 imageUrl: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.result;

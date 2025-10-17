@@ -71,8 +71,6 @@ module.exports = (bot) => {
 
         // Fungsi untuk mengecek membership
         const checkBotGroupMembership = async () => {
-            if (!config.bot.groupJid) return true;
-
             const now = Date.now();
             const duration = 24 * 60 * 60 * 1000;
 

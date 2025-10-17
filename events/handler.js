@@ -158,15 +158,17 @@ module.exports = (bot) => {
             const groupDb = ctx.db.group;
 
             // Penanganan database pengguna
-            if (!userDb?.username) userDb.username = `@user_${tools.cmd.generateUID(senderId, false)}`;
-            if (!userDb?.uid || userDb?.uid !== tools.cmd.generateUID(senderId)) userDb.uid = tools.cmd.generateUID(senderId);
-            if (userDb?.premium && Date.now() > userDb.premiumExpiration) {
-                delete userDb.premium;
-                delete userDb.premiumExpiration;
+            if (Object.keys(userDb).length > 0) {
+                if (!userDb?.username) userDb.username = `@user_${tools.cmd.generateUID(senderId, false)}`;
+                if (!userDb?.uid || userDb?.uid !== tools.cmd.generateUID(senderId)) userDb.uid = tools.cmd.generateUID(senderId);
+                if (userDb?.premium && Date.now() > userDb.premiumExpiration) {
+                    delete userDb.premium;
+                    delete userDb.premiumExpiration;
+                }
+                if (isOwner || userDb?.premium) userDb.coin = 0;
+                if (!userDb?.coin || !Number.isFinite(userDb.coin)) userDb.coin = 500;
+                userDb.save();
             }
-            if (isOwner || userDb?.premium) userDb.coin = 0;
-            if (!userDb?.coin || !Number.isFinite(userDb.coin)) userDb.coin = 500;
-            userDb.save();
 
             // Pengecekan mode bot (premium, group, private, self)
             if (botDb?.mode === "premium" && !isOwner && !userDb?.premium) return;

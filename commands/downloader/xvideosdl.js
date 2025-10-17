@@ -1,35 +1,33 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "githubdl",
-    aliases: ["ghdl", "gitclone"],
+    name: "xvideosdl",
     category: "downloader",
     permissions: {
-        coin: 10
+        premium: true
     },
     code: async (ctx) => {
         const url = ctx.args[0] || null;
 
         if (!url) return await ctx.reply(
             `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://github.com/itsreimau/gaxtawu"))
+            formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://www.xvideos.com/video.ueppookde14/evangelion_hentai"))
         );
 
         const isUrl = tools.cmd.isUrl(url);
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
-            const apiUrl = tools.api.createUrl("bagus", "/api/download/github", {
+            const apiUrl = tools.api.createUrl("deline", "/downloader/xvideos", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.data;
+            const result = (await axios.get(apiUrl)).data.result.videos;
 
             await ctx.reply({
-                document: {
-                    url: result.download_url
+                video: {
+                    url: result.high || result.low
                 },
-                fileName: `${result.owner}-${result.repo}.zip`,
-                mimetype: tools.mime.lookup("zip"),
+                mimetype: tools.mime.lookup("mp4"),
                 caption: formatter.quote(`URL: ${url}`),
                 footer: config.msg.footer
             });

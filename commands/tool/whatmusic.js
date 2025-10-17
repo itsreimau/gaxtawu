@@ -2,10 +2,10 @@ const { Baileys } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
-    name: "vocalremover",
-    category: "ai-misc",
+    name: "whatmusic",
+    category: "tool",
     permissions: {
-        premium: 10
+        coin: 10
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
@@ -18,16 +18,15 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = (await Baileys.uploadFile(buffer)).data.url;
-            const apiUrl = tools.api.createUrl("zell", "/tools/vocalremover", {
+            const apiUrl = tools.api.createUrl("deline", "/tools/whatmusic", {
                 url: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.instrumental_path;
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
-                audio: {
-                    url: result
-                },
-                mimetype: tools.mime.lookup("mp3")
+                text: `${formatter.quote(`Judul: ${result.title}`)}\n` +
+                    formatter.quote(`Artis: ${result.artists}`)
+                footer: config.msg.footer
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

@@ -5,6 +5,9 @@ module.exports = {
     name: "telegramstickerdl",
     aliases: ["telesticker", "telegramsticker"],
     category: "downloader",
+    permissions: {
+        premium: true
+    },
     code: async (ctx) => {
         const url = ctx.args[0] || null;
 

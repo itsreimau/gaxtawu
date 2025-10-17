@@ -1,3 +1,4 @@
+const axios = require("axios");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
 module.exports = {
@@ -18,10 +19,11 @@ module.exports = {
         );
 
         try {
-            const result = tools.api.createUrl("hang", "/tools/emojimix", {
+            const apiUrl = tools.api.createUrl("deline", "/maker/emojimix", {
                 emoji1,
                 emoji2
             });
+            const result = (await axios.get(apiUrl)).data.result.png;
             const sticker = await new Sticker(result)
                 .setPack(config.sticker.packname)
                 .setAuthor(config.sticker.author)

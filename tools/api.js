@@ -13,7 +13,7 @@ const APIs = {
         baseURL: "https://api.hanggts.xyz"
     },
     izumi: {
-        baseURL: "https://izumiiiiiiii.dpdns.org"
+        baseURL: "https://ootaizumi.qzz.io"
     },
     nekolabs: {
         baseURL: "https://api.nekolabs.my.id"
