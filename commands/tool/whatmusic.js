@@ -25,7 +25,7 @@ module.exports = {
 
             await ctx.reply({
                 text: `${formatter.quote(`Judul: ${result.title}`)}\n` +
-                    formatter.quote(`Artis: ${result.artists}`)
+                    formatter.quote(`Artis: ${result.artists}`),
                 footer: config.msg.footer
             });
         } catch (error) {

@@ -29,7 +29,7 @@ module.exports = {
                     `${formatter.quote(`Sinopsis: ${await tools.cmd.translate(result.synopsis, "id")}`)}\n` +
                     `${formatter.quote(`Karakter: ${result.character}`)}\n` +
                     `${formatter.quote(`Deskripsi Karakter: ${await tools.cmd.translate(result.description, "id")}`)}\n` +
-                    formatter.quote(`Referensi: ${result.references[0]}`)
+                    formatter.quote(`Referensi: ${result.references[0]}`),
                 footer: config.msg.footer
             });
         } catch (error) {
