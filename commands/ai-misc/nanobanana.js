@@ -1,4 +1,4 @@
-const { Baileys } = require("@itsreimau/gktw");
+const { Gktw } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
@@ -11,8 +11,8 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "make it evangelion art style"))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "make it evangelion art style")
         );
 
         const [checkMedia, checkQuotedMedia] = [
@@ -20,11 +20,11 @@ module.exports = {
             tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, "image")
         ];
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], "image")));
+        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], "image"));
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const uploadUrl = (await Baileys.uploadFile(buffer)).data.url;
+            const uploadUrl = (await Gktw.uploadFile(buffer)).data.url;
             const apiUrl = tools.api.createUrl("nekolabs", "/ai/gemini/nano-banana", {
                 prompt: input,
                 imageUrl: uploadUrl
@@ -35,9 +35,7 @@ module.exports = {
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("png"),
-                caption: formatter.quote("Untukmu, tuan!"),
-                footer: config.msg.footer
+                mimetype: tools.mime.lookup("png")
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

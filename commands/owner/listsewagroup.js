@@ -34,15 +34,14 @@ module.exports = {
                 if (group.expiration) {
                     const timeDiff = group.expiration - Date.now();
                     const daysLeft = tools.msg.convertMsToDuration(timeDiff, ["hari"]);
-                    resultText += `${formatter.quote(`@${groupJid} (${daysLeft} tersisa)`)}\n`;
+                    resultText += `- @${groupJid} (${daysLeft} tersisa)\n`;
                 } else {
-                    resultText += `${formatter.quote(`@${groupJid} (Sewa permanen)`)}\n`;
+                    resultText += `- @${groupJid} (Sewa permanen)\n`;
                 }
             }
 
             await ctx.reply({
-                text: resultText.trim() || config.msg.notFound,
-                footer: config.msg.footer,
+                text: resultText.trim() || `ⓘ ${formatter.italic(config.msg.notFound)}`,
                 contextInfo: {
                     groupMentions
                 }

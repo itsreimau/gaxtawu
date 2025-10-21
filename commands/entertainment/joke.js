@@ -14,7 +14,6 @@ module.exports = {
 
             await ctx.reply({
                 text: result,
-                footer: config.msg.footer,
                 buttons: [{
                     buttonId: ctx.used.prefix + ctx.used.command,
                     buttonText: {

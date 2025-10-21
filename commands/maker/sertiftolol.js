@@ -1,6 +1,6 @@
 module.exports = {
-    name: "tolol",
-    aliases: ["sertiftolol"],
+    name: "sertiftolol",
+    aliases: ["tolol"],
     category: "maker",
     permissions: {
         coin: 10
@@ -9,12 +9,12 @@ module.exports = {
         const input = ctx.args.join(" ") || ctx.quoted?.content || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "shinji ikari"))}\n` +
-            formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."]))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            `${tools.msg.generateCmdExample(ctx.used, "shinji ikari")}\n` +
+            tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."])
         );
 
-        if (input.length > 100) return await ctx.reply(formatter.quote("❎ Maksimal 100 kata!"));
+        if (input.length > 100) return await ctx.reply(`ⓘ ${formatter.italic("Maksimal 100 kata!")}`);
 
         try {
             const result = tools.api.createUrl("hang", "/imagecreator/sertifikat-tolol", {
@@ -25,8 +25,7 @@ module.exports = {
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("png"),
-                footer: config.msg.footer
+                mimetype: tools.mime.lookup("png")
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

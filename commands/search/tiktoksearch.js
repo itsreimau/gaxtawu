@@ -11,8 +11,8 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "evangelion"))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "evangelion")
         );
 
         try {
@@ -26,8 +26,7 @@ module.exports = {
                     url: result
                 },
                 mimetype: tools.mime.lookup("mp4"),
-                caption: formatter.quote(`Kueri: ${input}`),
-                footer: config.msg.footer,
+                caption: `➛ ${formatter.bold("Kueri")}: ${input}`,
                 buttons: [{
                     buttonId: `${ctx.used.prefix + ctx.used.command} ${input}`,
                     buttonText: {

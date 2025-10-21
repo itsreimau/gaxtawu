@@ -6,6 +6,7 @@ module.exports = {
     code: async (ctx) => {
         try {
             const users = ctx.db.users.getAll();
+            const userDb = ctx.db.user;
 
             const leaderboardData = users.map(user => ({
                 jid: user.jid,
@@ -14,18 +15,14 @@ module.exports = {
                 winGame: user.winGame || 0
             })).sort((a, b) => b.winGame - a.winGame || b.level - a.level);
 
-            const userDb = ctx.db.user;
-            const isOwner = ctx.citation.isOwner;
-
-            await ctx.reply({
-                text: `${formatter.quote(`Nama: ${ctx.sender.pushName} (${userDb?.username})`)}\n` +
-                    `${formatter.quote(`Status: ${isOwner ? "Owner" : userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${tools.msg.convertMsToDuration(Date.now() - userDb.premiumExpiration, ["hari"])} tersisa` : "Selamanya"})` : "Freemium"}`)}\n` +
-                    `${formatter.quote(`Level: ${userDb?.level || 0} (${userDb?.xp || 0}/100)`)}\n` +
-                    `${formatter.quote(`Koin: ${isOwner || userDb?.premium ? "Tak terbatas" : userDb?.coin}`)}\n` +
-                    `${formatter.quote(`Menang: ${userDb?.winGame || 0}`)}\n` +
-                    formatter.quote(`Peringkat: ${leaderboardData.findIndex(user => user.id === ctx.sender.jid) + 1}`),
-                footer: config.msg.footer
-            });
+            await ctx.reply(
+                `➛ ${formatter.bold("Nama")}: ${ctx.sender.pushName} (${userDb?.username})\n` +
+                `➛ ${formatter.bold("Status")}: ${ctx.citation.isOwner ? "Owner" : userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${tools.msg.convertMsToDuration(Date.now() - userDb.premiumExpiration, ["hari"])} tersisa` : "Selamanya"})` : "Freemium"}\n` +
+                `➛ ${formatter.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
+                `➛ ${formatter.bold("Koin")}: ${ctx.citation.isOwner || userDb?.premium ? "Tak terbatas" : userDb?.coin}\n` +
+                `➛ ${formatter.bold("Menang")}: ${userDb?.winGame || 0}\n` +
+                `➛ ${formatter.bold("Peringkat")}: ${leaderboardData.findIndex(user => user.id === ctx.sender.jid) + 1}`
+            );
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

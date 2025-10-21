@@ -11,12 +11,12 @@ module.exports = {
         const url = ctx.args[0] || null;
 
         if (!url) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://www.mediafire.com/file/on2jvy5540bi22u/humanity-turned-into-lcl-scene.mp4/file"))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "https://www.mediafire.com/file/on2jvy5540bi22u/humanity-turned-into-lcl-scene.mp4/file")
         );
 
         const isUrl = tools.cmd.isUrl(url);
-        if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
+        if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
             const apiUrl = tools.api.createUrl("nekolabs", "/downloader/mediafire", {
@@ -30,8 +30,7 @@ module.exports = {
                 },
                 fileName: data.fileName,
                 mimetype: data.mimetype || "application/octet-stream",
-                caption: formatter.quote(`URL: ${url}`),
-                footer: config.msg.footer
+                caption: `➛ ${formatter.bold("URL")}: ${url}`
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

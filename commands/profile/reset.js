@@ -6,10 +6,9 @@ module.exports = {
     },
     code: async (ctx) => {
         await ctx.reply({
-            text: formatter.quote(`🤖 Yakin ingin mereset database Anda? Tindakan ini akan menghapus semua data yang tersimpan dan tidak dapat dipulihkan.`),
-            footer: config.msg.footer,
+            text: `ⓘ ${formatter.italic("Yakin ingin mereset database Anda? Tindakan ini akan menghapus semua data yang tersimpan dan tidak dapat dipulihkan.")}`,
             buttons: [{
-                buttonId: `y`,
+                buttonId: "y",
                 buttonText: {
                     displayText: "Ya"
                 }
@@ -30,10 +29,10 @@ module.exports = {
                 if (content === "y") {
                     const usersDb = ctx.db.users;
                     usersDb.reset(u => u.jid === ctx.sender.jid || u.alt === ctx.sender.jid);
-                    await ctx.reply(formatter.quote("✅ Database Anda telah berhasil direset!"));
+                    await ctx.reply(`ⓘ ${formatter.italic("Database Anda telah berhasil direset!")}`);
                     collector.stop();
                 } else if (content === "n") {
-                    await ctx.reply(formatter.quote("❌ Proses reset data telah dibatalkan."));
+                    await ctx.reply(`ⓘ ${formatter.italic("Proses reset data telah dibatalkan.")}`);
                     collector.stop();
                 }
             });

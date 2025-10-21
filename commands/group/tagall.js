@@ -6,7 +6,7 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || ctx.quoted?.content || formatter.quote("👋 Halo, Dunia!");
+        const input = ctx.args.join(" ") || ctx.quoted?.content || formatter.italic("◝(ᵔᗜᵔ)◜ Halo, Dunia!");
 
         try {
             const members = await ctx.group().members();
@@ -21,7 +21,7 @@ module.exports = {
             const resultText = mentions.map(mention => mention.tag).join(" ");
             await ctx.reply({
                 text: `${input}\n` +
-                    `${config.msg.readmore}· · ─ ·✶· ─ · ·\n` +
+                    `${config.msg.readmore}\n` +
                     resultText,
                 mentions: mentions.map(mention => mention.mention)
             });

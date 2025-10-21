@@ -14,8 +14,7 @@ module.exports = {
                     url: result
                 },
                 mimetype: tools.mime.lookup("png"),
-                caption: formatter.quote("Cabul!"),
-                footer: config.msg.footer,
+                caption: "Cabul!",
                 buttons: [{
                     buttonId: ctx.used.prefix + ctx.used.command,
                     buttonText: {

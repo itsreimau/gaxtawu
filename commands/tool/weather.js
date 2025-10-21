@@ -12,8 +12,8 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "bogor"))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "bogor")
         );
 
         try {
@@ -22,19 +22,16 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result;
 
-            await ctx.reply({
-                text: `${formatter.quote(`Lokasi: ${result.namaTempat}`)}\n` +
-                    `${formatter.quote(`Koordinat: ${result.koordinat.latitude}, ${result.koordinat.longitude}`)}\n` +
-                    `${formatter.quote(`Terakhir diperbarui: ${moment.unix(result.cuaca.waktu).tz("Asia/Jakarta").format("DD/MM/YYYY HH:mm")} WIB`)}\n` +
-                    `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
-                    `${formatter.quote(`Cuaca: ${result.cuaca.deskripsi}`)}\n` +
-                    `${formatter.quote(`Suhu: ${result.cuaca.suhu}`)}\n` +
-                    `${formatter.quote(`Kelembaban: ${result.cuaca.kelembapan}%`)}\n` +
-                    `${formatter.quote(`Angin: ${result.angin.kecepatan} (dari ${result.cuaca.angin.dari} ke ${result.cuaca.angin.ke})`)}\n` +
-                    `${formatter.quote(`Awan: ${result.cuaca.tutupanAwan}`)}\n` +
-                    formatter.quote(`Jarak Pandang: ${result.cuaca.jarakPandang.teks}`),
-                footer: config.msg.footer
-            });
+            await ctx.reply(
+                `➛ ${formatter.bold("Lokasi")}: ${result.namaTempat} (${result.koordinat.latitude}, ${result.koordinat.longitude})\n` +
+                `➛ ${formatter.bold("Cuaca")}: ${result.cuaca.deskripsi}\n` +
+                `➛ ${formatter.bold("Suhu")}: ${result.cuaca.suhu}\n` +
+                `➛ ${formatter.bold("Kelembaban")}: ${result.cuaca.kelembapan}\n` +
+                `➛ ${formatter.bold("Angin")}: ${result.angin.kecepatan} (dari ${result.cuaca.angin.dari} ke ${result.cuaca.angin.ke})\n` +
+                `➛ ${formatter.bold("Awan")}: ${result.cuaca.tutupanAwan}\n` +
+                `➛ ${formatter.bold("Jarak Pandang")}: ${result.cuaca.jarakPandang.teks}\n` +
+                `➛ ${formatter.bold("Terakhir diperbarui")}: ${moment.unix(result.cuaca.waktu).tz("Asia/Jakarta").format("DD/MM/YYYY HH:mm")} WIB`
+            );
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

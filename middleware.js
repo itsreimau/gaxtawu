@@ -50,8 +50,7 @@ module.exports = (bot) => {
             if (userDb?.autolevelup) {
                 const profilePictureUrl = await ctx.core.profilePictureUrl(senderJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
                 await ctx.reply({
-                    text: formatter.quote(`🎊 Selamat! Anda telah naik ke level ${newUserLevel}.`),
-                    footer: config.msg.footer,
+                    text: `ⓘ ${formatter.italic(`Selamat! Anda telah naik ke level ${newUserLevel}.`)}`,
                     buttons: [{
                         buttonId: `${ctx.used.prefix}setprofile autolevelup`,
                         buttonText: {
@@ -184,8 +183,8 @@ module.exports = (bot) => {
                     (userDb.lastSentMsg ||= {})[key] = now;
                     userDb.save();
                     return await ctx.reply({
-                        text: msg,
-                        footer: formatter.italic(`Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`),
+                        text: `ⓘ ${formatter.italic(msg)}\n` +
+                            `Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`,
                         buttons: buttons || null
                     });
                 } else {
@@ -284,8 +283,8 @@ module.exports = (bot) => {
                     (userDb.lastSentMsg ||= {})[key] = now;
                     userDb.save();
                     return await ctx.reply({
-                        text: msg,
-                        footer: formatter.italic(`Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`),
+                        text: `ⓘ ${formatter.italic(msg)}\n` +
+                            `Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`,
                         buttons: buttons || null
                     });
                 } else {

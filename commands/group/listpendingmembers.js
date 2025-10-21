@@ -10,18 +10,15 @@ module.exports = {
     code: async (ctx) => {
         const pending = await ctx.group().pendingMembers();
 
-        if (!pending.length === 0) return await ctx.reply(formatter.quote("✅ Tidak ada anggota yang menunggu persetujuan."));
+        if (!pending.length === 0) return await ctx.reply(`ⓘ ${formatter.italic("Tidak ada anggota yang menunggu persetujuan.")}`);
 
         try {
             const resultText = pending.map((member, index) => {
                 const id = ctx.getId(member.jid);
-                return formatter.quote(`${index + 1}. ${id}`);
+                return `${index + 1}. ${id}`;
             }).join("\n");
 
-            await ctx.reply({
-                text: resultText,
-                footer: config.msg.footer
-            });
+            await ctx.reply(resultText.trim());
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

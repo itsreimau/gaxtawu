@@ -1,5 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "listbanneduser",
     aliases: ["listban", "listbanned"],
@@ -23,14 +21,13 @@ module.exports = {
 
             for (const userJid of bannedUsers) {
                 const userId = ctx.getId(userJid);
-                resultText += `${formatter.quote(`@${userId}`)}\n`;
+                resultText += `- @${userId}\n`;
                 userMentions.push(userJid);
             }
 
             await ctx.reply({
-                text: resultText.trim() || config.msg.notFound,
-                mentions: userMentions,
-                footer: config.msg.footer
+                text: resultText.trim() || `ⓘ ${formatter.italic(config.msg.notFound)}`,
+                mentions: userMentions
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

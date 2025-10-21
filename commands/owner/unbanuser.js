@@ -11,13 +11,13 @@ module.exports = {
         const userJid = await ctx.quoted?.sender || await ctx.getLIDForPN(ctx.getMentioned()[0]) || (ctx.args[0] ? (await ctx.core.getLidUser(ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET))[0].lid : null);
 
         if (!userJid) return await ctx.reply({
-            text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `@${ctx.getId(Baileys.OFFICIAL_BIZ_JID)}`))}\n` +
-                `${formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]))}\n` +
-                formatter.quote(tools.msg.generatesFlagInfo({
+            text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
+                `${tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])}\n` +
+                tools.msg.generatesFlagInfo({
                     "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
-                })),
-            mentions: [Baileys.OFFICIAL_BIZ_JID]
+                }),
+            mentions: ["6281234567891@s.whatsapp.net"]
         });
 
         try {
@@ -34,10 +34,10 @@ module.exports = {
 
             const silent = flag?.silent || false;
             if (!silent) await ctx.sendMessage(userJid, {
-                text: formatter.quote("🎉 Anda telah diunbanned oleh Owner!")
+                text: `ⓘ ${formatter.italic("Anda telah diunbanned oleh Owner!")}`
             });
 
-            await ctx.reply(formatter.quote("✅ Berhasil diunbanned!"));
+            await ctx.reply(` ⓘ ${formatter.italic("Berhasil diunbanned!")}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

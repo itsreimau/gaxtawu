@@ -13,8 +13,7 @@ module.exports = {
                     url: result
                 },
                 mimetype: tools.mime.lookup("png"),
-                caption: formatter.quote("Sou, Watashi desu!"),
-                footer: config.msg.footer,
+                caption: "Sou, Watashi desu!",
                 buttons: [{
                     buttonId: ctx.used.prefix + ctx.used.command,
                     buttonText: {

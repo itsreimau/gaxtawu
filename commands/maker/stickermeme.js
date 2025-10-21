@@ -1,4 +1,4 @@
-const { Baileys } = require("@itsreimau/gktw");
+const { Gktw } = require("@itsreimau/gktw");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
 module.exports = {
@@ -12,8 +12,8 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "get in the fucking robot|shinji!"))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "get in the fucking robot|shinji!")
         );
 
         const [checkMedia, checkQuotedMedia] = [
@@ -21,13 +21,13 @@ module.exports = {
             tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["image", "sticker"])
         ];
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], ["image", "sticker"])));
+        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image", "sticker"]));
 
         try {
             let [top, bottom] = input.split("|").map(_input => _input);
             [top, bottom] = bottom ? [top || "_", bottom] : ["_", top || "_"];
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const uploadUrl = (await Baileys.uploadFile(buffer)).data.url;
+            const uploadUrl = (await Gktw.uploadFile(buffer)).data.url;
             const result = tools.api.createUrl("https://api.memegen.link", `/images/custom/${top}${bottom}.png`, {
                 background: uploadUrl
             });

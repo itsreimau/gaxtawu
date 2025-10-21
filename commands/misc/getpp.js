@@ -8,10 +8,10 @@ module.exports = {
         const userJid = ctx.quoted?.sender || ctx.getMentioned()[0] || (ctx.args[0] ? ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET : null);
 
         if (!userJid) return await ctx.reply({
-            text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `@${ctx.getId(Baileys.OFFICIAL_BIZ_JID)}`))}\n` +
-                formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])),
-            mentions: [Baileys.OFFICIAL_BIZ_JID]
+            text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
+                tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]),
+            mentions: ["6281234567891@s.whatsapp.net"]
         });
 
         try {
@@ -22,9 +22,8 @@ module.exports = {
                     url: result
                 },
                 mimetype: tools.mime.lookup("png"),
-                caption: formatter.quote(`Akun: @${ctx.getId(userJid)}`),
-                mentions: [userJid],
-                footer: config.msg.footer
+                caption: `➛ ${formatter.bold("Akun")}: @${ctx.getId(userJid)}`,
+                mentions: [userJid]
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

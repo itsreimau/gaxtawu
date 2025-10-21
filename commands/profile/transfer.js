@@ -9,17 +9,17 @@ module.exports = {
         const coinAmount = parseInt(ctx.args[ctx.quoted ? 0 : 1], 10) || null;
 
         if (!userJid || !coinAmount) return await ctx.reply({
-            text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `@${ctx.getId(Baileys.OFFICIAL_BIZ_JID)} 8`))}\n` +
-                formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])),
-            mentions: [Baileys.OFFICIAL_BIZ_JID]
+            text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "@6281234567891 8")}\n` +
+                tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]),
+            mentions: ["6281234567891@s.whatsapp.net"]
         });
 
         const userDb = ctx.db.user;
 
-        if (ctx.citation.isOwner) return await ctx.reply(formatter.quote("❎ Koin tak terbatas tidak dapat ditransfer."));
-        if (coinAmount <= 0) return await ctx.reply(formatter.quote("❎ Jumlah koin tidak boleh kurang dari atau sama dengan 0!"));
-        if (userDb?.coin < coinAmount) return await ctx.reply(formatter.quote("❎ Koin Anda tidak mencukupi untuk transfer ini!"));
+        if (ctx.citation.isOwner) return await ctx.reply(`ⓘ ${formatter.italic("Koin tak terbatas tidak dapat ditransfer.")}`);
+        if (coinAmount <= 0) return await ctx.reply(`ⓘ ${formatter.italic("Jumlah koin tidak boleh kurang dari atau sama dengan 0!")}`);
+        if (userDb?.coin < coinAmount) return await ctx.reply(`ⓘ ${formatter.italic("Koin Anda tidak mencukupi untuk transfer ini!")}`);
 
         try {
             const anotherUserDb = ctx.getDb("users", userJid);
@@ -28,7 +28,7 @@ module.exports = {
             anotherUserDb.save();
             userDb.save();
 
-            await ctx.reply(formatter.quote(`✅ Berhasil mentransfer ${coinAmount} koin ke pengguna itu!`));
+            await ctx.reply(`ⓘ ${formatter.italic(`Berhasil mentransfer ${coinAmount} koin ke pengguna itu!`)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

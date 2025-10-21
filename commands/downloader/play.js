@@ -25,12 +25,12 @@ module.exports = {
         const input = flag.input;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada -i 8 -s spotify"))}\n` +
-            formatter.quote(tools.msg.generatesFlagInfo({
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            `${tools.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada -i 8 -s spotify")}\n` +
+            tools.msg.generatesFlagInfo({
                 "-i <number>": "Pilihan pada data indeks",
                 "-s <text>": "Sumber untuk memutar lagu (tersedia: soundcloud, spotify, youtube | default: youtube)"
-            }))
+            })
         );
 
         try {
@@ -43,11 +43,10 @@ module.exports = {
                 });
                 const searchResult = (await axios.get(searchApiUrl)).data.result[searchIndex];
 
-                await ctx.reply({
-                    text: `${formatter.quote(`Judul: ${searchResult.title}`)}\n` +
-                        formatter.quote(`URL: ${searchResult.url}`),
-                    footer: config.msg.footer
-                });
+                await ctx.reply(
+                    `➛ ${formatter.bold("Judul")}: ${searchResult.title}\n` +
+                    `➛ ${formatter.bold("URL")}: ${searchResult.url}`
+                );
 
                 const downloadApiUrl = tools.api.createUrl("izumi", "/downloader/soundcloud", {
                     url: searchResult.url
@@ -66,12 +65,11 @@ module.exports = {
                 });
                 const searchResult = (await axios.get(searchApiUrl)).data.data[searchIndex];
 
-                await ctx.reply({
-                    text: `${formatter.quote(`Judul: ${searchResult.title}`)}\n` +
-                        `${formatter.quote(`Artis: ${searchResult.artist}`)}\n` +
-                        formatter.quote(`URL: ${searchResult.url}`),
-                    footer: config.msg.footer
-                });
+                await ctx.reply(
+                    `➛ ${formatter.bold("Judul")}: ${searchResult.title}\n` +
+                    `➛ ${formatter.bold("Artis")}: ${searchResult.artist}\n` +
+                    `➛ ${formatter.bold("URL")}: ${searchResult.url}`
+                );
 
                 const downloadApiUrl = tools.api.createUrl("izumi", "/downloader/spotify", {
                     url: searchResult.url
@@ -90,18 +88,16 @@ module.exports = {
                 });
                 const searchResult = ((await axios.get(searchApiUrl)).data.results.filter(res => res.videoId))[searchIndex];
 
-                await ctx.reply({
-                    text: `${formatter.quote(`Judul: ${searchResult.title}`)}\n` +
-                        `${formatter.quote(`Artis: ${searchResult.channel}`)}\n` +
-                        formatter.quote(`URL: ${searchResult.url}`),
-                    footer: config.msg.footer
-                });
+                await ctx.reply(
+                    `➛ ${formatter.bold("Judul")}: ${searchResult.title}\n` +
+                    `➛ ${formatter.bold("Artis")}: ${searchResult.channel}\n` +
+                    `➛ ${formatter.bold("URL")}: ${searchResult.url}`
+                );
 
-                const downloadApiUrl = tools.api.createUrl("izumi", "/downloader/youtube", {
-                    url: searchResult.url,
-                    format: "mp3"
+                const downloadApiUrl = tools.api.createUrl("yp", "/api/downloader/ytmp3", {
+                    url: searchResult.url
                 });
-                const downloadResult = (await axios.get(downloadApiUrl)).data.result.download;
+                const downloadResult = (await axios.get(downloadApiUrl)).data.result.link;
 
                 await ctx.reply({
                     audio: {

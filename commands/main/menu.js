@@ -29,16 +29,16 @@ module.exports = {
                 "misc": "Miscellaneous"
             };
 
-            let text = `Halo, @${ctx.getId(ctx.sender.jid)}! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}. Saya bisa melakukan banyak perintah, seperti membuat stiker, menggunakan AI untuk pekerjaan tertentu, dan beberapa perintah berguna lainnya.\n` +
+            let text = `— Halo, @${ctx.getId(ctx.sender.jid)}! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}. Saya bisa melakukan banyak perintah, seperti membuat stiker, menggunakan AI untuk pekerjaan tertentu, dan beberapa perintah berguna lainnya.\n` +
                 "\n" +
-                `${formatter.quote(`Tanggal: ${moment.tz(config.system.timeZone).locale("id").format("dddd, DD MMMM YYYY")}`)}\n` +
-                `${formatter.quote(`Waktu: ${moment.tz(config.system.timeZone).format("HH.mm.ss")}`)}\n` +
+                `➛ ${formatter.bold("Tanggal")}: ${moment.tz(config.system.timeZone).locale("id").format("dddd, DD MMMM YYYY")}\n` +
+                `➛ ${formatter.bold("Waktu")}: ${moment.tz(config.system.timeZone).format("HH.mm.ss")}\n` +
                 "\n" +
-                `${formatter.quote(`Bot Uptime: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}`)}\n` +
-                `${formatter.quote(`Database: ${fs.existsSync(ctx.bot.databaseDir) ? tools.msg.formatSize(fs.readdirSync(ctx.bot.databaseDir).reduce((total, file) => total + fs.statSync(path.join(ctx.bot.databaseDir, file)).size, 0) / 1024) : "N/A"} (Simpl.DB with JSON)`)}\n` +
-                `${formatter.quote("Library: @itsreimau/gktw (Fork of @mengkodingan/ckptw)")}\n` +
+                `➛ ${formatter.bold("Uptime")}: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
+                `➛ ${formatter.bold("Database")}: ${fs.existsSync(ctx.bot.databaseDir) ? tools.msg.formatSize(fs.readdirSync(ctx.bot.databaseDir).reduce((total, file) => total + fs.statSync(path.join(ctx.bot.databaseDir, file)).size, 0) / 1024) : "N/A"} (Simpl.DB with JSON)\n` +
+                `➛ ${formatter.bold("Library")}: @itsreimau/gktw (Fork of @mengkodingan/ckptw)\n` +
                 "\n" +
-                `${formatter.italic("Jangan lupa berdonasi agar bot tetap online.")}\n` +
+                `☆ ${formatter.italic("Jangan lupa berdonasi agar bot tetap online.")}\n` +
                 `${config.msg.readmore}\n`;
 
             for (const category of Object.keys(tag)) {
@@ -49,7 +49,8 @@ module.exports = {
                 }));
 
                 if (cmds.length > 0) {
-                    text += `✾ ${formatter.bold(tag[category])}\n`;
+                    text += "╭┈┈┈┈┈┈ ♡\n" +
+                        `┊ ✿ — ${formatter.bold(tag[category])}\n`;
 
                     cmds.forEach(cmd => {
                         let permissionsText = "";
@@ -59,12 +60,11 @@ module.exports = {
                         if (cmd.permissions.premium) permissionsText += "Ⓟ";
                         if (cmd.permissions.private) permissionsText += "ⓟ";
 
-                        text += formatter.quote(formatter.monospace(`${ctx.used.prefix + cmd.name} ${permissionsText}`));
-                        text += "\n";
+                        text += `┊ — ${ctx.used.prefix + cmd.name} ${permissionsText}\n`;
                     });
                 }
 
-                text += "\n";
+                text += "╰┈┈┈┈┈┈\n";
 
             }
 
@@ -75,7 +75,7 @@ module.exports = {
                 mimetype: tools.mime.lookup("png"),
                 caption: text.trim(),
                 mentions: [ctx.sender.jid],
-                footer: config.msg.footer,
+                footer: formatter.italic(config.msg.footer),
                 buttons: [{
                     buttonId: `${ctx.used.prefix}owner`,
                     buttonText: {

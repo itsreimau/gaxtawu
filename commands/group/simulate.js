@@ -12,9 +12,9 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "join"))}\n` +
-            formatter.quote(tools.msg.generateNotes([`Gunakan ${formatter.inlineCode("leave")} untuk mensimulasikan keluar dari grup.`]))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            `${tools.msg.generateCmdExample(ctx.used, "join")}\n` +
+            tools.msg.generateNotes([`Gunakan ${formatter.inlineCode("leave")} untuk mensimulasikan keluar dari grup.`])
         );
 
         try {
@@ -33,7 +33,7 @@ module.exports = {
                     await handleWelcome(ctx, m, Events.UserLeave, true);
                     break;
                 default:
-                    await ctx.reply(formatter.quote(`❎ Simulasi ${formatter.inlineCode(input)} tidak valid!`));
+                    await ctx.reply(`ⓘ ${formatter.italic(`Simulasi ${formatter.inlineCode(input)} tidak valid!`)}`);
             }
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

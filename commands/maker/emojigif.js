@@ -14,8 +14,8 @@ module.exports = {
         const [emoji] = emojis.slice(0, 1);
 
         if (!emoji) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "😱"))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "😱")
         );
 
         try {

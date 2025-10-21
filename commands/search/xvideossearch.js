@@ -11,8 +11,8 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "evangelion"))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "evangelion")
         );
 
         try {
@@ -21,18 +21,14 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result.items;
 
-            const resultText = result.map(res =>
-                `${formatter.quote(`Judul: ${res.title}`)}\n` +
-                `${formatter.quote(`Channel: ${res.artist}`)}\n` +
-                `${formatter.quote(`Durasi: ${res.duration}`)}\n` +
-                formatter.quote(`URL: ${res.link}`)
-            ).join(
-                "\n" +
-                `${formatter.quote("· · ─ ·✶· ─ · ·")}\n`
-            );
+            const resultText = result.map(_result =>
+                `➛ ${formatter.bold("Judul")}: ${_result.title}\n` +
+                `➛ ${formatter.bold("Channel")}: ${_result.artist}\n` +
+                `➛ ${formatter.bold("Durasi")}: ${_result.duration}\n` +
+                `➛ ${formatter.bold("URL")}: ${_result.link}`
+            ).join("\n");
             await ctx.reply({
-                text: resultText || config.msg.notFound,
-                footer: config.msg.footer
+                text: resultText || `ⓘ ${formatter.italic(config.msg.notFound)}`
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

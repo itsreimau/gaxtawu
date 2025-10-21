@@ -6,28 +6,28 @@ const util = require("node:util");
 async function get(type) {
     try {
         let text = "";
-        const createList = (data, list) => data.map(list).join(`\n${formatter.quote("· · ─ ·✶· ─ · ·")}\n`);
+        const createList = (data, list) => data.map(list).join("\n");
 
         switch (type) {
             case "alkitab": {
                 const data = (await axios.get(api.createUrl("https://api-alkitab.vercel.app", "/api/book"))).data.data;
                 text = createList(data, list =>
-                    `${formatter.quote(`Buku: ${list.name} (${list.abbr})`)}\n` +
-                    `${formatter.quote(`Jumlah Bab: ${list.chapter}`)}`
+                    `➛ ${formatter.bold("Buku")}: ${list.name} (${list.abbr})\n` +
+                    `➛ ${formatter.bold("Jumlah Bab")}: ${list.chapter}`
                 );
                 break;
             }
             case "alquran": {
                 const data = (await axios.get(api.createUrl("https://raw.githubusercontent.com", "/penggguna/QuranJSON/master/quran.json"))).data;
                 text = createList(data, list =>
-                    `${formatter.quote(`Surah: ${list.name} (${list.number_of_surah})`)}\n` +
-                    `${formatter.quote(`Jumlah Ayat: ${list.number_of_ayah}`)}`
+                    `➛ ${formatter.bold("Surah")}: ${list.name} (${list.number_of_surah}\n` +
+                    `➛ ${formatter.bold("Jumlah Ayat")}: ${list.number_of_ayah}`
                 );
                 break;
             }
             case "cecan": {
                 const data = ["china", "indonesia", "japan", "vietnam", "korea", "malaysia", "thailand"];
-                text = createList(data, list => formatter.quote(list));
+                text = createList(data, list => `➛ ${list}`);
                 break;
             }
             case "claim": {
@@ -37,7 +37,7 @@ async function get(type) {
                     "monthly (Hadiah bulanan)",
                     "yearly (Hadiah tahunan)"
                 ];
-                text = createList(data, list => formatter.quote(list));
+                text = createList(data, list => `➛ ${list}`);
                 break;
             }
             case "fixdb": {
@@ -46,7 +46,7 @@ async function get(type) {
                     "group (Data grup)",
                     "menfess (Data menfess)"
                 ];
-                text = createList(data, list => formatter.quote(list));
+                text = createList(data, list => `➛ ${list}`);
                 break;
             }
             case "group": {
@@ -60,7 +60,7 @@ async function get(type) {
                     "invite (Izinkan anggota menambah anggota)",
                     "restrict (Hanya admin yang bisa menambah anggota)"
                 ];
-                text = createList(data, list => formatter.quote(list));
+                text = createList(data, list => `➛ ${list}`);
                 break;
             }
             case "how": {
@@ -77,7 +77,7 @@ async function get(type) {
                     "howjones (Seberapa jones)",
                     "howsadboy (Seberapa sadboy)"
                 ];
-                text = createList(data, list => formatter.quote(list));
+                text = createList(data, list => `➛ ${list}`);
                 break;
             }
             case "mode": {
@@ -88,12 +88,12 @@ async function get(type) {
                     "public (Mode publik, merespons dalam obrolan grup dan obrolan pribadi)",
                     "self (Mode self, hanya merespons dirinya sendiri dan Ownernya)"
                 ];
-                text = createList(data, list => formatter.quote(list));
+                text = createList(data, list => `➛ ${list}`);
                 break;
             }
             case "nsfwhub": {
                 const data = ["anal", "ass", "bdsm", "black", "blowjub", "boobs", "bottomless", "collared", "cum", "cumsluts", "dick", "dom", "dp", "easter", "extreme", "feet", "finger", "fuck", "futa", "gay", "group", "hentai", "kiss", "lesbian", "lick", "pegged", "puffies", "pussy", "real", "sixtynine", "suck", "tattoo", "tiny", "xmas"];
-                text = createList(data, list => formatter.quote(list));
+                text = createList(data, list => `➛ ${list}`);
                 break;
             }
             case "osettext": {
@@ -102,7 +102,7 @@ async function get(type) {
                     "price - Variabel yang tersedia: %tag%, %name%, %prefix%, %command%, %footer%, %readmore% (Atur teks harga)",
                     "qris (Atur gambar QRIS untuk donasi, gambar harus berupa link)"
                 ];
-                text = createList(data, list => formatter.quote(list));
+                text = createList(data, list => `➛ ${list}`);
                 break;
             }
             case "setoption": {
@@ -120,7 +120,7 @@ async function get(type) {
                     "gamerestrict (Anggota dilarang bermain game)",
                     "welcome (Sambutan member)"
                 ];
-                text = createList(data, list => formatter.quote(list));
+                text = createList(data, list => `➛ ${list}`);
                 break;
             }
             case "setprofile": {
@@ -128,7 +128,7 @@ async function get(type) {
                     "autolevelup (Otomatis naik level)",
                     "username (Nama pengguna)"
                 ];
-                text = createList(data, list => formatter.quote(list));
+                text = createList(data, list => `➛ ${list}`);
                 break;
             }
             case "settext": {
@@ -137,34 +137,34 @@ async function get(type) {
                     "intro (Teks intro)",
                     "welcome (Teks welcome, variabel yang tersedia: %tag%, %subject%, %description%)"
                 ];
-                text = createList(data, list => formatter.quote(list));
+                text = createList(data, list => `➛ ${list}`);
                 break;
             }
             case "translate": {
                 const data = (await axios.get(api.createUrl("https://raw.githubusercontent.com", "/itsecurityco/to-google-translate/refs/heads/master/supported_languages.json"))).data;
                 text = createList(data, list =>
-                    `${formatter.quote(`Kode: ${list.code}`)}\n` +
-                    `${formatter.quote(`Bahasa: ${list.language}`)}`
+                    `➛ ${formatter.bold("Kode")}: ${list.code}\n` +
+                    `➛ ${formatter.bold("Bahasa")}: ${list.language}`
                 );
                 break;
             }
             case "waifuim": {
                 const data = ["ass", "ecchi", "ero", "hentai", "maid", "milf", "oppai", "oral", "paizuri", "selfies", "uniform", "waifu"];
-                text = createList(data, list => formatter.quote(list));
+                text = createList(data, list => `➛ ${list}`);
                 break;
             }
             case "waifupics": {
                 const data = ["waifu", "neko", "shinobu", "megumin"];
-                text = createList(data, list => formatter.quote(list));
+                text = createList(data, list => `➛ ${list}`);
                 break;
             }
             case "waifupicsnsfw": {
                 const data = ["waifu", "neko", "trap"];
-                text = createList(data, list => formatter.quote(list));
+                text = createList(data, list => `➛ ${list}`);
                 break;
             }
             default: {
-                text = formatter.quote(`❎ Tipe tidak diketahui: ${type}`);
+                text = `ⓘ ${formatter.italic(`Tipe tidak diketahui: ${type}`)}`;
                 break;
             }
         }

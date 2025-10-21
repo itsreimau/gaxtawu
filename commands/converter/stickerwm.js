@@ -11,11 +11,11 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send", "reply"], ["text", "sticker"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "does this impact the lore?|@rei-ayanami"))
+            `${tools.msg.generateInstruction(["send", "reply"], ["text", "sticker"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "does this impact the lore?|@rei-ayanami")
         );
 
-        if (!tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["sticker"])) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], ["sticker"])));
+        if (!tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["sticker"])) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["sticker"]));
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();

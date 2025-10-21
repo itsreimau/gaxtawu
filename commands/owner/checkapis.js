@@ -22,25 +22,22 @@ module.exports = {
                     });
 
                     if (response.status >= 200 && response.status < 500) {
-                        resultText += formatter.quote(`${api.baseURL} 🟢 (${response.status})\n`);
+                        resultText += `- ${api.baseURL} >ᴗ< (${response.status})\n`;
                     } else {
-                        resultText += formatter.quote(`${api.baseURL} 🔴 (${response.status})\n`);
+                        resultText += `- ${api.baseURL} •︵• (${response.status})\n`;
                     }
                 } catch (error) {
                     if (error.response) {
-                        resultText += formatter.quote(`${api.baseURL} 🔴 (${error.response.status})\n`);
+                        resultText += `- ${api.baseURL} •︵• (${error.response.status})\n`;
                     } else if (error.request) {
-                        resultText += formatter.quote(`${api.baseURL} 🔴 (Tidak ada respon)\n`);
+                        resultText += `- ${api.baseURL} •︵• (Tidak ada respon)\n`;
                     } else {
-                        resultText += formatter.quote(`${api.baseURL} 🔴 (Kesalahan: ${error.message})\n`);
+                        resultText += `- ${api.baseURL} •︵• (Kesalahan: ${error.message})\n`;
                     }
                 }
             }
 
-            await ctx.reply({
-                text: resultText.trim(),
-                footer: config.msg.footer
-            });
+            await ctx.reply(resultText.trim());
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

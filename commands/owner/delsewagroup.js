@@ -1,4 +1,4 @@
-const { Baileys } = require("@itsreimau/gktw");
+const { Gktw } = require("@itsreimau/gktw");
 
 module.exports = {
     name: "delsewagroup",
@@ -8,18 +8,18 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const groupJid = ctx.isGroup() ? ctx.id : (ctx.args[0] ? ctx.args[0].replace(/[^\d]/g, "") + Baileys.G_US : null);
+        const groupJid = ctx.isGroup() ? ctx.id : (ctx.args[0] ? ctx.args[0].replace(/[^\d]/g, "") + Gktw.G_US : null);
 
         if (!groupJid) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "1234567890"))}\n` +
-            `${formatter.quote(tools.msg.generateNotes(["Gunakan di grup untuk otomatis menghapus sewa grup tersebut."]))}\n` +
-            formatter.quote(tools.msg.generatesFlagInfo({
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            `${tools.msg.generateCmdExample(ctx.used, "1234567890")}\n` +
+            `${tools.msg.generateNotes(["Gunakan di grup untuk otomatis menghapus sewa grup tersebut."])}\n` +
+            tools.msg.generatesFlagInfo({
                 "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
-            }))
+            })
         );
 
-        if (!await ctx.group(groupJid)) return await ctx.reply(formatter.quote("❎ Grup tidak valid atau bot tidak ada di grup tersebut!"));
+        if (!await ctx.group(groupJid)) return await ctx.reply(`ⓘ ${formatter.italic("Grup tidak valid atau bot tidak ada di grup tersebut!")}`);
 
         try {
             const groupDb = ctx.getDb("users", groupJid);
@@ -40,18 +40,18 @@ module.exports = {
             const groupOwner = await group.owner();
             if (!silent && groupOwner) {
                 const groupMentions = [{
-                    groupJid: group.id + Baileys.G_US,
+                    groupJid: group.id + Gktw.G_US,
                     groupSubject: await group.name()
                 }];
                 await ctx.sendMessage(groupOwner, {
-                    text: formatter.quote(`📢 Sewa bot untuk grup @${groupMentions.groupJid} telah dihentikan oleh Owner!`),
+                    text: `ⓘ ${formatter.italic(`Sewa bot untuk grup @${groupMentions.groupJid} telah dihentikan oleh Owner!`)}`,
                     contextInfo: {
                         groupMentions
                     }
                 });
             }
 
-            await ctx.reply(formatter.quote(`✅ Berhasil menghapus sewa bot untuk grup ini!`));
+            await ctx.reply(`ⓘ ${formatter.italic("Berhasil menghapus sewa bot untuk grup ini!")}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

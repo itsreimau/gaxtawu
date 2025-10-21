@@ -14,14 +14,14 @@ module.exports = {
         const accountJid = ctx.quoted?.sender || ctx.getMentioned()[0] || null;
 
         if (!accountJid) return await ctx.reply({
-            text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `@${ctx.getId(Baileys.OFFICIAL_BIZ_JID)}`))}\n` +
-                formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])),
-            mentions: [Baileys.OFFICIAL_BIZ_JID]
+            text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
+                tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]),
+            mentions: ["6281234567891@s.whatsapp.net"]
         });
 
-        if (accountJid === ctx.me.lid || accountJid === ctx.me.id) return await ctx.reply(formatter.quote(`❎ Tidak bisa mengubah warning bot!`));
-        if (await ctx.group().isOwner(accountJid)) return await ctx.reply(formatter.quote("❎ Tidak bisa memberikan warning ke Owner grup!"));
+        if (accountJid === ctx.me.lid || accountJid === ctx.me.id) return await ctx.reply(`ⓘ ${formatter.italic(`Tidak bisa mengubah warning bot!`)}`);
+        if (await ctx.group().isOwner(accountJid)) return await ctx.reply(`ⓘ ${formatter.italic("Tidak bisa memberikan warning ke Owner grup!")}`);
 
         try {
             const groupDb = ctx.db.group;
@@ -31,7 +31,7 @@ module.exports = {
             const userWarning = warnings.find(warning => warning.jid === targetJid);
             let currentWarnings = userWarning ? userWarning.count : 0;
 
-            if (currentWarnings <= 0) return await ctx.reply(formatter.quote("✅ Pengguna itu tidak memiliki warning."));
+            if (currentWarnings <= 0) return await ctx.reply(`ⓘ ${formatter.italic("Pengguna itu tidak memiliki warning.")}`);
 
             const newWarning = currentWarnings - 1;
             if (userWarning && newWarning <= 0) {
@@ -42,7 +42,7 @@ module.exports = {
 
             groupDb.save();
 
-            await ctx.reply(formatter.quote(`✅ Berhasil mengurangi warning pengguna itu menjadi ${newWarning}/${groupDb?.maxwarnings || 3}.`));
+            await ctx.reply(`ⓘ ${formatter.italic(`Berhasil mengurangi warning pengguna itu menjadi ${newWarning}/${groupDb?.maxwarnings || 3}.`)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

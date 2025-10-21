@@ -1,4 +1,4 @@
-const { Baileys } = require("@itsreimau/gktw");
+const { Gktw } = require("@itsreimau/gktw");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
 module.exports = {
@@ -8,13 +8,13 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const userJid = ctx.quoted?.sender || ctx.getMentioned()[0] || (ctx.args[0] ? ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET : null);
+        const userJid = ctx.quoted?.sender || ctx.getMentioned()[0] || (ctx.args[0] ? ctx.args[0].replace(/[^\d]/g, "") + Gktw.S_WHATSAPP_NET : null);
 
         if (!userJid) return await ctx.reply({
-            text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `@${ctx.getId(Baileys.OFFICIAL_BIZ_JID)}`))}\n` +
-                formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])),
-            mentions: [Baileys.OFFICIAL_BIZ_JID]
+            text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
+                tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]),
+            mentions: ["6281234567891@s.whatsapp.net"]
         });
 
         try {

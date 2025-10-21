@@ -17,17 +17,13 @@ module.exports = {
         try {
             const result = (await axios.get(apiUrl)).data;
 
-            const resultText = result.reverse().map(res => {
-                const formattedDate = moment.tz(res.tanggal, "Asia/Jakarta").locale("id").format("dddd, DD MMMM YYYY");
-                return `${formatter.quote(res.keterangan)}\n` +
-                    formatter.quote(formattedDate);
-            }).join(
-                "\n" +
-                `${formatter.quote("· · ─ ·✶· ─ · ·")}\n`
-            );
+            const resultText = result.reverse().map(_result => {
+                const formattedDate = moment.tz(_result.tanggal, "Asia/Jakarta").locale("id").format("dddd, DD MMMM YYYY");
+                return `${_result.keterangan}\n` +
+                    formattedDate;
+            }).join("\n");
             await ctx.reply({
-                text: resultText || config.msg.notFound,
-                footer: config.msg.footer
+                text: resultText || `ⓘ ${formatter.italic(config.msg.notFound)}`
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

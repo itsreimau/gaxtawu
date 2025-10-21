@@ -17,8 +17,7 @@ module.exports = {
                     url: result.url
                 },
                 mimetype: tools.mime.lookup("png"),
-                caption: formatter.quote(`Sumber: ${result.source}`),
-                footer: config.msg.footer,
+                caption: `➛ ${formatter.bold("Sumber")}: ${result.source}`,
                 buttons: [{
                     buttonId: ctx.used.prefix + ctx.used.command,
                     buttonText: {

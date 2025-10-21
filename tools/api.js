@@ -13,10 +13,10 @@ const APIs = {
         baseURL: "https://api.hanggts.xyz"
     },
     izumi: {
-        baseURL: "https://ootaizumi.qzz.io"
+        baseURL: "https://api.ootaizumi.web.id"
     },
     nekolabs: {
-        baseURL: "https://api.nekolabs.my.id"
+        baseURL: "https://rynekoo-api.hf.space"
     },
     yp: {
         baseURL: "https://api.yupra.my.id"

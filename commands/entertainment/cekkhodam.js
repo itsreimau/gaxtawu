@@ -11,8 +11,8 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "itsreimau"))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "itsreimau")
         );
 
         try {
@@ -20,9 +20,8 @@ module.exports = {
             const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.trim().split("\n").filter(Boolean));
 
             await ctx.reply({
-                text: `${formatter.quote(`Nama: ${input}`)}\n` +
-                    formatter.quote(`Khodam: ${result}`),
-                footer: config.msg.footer,
+                text: `➛ ${formatter.bold("Nama")}: ${input}\n` +
+                    `➛ ${formatter.bold("Khodam")}: ${result}`,
                 buttons: [{
                     buttonId: `${ctx.used.prefix + ctx.used.command} ${input}`,
                     buttonText: {

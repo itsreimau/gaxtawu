@@ -1,4 +1,4 @@
-const { Baileys } = require("@itsreimau/gktw");
+const { Gktw } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 const session = new Map();
@@ -7,7 +7,7 @@ module.exports = {
     name: "kuisislami",
     category: "game",
     code: async (ctx) => {
-        if (session.has(ctx.id)) return await ctx.reply(formatter.quote("🎮 Sesi permainan sedang berjalan!"));
+        if (session.has(ctx.id)) return await ctx.reply(formatter.italic("ⓘ Sesi permainan sedang berjalan!"));
 
         try {
             const apiUrl = tools.api.createUrl("https://raw.githubusercontent.com", "/ERLANRAHMAT/games/refs/heads/main/kuisislami.json");
@@ -23,10 +23,10 @@ module.exports = {
             session.set(ctx.id, true);
 
             await ctx.reply({
-                text: `${formatter.quote(`Soal: ${result.soal}`)}\n` +
-                    `${formatter.quote(`Bonus: ${game.coin} Koin`)}\n` +
-                    formatter.quote(`Batas waktu: ${tools.msg.convertMsToDuration(game.timeout)}`),
-                footer: config.msg.footer,
+                text: `— ${result.soal}\n` +
+                    "\n" +
+                    `➛ ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +
+                    `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeoute}`,
                 buttons: [{
                     buttonId: `hint_${ctx.used.command}`,
                     buttonText: {
@@ -62,10 +62,9 @@ module.exports = {
                     participantDb.winGame += 1
                     participantDb.save();
                     await ctx.sendMessage(ctx.id, {
-                        text: `${formatter.quote("💯 Benar!")}\n` +
-                            `${formatter.quote(game.description)}\n` +
-                            formatter.quote(`+${game.coin} Koin`),
-                        footer: config.msg.footer,
+                        text: `${formatter.italic("ⓘ Benar!")}\n` +
+                            `${game.description}\n` +
+                            `+${game.coin} Koin`,
                         buttons: playAgain
                     }, {
                         quoted: m
@@ -81,17 +80,16 @@ module.exports = {
                     session.delete(ctx.id);
                     collector.stop();
                     await ctx.sendMessage(ctx.id, {
-                        text: `${formatter.quote("🏳️ Anda menyerah!")}\n` +
-                            `${formatter.quote(`Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`)}\n` +
-                            formatter.quote(game.description),
-                        footer: config.msg.footer,
+                        text: `${formatter.italic("ⓘ Anda menyerah!")}\n` +
+                            `Jawabannya adalah ${tools.msg.ucwords(game.answer)}.\n` +
+                            game.description,
                         buttons: playAgain
                     }, {
                         quoted: m
                     });
-                } else if (Baileys.didYouMean(participantAnswer, [game.answer]) === game.answer) {
+                } else if (Gktw.didYouMean(participantAnswer, [game.answer]) === game.answer) {
                     await ctx.sendMessage(ctx.id, {
-                        text: formatter.quote("🎯 Sedikit lagi!")
+                        text: formatter.italic("ⓘ Sedikit lagi!")
                     }, {
                         quoted: m
                     });
@@ -102,10 +100,9 @@ module.exports = {
                 if (session.has(ctx.id)) {
                     session.delete(ctx.id);
                     await ctx.reply({
-                        text: `${formatter.quote("⏱ Waktu habis!")}\n` +
-                            `${formatter.quote(`Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`)}\n` +
-                            formatter.quote(game.description),
-                        footer: config.msg.footer,
+                        text: `${formatter.italic("ⓘ Waktu habis!")}\n` +
+                            `Jawabannya adalah ${tools.msg.ucwords(game.answer)}.\n` +
+                            game.description,
                         buttons: playAgain
                     });
                 }

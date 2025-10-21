@@ -3,7 +3,7 @@ const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
 module.exports = {
     name: "fetch",
-    aliases: ["get"],
+    aliases: ["f", "get"],
     category: "tool",
     permissions: {
         coin: 10
@@ -12,12 +12,12 @@ module.exports = {
         const url = ctx.args[0] || null;
 
         if (!url) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, config.bot.thumbnail))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, config.bot.thumbnail)
         );
 
         const isUrl = tools.cmd.isUrl(url);
-        if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
+        if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
             const response = await axios.get(url, {
@@ -26,28 +26,22 @@ module.exports = {
                     return true;
                 }
             });
-
             const contentType = response?.headers?.["content-type"];
 
             if (/image/.test(contentType)) {
                 await ctx.reply({
                     image: response?.data,
-                    mimetype: tools.mime.contentType(contentType),
-                    caption: formatter.quote("Untukmu, tuan!"),
-                    footer: config.msg.footer
+                    mimetype: tools.mime.contentType(contentType)
                 });
             } else if (/video/.test(contentType)) {
                 await ctx.reply({
                     video: response?.data,
-                    mimetype: tools.mime.contentType(contentType),
-                    caption: formatter.quote("Untukmu, tuan!"),
-                    footer: config.msg.footer
+                    mimetype: tools.mime.contentType(contentType)
                 });
             } else if (/audio/.test(contentType)) {
                 await ctx.reply({
                     audio: response?.data,
-                    mimetype: tools.mime.contentType(contentType),
-                    caption: formatter.quote("Untukmu, tuan!")
+                    mimetype: tools.mime.contentType(contentType)
                 });
             } else if (/webp/.test(contentType)) {
                 const sticker = await new Sticker(response?.data)

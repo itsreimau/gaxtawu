@@ -1,6 +1,6 @@
 // Impor modul dan dependensi yang diperlukan
 const api = require("./api.js");
-const { Baileys, MessageType } = require("@itsreimau/gktw");
+const { Baileys, MessageType, Gktw } = require("@itsreimau/gktw");
 const axios = require("axios");
 const util = require("node:util");
 
@@ -73,7 +73,7 @@ function fakeMetaAiQuotedText(text) {
     const quoted = {
         key: {
             remoteJid: Baileys.STORIES_JID,
-            participant: Baileys.META_AI_JID
+            participant: Gktw.CHATGPT_JID
         },
         message: {
             conversation: text
@@ -113,8 +113,7 @@ async function handleError(ctx, error, useAxios = false, reportErrorToOwner = tr
 
     consolefy.error(`Error: ${errorText}`);
     if (config.system.reportErrorToOwner && reportErrorToOwner) await ctx.replyWithJid(config.owner.id + Baileys.S_WHATSAPP_NET, {
-        text: `${formatter.quote(isGroup ? `⚠️ Terjadi kesalahan dari grup: @${groupJid}, oleh: @${ctx.getId(ctx.sender.jid)}` : `⚠️ Terjadi kesalahan dari: @${ctx.getId(ctx.sender.jid)}`)}\n` +
-            `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
+        text: `ⓘ ${formatter.italic(isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${ctx.getId(ctx.sender.jid)}` : `Terjadi kesalahan dari: @${ctx.getId(ctx.sender.jid)}`)}\n` +
             formatter.monospace(errorText),
         mentions: [ctx.sender.jid],
         contextInfo: {
@@ -124,8 +123,8 @@ async function handleError(ctx, error, useAxios = false, reportErrorToOwner = tr
             }] : []
         }
     });
-    if (useAxios && error.status !== 200) return await ctx.reply(config.msg.notFound);
-    await ctx.reply(formatter.quote(`⚠️ Terjadi kesalahan: ${error.message}`));
+    if (useAxios && error.status !== 200) return await ctx.reply(`ⓘ ${formatter.italic(`ⓘ ${formatter.italic(config.msg.notFound)}`)}`);
+    await ctx.reply(`ⓘ ${formatter.italic(`Terjadi kesalahan: ${error.message}`)}`);
 }
 
 function isCmd(content, ctxBot) {
@@ -147,7 +146,7 @@ function isCmd(content, ctxBot) {
         input
     };
 
-    const mean = Baileys.didYouMean(cmdName, cmds.flatMap(cmd => [cmd.name, ...(cmd.aliases || [])]));
+    const mean = Gktw.didYouMean(cmdName, cmds.flatMap(cmd => [cmd.name, ...(cmd.aliases || [])]));
     return mean ? {
         msg: content,
         prefix,

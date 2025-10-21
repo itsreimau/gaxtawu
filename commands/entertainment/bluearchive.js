@@ -14,8 +14,7 @@ module.exports = {
                     url: result
                 },
                 mimetype: tools.mime.lookup("png"),
-                caption: formatter.quote("Vanitas vanitatum, et omnia vanitas."),
-                footer: config.msg.footer,
+                caption: "Vanitas vanitatum, et omnia vanitas.",
                 buttons: [{
                     buttonId: ctx.used.prefix + ctx.used.command,
                     buttonText: {

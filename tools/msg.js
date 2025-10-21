@@ -42,8 +42,7 @@ function formatSize(byteCount, withPerSecond = false) {
 }
 
 function generateCmdExample(used, args) {
-    if (!used) return `${formatter.inlineCode("used")} harus diberikan!`;
-    if (!args) return `${formatter.inlineCode("args")} harus diberikan!`;
+    if (!used || !args) return `${formatter.inlineCode("used")} atau ${formatter.inlineCode("args")} harus diberikan!`;
 
     const cmdMsg = `Contoh: ${formatter.inlineCode(`${used.prefix + used.command} ${args}`)}`;
     return cmdMsg;
@@ -89,14 +88,14 @@ function generateInstruction(actions, mediaTypes) {
 
     const instructions = actions.map(action => `${actionTranslations[action]}`);
     const actionList = instructions.join(actions.length > 1 ? " atau " : "");
-    return `📌 ${actionList} ${mediaTypesList}!`;
+    return `⚲ ${formatter.italic(`${actionList} ${mediaTypesList}!`)}`;
 }
 
 function generatesFlagInfo(flags) {
     if (!flags || typeof flags !== "object") return `${formatter.inlineCode("flags")} harus berupa objek!`;
 
     const flagInfo = "Flag:\n" +
-        Object.entries(flags).map(([flag, description]) => formatter.quote(`• ${formatter.inlineCode(flag)}: ${description}`)).join("\n");
+        Object.entries(flags).map(([flag, description]) => `- ${formatter.inlineCode(flag)}: ${description}`).join("\n");
     return flagInfo;
 }
 
@@ -104,7 +103,7 @@ function generateNotes(notes) {
     if (!notes || !Array.isArray(notes)) return `${formatter.inlineCode("notes")} harus berupa string!`;
 
     const notesMsg = "Catatan:\n" +
-        notes.map(note => formatter.quote(`• ${note}`)).join("\n");
+        notes.map(note => `- ${note}`).join("\n");
     return notesMsg;
 }
 

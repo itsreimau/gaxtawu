@@ -3,9 +3,6 @@ module.exports = {
     aliases: ["script", "source", "sourcecode"],
     category: "information",
     code: async (ctx) => {
-        await ctx.reply({
-            text: formatter.quote("https://github.com/itsreimau/gaxtawu"),
-            footer: config.msg.footer
-        }); // Jika Anda tidak menghapus ini, terima kasih!
+        await ctx.reply("https://github.com/itsreimau/gaxtawu"); // Jika Anda tidak menghapus ini, terima kasih!
     }
 };

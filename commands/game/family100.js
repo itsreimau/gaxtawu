@@ -1,4 +1,4 @@
-const { Baileys } = require("@itsreimau/gktw");
+const { Gktw } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 const session = new Map();
@@ -10,7 +10,7 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        if (session.has(ctx.id)) return await ctx.reply(formatter.quote("🎮 Sesi permainan sedang berjalan!"));
+        if (session.has(ctx.id)) return await ctx.reply(formatter.italic("ⓘ Sesi permainan sedang berjalan!"));
 
         try {
             const apiUrl = tools.api.createUrl("https://raw.githubusercontent.com", "/BochilTeam/database/refs/heads/master/games/family100.json");
@@ -29,10 +29,11 @@ module.exports = {
             session.set(ctx.id, true);
 
             await ctx.reply({
-                text: `${formatter.quote(`Soal: ${result.soal}`)}\n` +
-                    `${formatter.quote(`Jumlah jawaban: ${game.answers.size}`)}\n` +
-                    formatter.quote(`Batas waktu: ${tools.msg.convertMsToDuration(game.timeout)}`),
-                footer: config.msg.footer,
+                text: `— ${result.soal}\n` +
+                    "\n" +
+                    `➛ ${formatter.bold("Bonus")}: ${game.coin.answered} Koin untuk 1 jawaban benar, ${game.coin.allAnswered} Koin untuk semua jawaban benar\n` +
+                    `➛ ${formatter.bold("Jumlah jawaban")}: ${game.answers.size}\n` +
+                    `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeoute}`,
                 buttons: [{
                     buttonId: `surrender_${ctx.used.command}`,
                     buttonText: {
@@ -63,7 +64,7 @@ module.exports = {
                     participantDb.coin += game.coin.answered;
                     participantDb.save();
                     await ctx.sendMessage(ctx.id, {
-                        text: formatter.quote(`✅ ${tools.msg.ucwords(participantAnswer)} benar! Jawaban tersisa: ${game.answers.size}`)
+                        text: formatter.italic(`ⓘ ${tools.msg.ucwords(participantAnswer)} benar! Jawaban tersisa: ${game.answers.size}`)
                     }, {
                         quoted: m
                     });
@@ -77,8 +78,7 @@ module.exports = {
                             participantDb.save();
                         }
                         await ctx.sendMessage(ctx.id, {
-                            text: formatter.quote(`🎉 Selamat! Semua jawaban telah terjawab! Setiap anggota yang menjawab mendapat ${game.coin.allAnswered} koin.`),
-                            footer: config.msg.footer,
+                            text: formatter.italic(`ⓘ Selamat! Semua jawaban telah terjawab! Setiap anggota yang menjawab mendapat ${game.coin.allAnswered} koin.`),
                             buttons: playAgain
                         }, {
                             quoted: m
@@ -89,16 +89,15 @@ module.exports = {
                     session.delete(ctx.id);
                     collector.stop();
                     await ctx.sendMessage(ctx.id, {
-                        text: `${formatter.quote("🏳️ Anda menyerah!")}\n` +
-                            formatter.quote(`Jawaban yang belum terjawab adalah ${remaining}.`),
-                        footer: config.msg.footer,
+                        text: `${formatter.italic("ⓘ Anda menyerah!")}\n` +
+                            `Jawaban yang belum terjawab adalah ${remaining}.`,
                         buttons: playAgain
                     }, {
                         quoted: m
                     });
-                } else if (Baileys.didYouMean(participantAnswer, [game.answer]) === game.answer) {
+                } else if (Gktw.didYouMean(participantAnswer, [game.answer]) === game.answer) {
                     await ctx.sendMessage(ctx.id, {
-                        text: formatter.quote("🎯 Sedikit lagi!")
+                        text: formatter.italic("ⓘ Sedikit lagi!")
                     }, {
                         quoted: m
                     });
@@ -111,9 +110,8 @@ module.exports = {
                 if (session.has(ctx.id)) {
                     session.delete(ctx.id);
                     await ctx.reply({
-                        text: `${formatter.quote("⏱ Waktu habis!")}\n` +
-                            formatter.quote(`Jawaban yang belum terjawab adalah ${remaining}`),
-                        footer: config.msg.footer,
+                        text: `${formatter.italic("ⓘ Waktu habis!")}\n` +
+                            `Jawaban yang belum terjawab adalah ${remaining}`,
                         buttons: playAgain
                     });
                 }

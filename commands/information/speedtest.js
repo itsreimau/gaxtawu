@@ -9,16 +9,14 @@ module.exports = {
             const latencyStart = performance.now();
 
             const downloadStart = performance.now();
-            const downloadUrl = tools.api.createUrl("https://github.com", "/itsreimau/gaxtawu/raw/master/README.md");
-            const downloadResponse = await axios.get(downloadUrl);
+            const downloadResponse = await axios.get(tools.api.createUrl("https://github.com", "/itsreimau/gaxtawu/raw/master/README.md"));
             const downloadSize = downloadResponse.headers["content-length"];
             const downloadTime = (performance.now() - downloadStart) / 1000;
             const downloadSpeed = downloadSize / downloadTime;
 
             const uploadStart = performance.now();
             const uploadData = Buffer.alloc(1024 * 1024);
-            const uploadUrl = tools.api.createUrl("https://httpbin.org", "/post");
-            const uploadResponse = await axios.post(uploadUrl, uploadData, {
+            const uploadResponse = await axios.post(tools.api.createUrl("https://httpbin.org", "/post"), uploadData, {
                 headers: {
                     "Content-Type": "application/octet-stream"
                 }
@@ -26,14 +24,13 @@ module.exports = {
             const uploadTime = (performance.now() - uploadStart) / 1000;
             const uploadSpeed = uploadData.length / uploadTime;
 
-            const latency = performance.now() - latencyStart;
+            const latencySpeeed = performance.now() - latencyStart;
 
-            await ctx.reply({
-                text: `${formatter.quote(`Latency: ${tools.msg.convertMsToDuration(latency)}`)}\n` +
-                    `${formatter.quote(`Download: ${tools.msg.formatSize(downloadSpeed, true)}`)}\n` +
-                    formatter.quote(`Upload: ${tools.msg.formatSize(uploadSpeed, true)}`),
-                footer: config.msg.footer
-            });
+            await ctx.reply(
+                `➛ ${formatter.bold("Latency")}: ${tools.msg.convertMsToDuration(latency)}\n` +
+                `➛ ${formatter.bold("Download")}: ${tools.msg.formatSize(downloadSpeed, true)}\n` +
+                `➛ ${formatter.bold("Upload")}: ${tools.msg.formatSize(uploadSpeed, true)}`
+            );
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

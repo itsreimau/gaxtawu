@@ -12,13 +12,13 @@ module.exports = {
         const coinAmount = parseInt(ctx.args[ctx.quoted ? 0 : 1], 10) || null;
 
         if (!userJid || !coinAmount) return await ctx.reply({
-            text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `@${ctx.getId(Baileys.OFFICIAL_BIZ_JID)} 8`))}\n` +
-                `${formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]))}\n` +
-                formatter.quote(tools.msg.generatesFlagInfo({
+            text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "@6281234567891 8")}\n` +
+                `${tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])}\n` +
+                tools.msg.generatesFlagInfo({
                     "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
-                })),
-            mentions: [Baileys.OFFICIAL_BIZ_JID]
+                }),
+            mentions: ["6281234567891@s.whatsapp.net"]
         });
 
         try {
@@ -35,10 +35,10 @@ module.exports = {
 
             const silent = flag?.silent || false;
             if (!silent) await ctx.sendMessage(userJid, {
-                text: formatter.quote(`📢 Anda telah menerima ${coinAmount} koin dari Owner!`)
+                text: `ⓘ ${formatter.italic(`Anda telah menerima ${coinAmount} koin dari Owner!`)}`
             });
 
-            await ctx.reply(formatter.quote(`✅ Berhasil menambahkan ${coinAmount} koin kepada pengguna itu!`));
+            await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menambahkan ${coinAmount} koin kepada pengguna itu!`)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

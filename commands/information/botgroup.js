@@ -3,6 +3,6 @@ module.exports = {
     aliases: ["botgc", "gcbot"],
     category: "information",
     code: async (ctx) => {
-        await ctx.reply(formatter.quote(config.bot.groupLink));
+        await ctx.reply(config.bot.groupLink);
     }
 };

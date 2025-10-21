@@ -10,16 +10,15 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "open"))}\n` +
-            formatter.quote(tools.msg.generateNotes([`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`]))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            `${tools.msg.generateCmdExample(ctx.used, "open")}\n` +
+            tools.msg.generateNotes([`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`])
         );
 
         if (input.toLowerCase() === "list") {
             const listText = await tools.list.get("group");
             return await ctx.reply({
-                text: listText,
-                footer: config.msg.footer
+                text: listText
             });
         }
 
@@ -44,10 +43,10 @@ module.exports = {
                     await ctx.group().membersCanAddMemberMode("off");
                     break;
                 default:
-                    return await ctx.reply(formatter.quote(`❎ Setelan "${input}" tidak valid!`));
+                    return await ctx.reply(`ⓘ ${formatter.italic(`Setelan "${input}" tidak valid!`)}`);
             }
 
-            await ctx.reply(formatter.quote("✅ Berhasil mengubah setelan grup!"));
+            await ctx.reply(`ⓘ ${formatter.italic("Berhasil mengubah setelan grup!")}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

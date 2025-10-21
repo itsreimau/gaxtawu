@@ -12,34 +12,24 @@ module.exports = {
             "-d": {
                 type: "boolean",
                 key: "document"
-            },
-            "-q": {
-                type: "value",
-                key: "quality",
-                validator: (val) => !isNaN(val) && parseInt(val) > 0,
-                parser: (val) => parseInt(val)
             }
         });
         const url = flag.input || null;
 
         if (!url) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d -q 720"))}\n` +
-            formatter.quote(tools.msg.generatesFlagInfo({
-                "-d": "Kirim sebagai dokumen",
-                "-q <number>": "Pilihan pada kualitas video (tersedia: 144, 240, 360, 480, 720, 1080 | default: 720)"
-            }))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            `${tools.msg.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d")}\n` +
+            tools.msg.generatesFlagInfo({
+                "-d": "Kirim sebagai dokumen"
+            })
         );
 
         const isUrl = tools.cmd.isUrl(url);
-        if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
+        if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            let quality = flag?.quality || 720;
-            if (![144, 240, 360, 480, 720, 1080].includes(quality)) quality = 720;
-            const apiUrl = tools.api.createUrl("izumi", "/downloader/youtube", {
-                url,
-                format: quality
+            const apiUrl = tools.api.createUrl("yp", "/api/downloader/ytmp4", {
+                url
             });
             const result = (await axios.get(apiUrl)).data.result;
 
@@ -47,21 +37,19 @@ module.exports = {
             if (document) {
                 await ctx.reply({
                     document: {
-                        url: result.download
+                        url: result.formats[0].url
                     },
                     fileName: `${result.title}.mp4`,
                     mimetype: tools.mime.lookup("mp4"),
-                    caption: formatter.quote(`URL: ${url}`),
-                    footer: config.msg.footer
+                    caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
                 await ctx.reply({
                     video: {
-                        url: result.download
+                        url: result.formats[0].url
                     },
                     mimetype: tools.mime.lookup("mp4"),
-                    caption: formatter.quote(`URL: ${url}`),
-                    footer: config.msg.footer
+                    caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             }
         } catch (error) {

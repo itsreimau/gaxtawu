@@ -1,4 +1,4 @@
-const { Baileys } = require("@itsreimau/gktw");
+const { Gktw } = require("@itsreimau/gktw");
 
 module.exports = {
     name: "upload",
@@ -13,15 +13,14 @@ module.exports = {
             tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["audio", "document", "image", "video", "sticker"])
         ];
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], ["audio", "document", "image", "video", "sticker"])));
+        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["audio", "document", "image", "video", "sticker"]));
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const result = (await Baileys.uploadFile(buffer)).data.url;
+            const result = (await Gktw.uploadFile(buffer)).data.url;
 
             await ctx.reply({
-                text: formatter.quote(`URL: ${result}`),
-                footer: config.msg.footer,
+                text: `➛ ${formatter.bold("URL")}: ${result}`,
                 interactiveButtons: [{
                     name: "cta_copy",
                     buttonParamsJson: JSON.stringify({

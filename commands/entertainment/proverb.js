@@ -13,9 +13,9 @@ module.exports = {
             const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.data);
 
             await ctx.reply({
-                text: `${formatter.quote(`Kalimat: ${result.kalimat}`)}\n` +
-                    formatter.quote(`Arti: ${result.arti}`),
-                footer: config.msg.footer,
+                text: `— ${result.kalimat}\n` +
+                    "\n" +
+                    `➛ ${formatter.bold("Arti")}: ${result.arti}`,
                 buttons: [{
                     buttonId: ctx.used.prefix + ctx.used.command,
                     buttonText: {

@@ -16,8 +16,7 @@ module.exports = {
                     url: result.image_url
                 },
                 mimetype: tools.mime.lookup("png"),
-                caption: formatter.quote(`Doksli: ${result.doksli}`),
-                footer: config.msg.footer,
+                caption: `➛ ${formatter.bold("Doksli")}: ${result.doksli}`,
                 buttons: [{
                     buttonId: ctx.used.prefix + ctx.used.command,
                     buttonText: {

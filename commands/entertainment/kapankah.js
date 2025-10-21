@@ -9,8 +9,8 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "evangelion itu peak?"))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "evangelion itu peak?")
         );
 
         try {
@@ -19,7 +19,7 @@ module.exports = {
             const randomMs = Math.floor(Math.random() * (maxMs - minMs) + minMs);
             const duration = tools.msg.convertMsToDuration(randomMs);
 
-            await ctx.reply(formatter.quote(`${duration} lagi...`));
+            await ctx.reply(`${duration} lagi...`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

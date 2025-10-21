@@ -11,12 +11,12 @@ module.exports = {
         const url = ctx.args[0] || null;
 
         if (!url) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://www.tiktok.com/@grazeuz/video/7486690677888158984"))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "https://www.tiktok.com/@grazeuz/video/7486690677888158984")
         );
 
         const isUrl = tools.cmd.isUrl(url);
-        if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
+        if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
             const apiUrl = tools.api.createUrl("izumi", "/downloader/tiktok", {
@@ -30,8 +30,7 @@ module.exports = {
                         url: result.play
                     },
                     mimetype: tools.mime.lookup("mp4"),
-                    caption: formatter.quote(`URL: ${url}`),
-                    footer: config.msg.footer
+                    caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else if (result.images) {
                 const album = result.images.map(imageUrl => ({
@@ -43,7 +42,7 @@ module.exports = {
 
                 await ctx.reply({
                     album,
-                    caption: formatter.quote(`URL: ${url}`)
+                    caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             }
         } catch (error) {

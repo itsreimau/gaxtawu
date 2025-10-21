@@ -30,16 +30,15 @@ module.exports = {
                 if (user.expiration) {
                     const timeDiff = user.expiration - Date.now();
                     const daysLeft = tools.msg.convertMsToDuration(timeDiff, ["hari"]);
-                    resultText += `${formatter.quote(`@${userId} (${daysLeft} tersisa)`)}\n`;
+                    resultText += `- @${userId} (${daysLeft} tersisa)\n`;
                 } else {
-                    resultText += `${formatter.quote(`@${userId} (Premium permanen)`)}\n`;
+                    resultText += `- @${userId} (Premium permanen)\n`;
                 }
             }
 
             await ctx.reply({
-                text: resultText.trim() || config.msg.notFound,
-                mentions: userMentions,
-                footer: config.msg.footer
+                text: resultText.trim() || `ⓘ ${formatter.italic(config.msg.notFound)}`,
+                mentions: userMentions
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

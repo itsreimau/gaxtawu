@@ -32,8 +32,7 @@ module.exports = {
 
             await ctx.reply({
                 text: resultText.trim(),
-                mentions: [senderJid],
-                footer: config.msg.footer
+                mentions: [senderJid]
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

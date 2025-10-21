@@ -11,12 +11,12 @@ module.exports = {
         const url = ctx.args[0] || null;
 
         if (!url) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://cosplaytele.com/rei-ayanami"))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "https://cosplaytele.com/rei-ayanami")
         );
 
         const isUrl = tools.cmd.isUrl(url);
-        if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
+        if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
             const apiUrl = tools.api.createUrl("zell", "/download/cosplaytele", {
@@ -32,7 +32,7 @@ module.exports = {
 
             await ctx.reply({
                 album,
-                caption: formatter.quote(`URL: ${url}`)
+                caption: `➛ ${formatter.bold("URL")}: ${url}`
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

@@ -1,4 +1,4 @@
-const { Baileys } = require("@itsreimau/gktw");
+const { Gktw } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
@@ -13,11 +13,11 @@ module.exports = {
             tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, "audio")
         ];
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], "audio")));
+        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], "audio"));
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const uploadUrl = (await Baileys.uploadFile(buffer)).data.url;
+            const uploadUrl = (await Gktw.uploadFile(buffer)).data.url;
             const apiUrl = tools.api.createUrl("zell", "/tools/vocalremover", {
                 url: uploadUrl
             });

@@ -10,14 +10,14 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "gaxtawu"))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "gaxtawu")
         );
 
         try {
             await ctx.group().updateSubject(input);
 
-            await ctx.reply(formatter.quote("✅ Berhasil mengubah nama grup!"));
+            await ctx.reply(`ⓘ ${formatter.italic("Berhasil mengubah nama grup!")}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

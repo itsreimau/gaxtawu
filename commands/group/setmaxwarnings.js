@@ -10,8 +10,8 @@ module.exports = {
         const input = parseInt(ctx.args[0], 10) || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "8"))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "8")
         );
 
         try {
@@ -19,7 +19,7 @@ module.exports = {
             groupDb.maxwarnings = input;
             groupDb.save();
 
-            await ctx.reply(formatter.quote(`✅ Berhasil mengubah max warnings!`));
+            await ctx.reply(`ⓘ ${formatter.italic("Berhasil mengubah max warnings!")}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

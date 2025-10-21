@@ -11,9 +11,9 @@ module.exports = {
         const input = ctx.args.join(" ") || ctx.quoted?.content || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "halo, dunia!"))}\n` +
-            formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru.", `Gunakan ${formatter.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`]))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            `${tools.msg.generateCmdExample(ctx.used, "halo, dunia!")}\n` +
+            tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru.", `Gunakan ${formatter.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`])
         );
 
         const [checkMedia, checkQuotedMedia] = [
@@ -21,7 +21,7 @@ module.exports = {
             tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["image", "gif", "video"])
         ];
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], ["image", "gif", "video"])));
+        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image", "gif", "video"]));
 
         const botDb = ctx.db.bot;
         let blacklist = botDb?.blacklistBroadcast || [];
@@ -32,12 +32,12 @@ module.exports = {
                 blacklist.splice(groupIndex, 1);
                 botDb.blacklistBroadcast = blacklist;
                 botDb.save();
-                return await ctx.reply(formatter.quote("✅ Grup ini telah dihapus dari blacklist broadcast"));
+                return await ctx.reply(`ⓘ ${formatter.italic("Grup ini telah dihapus dari blacklist broadcast")}`);
             } else {
                 blacklist.push(ctx.id);
                 botDb.blacklistBroadcast = blacklist;
                 botDb.save();
-                return await ctx.reply(formatter.quote("✅ Grup ini telah ditambahkan ke blacklist broadcast"));
+                return await ctx.reply(`ⓘ ${formatter.italic("Grup ini telah ditambahkan ke blacklist broadcast")}`);
             }
         }
 
@@ -45,7 +45,7 @@ module.exports = {
             const groupIds = (Object.values(await ctx.core.groupFetchAllParticipating()).map(group => group.id)).filter(groupId => !blacklist.includes(groupId));
             const failedGroupIds = [];
 
-            const waitMsg = await ctx.reply(formatter.quote(`🔄 Mengirim siaran ke ${groupIds.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(groupIds.length * 0.5 * 1000)}`));
+            const waitMsg = await ctx.reply(`ⓘ ${formatter.italic(`Mengirim siaran ke ${groupIds.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(groupIds.length * 0.5 * 1000)}`)}`);
 
             for (let i = 0; i < groupIds.length; i += 5) {
                 await delay(500);
@@ -65,7 +65,7 @@ module.exports = {
             }
             const successCount = groupIds.length - failedGroupIds.length;
 
-            await ctx.editMessage(waitMsg.key, formatter.quote(`✅ Berhasil mengirim ke ${successCount} grup. Gagal mengirim ke ${failedGroupIds.length} grup, ${blacklist.length} grup dalam blacklist tidak dikirim.`));
+            await ctx.editMessage(waitMsg.key, `ⓘ ${formatter.italic(`Berhasil mengirim ke ${successCount} grup. Gagal mengirim ke ${failedGroupIds.length} grup, ${blacklist.length} grup dalam blacklist tidak dikirim.`)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

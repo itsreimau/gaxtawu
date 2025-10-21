@@ -12,16 +12,16 @@ module.exports = {
         const daysAmount = parseInt(ctx.args[ctx.quoted ? 0 : 1], 10) || null;
 
         if (!userJid) return await ctx.reply({
-            text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `@${ctx.getId(Baileys.OFFICIAL_BIZ_JID)} 30`))}\n` +
-                `${formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]))}\n` +
-                formatter.quote(tools.msg.generatesFlagInfo({
+            text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "@6281234567891 30")}\n` +
+                `${tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])}\n` +
+                tools.msg.generatesFlagInfo({
                     "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
-                })),
-            mentions: [Baileys.OFFICIAL_BIZ_JID]
+                }),
+            mentions: ["6281234567891@s.whatsapp.net"]
         });
 
-        if (daysAmount && daysAmount <= 0) return await ctx.reply(formatter.quote("❎ Durasi Premium (dalam hari) harus diisi dan lebih dari 0!"));
+        if (daysAmount && daysAmount <= 0) return await ctx.reply(`ⓘ ${formatter.italic("Durasi Premium (dalam hari) harus diisi dan lebih dari 0!")}`);
 
         try {
             const userDb = ctx.getDb("users", userJid);
@@ -42,19 +42,19 @@ module.exports = {
                 userDb.save();
 
                 if (!silent) await ctx.sendMessage(userJid, {
-                    text: formatter.quote(`📢 Anda telah ditambahkan sebagai pengguna Premium oleh Owner selama ${daysAmount} hari!`)
+                    text: `ⓘ ${formatter.italic(`Anda telah ditambahkan sebagai pengguna Premium oleh Owner selama ${daysAmount} hari!`)}`
                 });
 
-                await ctx.reply(formatter.quote(`✅ Berhasil menambahkan Premium selama ${daysAmount} hari kepada pengguna itu!`));
+                await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menambahkan Premium selama ${daysAmount} hari kepada pengguna itu!`)}`);
             } else {
                 delete userDb?.premiumExpiration;
                 userDb.save();
 
                 if (!silent) await ctx.sendMessage(userJid, {
-                    text: formatter.quote("📢 Anda telah ditambahkan sebagai pengguna Premium selamanya oleh Owner!")
+                    text: `ⓘ ${formatter.italic("Anda telah ditambahkan sebagai pengguna Premium selamanya oleh Owner!")}`
                 });
 
-                await ctx.reply(formatter.quote("✅ Berhasil menambahkan Premium selamanya kepada pengguna itu!"));
+                await ctx.reply(`ⓘ ${formatter.italic("Berhasil menambahkan Premium selamanya kepada pengguna itu!")}`);
             }
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

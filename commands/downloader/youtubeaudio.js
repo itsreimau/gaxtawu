@@ -17,20 +17,19 @@ module.exports = {
         const url = flag.input || null;
 
         if (!url) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d"))}\n` +
-            formatter.quote(tools.msg.generatesFlagInfo({
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            `${tools.msg.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d")}\n` +
+            tools.msg.generatesFlagInfo({
                 "-d": "Kirim sebagai dokumen"
-            }))
+            })
         );
 
         const isUrl = tools.cmd.isUrl(url);
-        if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
+        if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("izumi", "/downloader/youtube", {
-                url,
-                format: "mp3"
+            const apiUrl = tools.api.createUrl("yp", "/api/downloader/ytmp3", {
+                url
             });
             const result = (await axios.get(apiUrl)).data.result;
 
@@ -38,17 +37,16 @@ module.exports = {
             if (document) {
                 await ctx.reply({
                     document: {
-                        url: result.download
+                        url: result.link
                     },
                     fileName: `${result.title}.mp3`,
                     mimetype: tools.mime.lookup("mp3"),
-                    caption: formatter.quote(`URL: ${url}`),
-                    footer: config.msg.footer
+                    caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
                 await ctx.reply({
                     audio: {
-                        url: result.download
+                        url: result.link
                     },
                     mimetype: tools.mime.lookup("mp3")
                 });

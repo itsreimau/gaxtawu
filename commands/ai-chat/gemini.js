@@ -1,4 +1,4 @@
-const { Baileys } = require("@itsreimau/gktw");
+const { Gktw } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
@@ -11,9 +11,9 @@ module.exports = {
         const input = ctx.args.join(" ") || ctx.quoted?.content || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?"))}\n` +
-            formatter.quote(tools.msg.generateNotes(["AI ini dapat melihat gambar.", "Balas/quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."]))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            `${tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
+            tools.msg.generateNotes(["AI ini dapat melihat gambar.", "Balas/quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."])
         );
 
         const [checkMedia, checkQuotedMedia] = [
@@ -27,7 +27,7 @@ module.exports = {
 
             if (checkMedia || checkQuotedMedia) {
                 const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-                const uploadUrl = (await Baileys.uploadFile(buffer)).data.url;
+                const uploadUrl = (await Gktw.uploadFile(buffer)).data.url;
                 const apiUrl = tools.api.createUrl("nekolabs", "/ai/gemini/1.5-flash", {
                     text: input,
                     systemPrompt,

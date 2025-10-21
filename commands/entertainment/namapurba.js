@@ -9,14 +9,14 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "itsreimau"))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "itsreimau")
         );
 
         try {
             const result = input.replace(/[aiueo]/gi, "$&ve");
 
-            await ctx.reply(formatter.quote(result));
+            await ctx.reply(result);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

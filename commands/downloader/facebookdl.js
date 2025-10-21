@@ -11,12 +11,12 @@ module.exports = {
         const url = ctx.args[0] || null;
 
         if (!url) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "https://www.facebook.com/reel/1112151989983701"))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "https://www.facebook.com/reel/1112151989983701")
         );
 
         const isUrl = tools.cmd.isUrl(url);
-        if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
+        if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
             const apiUrl = tools.api.createUrl("hang", "/download/facebook", {
@@ -29,8 +29,7 @@ module.exports = {
                     url: result.video_hd || result.video_sd
                 },
                 mimetype: tools.mime.lookup("mp4"),
-                caption: formatter.quote(`URL: ${url}`),
-                footer: config.msg.footer
+                caption: `➛ ${formatter.bold("URL")}: ${url}`
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

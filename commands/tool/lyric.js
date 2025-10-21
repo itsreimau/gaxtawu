@@ -11,8 +11,8 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada"))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada")
         );
 
         try {
@@ -21,13 +21,12 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result[0];
 
-            await ctx.reply({
-                text: `${formatter.quote(`Judul: ${result.trackName}`)}\n` +
-                    `${formatter.quote(`Artis: ${result.albumName}`)}\n` +
-                    `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
-                    result.plainLyrics,
-                footer: config.msg.footer
-            });
+            await ctx.reply(
+                `— ${result.plainLyrics}\n` +
+                "\n" +
+                `➛ ${formatter.bold("Judul")}: ${result.trackName}\n` +
+                `➛ ${formatter.bold("Artis")}: ${result.albumName}`
+            );
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

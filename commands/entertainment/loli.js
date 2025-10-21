@@ -13,8 +13,7 @@ module.exports = {
                     url: result
                 },
                 mimetype: tools.mime.lookup("png"),
-                caption: formatter.quote("FBI! Open Up!"),
-                footer: config.msg.footer,
+                caption: "FBI! Open Up!",
                 buttons: [{
                     buttonId: ctx.used.prefix + ctx.used.command,
                     buttonText: {

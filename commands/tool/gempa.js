@@ -18,14 +18,13 @@ module.exports = {
                     url: tools.api.createUrl(bmkgUrl, `/DataMKG/TEWS/${result.Shakemap}`)
                 },
                 mimetype: tools.mime.lookup("png"),
-                caption: `${formatter.quote(`Wilayah: ${result.Wilayah}`)}\n` +
-                    `${formatter.quote(`Tanggal: ${result.Tanggal}`)}\n` +
-                    `${formatter.quote(`Potensi: ${result.Potensi}`)}\n` +
-                    `${formatter.quote(`Magnitude: ${result.Magnitude}`)}\n` +
-                    `${formatter.quote(`Kedalaman: ${result.Kedalaman}`)}\n` +
-                    `${formatter.quote(`Koordinat: ${result.Coordinates}`)}\n` +
-                    formatter.quote(`Dirasakan: ${result.Dirasakan}`),
-                footer: config.msg.footer
+                caption: `➛ ${formatter.bold("Wilayah")}: ${result.title}\n` +
+                    `➛ ${formatter.bold("Tanggal")}: ${result.Tanggal}\n` +
+                    `➛ ${formatter.bold("Potensi")}: ${result.Potensi}\n` +
+                    `➛ ${formatter.bold("Magnitude")}: ${result.Magnitude}\n` +
+                    `➛ ${formatter.bold("Kedalaman")}: ${result.Kedalaman}\n` +
+                    `➛ ${formatter.bold("Koordinat")}: ${result.Coordinates}\n` +
+                    `➛ ${formatter.bold("Dirasakan")}: ${result.Dirasakan}`
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

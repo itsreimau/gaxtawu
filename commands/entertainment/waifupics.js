@@ -13,8 +13,7 @@ module.exports = {
         if (input?.toLowerCase() === "list") {
             const listText = await tools.list.get("waifupics");
             return await ctx.reply({
-                text: listText,
-                footer: config.msg.footer
+                text: listText
             });
         }
 
@@ -29,9 +28,8 @@ module.exports = {
                     url: result
                 },
                 mimetype: tools.mime.lookup("png"),
-                caption: `${formatter.quote(`Kategori: ${tools.msg.ucwords(waifupics)}`)}\n` +
-                    formatter.quote("Tipe: SFW"),
-                footer: config.msg.footer,
+                caption: `➛ ${formatter.bold("Kategori")}: ${tools.msg.ucwords(waifupics)}\n` +
+                    `➛ ${formatter.bold("Tipe")}: SFW`,
                 buttons: [{
                     buttonId: input ? `${ctx.used.prefix + ctx.used.command} ${input}` : ctx.used.prefix + ctx.used.command,
                     buttonText: {

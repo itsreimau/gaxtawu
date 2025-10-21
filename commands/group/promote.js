@@ -1,5 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "promote",
     category: "group",
@@ -12,18 +10,18 @@ module.exports = {
         const accountJid = ctx.quoted?.sender || ctx.getMentioned()[0] || null;
 
         if (!accountJid) return await ctx.reply({
-            text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `@${ctx.getId(Baileys.OFFICIAL_BIZ_JID)}`))}\n` +
-                formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])),
-            mentions: [Baileys.OFFICIAL_BIZ_JID]
+            text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
+                tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]),
+            mentions: ["6281234567891@s.whatsapp.net"]
         });
 
-        if (await ctx.group().isOwner(accountJid)) return await ctx.reply(formatter.quote("❎ Dia adalah Owner grup!"));
+        if (await ctx.group().isOwner(accountJid)) return await ctx.reply(`ⓘ ${formatter.italic("Dia adalah Owner grup!")}`);
 
         try {
             await ctx.group().promote(accountJid);
 
-            await ctx.reply(formatter.quote("✅ Berhasil ditingkatkan dari anggota menjadi admin!"));
+            await ctx.reply(`ⓘ ${formatter.italic("Berhasil ditingkatkan dari anggota menjadi admin!")}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

@@ -13,11 +13,10 @@ module.exports = {
             const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.data.quotes);
 
             await ctx.reply({
-                text: `${formatter.quote(`“${result.quote}”`)}\n` +
-                    `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
-                    `${formatter.quote(`Nama: ${result.author.name}`)}\n` +
-                    formatter.quote(`Deskripsi: ${result.author.description}`),
-                footer: config.msg.footer,
+                text: `— ${result.quote}\n` +
+                    "\n" +
+                    `➛ ${formatter.bold("Nama")}: ${result.author.name}\n` +
+                    `➛ ${formatter.bold("Deskripsi")}: ${result.author.description}`,
                 buttons: [{
                     buttonId: ctx.used.prefix + ctx.used.command,
                     buttonText: {

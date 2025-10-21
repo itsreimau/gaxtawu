@@ -6,19 +6,12 @@ module.exports = {
         try {
             const customText = ctx.db.bot.text?.price || null;
             const text = customText ?
-                customText
-                .replace(/%tag%/g, `@${ctx.getId(ctx.sender.jid)}`)
-                .replace(/%name%/g, config.bot.name)
-                .replace(/%prefix%/g, ctx.used.prefix)
-                .replace(/%command%/g, ctx.used.command)
-                .replace(/%footer%/g, config.msg.footer)
-                .replace(/%readmore%/g, config.msg.readmore) :
-                formatter.quote("❎ Bot ini tidak memiliki harga.");
+                customText.replace(/%tag%/g, `@${ctx.getId(ctx.sender.jid)}`).replace(/%name%/g, config.bot.name).replace(/%prefix%/g, ctx.used.prefix).replace(/%command%/g, ctx.used.command).replace(/%footer%/g, config.msg.footer).replace(/%readmore%/g, config.msg.readmore) :
+                `ⓘ ${formatter.italic("Bot ini tidak memiliki harga.")}`;
 
             await ctx.reply({
                 text: text,
-                mentions: [ctx.sender.jid],
-                footer: config.msg.footer
+                mentions: [ctx.sender.jid]
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

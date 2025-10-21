@@ -11,13 +11,13 @@ module.exports = {
             tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, "image")
         ];
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(formatter.quote(tools.msg.generateInstruction(["send", "reply"], "image")));
+        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], "image"));
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             await ctx.core.updateProfilePicture(ctx.core.user.id, buffer);
 
-            await ctx.reply(formatter.quote("✅ Berhasil mengubah gambar profil bot!"));
+            await ctx.reply(`ⓘ ${formatter.italic("Berhasil mengubah gambar profil bot!")}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

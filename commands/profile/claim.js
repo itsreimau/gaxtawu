@@ -6,16 +6,15 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            `${formatter.quote(tools.msg.generateCmdExample(ctx.used, "daily"))}\n` +
-            formatter.quote(tools.msg.generateNotes([`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`]))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            `${tools.msg.generateCmdExample(ctx.used, "daily")}\n` +
+            tools.msg.generateNotes([`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`])
         );
 
         if (input.toLowerCase() === "list") {
             const listText = await tools.list.get("claim");
             return await ctx.reply({
-                text: listText,
-                footer: config.msg.footer
+                text: listText
             });
         }
 
@@ -23,16 +22,16 @@ module.exports = {
         const claim = claimRewards[input];
         const level = userDb?.level || 0;
 
-        if (!claim) return await ctx.reply(formatter.quote("❎ Hadiah tidak valid!"));
-        if (ctx.citation.isOwner) return await ctx.reply(formatter.quote("❎ Anda sudah memiliki koin tak terbatas!"));
-        if (level < claim.level) return await ctx.reply(formatter.quote(`❎ Anda perlu mencapai level ${claim.level} untuk mengklaim hadiah ini. Levelmu saat ini adalah ${level}.`));
+        if (!claim) return await ctx.reply(`ⓘ ${formatter.italic("Hadiah tidak valid!")}`);
+        if (ctx.citation.isOwner) return await ctx.reply(`ⓘ ${formatter.italic("Anda sudah memiliki koin tak terbatas!")}`);
+        if (level < claim.level) return await ctx.reply(`ⓘ ${formatter.italic(`Anda perlu mencapai level ${claim.level} untuk mengklaim hadiah ini. Levelmu saat ini adalah ${level}.`)}`);
 
         const currentTime = Date.now();
 
         const lastClaim = (userDb?.lastClaim ?? {})[input] || 0;
         const timePassed = currentTime - lastClaim;
         const remainingTime = claim.cooldown - timePassed;
-        if (remainingTime > 0) return await ctx.reply(formatter.quote(`⏳ Anda telah mengklaim hadiah ${input}. Tunggu ${tools.msg.convertMsToDuration(remainingTime)} untuk mengklaim lagi.`));
+        if (remainingTime > 0) return await ctx.reply(`ⓘ ${formatter.italic(`Anda telah mengklaim hadiah ${input}. Tunggu ${tools.msg.convertMsToDuration(remainingTime)} untuk mengklaim lagi.`)}`);
 
         try {
             const rewardCoin = (userDb?.coin || 0) + claim.reward;
@@ -40,7 +39,7 @@ module.exports = {
             (userDb.lastClaim ||= {})[input] = currentTime;
             userDb.save();
 
-            await ctx.reply(formatter.quote(`✅ Anda berhasil mengklaim hadiah ${input} sebesar ${claim.reward} koin! Koin Anda saat ini adalah ${rewardCoin}.`));
+            await ctx.reply(`ⓘ ${formatter.italic(`Anda berhasil mengklaim hadiah ${input} sebesar ${claim.reward} koin! Koin Anda saat ini adalah ${rewardCoin}.`)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

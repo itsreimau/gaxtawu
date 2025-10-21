@@ -1,4 +1,4 @@
-const { Baileys } = require("@itsreimau/gktw");
+const { Gktw } = require("@itsreimau/gktw");
 
 const session = new Map();
 
@@ -13,19 +13,19 @@ module.exports = {
         const accountId = ctx.getId(accountJid);
 
         if (!accountJid) await ctx.reply({
-            text: `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-                `${formatter.quote(tools.msg.generateCmdExample(ctx.used, `@${ctx.getId(Baileys.OFFICIAL_BIZ_JID)}`))}\n` +
-                formatter.quote(tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])),
-            mentions: [Baileys.OFFICIAL_BIZ_JID]
+            text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, `@${ctx.getId(Gktw.OFFICIAL_BIZ_JID)}`)}\n` +
+                tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]),
+            mentions: [Gktw.OFFICIAL_BIZ_JID]
         });
 
         const senderJid = ctx.sender.jid;
 
-        if (accountJid === ctx.me.lid || accountJid === ctx.me.id) return await ctx.reply(formatter.quote("Tidak bisa menantang bot!"));
-        if (accountJid === senderJid) return await ctx.reply(formatter.quote("Tidak bisa menantang diri sendiri!"));
+        if (accountJid === ctx.me.lid || accountJid === ctx.me.id) return await ctx.reply(formatter.italic("ⓘ Tidak bisa menantang bot!"));
+        if (accountJid === senderJid) return await ctx.reply(formatter.italic("ⓘ Tidak bisa menantang diri sendiri!"));
 
         const existingGame = [...session.values()].find(game => game.players.includes(senderJid) || game.players.includes(accountJid));
-        if (existingGame) return await ctx.reply(formatter.quote("Salah satu pemain sedang dalam sesi permainan!"));
+        if (existingGame) return await ctx.reply(formatter.italic("ⓘ Salah satu pemain sedang dalam sesi permainan!"));
 
         try {
             const game = {
@@ -37,10 +37,10 @@ module.exports = {
             };
 
             await ctx.reply({
-                text: `${formatter.quote(`Anda menantang @${accountId} untuk bermain suit!`)}\n` +
-                    formatter.quote(`Bonus: ${game.coin} Koin`),
+                text: `— Anda menantang @${accountId} untuk bermain suit!\n` +
+                    "\n" +
+                    `➛ ${formatter.bold("Bonus")}: ${game.coin} Koin`,
                 mentions: [accountJid],
-                footer: config.msg.footer,
                 buttons: [{
                     buttonId: "accept",
                     buttonText: {
@@ -67,19 +67,19 @@ module.exports = {
                 const participantAnswer = m.content.toLowerCase();
                 const participantJid = m.sender;
                 const participantId = ctx.getId(m.sender);
-                const isGroup = Baileys.isJidGroup(m.id);
+                const isGroup = Gktw.isJidGroup(m.id);
 
                 if (!game.started && isGroup && participantId === accountId) {
                     if (participantAnswer === "accept") {
                         game.started = true;
                         await ctx.sendMessage(m.id, {
-                            text: formatter.quote(`@${accountId} menerima tantangan! Silahkan pilih di obrolan pribadi.`),
+                            text: `@${accountId} menerima tantangan! Silahkan pilih di obrolan pribadi.`,
                             mentions: [accountJid]
                         }, {
                             quoted: m
                         });
 
-                        const choiceText = formatter.quote("Silahkan pilih salah satu:");
+                        const choiceText = "Silahkan pilih salah satu:";
                         const buttons = [{
                             buttonId: "batu",
                             buttonText: {
@@ -99,19 +99,17 @@ module.exports = {
 
                         await ctx.sendMessage(senderJid, {
                             text: choiceText,
-                            footer: config.msg.footer,
                             buttons
                         });
                         await ctx.sendMessage(accountJid, {
                             text: choiceText,
-                            footer: config.msg.footer,
                             buttons
                         });
                     } else if (participantAnswer === "reject") {
                         session.delete(senderJid);
                         session.delete(accountJid);
                         await ctx.sendMessage(m.id, {
-                            text: formatter.quote(`@${accountId} menolak tantangan suit.`),
+                            text: `@${accountId} menolak tantangan suit.`,
                             mentions: [accountJid]
                         }, {
                             quoted: m
@@ -141,7 +139,7 @@ module.exports = {
                         game.choices.set(participantId, choiceData);
 
                         await ctx.sendMessage(participantJid, {
-                            text: formatter.quote(`Anda memilih: ${choiceData.name}`)
+                            text: `Anda memilih: ${choiceData.name}`
                         }, {
                             quoted: m
                         });
@@ -174,11 +172,11 @@ module.exports = {
                             }
 
                             await ctx.reply({
-                                text: `${formatter.quote("Hasil suit:")}\n` +
-                                    `${formatter.quote(`@${ctx.getId(ctx.sender.jid)}: ${sChoice.name}`)}\n` +
-                                    `${formatter.quote(`@${accountId}: ${aChoice.name}`)}\n` +
-                                    `${formatter.quote(winnerText)}\n` +
-                                    formatter.quote(coinText),
+                                text: `Hasil suit:\n` +
+                                    `@${ctx.getId(ctx.sender.jid)}: ${sChoice.name}\n` +
+                                    `@${accountId}: ${aChoice.name}\n` +
+                                    `${winnerText}\n` +
+                                    coinText,
                                 mentions: [senderJid, accountJid]
                             });
 
@@ -194,7 +192,7 @@ module.exports = {
                 if (session.has(senderJid) || session.has(accountJid)) {
                     session.delete(senderJid);
                     session.delete(accountJid);
-                    await ctx.reply(formatter.quote("⏱ Waktu habis!"));
+                    await ctx.reply(formatter.italic("ⓘ Waktu habis!"));
                 }
             });
         } catch (error) {

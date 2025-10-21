@@ -11,8 +11,8 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${formatter.quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
-            formatter.quote(tools.msg.generateCmdExample(ctx.used, "evangelion"))
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "evangelion")
         );
 
         try {
@@ -21,18 +21,15 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.data[0];
 
-            await ctx.reply({
-                text: `${formatter.quote(`Judul: ${result.title}`)}\n` +
-                    `${formatter.quote(`Judul Inggris: ${result.title_english}`)}\n` +
-                    `${formatter.quote(`Judul Jepang: ${result.title_japanese}`)}\n` +
-                    `${formatter.quote(`Tipe: ${result.type}`)}\n` +
-                    `${formatter.quote(`Bab: ${result.chapters}`)}\n` +
-                    `${formatter.quote(`Volume: ${result.volumes}`)}\n` +
-                    `${formatter.quote(`URL: ${result.url}`)}\n` +
-                    `${formatter.quote("· · ─ ·✶· ─ · ·")}\n` +
-                    await tools.cmd.translate(result.synopsis, "id"),
-                footer: config.msg.footer
-            });
+            await ctx.reply(
+                `— ${await tools.cmd.translate(result.synopsis, "id")}\n` +
+                "\n" +
+                `➛ ${formatter.bold("Judul")}: ${result.title}\n` +
+                `➛ ${formatter.bold("Tipe")}: ${result.type}\n` +
+                `➛ ${formatter.bold("Bab")}: ${result.chapters}\n` +
+                `➛ ${formatter.bold("Volume")}: ${result.volumes}\n` +
+                `➛ ${formatter.bold("URL")}: ${result.url}`
+            );
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }
