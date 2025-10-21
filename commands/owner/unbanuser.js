@@ -8,7 +8,7 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const userJid = await ctx.quoted?.sender || await ctx.getLIDForPN(ctx.getMentioned()[0]) || (ctx.args[0] ? (await ctx.core.getLidUser(ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET))[0].lid : null);
+        const userJid = await ctx.quoted?.sender || ctx.getMentioned()[0] || (ctx.args[0] ? (await ctx.core.getLidUser(ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET))[0].lid : null);
 
         if (!userJid) return await ctx.reply({
             text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +

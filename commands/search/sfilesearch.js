@@ -21,10 +21,10 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result;
 
-            const resultText = result.map(_result =>
-                `➛ ${formatter.bold("Nama")}: ${_result.title}\n` +
-                `➛ ${formatter.bold("Ukuran")}: ${_result.size}\n` +
-                `➛ ${formatter.bold("URL")}: ${_result.link}`
+            const resultText = result.map(res =>
+                `➛ ${formatter.bold("Nama")}: ${res.title}\n` +
+                `➛ ${formatter.bold("Ukuran")}: ${res.size}\n` +
+                `➛ ${formatter.bold("URL")}: ${res.link}`
             ).join("\n");
             await ctx.reply({
                 text: resultText || `ⓘ ${formatter.italic(config.msg.notFound)}`

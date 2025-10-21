@@ -19,14 +19,14 @@ module.exports = {
             const apiUrl = tools.api.createUrl("yp", "/api/search/youtube", {
                 q: input
             });
-            const result = (await axios.get(apiUrl)).data.results.filter(_result => _result.videoId);
+            const result = (await axios.get(apiUrl)).data.results.filter(res => res.videoId);
 
-            const resultText = result.map(_result =>
-                `➛ ${formatter.bold("Judul")}: ${_result.title}\n` +
-                `➛ ${formatter.bold("Channel")}: ${_result.channel}\n` +
-                `➛ ${formatter.bold("Deskripsi")}: ${_result.description}\n` +
-                `➛ ${formatter.bold("Durasi")}: ${_result.duration}\n` +
-                `➛ ${formatter.bold("URL")}: ${_result.url}`
+            const resultText = result.map(res =>
+                `➛ ${formatter.bold("Judul")}: ${res.title}\n` +
+                `➛ ${formatter.bold("Channel")}: ${res.channel}\n` +
+                `➛ ${formatter.bold("Deskripsi")}: ${res.description}\n` +
+                `➛ ${formatter.bold("Durasi")}: ${res.duration}\n` +
+                `➛ ${formatter.bold("URL")}: ${res.url}`
             ).join("\n");
             await ctx.reply({
                 text: resultText || `ⓘ ${formatter.italic(config.msg.notFound)}`

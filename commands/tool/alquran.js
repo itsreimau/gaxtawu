@@ -32,15 +32,15 @@ module.exports = {
             if (ayat) {
                 if (ayat.includes("-")) {
                     const [startAyat, endAyat] = ayat.split("-").map(Number);
-                    const selectedVerses = verses.filter(_verses => _verses.number >= startAyat && _verses.number <= endAyat);
+                    const selectedVerses = verses.filter(vers => vers.number >= startAyat && vers.number <= endAyat);
 
                     if (isNaN(startAyat) || isNaN(endAyat) || startAyat < 1 || endAyat < startAyat) return await ctx.reply(`ⓘ ${formatter.italic("Rentang ayat tidak valid!")}`);
                     if (!selectedVerses.length) return await ctx.reply(`ⓘ ${formatter.italic(`Ayat dalam rentang ${startAyat}-${endAyat} tidak ada!`)}`);
 
-                    const versesText = selectedVerses.map(_verses =>
-                        `${formatter.bold(`Ayat ${_verses.number}:`)}\n` +
-                        `${_verses.text}\n` +
-                        formatter.italic(_verses.translation_id)
+                    const versesText = selectedVerses.map(vers =>
+                        `${formatter.bold(`Ayat ${vers.number}:`)}\n` +
+                        `${vers.text}\n` +
+                        formatter.italic(vers.translation_id)
                     ).join("\n");
                     await ctx.reply(
                         `${versesText}\n` +
@@ -50,7 +50,7 @@ module.exports = {
                     );
                 } else {
                     const singleAyat = parseInt(ayat);
-                    const verse = verses.find(_verses => _verses.number === singleAyat);
+                    const verse = verses.find(vers => vers.number === singleAyat);
 
                     if (isNaN(singleAyat) || singleAyat < 1) return await ctx.reply(`ⓘ ${formatter.italic("Ayat harus berupa nomor yang valid dan lebih besar dari 0!")}`);
                     if (!verse) return await ctx.reply(`ⓘ ${formatter.italic(`Ayat ${singleAyat} tidak ada!`)}`);
@@ -65,10 +65,10 @@ module.exports = {
                     );
                 }
             } else {
-                const versesText = verses.map(_verses =>
-                    `${formatter.bold(`Ayat ${_verses.number}:`)}\n` +
-                    `${_verses.text}\n` +
-                    formatter.italic(_verses.translation_id)
+                const versesText = verses.map(vers =>
+                    `${formatter.bold(`Ayat ${vers.number}:`)}\n` +
+                    `${vers.text}\n` +
+                    formatter.italic(vers.translation_id)
                 ).join("\n");
                 await ctx.reply(
                     `${versesText}\n` +

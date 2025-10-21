@@ -5,17 +5,22 @@ const { Client, CommandHandler } = require("@itsreimau/gktw");
 const path = require("node:path");
 const util = require("node:util");
 
-// Konfigurasi bot dari file 'config.js'
+// Konfigurasi bot
 const {
     bot: botConfig,
     system
 } = config;
+const diretory = {
+    auth: path.resolve(__dirname, "state"),
+    database: path.resolve(__dirname, "database"),
+    command: path.resolve(__dirname, "commands")
+};
 
 consolefy.log("Connecting..."); // Logging proses koneksi
 
 // Buat instance bot
 const bot = new Client({
-    authDir: path.resolve(__dirname, "state"),
+    authDir: diretory.auth,
     printQRInTerminal: !system.usePairingCode,
     phoneNumber: botConfig.phoneNumber,
     usePairingCode: system.usePairingCode,
@@ -26,7 +31,7 @@ const bot = new Client({
     prefix: botConfig.prefix,
     selfReply: system.selfReply,
     autoAiLabel: system.autoAiLabel,
-    databaseDir: path.resolve(__dirname, "database"),
+    databaseDir: diretory.database,
     citation: {
         owner: [system.selfOwner ? "bot" : null, config.owner.id, ...config.owner.co.map(co => co.id)].filter(Boolean)
     }
@@ -37,7 +42,7 @@ events(bot);
 middleware(bot);
 
 // Muat dan jalankan command handler
-const cmd = new CommandHandler(bot, path.resolve(__dirname, "commands"));
+const cmd = new CommandHandler(bot, diretory.command);
 cmd.load();
 
 bot.launch().catch(error => consolefy.error(`Error: ${util.format(error)}`)); // Luncurkan bot

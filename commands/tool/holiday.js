@@ -17,9 +17,9 @@ module.exports = {
         try {
             const result = (await axios.get(apiUrl)).data;
 
-            const resultText = result.reverse().map(_result => {
-                const formattedDate = moment.tz(_result.tanggal, "Asia/Jakarta").locale("id").format("dddd, DD MMMM YYYY");
-                return `${_result.keterangan}\n` +
+            const resultText = result.reverse().map(res => {
+                const formattedDate = moment.tz(res.tanggal, "Asia/Jakarta").locale("id").format("dddd, DD MMMM YYYY");
+                return `${res.keterangan}\n` +
                     formattedDate;
             }).join("\n");
             await ctx.reply({

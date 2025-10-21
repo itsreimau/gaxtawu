@@ -21,12 +21,12 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.items;
 
-            const resultText = result.map(_result =>
-                `➛ ${formatter.bold("Nama")}: ${_result.full_name}\n` +
-                `➛ ${formatter.bold("Developer")}: ${_result.author}\n` +
-                `➛ ${formatter.bold("Deskripsi")}: ${_result.description}\n` +
-                `➛ ${formatter.bold("Bahasa")}: ${_result.owner.login}\n` +
-                `➛ ${formatter.bold("URL")}: ${_result.url}`
+            const resultText = result.map(res =>
+                `➛ ${formatter.bold("Nama")}: ${res.full_name}\n` +
+                `➛ ${formatter.bold("Developer")}: ${res.author}\n` +
+                `➛ ${formatter.bold("Deskripsi")}: ${res.description}\n` +
+                `➛ ${formatter.bold("Bahasa")}: ${res.owner.login}\n` +
+                `➛ ${formatter.bold("URL")}: ${res.url}`
             ).join("\n");
             await ctx.reply({
                 text: resultText || `ⓘ ${formatter.italic(config.msg.notFound)}`

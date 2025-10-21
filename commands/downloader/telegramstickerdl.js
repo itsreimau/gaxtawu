@@ -1,6 +1,17 @@
 const axios = require("axios");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
+const createSticker = async (stickerUrl, emoji, id, isCover = false) => {
+    return await new Sticker(stickerUrl)
+        .setPack(config.sticker.packname)
+        .setAuthor(config.sticker.author)
+        .setType(StickerTypes.FULL)
+        .setCategories([emoji])
+        .setID(id)
+        .setQuality(50)
+        .build();
+};
+
 module.exports = {
     name: "telegramstickerdl",
     aliases: ["telesticker", "telegramsticker"],
@@ -25,47 +36,30 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result;
 
+            const chunkSize = Math.ceil(result.stickers.length / Math.ceil(result.stickers.length / 30));
             const stickerChunks = [];
-            for (let i = 0; i < result.stickers.length; i += 30) {
-                stickerChunks.push(result.stickers.slice(i, i + 30));
+
+            for (let i = 0; i < result.stickers.length; i += chunkSize) {
+                stickerChunks.push(result.stickers.slice(i, i + chunkSize));
             }
 
             for (let packIndex = 0; packIndex < stickerChunks.length; packIndex++) {
                 const chunk = stickerChunks[packIndex];
-                const stickersPack = [];
 
-                for (let i = 0; i < chunk.length; i++) {
-                    const sticker = chunk[i];
-                    const stickerBuffer = await new Sticker(sticker.image_url)
-                        .setPack(config.sticker.packname)
-                        .setAuthor(config.sticker.author)
-                        .setType(StickerTypes.FULL)
-                        .setCategories([sticker.emoji])
-                        .setID(`${ctx.msg.key.id}_${packIndex}_${i}`)
-                        .setQuality(50)
-                        .build();
-                    stickersPack.push({
-                        sticker: stickerBuffer,
-                        emojis: [sticker.emoji],
-                        accessibilityLabel: `Sticker ${i + 1}`,
-                        isLottie: false,
-                        isAnimated: sticker.image_url.endsWith(".webm")
-                    });
-                }
+                const stickersPack = await Promise.all(chunk.map(async (sticker, i) => ({
+                    sticker: await createSticker(sticker.image_url, sticker.emoji, `${ctx.msg.key.id}_${packIndex}_${i}`),
+                    emojis: [sticker.emoji],
+                    accessibilityLabel: `Sticker ${i + 1}`,
+                    isLottie: false,
+                    isAnimated: sticker.image_url.endsWith(".webm")
+                })));
 
                 await ctx.reply({
                     stickerPack: {
                         name: `${result.title}${stickerChunks.length > 1 ? ` (${packIndex + 1}/${stickerChunks.length})` : ""}`,
                         publisher: `t.me/${result.name}`,
                         description: `Pack by ${config.bot.name}`,
-                        cover: await new Sticker(result.stickers[0].image_url)
-                            .setPack(config.sticker.packname)
-                            .setAuthor(config.sticker.author)
-                            .setType(StickerTypes.FULL)
-                            .setCategories([result.stickers[0].emoji])
-                            .setID(ctx.msg.key.id)
-                            .setQuality(50)
-                            .build(),
+                        cover: await createSticker(result.stickers[0].image_url, result.stickers[0].emoji, ctx.msg.key.id, true),
                         stickers: stickersPack
                     }
                 });

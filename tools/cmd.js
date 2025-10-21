@@ -72,8 +72,7 @@ function fakeMetaAiQuotedText(text) {
 
     const quoted = {
         key: {
-            remoteJid: Baileys.STORIES_JID,
-            participant: Gktw.CHATGPT_JID
+            remoteJid: Gktw.CHATGPT_JID
         },
         message: {
             conversation: text

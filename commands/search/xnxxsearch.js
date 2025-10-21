@@ -21,9 +21,9 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result;
 
-            const resultText = result.map(_result =>
-                `➛ ${formatter.bold("Judul")}: ${_result.title}\n` +
-                `➛ ${formatter.bold("URL")}: ${_result.link}`
+            const resultText = result.map(res =>
+                `➛ ${formatter.bold("Judul")}: ${res.title}\n` +
+                `➛ ${formatter.bold("URL")}: ${res.link}`
             ).join("\n");
             await ctx.reply({
                 text: resultText || `ⓘ ${formatter.italic(config.msg.notFound)}`

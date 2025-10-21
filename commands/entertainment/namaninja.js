@@ -14,7 +14,7 @@ module.exports = {
         );
 
         try {
-            const result = input.replace(/[a-z]/gi, _input => {
+            const result = input.replace(/[a-z]/gi, inp => {
                 return {
                     "a": "ka",
                     "b": "tu",
@@ -42,7 +42,7 @@ module.exports = {
                     "x": "na",
                     "y": "fu",
                     "z": "zi"
-                } [_input.toLowerCase()] || _input
+                } [inp.toLowerCase()] || inp
             });
 
             await ctx.reply(result);
