@@ -33,7 +33,7 @@ module.exports = {
                     "\n" +
                     `➛ ${formatter.bold("Bonus")}: ${game.coin.answered} Koin untuk 1 jawaban benar, ${game.coin.allAnswered} Koin untuk semua jawaban benar\n` +
                     `➛ ${formatter.bold("Jumlah jawaban")}: ${game.answers.size}\n` +
-                    `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeoute}`,
+                    `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
                 buttons: [{
                     buttonId: `surrender_${ctx.used.command}`,
                     buttonText: {

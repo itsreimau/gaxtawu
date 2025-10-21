@@ -26,7 +26,7 @@ module.exports = {
                     "\n" +
                     `➛ ${formatter.bold("Tipe")}: ${game.tipe}\n` +
                     `➛ ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +
-                    `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeoute}`,
+                    `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
                 buttons: [{
                     buttonId: `hint_${ctx.used.command}`,
                     buttonText: {

@@ -24,8 +24,8 @@ module.exports = {
             await ctx.reply({
                 text: `— ${result.soal}\n` +
                     "\n" +
-                    `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeoute}` +
-                    `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeoute}`,
+                    `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}` +
+                    `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
                 buttons: [{
                     buttonId: `hint_${ctx.used.command}`,
                     buttonText: {
