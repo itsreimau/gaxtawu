@@ -23,7 +23,7 @@ module.exports = {
             await ctx.reply({
                 text: `— ${word}\n` +
                     "\n" +
-                    `➛ @${ctx.getId(selected[0])} ❤️ @${ctx.getId(selected[1])}`
+                    `➛ @${ctx.getId(selected[0])} ❤️ @${ctx.getId(selected[1])}`,
                 mentions: selected,
                 buttons: [{
                     buttonId: ctx.used.prefix + ctx.used.command,
