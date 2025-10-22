@@ -1,4 +1,4 @@
-const { Baileys } = require("@itsreimau/Baileys");
+const { Baileys } = require("@itsreimau/gktw");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
 module.exports = {
