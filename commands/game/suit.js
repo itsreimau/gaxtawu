@@ -1,4 +1,4 @@
-const { Gktw } = require("@itsreimau/gktw");
+const { Baileys } = require("@itsreimau/gktw");
 
 const session = new Map();
 
@@ -14,9 +14,9 @@ module.exports = {
 
         if (!accountJid) await ctx.reply({
             text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, `@${ctx.getId(Gktw.OFFICIAL_BIZ_JID)}`)}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
                 tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]),
-            mentions: [Gktw.OFFICIAL_BIZ_JID]
+            mentions: ["6281234567891@s.whatsapp.net"]
         });
 
         const senderJid = ctx.sender.jid;
@@ -67,7 +67,7 @@ module.exports = {
                 const participantAnswer = m.content.toLowerCase();
                 const participantJid = m.sender;
                 const participantId = ctx.getId(m.sender);
-                const isGroup = Gktw.isJidGroup(m.id);
+                const isGroup = Baileys.isJidGroup(m.id);
 
                 if (!game.started && isGroup && participantId === accountId) {
                     if (participantAnswer === "accept") {
@@ -175,8 +175,7 @@ module.exports = {
                                 text: `Hasil suit:\n` +
                                     `@${ctx.getId(ctx.sender.jid)}: ${sChoice.name}\n` +
                                     `@${accountId}: ${aChoice.name}\n` +
-                                    `${winnerText}\n` +
-                                    coinText,
+                                    `${winnerText} ${coinText}`,
                                 mentions: [senderJid, accountJid]
                             });
 
@@ -192,7 +191,7 @@ module.exports = {
                 if (session.has(senderJid) || session.has(accountJid)) {
                     session.delete(senderJid);
                     session.delete(accountJid);
-                    await ctx.reply(formatter.italic("ⓘ Waktu habis!"));
+                    await ctx.reply(`ⓘ ${formatter.italic("Waktu habis!")}`);
                 }
             });
         } catch (error) {

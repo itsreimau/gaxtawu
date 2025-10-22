@@ -72,7 +72,7 @@ function fakeMetaAiQuotedText(text) {
 
     const quoted = {
         key: {
-            remoteJid: Gktw.CHATGPT_JID
+            remoteJid: getRandomElement([Gktw.WHATSAPP_JID, Gktw.META_JID, Gktw.CHATGPT_JID, Gktw.COPILOT_JID, Gktw.INSTAGRAM_JID, Gktw.TIKTOK_JID])
         },
         message: {
             conversation: text
@@ -122,7 +122,7 @@ async function handleError(ctx, error, useAxios = false, reportErrorToOwner = tr
             }] : []
         }
     });
-    if (useAxios && error.status !== 200) return await ctx.reply(`ⓘ ${formatter.italic(`ⓘ ${formatter.italic(config.msg.notFound)}`)}`);
+    if (useAxios && error.status !== 200) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.notFound)}`);
     await ctx.reply(`ⓘ ${formatter.italic(`Terjadi kesalahan: ${error.message}`)}`);
 }
 

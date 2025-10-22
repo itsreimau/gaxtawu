@@ -1,5 +1,6 @@
 module.exports = {
     name: "cecan",
+    aliases: ["girl"],
     category: "entertainment",
     permissions: {
         premium: true
@@ -9,9 +10,7 @@ module.exports = {
 
         if (input?.toLowerCase() === "list") {
             const listText = await tools.list.get("cecan");
-            return await ctx.reply({
-                text: listText
-            });
+            return await ctx.reply(listText);
         }
 
         try {

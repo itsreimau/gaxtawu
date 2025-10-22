@@ -2,7 +2,6 @@ const axios = require("axios");
 
 module.exports = {
     name: "play",
-    aliases: ["p"],
     category: "downloader",
     permissions: {
         coin: 10

@@ -3,7 +3,7 @@ const axios = require("axios");
 
 module.exports = {
     name: "bugilkan",
-    aliases: ["bugil", "pengbugilan"],
+    aliases: ["bugil", "pengbugilan", "removeclothes"],
     category: "ai-misc",
     permissions: {
         premium: true

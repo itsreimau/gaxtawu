@@ -3,6 +3,7 @@ const axios = require("axios");
 
 module.exports = {
     name: "whatmusic",
+    aliases: ["shazam"],
     category: "tool",
     permissions: {
         coin: 10

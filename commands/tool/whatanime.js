@@ -3,6 +3,7 @@ const axios = require("axios");
 
 module.exports = {
     name: "whatanime",
+    aliases: ["wait"],
     category: "tool",
     permissions: {
         coin: 10

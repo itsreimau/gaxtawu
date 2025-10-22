@@ -17,8 +17,8 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("izumi", "/lokasi/cekcuaca", {
-                query: input
+            const apiUrl = tools.api.createUrl("izumi", "/lokasi/cuaca", {
+                lokasi: input
             });
             const result = (await axios.get(apiUrl)).data.result;
 

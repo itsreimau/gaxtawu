@@ -1,6 +1,5 @@
 module.exports = {
     name: "magicstudio",
-    aliases: ["magic", "magics", "mstudio"],
     category: "ai-generate",
     permissions: {
         coin: 10

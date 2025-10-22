@@ -1,8 +1,8 @@
 const { spawn } = require("node:child_process");
 
 module.exports = {
-    name: "js",
-    aliases: ["javascript", "node"],
+    name: "node",
+    aliases: ["eval", "javascript", "js"],
     category: "tool",
     permissions: {
         coin: 10

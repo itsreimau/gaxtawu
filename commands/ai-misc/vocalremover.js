@@ -3,6 +3,7 @@ const axios = require("axios");
 
 module.exports = {
     name: "vocalremover",
+    aliases: ["instrumental"],
     category: "ai-misc",
     permissions: {
         premium: 10

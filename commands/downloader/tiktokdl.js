@@ -2,7 +2,7 @@ const axios = require("axios");
 
 module.exports = {
     name: "tiktokdl",
-    aliases: ["tiktok", "tiktoknowm", "tt", "ttdl", "vt", "vtdl", "vtdltiktok", "vtnowm"],
+    aliases: ["tiktok", "tt", "ttdl", "vt", "vtdl"],
     category: "downloader",
     permissions: {
         coin: 10

@@ -1,6 +1,6 @@
 module.exports = {
-    name: "sertiftolol",
-    aliases: ["tolol"],
+    name: "sertifikattolol",
+    aliases: ["sertiftolol", "tolol"],
     category: "maker",
     permissions: {
         coin: 10

@@ -3,7 +3,7 @@ const axios = require("axios");
 
 module.exports = {
     name: "image2prompt",
-    aliases: ["imagetoprompt", "img2prompt", "imgtoprompt"],
+    aliases: ["imagetoprompt", "img2prompt", "imgtoprompt", "toprompt"],
     category: "ai-misc",
     permissions: {
         coin: 10

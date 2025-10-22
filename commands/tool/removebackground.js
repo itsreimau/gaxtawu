@@ -2,8 +2,8 @@ const { Gktw } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
-    name: "removebg",
-    aliases: ["rbg"],
+    name: "removebackground",
+    aliases: ["removebg"],
     category: "tool",
     permissions: {
         coin: 10

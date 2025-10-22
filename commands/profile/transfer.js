@@ -17,7 +17,7 @@ module.exports = {
 
         const userDb = ctx.db.user;
 
-        if (ctx.citation.isOwner) return await ctx.reply(`ⓘ ${formatter.italic("Koin tak terbatas tidak dapat ditransfer.")}`);
+        if (ctx.citation.isOwner || userDb?.premium) return await ctx.reply(`ⓘ ${formatter.italic("Koin tak terbatas tidak dapat ditransfer.")}`);
         if (coinAmount <= 0) return await ctx.reply(`ⓘ ${formatter.italic("Jumlah koin tidak boleh kurang dari atau sama dengan 0!")}`);
         if (userDb?.coin < coinAmount) return await ctx.reply(`ⓘ ${formatter.italic("Koin Anda tidak mencukupi untuk transfer ini!")}`);
 

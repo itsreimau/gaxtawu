@@ -16,7 +16,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("vreden", "/api/google", {
+            const apiUrl = tools.api.createUrl("noapi", "/api/google", {
                 query: input
             });
             const result = (await axios.get(apiUrl)).data.result.items;
@@ -25,10 +25,8 @@ module.exports = {
                 `➛ ${formatter.bold("Judul")}: ${res.title}\n` +
                 `➛ ${formatter.bold("Deskripsi")}: ${res.snippet}\n` +
                 `➛ ${formatter.bold("URL")}: ${res.link}`
-            ).join("\n");
-            await ctx.reply({
-                text: resultText || `ⓘ ${formatter.italic(config.msg.notFound)}`
-            });
+            ).join("\n\n");
+            await ctx.reply(`ⓘ ${formatter.italic(config.msg.notFound)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

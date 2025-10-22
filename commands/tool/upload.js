@@ -2,7 +2,7 @@ const { Gktw } = require("@itsreimau/gktw");
 
 module.exports = {
     name: "upload",
-    aliases: ["tourl"],
+    aliases: ["up", "tourl"],
     category: "tool",
     permissions: {
         coin: 10

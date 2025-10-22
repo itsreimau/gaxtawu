@@ -22,9 +22,7 @@ module.exports = {
                 return `${res.keterangan}\n` +
                     formattedDate;
             }).join("\n");
-            await ctx.reply({
-                text: resultText || `ⓘ ${formatter.italic(config.msg.notFound)}`
-            });
+            await ctx.reply(`ⓘ ${formatter.italic(config.msg.notFound)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

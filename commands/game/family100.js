@@ -10,7 +10,7 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        if (session.has(ctx.id)) return await ctx.reply(formatter.italic("ⓘ Sesi permainan sedang berjalan!"));
+        if (session.has(ctx.id)) return await ctx.reply(`ⓘ ${formatter.italic("Sesi permainan sedang berjalan!")}`);
 
         try {
             const apiUrl = tools.api.createUrl("https://raw.githubusercontent.com", "/BochilTeam/database/refs/heads/master/games/family100.json");
@@ -64,7 +64,7 @@ module.exports = {
                     participantDb.coin += game.coin.answered;
                     participantDb.save();
                     await ctx.sendMessage(ctx.id, {
-                        text: formatter.italic(`ⓘ ${tools.msg.ucwords(participantAnswer)} benar! Jawaban tersisa: ${game.answers.size}`)
+                        text: `ⓘ ${formatter.italic(`${tools.msg.ucwords(participantAnswer)} benar! Jawaban tersisa: ${game.answers.size}`)}`
                     }, {
                         quoted: m
                     });
@@ -78,7 +78,7 @@ module.exports = {
                             participantDb.save();
                         }
                         await ctx.sendMessage(ctx.id, {
-                            text: formatter.italic(`ⓘ Selamat! Semua jawaban telah terjawab! Setiap anggota yang menjawab mendapat ${game.coin.allAnswered} koin.`),
+                            text: `ⓘ ${formatter.italic(`Selamat! Semua jawaban telah terjawab! Setiap anggota yang menjawab mendapat ${game.coin.allAnswered} koin.`)}`,
                             buttons: playAgain
                         }, {
                             quoted: m
@@ -89,15 +89,14 @@ module.exports = {
                     session.delete(ctx.id);
                     collector.stop();
                     await ctx.sendMessage(ctx.id, {
-                        text: `${formatter.italic("ⓘ Anda menyerah!")}\n` +
-                            `Jawaban yang belum terjawab adalah ${remaining}.`,
+                        text: `ⓘ ${formatter.italic(`Anda menyerah! Jawaban yang belum terjawab adalah ${remaining}.`)}`,
                         buttons: playAgain
                     }, {
                         quoted: m
                     });
                 } else if (Gktw.didYouMean(participantAnswer, [game.answer]) === game.answer) {
                     await ctx.sendMessage(ctx.id, {
-                        text: formatter.italic("ⓘ Sedikit lagi!")
+                        text: `ⓘ ${formatter.italic("Sedikit lagi!")}`
                     }, {
                         quoted: m
                     });
@@ -110,8 +109,7 @@ module.exports = {
                 if (session.has(ctx.id)) {
                     session.delete(ctx.id);
                     await ctx.reply({
-                        text: `${formatter.italic("ⓘ Waktu habis!")}\n` +
-                            `Jawaban yang belum terjawab adalah ${remaining}`,
+                        text: `ⓘ ${formatter.italic(`Waktu habis! Jawaban yang belum terjawab adalah ${remaining}.`)}`,
                         buttons: playAgain
                     });
                 }

@@ -13,9 +13,7 @@ module.exports = {
 
         if (input.toLowerCase() === "list") {
             const listText = await tools.list.get("claim");
-            return await ctx.reply({
-                text: listText
-            });
+            return await ctx.reply(listText);
         }
 
         const userDb = ctx.db.user;

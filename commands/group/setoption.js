@@ -18,9 +18,7 @@ module.exports = {
 
         if (input.toLowerCase() === "list") {
             const listText = await tools.list.get("setoption");
-            return await ctx.reply({
-                text: listText
-            });
+            return await ctx.reply(listText);
         }
 
         if (input.toLowerCase() === "status") {

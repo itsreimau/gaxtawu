@@ -2,6 +2,7 @@ const { Gktw } = require("@itsreimau/gktw");
 
 module.exports = {
     name: "hd",
+    aliases: ["hdr"],
     category: "tool",
     permissions: {
         coin: 10

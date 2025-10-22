@@ -13,9 +13,7 @@ module.exports = {
 
         if (key?.toLowerCase() === "list") {
             const listText = await tools.list.get("settext");
-            return await ctx.reply({
-                text: listText
-            });
+            return await ctx.reply(listText);
         }
 
         if (!key || !text) return await ctx.reply(

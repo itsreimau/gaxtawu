@@ -27,7 +27,7 @@ module.exports = {
             const latencySpeeed = performance.now() - latencyStart;
 
             await ctx.reply(
-                `➛ ${formatter.bold("Latency")}: ${tools.msg.convertMsToDuration(latency)}\n` +
+                `➛ ${formatter.bold("Latency")}: ${tools.msg.convertMsToDuration(latencySpeeed)}\n` +
                 `➛ ${formatter.bold("Download")}: ${tools.msg.formatSize(downloadSpeed, true)}\n` +
                 `➛ ${formatter.bold("Upload")}: ${tools.msg.formatSize(uploadSpeed, true)}`
             );

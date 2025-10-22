@@ -34,9 +34,9 @@ module.exports = {
                 if (group.expiration) {
                     const timeDiff = group.expiration - Date.now();
                     const daysLeft = tools.msg.convertMsToDuration(timeDiff, ["hari"]);
-                    resultText += `- @${groupJid} (${daysLeft} tersisa)\n`;
+                    resultText += `➛ @${groupJid} (${daysLeft} tersisa)\n`;
                 } else {
-                    resultText += `- @${groupJid} (Sewa permanen)\n`;
+                    resultText += `➛ @${groupJid} (Sewa permanen)\n`;
                 }
             }
 

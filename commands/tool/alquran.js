@@ -15,9 +15,7 @@ module.exports = {
 
         if (surat.toLowerCase() === "list") {
             const listText = await tools.list.get("alquran");
-            return await ctx.reply({
-                text: listText
-            });
+            return await ctx.reply(listText);
         }
 
         if (isNaN(surat) || surat < 1 || surat > 114) return await ctx.reply(`ⓘ ${formatter.italic("Surah harus berupa nomor antara 1 sampai 114!")}`);

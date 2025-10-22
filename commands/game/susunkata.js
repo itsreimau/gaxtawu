@@ -7,7 +7,7 @@ module.exports = {
     name: "susunkata",
     category: "game",
     code: async (ctx) => {
-        if (session.has(ctx.id)) return await ctx.reply(formatter.italic("ⓘ Sesi permainan sedang berjalan!"));
+        if (session.has(ctx.id)) return await ctx.reply(`ⓘ ${formatter.italic("Sesi permainan sedang berjalan!")}`);
 
         try {
             const apiUrl = tools.api.createUrl("https://raw.githubusercontent.com", "/BochilTeam/database/refs/heads/master/games/susunkata.json");
@@ -24,7 +24,7 @@ module.exports = {
             await ctx.reply({
                 text: `— ${result.soal}\n` +
                     "\n" +
-                    `➛ ${formatter.bold("Tipe")}: ${game.tipe}\n` +
+                    `➛ ${formatter.bold("Tipe")}: ${result.tipe}\n` +
                     `➛ ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +
                     `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
                 buttons: [{
@@ -62,8 +62,7 @@ module.exports = {
                     participantDb.winGame += 1
                     participantDb.save();
                     await ctx.sendMessage(ctx.id, {
-                        text: `${formatter.italic("ⓘ Benar!")}\n` +
-                            `+${game.coin} Koin`,
+                        text: `ⓘ ${formatter.italic(`Benar! +${game.coin} Koin`)}`,
                         buttons: playAgain
                     }, {
                         quoted: m
@@ -79,15 +78,14 @@ module.exports = {
                     session.delete(ctx.id);
                     collector.stop();
                     await ctx.sendMessage(ctx.id, {
-                        text: `${formatter.italic("ⓘ Anda menyerah!")}\n` +
-                            `Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`,
+                        text: `ⓘ ${formatter.italic(`Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`)}`,
                         buttons: playAgain
                     }, {
                         quoted: m
                     });
                 } else if (Gktw.didYouMean(participantAnswer, [game.answer]) === game.answer) {
                     await ctx.sendMessage(ctx.id, {
-                        text: formatter.italic("ⓘ Sedikit lagi!")
+                        text: `ⓘ ${formatter.italic("Sedikit lagi!")}`
                     }, {
                         quoted: m
                     });
@@ -98,8 +96,7 @@ module.exports = {
                 if (session.has(ctx.id)) {
                     session.delete(ctx.id);
                     await ctx.reply({
-                        text: `${formatter.italic("ⓘ Waktu habis!")}\n` +
-                            `Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`,
+                        text: `ⓘ ${formatter.italic(`Waktu habis! Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`)}`,
                         buttons: playAgain
                     });
                 }

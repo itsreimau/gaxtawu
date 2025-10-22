@@ -3,7 +3,7 @@ const axios = require("axios");
 
 module.exports = {
     name: "chatgpt",
-    aliases: ["ai", "cgpt", "chatai", "gpt", "openai"],
+    aliases: ["ai", "gpt", "openai"],
     category: "ai-chat",
     permissions: {
         coin: 10

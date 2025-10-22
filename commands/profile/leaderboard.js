@@ -20,14 +20,14 @@ module.exports = {
 
             topUsers.forEach((user, index) => {
                 const isSelf = user.jid === senderJid;
-                const displayName = isSelf ? `@${user.jid}` : user.username ? user.username : `${user.jid}`;
-                resultText += `${index + 1}. ${displayName} - Menang: ${user.winGame}, Level: ${user.level}\n`;
+                const displayName = isSelf ? `@${user.jid}` : user.username ? user.username : user.jid;
+                resultText += `➛ ${displayName} - Menang: ${user.winGame}, Level: ${user.level}, Peringkat: ${index + 1}\n`;
             });
 
             if (userRank > 10) {
                 const userStats = leaderboardData[userRank - 1];
                 const displayName = `@${senderJid}`;
-                resultText += `${userRank}. ${displayName} - Menang: ${userStats.winGame}, Level: ${userStats.level}\n`;
+                resultText += `➛ ${displayName} - Menang: ${userStats.winGame}, Level: ${userStats.level}, Peringkat: ${userRank}\n`;
             }
 
             await ctx.reply({

@@ -17,9 +17,7 @@ module.exports = {
 
         if (input.toLowerCase() === "list") {
             const listText = await tools.list.get("group");
-            return await ctx.reply({
-                text: listText
-            });
+            return await ctx.reply(listText);
         }
 
         try {

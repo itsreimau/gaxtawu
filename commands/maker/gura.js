@@ -1,4 +1,4 @@
-const { Gktw } = require("@itsreimau/gktw");
+const { Baileys } = require("@itsreimau/Baileys");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const userJid = ctx.quoted?.sender || ctx.getMentioned()[0] || (ctx.args[0] ? ctx.args[0].replace(/[^\d]/g, "") + Gktw.S_WHATSAPP_NET : null);
+        const userJid = ctx.quoted?.sender || ctx.getMentioned()[0] || (ctx.args[0] ? ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET : null);
 
         if (!userJid) return await ctx.reply({
             text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +

@@ -238,7 +238,7 @@ module.exports = (bot) => {
                 const userAfkMentions = ctx.quoted ? [ctx.getId(ctx.quoted.sender)] : ctx.getMentioned().map(jid => ctx.getId(jid));
                 if (userAfkMentions.length > 0) {
                     for (const userAfkMention of userAfkMentions) {
-                        const userAfk = ctx.getDb("users", userAfkMention).afk || {};
+                        const userAfk = ctx.getDb("users", userAfkMention)?.afk || {};
                         if (userAfk.reason || userAfk.timestamp) {
                             const timeago = tools.msg.convertMsToDuration(Date.now() - userAfk.timestamp);
                             await ctx.reply(`ⓘ ${formatter.italic(`Jangan tag! Dia sedang AFK ${userAfk.reason ? `dengan alasan ${formatter.inlineCode(userAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`)}`);

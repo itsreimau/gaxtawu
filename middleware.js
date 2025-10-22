@@ -183,8 +183,7 @@ module.exports = (bot) => {
                     (userDb.lastSentMsg ||= {})[key] = now;
                     userDb.save();
                     return await ctx.reply({
-                        text: `ⓘ ${formatter.italic(msg)}\n` +
-                            `Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`,
+                        text: `ⓘ ${formatter.italic(`${msg} Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`)}`,
                         buttons: buttons || null
                     });
                 } else {
@@ -283,8 +282,7 @@ module.exports = (bot) => {
                     (userDb.lastSentMsg ||= {})[key] = now;
                     userDb.save();
                     return await ctx.reply({
-                        text: `ⓘ ${formatter.italic(msg)}\n` +
-                            `Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`,
+                        text: `ⓘ ${formatter.italic(`${msg} Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`)}`,
                         buttons: buttons || null
                     });
                 } else {

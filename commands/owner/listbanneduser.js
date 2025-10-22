@@ -21,7 +21,7 @@ module.exports = {
 
             for (const userJid of bannedUsers) {
                 const userId = ctx.getId(userJid);
-                resultText += `- @${userId}\n`;
+                resultText += `➛ @${userId}\n`;
                 userMentions.push(userJid);
             }
 

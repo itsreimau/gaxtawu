@@ -10,9 +10,7 @@ module.exports = {
 
         if (ctx.used.command === "how" || input?.toLowerCase() === "list") {
             const listText = await tools.list.get("how");
-            return await ctx.reply({
-                text: listText
-            });
+            return await ctx.reply(listText);
         }
 
         if (!input) return await ctx.reply(

@@ -26,10 +26,8 @@ module.exports = {
                 `➛ ${formatter.bold("Channel")}: ${res.artist}\n` +
                 `➛ ${formatter.bold("Durasi")}: ${res.duration}\n` +
                 `➛ ${formatter.bold("URL")}: ${res.link}`
-            ).join("\n");
-            await ctx.reply({
-                text: resultText || `ⓘ ${formatter.italic(config.msg.notFound)}`
-            });
+            ).join("\n\n");
+            await ctx.reply(`ⓘ ${formatter.italic(config.msg.notFound)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

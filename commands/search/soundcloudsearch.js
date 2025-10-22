@@ -24,10 +24,8 @@ module.exports = {
             const resultText = result.map(res =>
                 `➛ ${formatter.bold("Judul")}: ${res.title}\n` +
                 `➛ ${formatter.bold("URL")}: ${res.url}`
-            ).join("\n");
-            await ctx.reply({
-                text: resultText || `ⓘ ${formatter.italic(config.msg.notFound)}`
-            });
+            ).join("\n\n");
+            await ctx.reply(`ⓘ ${formatter.italic(config.msg.notFound)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

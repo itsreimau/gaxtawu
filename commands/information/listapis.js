@@ -7,7 +7,7 @@ module.exports = {
             const APIs = tools.api.listUrl();
             let resultText = "";
 
-            for (const [name, api] of Object.entries(APIs)) resultText += `- ${api.baseURL}\n`;
+            for (const [name, api] of Object.entries(APIs)) resultText += `➛ ${api.baseURL}\n`;
 
             await ctx.reply(resultText.trim());
         } catch (error) {

@@ -22,17 +22,17 @@ module.exports = {
                     });
 
                     if (response.status >= 200 && response.status < 500) {
-                        resultText += `- ${api.baseURL} >ᴗ< (${response.status})\n`;
+                        resultText += `➛ ${api.baseURL} >ᴗ< (${response.status})\n`;
                     } else {
-                        resultText += `- ${api.baseURL} •︵• (${response.status})\n`;
+                        resultText += `➛ ${api.baseURL} •︵• (${response.status})\n`;
                     }
                 } catch (error) {
                     if (error.response) {
-                        resultText += `- ${api.baseURL} •︵• (${error.response.status})\n`;
+                        resultText += `➛ ${api.baseURL} •︵• (${error.response.status})\n`;
                     } else if (error.request) {
-                        resultText += `- ${api.baseURL} •︵• (Tidak ada respon)\n`;
+                        resultText += `➛ ${api.baseURL} •︵• (Tidak ada respon)\n`;
                     } else {
-                        resultText += `- ${api.baseURL} •︵• (Kesalahan: ${error.message})\n`;
+                        resultText += `➛ ${api.baseURL} •︵• (Kesalahan: ${error.message})\n`;
                     }
                 }
             }

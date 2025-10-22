@@ -16,9 +16,7 @@ module.exports = {
 
         if (input.toLowerCase() === "list") {
             const listText = await tools.list.get("mode");
-            return await ctx.reply({
-                text: listText
-            });
+            return await ctx.reply(listText);
         }
 
         try {

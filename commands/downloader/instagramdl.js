@@ -25,7 +25,6 @@ module.exports = {
             const result = (await axios.get(apiUrl)).data.result.url;
             const album = result.map(item => {
                 const media = item.url[0];
-                const isVideo = media.type === "mp4";
 
                 return {
                     [isVideo ? "video" : "image"]: {
