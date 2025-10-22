@@ -11,18 +11,18 @@ module.exports = {
             const apiUrl = tools.api.createUrl("zell", "/random/dongeng");
             const result = (await axios.get(apiUrl)).data;
 
-            await ctx.reply(
-                `— ${result.storyContent}\n` +
-                "\n" +
-                `➛ ${formatter.bold("Judul")}: ${result.title}\n` +
-                `➛ ${formatter.bold("Pengarang")}: ${result.author}`,
+            await ctx.reply({
+                text: `— ${result.storyContent}\n` +
+                    "\n" +
+                    `➛ ${formatter.bold("Judul")}: ${result.title}\n` +
+                    `➛ ${formatter.bold("Pengarang")}: ${result.author}`,
                 buttons: [{
                     buttonId: ctx.used.prefix + ctx.used.command,
                     buttonText: {
                         displayText: "Ambil Lagi"
                     }
                 }]
-            );
+            });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }
