@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["hijab", "penghijaban"],
     category: "ai-misc",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [

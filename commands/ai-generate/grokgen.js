@@ -1,8 +1,7 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "wainsfwillustrous",
-    aliases: ["wai", "illustrous"],
+    name: "grokgen",
     category: "ai-generate",
     permissions: {
         premium: true
@@ -17,11 +16,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/ai/wai-nsfw-illustrous/v11", {
-                prompt: input,
-                ratio: tools.cmd.getRandomElement(["1:1", "16:9", "9:16"])
+            const apiUrl = tools.api.createUrl("nekolabs", "/ai/grok/2-image", {
+                prompt: input
             });
-            const result = (await axios.get(apiUrl)).data.result[0];
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 image: {

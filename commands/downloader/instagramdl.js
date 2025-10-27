@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["ig", "igdl", "instagram"],
     category: "downloader",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const url = ctx.args[0] || null;
@@ -19,18 +19,16 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("izumi", "/downloader/instagram", {
+            const apiUrl = tools.api.createUrl("yp", "/downloader/instagram", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result.url;
-            const album = result.map(item => {
-                const media = item.url[0];
-
+            const result = (await axios.get(apiUrl)).data.result.medias;
+            const album = result.map(res => {
                 return {
-                    [isVideo ? "video" : "image"]: {
-                        url: media.url
+                    [res.type]: {
+                        url: res.url
                     },
-                    mimetype: tools.mime.lookup(media.ext)
+                    mimetype: tools.mime.lookup(res.type === "video" ? "mp4" : "png")
                 };
             });
 

@@ -17,7 +17,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("bagus", "/api/tools/text2video", {
+            const apiUrl = tools.api.createUrl("https://api.baguss.xyz", "/api/tools/text2video", {
                 prompt: input
             });
             const result = (await axios.get(apiUrl)).data.video.url;

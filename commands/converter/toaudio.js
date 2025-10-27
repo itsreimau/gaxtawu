@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["toaud", "tomp3"],
     category: "converter",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [

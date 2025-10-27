@@ -17,7 +17,7 @@ function checkMedia(type, required) {
         audio: MessageType.audioMessage,
         document: [MessageType.documentMessage, MessageType.documentWithCaptionMessage],
         gif: MessageType.videoMessage,
-        groupStatusMention: MessageType.groupStatusMentionMessage,
+        groupStatusMentionMessage: MessageType.groupStatusMentionMessageMessage,
         image: MessageType.imageMessage,
         sticker: MessageType.stickerMessage,
         text: [MessageType.conversation, MessageType.extendedTextMessage],
@@ -67,7 +67,7 @@ function checkQuotedMedia(type, required) {
     return false;
 }
 
-function fakeMetaAiQuotedText(text) {
+function fakeQuotedText(text) {
     if (!text) return null;
 
     const quoted = {
@@ -197,31 +197,14 @@ function parseFlag(argsString, customRules = {}) {
     return options;
 }
 
-async function translate(text, target) {
-    if (!text || !target) return null;
-
-    try {
-        const apiUrl = api.createUrl("deline", "/tools/translate", {
-            text,
-            target
-        });
-        const result = (await axios.get(apiUrl)).data.data.hasil_terjemahan;
-        return result;
-    } catch (error) {
-        consolefy.error(`Error: ${util.format(error)}`);
-        return null;
-    }
-}
-
 module.exports = {
     checkMedia,
     checkQuotedMedia,
-    fakeMetaAiQuotedText,
+    fakeQuotedText,
     generateUID,
     getRandomElement,
     handleError,
     isCmd,
     isUrl,
-    parseFlag,
-    translate
+    parseFlag
 };

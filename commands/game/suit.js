@@ -1,4 +1,6 @@
-const { Baileys } = require("@itsreimau/gktw");
+const {
+    Baileys
+} = require("@itsreimau/gktw");
 
 const session = new Map();
 
@@ -9,10 +11,10 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const accountJid = ctx.getMentioned()[0] || ctx.quoted?.sender || null;
-        const accountId = ctx.getId(accountJid);
+        const targetJid = ctx.getMentioned()[0] || ctx.quoted?.sender || null;
+        const targetId = ctx.getId(targetJid);
 
-        if (!accountJid) await ctx.reply({
+        if (!targetJid) await ctx.reply({
             text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
                 tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]),
@@ -21,26 +23,26 @@ module.exports = {
 
         const senderJid = ctx.sender.jid;
 
-        if (accountJid === ctx.me.lid || accountJid === ctx.me.id) return await ctx.reply(formatter.italic("ⓘ Tidak bisa menantang bot!"));
-        if (accountJid === senderJid) return await ctx.reply(formatter.italic("ⓘ Tidak bisa menantang diri sendiri!"));
+        if (targetJid === ctx.me.lid || targetJid === ctx.me.id) return await ctx.reply(`ⓘ ${formatter.italic("Tidak bisa menantang bot!")}`);
+        if (targetJid === senderJid) return await ctx.reply(`ⓘ ${formatter.italic("Tidak bisa menantang diri sendiri!")}`);
 
-        const existingGame = [...session.values()].find(game => game.players.includes(senderJid) || game.players.includes(accountJid));
-        if (existingGame) return await ctx.reply(formatter.italic("ⓘ Salah satu pemain sedang dalam sesi permainan!"));
+        const existingGame = [...session.values()].find(game => game.players.includes(senderJid) || game.players.includes(targetJid));
+        if (existingGame) return await ctx.reply(`ⓘ ${formatter.italic("Salah satu pemain sedang dalam sesi permainan!")}`);
 
         try {
             const game = {
-                players: [senderJid, accountJid],
-                coin: 10,
+                players: [senderJid, targetJid],
+                coin: 5,
                 timeout: 120000,
                 choices: new Map(),
                 started: false
             };
 
             await ctx.reply({
-                text: `— Anda menantang @${accountId} untuk bermain suit!\n` +
+                text: `— Anda menantang @${targetId} untuk bermain suit!\n` +
                     "\n" +
                     `➛ ${formatter.bold("Bonus")}: ${game.coin} Koin`,
-                mentions: [accountJid],
+                mentions: [targetJid],
                 buttons: [{
                     buttonId: "accept",
                     buttonText: {
@@ -55,12 +57,12 @@ module.exports = {
             });
 
             session.set(senderJid, game);
-            session.set(accountJid, game);
+            session.set(targetJid, game);
 
             const collector = ctx.MessageCollector({
-                filter: (m) => [senderJid, accountJid].includes(m.sender),
+                filter: (m) => [senderJid, targetJid].includes(m.sender),
                 time: game.timeout,
-                hears: [senderJid, accountJid]
+                hears: [senderJid, targetJid]
             });
 
             collector.on("collect", async (m) => {
@@ -69,17 +71,17 @@ module.exports = {
                 const participantId = ctx.getId(m.sender);
                 const isGroup = Baileys.isJidGroup(m.id);
 
-                if (!game.started && isGroup && participantId === accountId) {
+                if (!game.started && isGroup && participantId === targetId) {
                     if (participantAnswer === "accept") {
                         game.started = true;
-                        await ctx.sendMessage(m.id, {
-                            text: `@${accountId} menerima tantangan! Silahkan pilih di obrolan pribadi.`,
-                            mentions: [accountJid]
+                        await ctx.core.sendMessage(m.id, {
+                            text: `ⓘ ${formatter.italic(`@${targetId} menerima tantangan! Silahkan pilih di obrolan pribadi.`)}`,
+                            mentions: [targetJid]
                         }, {
                             quoted: m
                         });
 
-                        const choiceText = "Silahkan pilih salah satu:";
+                        const choiceText = `ⓘ ${formatter.italic("Silahkan pilih salah satu:")}`;
                         const buttons = [{
                             buttonId: "batu",
                             buttonText: {
@@ -97,20 +99,20 @@ module.exports = {
                             }
                         }];
 
-                        await ctx.sendMessage(senderJid, {
+                        await ctx.core.sendMessage(senderJid, {
                             text: choiceText,
                             buttons
                         });
-                        await ctx.sendMessage(accountJid, {
+                        await ctx.core.sendMessage(targetJid, {
                             text: choiceText,
                             buttons
                         });
                     } else if (participantAnswer === "reject") {
                         session.delete(senderJid);
-                        session.delete(accountJid);
-                        await ctx.sendMessage(m.id, {
-                            text: `@${accountId} menolak tantangan suit.`,
-                            mentions: [accountJid]
+                        session.delete(targetJid);
+                        await ctx.core.sendMessage(m.id, {
+                            text: `ⓘ ${formatter.italic(`@${targetId} menolak tantangan suit.`)}`,
+                            mentions: [targetJid]
                         }, {
                             quoted: m
                         });
@@ -138,59 +140,55 @@ module.exports = {
                     if (choiceData) {
                         game.choices.set(participantId, choiceData);
 
-                        await ctx.sendMessage(participantJid, {
-                            text: `Anda memilih: ${choiceData.name}`
+                        await ctx.core.sendMessage(participantJid, {
+                            text: `ⓘ ${formatter.italic(`Anda memilih: ${choiceData.name}`)}`
                         }, {
                             quoted: m
                         });
 
                         if (game.choices.size === 2) {
-                            const [sChoice, aChoice] = [
-                                game.choices.get(ctx.getId(ctx.sender.jid)),
-                                game.choices.get(accountId)
-                            ];
+                            const [sChoice, aChoice] = [game.choices.get(ctx.getId(ctx.sender.jid)), game.choices.get(targetId)];
 
                             const result = (3 + sChoice.index - aChoice.index) % 3;
                             let winnerText, coinText = "Tak seorang pun menang, tak seorang pun mendapat koin";
-                            const userDb = ctx.db.user;
-                            const participantDb = ctx.getDb("users", accountId);
+                            const senderDb = ctx.db.user;
+                            const targetDb = ctx.getDb("users", targetId);
 
                             if (result === 0) {
                                 winnerText = "Seri!";
                             } else if (result === 1) {
                                 winnerText = `@${ctx.getId(ctx.sender.jid)} menang!`;
-                                userDb.coin += game.coin;
-                                userDb.winGame += 1
-                                userDb.save();
+                                senderDb.coin += game.coin;
+                                senderDb.winGame += 1;
+                                senderDb.save();
                                 coinText = `+${game.coin} Koin untuk @${ctx.getId(ctx.sender.jid)}`;
                             } else {
-                                winnerText = `@${accountId} menang!`;
-                                participantDb.coin += game.coin;
-                                participantDb.winGame += 1
-                                participantDb.save();
-                                coinText = `+${game.coin} Koin untuk @${accountId}`;
+                                winnerText = `@${targetId} menang!`;
+                                targetDb.coin += game.coin;
+                                targetDb.winGame += 1;
+                                targetDb.save();
+                                coinText = `+${game.coin} Koin untuk @${targetId}`;
                             }
 
                             await ctx.reply({
-                                text: `Hasil suit:\n` +
-                                    `@${ctx.getId(ctx.sender.jid)}: ${sChoice.name}\n` +
-                                    `@${accountId}: ${aChoice.name}\n` +
-                                    `${winnerText} ${coinText}`,
-                                mentions: [senderJid, accountJid]
+                                text: `— ${winnerText} ${coinText}\n` +
+                                    "\n" +
+                                    `➛ @${ctx.getId(ctx.sender.jid)}: ${sChoice.name}\n` +
+                                    `➛ @${targetId}: ${aChoice.name}`,
+                                mentions: [senderJid, targetJid]
                             });
 
                             session.delete(senderJid);
-                            session.delete(accountJid);
-
+                            session.delete(targetJid);
                         }
                     }
                 }
             });
 
             collector.on("end", async () => {
-                if (session.has(senderJid) || session.has(accountJid)) {
+                if (session.has(senderJid) || session.has(targetJid)) {
                     session.delete(senderJid);
-                    session.delete(accountJid);
+                    session.delete(targetJid);
                     await ctx.reply(`ⓘ ${formatter.italic("Waktu habis!")}`);
                 }
             });

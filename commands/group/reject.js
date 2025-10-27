@@ -32,13 +32,13 @@ module.exports = {
             }
         }
 
-        const accountJid = input.replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET;
+        const targetJid = input.replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET;
 
-        const isPending = pendings.some(pending => pending.jid === accountJid);
+        const isPending = pendings.some(pending => pending.jid === targetJid);
         if (!isPending) return await ctx.reply(`ⓘ ${formatter.italic("Akun tidak ditemukan di daftar anggota yang menunggu persetujuan.")}`);
 
         try {
-            await ctx.group().rejectPendingMembers([accountJid]);
+            await ctx.group().rejectPendingMembers(targetJid);
 
             await ctx.reply(`ⓘ ${formatter.italic("Berhasil ditolak!")}`);
         } catch (error) {

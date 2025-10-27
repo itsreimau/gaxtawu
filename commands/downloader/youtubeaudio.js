@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["yta", "ytaudio", "ytmp3"],
     category: "downloader",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const flag = tools.cmd.parseFlag(ctx.args.join(" ") || null, {

@@ -6,15 +6,15 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         try {
-            const userDb = ctx.db.user;
+            const senderDb = ctx.db.user;
             const reason = ctx.used.command === "turu" ? "turu" : input;
-            userDb.afk = {
-                reason: reason,
+            senderDb.afk = {
+                reason,
                 timestamp: Date.now()
             };
-            userDb.save();
+            senderDb.save();
 
-            await ctx.reply(`ⓘ ${formatter.italic(`Anda akan AFK, ${input ? `dengan alasan ${formatter.inlineCode(input)}` : "tanpa alasan apapun"}.`)}`);
+            await ctx.reply(`ⓘ ${formatter.italic(`Anda akan AFK, ${reason ? `dengan alasan ${formatter.inlineCode(reason)}` : "tanpa alasan apapun"}.`)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

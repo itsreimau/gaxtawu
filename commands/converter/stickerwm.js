@@ -2,10 +2,10 @@ const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
 module.exports = {
     name: "stickerwm",
-    aliases: ["swm", "stikerwm"],
+    aliases: ["take", "swm", "stikerwm"],
     category: "converter",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || null;

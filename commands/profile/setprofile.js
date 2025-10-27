@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["set", "setp", "setprof"],
     category: "profile",
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || null;
+        let input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
@@ -17,13 +17,12 @@ module.exports = {
         }
 
         try {
-            const userDb = ctx.db.user;
-            const args = ctx.args;
-            const command = args[0]?.toLowerCase();
+            const senderDb = ctx.db.user;
+            const option = ctx.args[0]?.toLowerCase();
 
-            switch (command) {
+            switch (option) {
                 case "username": {
-                    const input = args.slice(1).join(" ").trim();
+                    input = ctx.args.slice(1).join(" ").trim();
 
                     if (!input) return await ctx.reply(`ⓘ ${formatter.italic("Mohon masukkan username yang ingin digunakan.")}`);
                     if (/[^a-zA-Z0-9._-]/.test(input)) return await ctx.reply(`ⓘ ${formatter.italic("Username hanya boleh berisi huruf, angka, titik (.), underscore (_) atau tanda hubung (-).")}`);
@@ -32,17 +31,17 @@ module.exports = {
                     if (usernameTaken) return await ctx.reply(`ⓘ ${formatter.italic("Username tersebut sudah digunakan oleh pengguna lain.")}`);
 
                     const username = `@${input}`
-                    userDb.username = username;
-                    userDb.save();
+                    senderDb.username = username;
+                    senderDb.save();
 
                     await ctx.reply(`ⓘ ${formatter.italic(`Username berhasil diubah menjadi ${formatter.inlineCode(username)}!`)}`);
                     break;
                 }
                 case "autolevelup": {
-                    const currentStatus = userDb?.autolevelup || false;
+                    const currentStatus = senderDb?.autolevelup || false;
                     const newStatus = !currentStatus;
-                    userDb.autolevelup = newStatus;
-                    userDb.save();
+                    senderDb.autolevelup = newStatus;
+                    senderDb.save();
 
                     const statusText = newStatus ? "diaktifkan" : "dinonaktifkan";
                     await ctx.reply(`ⓘ ${formatter.italic(`Autolevelup berhasil ${statusText}!`)}`);

@@ -6,9 +6,9 @@ module.exports = {
         if (ctx.citation.isOwner) return await ctx.reply(`ⓘ ${formatter.italic("Anda memiliki koin tak terbatas.")}`);
 
         try {
-            const userCoin = ctx.db.user.coin || 0;
+            const coin = ctx.db.user.coin || 0;
 
-            await ctx.reply(`ⓘ ${formatter.italic(`Anda memiliki ${userCoin} koin tersisa.`)}`);
+            await ctx.reply(`ⓘ ${formatter.italic(`Anda memiliki ${coin} koin tersisa.`)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

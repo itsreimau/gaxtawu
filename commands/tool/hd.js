@@ -2,10 +2,9 @@ const { Gktw } = require("@itsreimau/gktw");
 
 module.exports = {
     name: "hd",
-    aliases: ["hdr"],
     category: "tool",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [

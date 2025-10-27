@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["hitam", "penghitaman"],
     category: "ai-misc",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
@@ -18,7 +18,7 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = (await Gktw.uploadFile(buffer)).data.url;
-            const result = tools.api.createUrl("zell", "/ai/hitamkan", {
+            const result = tools.api.createUrl("zell", "/ai/hitamkan2", {
                 imageUrl: uploadUrl
             });
 

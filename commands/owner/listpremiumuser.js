@@ -23,9 +23,9 @@ module.exports = {
             let userMentions = [];
 
             for (const user of premiumUsers) {
-                const userJid = user.jid;
+                const premiumUser = user.jid;
                 const userId = ctx.getId(user.jid);
-                userMentions.push(userJid);
+                userMentions.push(premiumUser);
 
                 if (user.expiration) {
                     const timeDiff = user.expiration - Date.now();

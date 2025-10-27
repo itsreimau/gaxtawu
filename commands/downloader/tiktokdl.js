@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["tiktok", "tt", "ttdl", "vt", "vtdl"],
     category: "downloader",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const url = ctx.args[0] || null;
@@ -33,9 +33,9 @@ module.exports = {
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else if (result.images) {
-                const album = result.images.map(imageUrl => ({
+                const album = result.images.map(res => ({
                     image: {
-                        url: imageUrl
+                        url: res
                     },
                     mimetype: tools.mime.lookup("png")
                 }));

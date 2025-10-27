@@ -13,24 +13,24 @@ module.exports = (bot) => {
         const groupJid = isGroup ? ctx.id : null;
         const groupId = isGroup ? ctx.getId(groupJid) : null;
         const isOwner = ctx.citation.isOwner;
-        const isAdmin = isGroup ? await ctx.group().isAdmin(senderJid) : false;
+        const isAdmin = isGroup ? await ctx.group().isSenderAdmin() : false;
 
         // Mengambil database
         const botDb = ctx.db.bot;
-        const userDb = ctx.db.user;
+        const senderDb = ctx.db.user;
         const groupDb = ctx.db.group;
 
         // Pengecekan mode bot (group, private, self)
-        if (botDb?.mode === "premium" && !isOwner && !userDb?.premium) return;
-        if (botDb?.mode === "group" && isPrivate && !isOwner && !userDb?.premium) return;
-        if (botDb?.mode === "private" && isGroup && !isOwner && !userDb?.premium) return;
+        if (botDb?.mode === "premium" && !isOwner && !senderDb?.premium) return;
+        if (botDb?.mode === "group" && isPrivate && !isOwner && !senderDb?.premium) return;
+        if (botDb?.mode === "private" && isGroup && !isOwner && !senderDb?.premium) return;
         if (botDb?.mode === "self" && !isOwner) return;
 
         // Pengecekan mute pada grup
         if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;
         if (groupDb?.mutebot === "owner" && !isOwner) return;
         const muteList = groupDb?.mute || [];
-        if (muteList.includes(Baileys.isJidUser(senderJid) ? ctx.msg.key.participantAlt || ctx.msg.key.remoteJidAlt : senderJid)) return;
+        if (muteList.includes(Baileys.isLidUser(senderJid) ? senderJid : ctx.msg.key.participantAlt || ctx.msg.key.remoteJidAlt)) return;
 
         // Log command masuk
         if (isGroup && !ctx.msg.key.fromMe) {
@@ -42,15 +42,15 @@ module.exports = (bot) => {
         // Menambah XP pengguna dan menangani level-up
         const xpGain = 10;
         const xpToLevelUp = 100;
-        let newUserXp = (userDb?.xp || 0) + xpGain;
-        if (newUserXp >= xpToLevelUp) {
-            let newUserLevel = (userDb?.level || 0) + 1;
-            newUserXp -= xpToLevelUp;
+        let newSenderXp = (senderDb?.xp || 0) + xpGain;
+        if (newSenderXp >= xpToLevelUp) {
+            let newSenderLevel = (senderDb?.level || 0) + 1;
+            newSenderXp -= xpToLevelUp;
 
-            if (userDb?.autolevelup) {
+            if (senderDb?.autolevelup) {
                 const profilePictureUrl = await ctx.core.profilePictureUrl(senderJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
                 await ctx.reply({
-                    text: `ⓘ ${formatter.italic(`Selamat! Anda telah naik ke level ${newUserLevel}.`)}`,
+                    text: `ⓘ ${formatter.italic(`Selamat! Anda telah naik ke level ${newSenderLevel}.`)}`,
                     buttons: [{
                         buttonId: `${ctx.used.prefix}setprofile autolevelup`,
                         buttonText: {
@@ -60,12 +60,12 @@ module.exports = (bot) => {
                 });
             }
 
-            userDb.xp = newUserXp;
-            userDb.level = newUserLevel;
-            userDb.save();
+            senderDb.xp = newSenderXp;
+            senderDb.level = newSenderLevel;
+            senderDb.save();
         } else {
-            userDb.xp = newUserXp;
-            userDb.save();
+            senderDb.xp = newSenderXp;
+            senderDb.save();
         }
 
         // Fungsi untuk mengecek membership
@@ -73,14 +73,14 @@ module.exports = (bot) => {
             const now = Date.now();
             const duration = 24 * 60 * 60 * 1000;
 
-            if (userDb?.botGroupMembership && (now - userDb.botGroupMembership.timestamp) < duration) return userDb.botGroupMembership.isMember;
+            if (senderDb?.botGroupMembership && (now - senderDb.botGroupMembership.timestamp) < duration) return senderDb.botGroupMembership.isMember;
 
             const isMember = await ctx.group(config.bot.groupJid).isMemberExist(senderJid);
-            userDb.botGroupMembership = {
+            senderDb.botGroupMembership = {
                 isMember: isMember,
                 timestamp: now
             };
-            userDb.save();
+            senderDb.save();
 
             return isMember;
         };
@@ -93,7 +93,7 @@ module.exports = (bot) => {
         // Pengecekan kondisi restrictions
         const restrictions = [{
             key: "banned",
-            condition: userDb?.banned && ctx.used.command !== "owner",
+            condition: senderDb?.banned && ctx.used.command !== "owner",
             msg: config.msg.banned,
             buttons: [{
                 buttonId: `${ctx.used.prefix}owner`,
@@ -104,7 +104,7 @@ module.exports = (bot) => {
             reaction: "🚫"
         }, {
             key: "cooldown",
-            condition: new Cooldown(ctx, config.system.cooldown, "multi").onCooldown && !isOwner && !userDb?.premium,
+            condition: new Cooldown(ctx, config.system.cooldown, "multi").onCooldown && !isOwner && !senderDb?.premium,
             msg: config.msg.cooldown,
             reaction: "💤"
         }, {
@@ -114,7 +114,7 @@ module.exports = (bot) => {
             reaction: "🎮"
         }, {
             key: "privatePremiumOnly",
-            condition: config.system.privatePremiumOnly && isPrivate && !isOwner && !userDb?.premium && !["price", "owner"].includes(ctx.used.command),
+            condition: config.system.privatePremiumOnly && isPrivate && !isOwner && !senderDb?.premium && !["price", "owner"].includes(ctx.used.command),
             msg: config.msg.privatePremiumOnly,
             buttons: [{
                 buttonId: `${ctx.used.prefix}price`,
@@ -130,7 +130,7 @@ module.exports = (bot) => {
             reaction: "💎"
         }, {
             key: "requireBotGroupMembership",
-            condition: config.system.requireBotGroupMembership && !isOwner && !userDb?.premium && ctx.used.command !== "botgroup" && config.bot.groupJid && !await checkBotGroupMembership(),
+            condition: config.system.requireBotGroupMembership && !isOwner && !senderDb?.premium && ctx.used.command !== "botgroup" && config.bot.groupJid && !await checkBotGroupMembership(),
             msg: config.msg.botGroupMembership,
             buttons: [{
                 buttonId: `${ctx.used.prefix}botgroup`,
@@ -160,7 +160,7 @@ module.exports = (bot) => {
             condition: (() => {
                 const now = moment().tz(config.system.timeZone);
                 const hour = now.hour();
-                return config.system.unavailableAtNight && !isOwner && !userDb?.premium && hour >= 0 && hour < 6;
+                return config.system.unavailableAtNight && !isOwner && !senderDb?.premium && hour >= 0 && hour < 6;
             })(),
             msg: config.msg.unavailableAtNight,
             reaction: "😴"
@@ -176,12 +176,12 @@ module.exports = (bot) => {
             of restrictions) {
             if (condition) {
                 const now = Date.now();
-                const lastSentMsg = userDb?.lastSentMsg?.[key] || 0;
+                const lastSentMsg = senderDb?.lastSentMsg?.[key] || 0;
                 const oneDay = 24 * 60 * 60 * 1000;
                 if (!lastSentMsg || (now - lastSentMsg) > oneDay) {
                     await simulateTyping();
-                    (userDb.lastSentMsg ||= {})[key] = now;
-                    userDb.save();
+                    (senderDb.lastSentMsg ||= {})[key] = now;
+                    senderDb.save();
                     return await ctx.reply({
                         text: `ⓘ ${formatter.italic(`${msg} Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`)}`,
                         buttons: buttons || null
@@ -211,10 +211,10 @@ module.exports = (bot) => {
         }, {
             key: "coin",
             condition: (() => {
-                if (!config.system.useCoin || isOwner || userDb?.premium) return false;
-                if (userDb?.coin >= permissions.coin) {
-                    userDb.coin -= permissions.coin;
-                    userDb.save();
+                if (!config.system.useCoin || isOwner || senderDb?.premium) return false;
+                if (senderDb?.coin >= permissions.coin) {
+                    senderDb.coin -= permissions.coin;
+                    senderDb.save();
                     return false;
                 }
                 return true;
@@ -239,7 +239,7 @@ module.exports = (bot) => {
             reaction: "👑"
         }, {
             key: "premium",
-            condition: !userDb?.premium && !isOwner,
+            condition: !senderDb?.premium && !isOwner,
             msg: config.msg.premium,
             buttons: [{
                 buttonId: `${ctx.used.prefix}price`,
@@ -275,12 +275,12 @@ module.exports = (bot) => {
             of permissionChecks) {
             if (permissions[key] && condition) {
                 const now = Date.now();
-                const lastSentMsg = userDb?.lastSentMsg?.[key] || 0;
+                const lastSentMsg = senderDb?.lastSentMsg?.[key] || 0;
                 const oneDay = 24 * 60 * 60 * 1000;
                 if (!lastSentMsg || (now - lastSentMsg) > oneDay) {
                     await simulateTyping();
-                    (userDb.lastSentMsg ||= {})[key] = now;
-                    userDb.save();
+                    (senderDb.lastSentMsg ||= {})[key] = now;
+                    senderDb.save();
                     return await ctx.reply({
                         text: `ⓘ ${formatter.italic(`${msg} Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`)}`,
                         buttons: buttons || null

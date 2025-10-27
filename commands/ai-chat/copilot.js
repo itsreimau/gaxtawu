@@ -1,32 +1,27 @@
+const axios = require("axios");
+
 module.exports = {
-    name: "sertifikattolol",
-    aliases: ["sertiftolol", "tolol"],
-    category: "maker",
+    name: "copilot",
+    category: "ai-chat",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || ctx.quoted?.content || null;
 
         if (!input) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            `${tools.msg.generateCmdExample(ctx.used, "shinji ikari")}\n` +
+            `${tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
             tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."])
         );
 
-        if (input.length > 100) return await ctx.reply(`ⓘ ${formatter.italic("Maksimal 100 kata!")}`);
-
         try {
-            const result = tools.api.createUrl("hang", "/imagecreator/sertifikat-tolol", {
+            const apiUrl = tools.api.createUrl("nekolabs", "/ai/copilot", {
                 text: input
             });
+            const result = (await axios.get(apiUrl)).data.result.text;
 
-            await ctx.reply({
-                image: {
-                    url: result
-                },
-                mimetype: tools.mime.lookup("png")
-            });
+            await ctx.reply(result);
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

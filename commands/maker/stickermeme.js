@@ -6,7 +6,7 @@ module.exports = {
     aliases: ["smeme", "stikermeme"],
     category: "maker",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || null;

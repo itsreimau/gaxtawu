@@ -1,16 +1,16 @@
 // Konfigurasi
 global.config = {
-    // Informasi bot dasar
+    // Informasi bot
     bot: {
         name: "GAXTAWU", // Nama bot
         prefix: /^[°•π÷×¶∆£¢€¥®™+✓_=|/~!?@#%^&.©^]/i, // Karakter awalan untuk memanggil perintah
-        phoneNumber: "", // Nomor telepon bot (Tidak perlu diisi jika menggunakan QR code)
+        phoneNumber: "", // Nomor telepon bot, tidak perlu diisi jika menggunakan QR code
         thumbnail: "https://repository-images.githubusercontent.com/753096396/3f4b7686-0f1d-43f2-8293-2ae1b4487220", // Gambar thumbnail bot
-        groupJid: "", // JID untuk group bot (Tidak perlu diisi jika tidak menggunakan requireBotGroupMembership)
+        groupJid: "", // JID untuk group bot, tidak perlu diisi jika tidak menggunakan requireBotGroupMembership
         newsletterJid: "120363416372653441@newsletter" // JID untuk saluran bot
     },
 
-    // Pesan bot yang disesuaikan untuk situasi tertentu
+    // Pesan bot
     msg: {
         admin: "Perintah hanya dapat diakses oleh admin grup!", // Pesan saat perintah hanya untuk admin
         banned: "Anda telah dibanned oleh Owner!", // Pesan untuk pengguna yang dibanned
@@ -26,7 +26,7 @@ global.config = {
         private: "Perintah hanya dapat diakses dalam obrolan pribadi!", // Pesan untuk perintah obrolan pribadi
         privatePremiumOnly: "Menggunakan bot dalam obrolan pribadi hanya untuk pengguna Premium.", // Pesan jika pengguna bukan premium menggunakan bot dalam obrolan pribadi
         restrict: "Perintah ini telah dibatasi karena alasan keamanan!", // Pesan pembatasan perintah
-        unavailableAtNight: "Bot tidak tersedia dari jam 12 malam sampai 6 pagi. Silakan kembali nanti!", // Pesan jika tidak tersedia pada malam hari
+        unavailableAtNight: "Bot tidak tersedia dari jam 12 malam sampai 6 pagi. Silakan kembali nanti!", // Pesan jika bot tidak tersedia pada malam hari
 
         readmore: "\u200E".repeat(4001), // Read more...
         note: "“Lorem ipsum dolor sit amet, tenebris in umbra, vitae ad mortem.”", // Catatan
@@ -42,11 +42,12 @@ global.config = {
         name: "Budi", // Nama owner bot
         organization: "PT. Pencari Cinta Sejati", // Nama organisasi owner bot
         id: "62123456789", // Nomor telepon owner bot
+        // Informasi co-owner bot
         co: [{
-            name: "Budi Jr.",
-            organization: "PT. Pencari Cinta Sejati II",
-            id "62987654321"
-        }] // Nomor co-owner bot
+            name: "Budi Jr.", // Nama
+            organization: "PT. Pencari Cinta Sejati II", // Nama organisasi
+            id "62987654321" // Nomor telepon
+        }]
     },
 
     // Stiker bot
@@ -60,7 +61,6 @@ global.config = {
         alwaysOnline: true, // Bot selalu berstatus "online"
         antiCall: true, // Bot secara otomatis membanned orang yang menelepon
         autoRead: true, // Bot baca pesan otomatis
-        autoAiLabel: true, // Bot otomatis menambahkan label AI dalam pesan yang dikirim
         autoTypingOnCmd: true, // Tampilkan status "sedang mengetik" saat memproses perintah
         cooldown: 10 * 1000, // Jeda antar perintah (ms)
         maxListeners: 50, // Max listeners untuk events

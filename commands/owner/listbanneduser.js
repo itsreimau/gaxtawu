@@ -19,10 +19,10 @@ module.exports = {
             let resultText = "";
             let userMentions = [];
 
-            for (const userJid of bannedUsers) {
-                const userId = ctx.getId(userJid);
+            for (const bannedUser of bannedUsers) {
+                const userId = ctx.getId(bannedUser);
                 resultText += `➛ @${userId}\n`;
-                userMentions.push(userJid);
+                userMentions.push(bannedUser);
             }
 
             await ctx.reply({

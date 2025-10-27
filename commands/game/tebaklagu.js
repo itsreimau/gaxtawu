@@ -14,7 +14,7 @@ module.exports = {
             const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data);
 
             const game = {
-                coin: 10,
+                coin: 5,
                 timeout: 60000,
                 answer: result.judul.toLowerCase()
             };
@@ -27,7 +27,7 @@ module.exports = {
                 },
                 mimetype: tools.mime.lookup("mp3")
             });
-            await ctx.sendMessage(ctx.id, {
+            await ctx.core.sendMessage(ctx.id, {
                 text: `— Artisnya adalah, ${result.artis}.\n` +
                     "\n" +
                     `➛ ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +
@@ -66,9 +66,9 @@ module.exports = {
                     session.delete(ctx.id);
                     collector.stop();
                     participantDb.coin += game.coin;
-                    participantDb.winGame += 1
+                    participantDb.winGame += 1;
                     participantDb.save();
-                    await ctx.sendMessage(ctx.id, {
+                    await ctx.core.sendMessage(ctx.id, {
                         text: `ⓘ ${formatter.italic(`Benar! +${game.coin} Koin`)}`,
                         buttons: playAgain
                     }, {
@@ -76,7 +76,7 @@ module.exports = {
                     });
                 } else if (participantAnswer === `hint_${ctx.used.command}`) {
                     const clue = game.answer.replace(/[aiueo]/g, "_");
-                    await ctx.sendMessage(ctx.id, {
+                    await ctx.core.sendMessage(ctx.id, {
                         text: formatter.monospace(clue.toUpperCase())
                     }, {
                         quoted: m
@@ -84,14 +84,14 @@ module.exports = {
                 } else if (participantAnswer === `surrender_${ctx.used.command}`) {
                     session.delete(ctx.id);
                     collector.stop();
-                    await ctx.sendMessage(ctx.id, {
-                        text: `ⓘ ${formatter.italic(`Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`)}`,
+                    await ctx.core.sendMessage(ctx.id, {
+                        text: `ⓘ ${formatter.italic(`Anda menyerah! Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`)}`,
                         buttons: playAgain
                     }, {
                         quoted: m
                     });
                 } else if (Gktw.didYouMean(participantAnswer, [game.answer]) === game.answer) {
-                    await ctx.sendMessage(ctx.id, {
+                    await ctx.core.sendMessage(ctx.id, {
                         text: `ⓘ ${formatter.italic("Sedikit lagi!")}`
                     }, {
                         quoted: m

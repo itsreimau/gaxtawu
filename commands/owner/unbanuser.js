@@ -8,9 +8,9 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const userJid = await ctx.quoted?.sender || ctx.getMentioned()[0] || (ctx.args[0] ? (await ctx.core.getLidUser(ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET))[0].lid : null);
+        const targetJid = await ctx.quoted?.sender || ctx.getMentioned()[0] || (ctx.args[0] ? (await ctx.core.getLidUser(ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET))[0].lid : null);
 
-        if (!userJid) return await ctx.reply({
+        if (!targetJid) return await ctx.reply({
             text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
                 `${tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])}\n` +
@@ -21,9 +21,9 @@ module.exports = {
         });
 
         try {
-            const userDb = ctx.getDb("users", userJid);
-            userDb.banned = false;
-            userDb.save();
+            const targetDb = ctx.getDb("users", targetJid);
+            targetDb.banned = false;
+            targetDb.save();
 
             const flag = tools.cmd.parseFlag(ctx.args.join(" "), {
                 "-s": {
@@ -33,7 +33,7 @@ module.exports = {
             });
 
             const silent = flag?.silent || false;
-            if (!silent) await ctx.sendMessage(userJid, {
+            if (!silent) await ctx.core.sendMessage(targetJid, {
                 text: `ⓘ ${formatter.italic("Anda telah diunbanned oleh Owner!")}`
             });
 

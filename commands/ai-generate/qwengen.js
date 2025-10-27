@@ -4,7 +4,7 @@ module.exports = {
     name: "qwengen",
     category: "ai-generate",
     permissions: {
-        premium: true
+        coin: 5
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || ctx.quoted?.content || null;

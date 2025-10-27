@@ -8,6 +8,10 @@
 >
 > Gunakan dengan bertanggung jawab dan risiko Anda sendiri. Kami **tidak bertanggung jawab atas penyalahgunaan atau kerusakan** yang diakibatkan dari penggunaan proyek ini.
 
+> [!NOTE]
+>
+> `gaxtawu` sekarang telah beralih ke versi **mnml (minimal)**. Beberapa fitur telah dihapus untuk membuat bot ini lebih ringan dan sederhana. Jika Anda menginginkan fitur-fitur yang telah dihapus, Anda dapat mengambilnya dari histori commit repository.
+
 ## 🚀 Getting Started
 
 Ikuti langkah-langkah ini untuk menyiapkan dan menjalankan `gaxtawu`:
@@ -105,7 +109,7 @@ module.exports = {
 
 ### Documentation
 
-`gaxtawu` menggunakan versi modifikasi dari `@mengkodingan/ckptw` yang khusus di-fork dan disesuaikan untuk bot ini. Pustaka ini dibangun di atas `@yupra/baileys` yang menawarkan fitur lebih lengkap dibandingkan `@whiskeysockets/baileys`.
+`gaxtawu` menggunakan versi modifikasi dari `@mengkodingan/ckptw` yang khusus di-fork dan disesuaikan untuk bot ini. Pustaka ini dibangun di atas `@itsukichan/baileys` yang menawarkan fitur lebih lengkap dibandingkan `@whiskeysockets/baileys`.
 
 Untuk dokumentasi lengkap, silakan kunjungi:
 

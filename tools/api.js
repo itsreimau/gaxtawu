@@ -3,14 +3,8 @@ const util = require("node:util");
 
 // Daftar API gratis
 const APIs = {
-    bagus: {
-        baseURL: "https://api.baguss.xyz"
-    },
     deline: {
         baseURL: "https://api.deline.my.id"
-    },
-    hang: {
-        baseURL: "https://api.hanggts.xyz"
     },
     izumi: {
         baseURL: "https://api.ootaizumi.web.id"

@@ -25,26 +25,12 @@ async function get(type) {
                 );
                 break;
             }
-            case "cecan": {
-                const data = ["china", "indonesia", "japan", "vietnam", "korea", "malaysia", "thailand"];
-                text = createList(data, list => `➛ ${list}`);
-                break;
-            }
             case "claim": {
                 const data = [
                     "daily (Hadiah harian)",
                     "weekly (Hadiah mingguan)",
                     "monthly (Hadiah bulanan)",
                     "yearly (Hadiah tahunan)"
-                ];
-                text = createList(data, list => `➛ ${list}`);
-                break;
-            }
-            case "fixdb": {
-                const data = [
-                    "user (Data pengguna)",
-                    "group (Data grup)",
-                    "menfess (Data menfess)"
                 ];
                 text = createList(data, list => `➛ ${list}`);
                 break;
@@ -63,23 +49,6 @@ async function get(type) {
                 text = createList(data, list => `➛ ${list}`);
                 break;
             }
-            case "how": {
-                const data = [
-                    "howgay (Seberapa gay)",
-                    "howpintar (Seberapa pintar)",
-                    "howcantik (Seberapa cantik)",
-                    "howganteng (Seberapa ganteng)",
-                    "howgabut (Seberapa gabut)",
-                    "howgila (Seberapa gila)",
-                    "howlesbi (Seberapa lesbi)",
-                    "howstress (Seberapa stress)",
-                    "howbucin (Seberapa bucin)",
-                    "howjones (Seberapa jones)",
-                    "howsadboy (Seberapa sadboy)"
-                ];
-                text = createList(data, list => `➛ ${list}`);
-                break;
-            }
             case "mode": {
                 const data = [
                     "premium (Mode premium, hanya merespons pengguna Premium dan Ownernya)",
@@ -88,11 +57,6 @@ async function get(type) {
                     "public (Mode publik, merespons dalam obrolan grup dan obrolan pribadi)",
                     "self (Mode self, hanya merespons dirinya sendiri dan Ownernya)"
                 ];
-                text = createList(data, list => `➛ ${list}`);
-                break;
-            }
-            case "nsfwhub": {
-                const data = ["anal", "ass", "bdsm", "black", "blowjub", "boobs", "bottomless", "collared", "cum", "cumsluts", "dick", "dom", "dp", "easter", "extreme", "feet", "finger", "fuck", "futa", "gay", "group", "hentai", "kiss", "lesbian", "lick", "pegged", "puffies", "pussy", "real", "sixtynine", "suck", "tattoo", "tiny", "xmas"];
                 text = createList(data, list => `➛ ${list}`);
                 break;
             }
@@ -137,29 +101,6 @@ async function get(type) {
                     "intro (Teks intro)",
                     "welcome (Teks welcome, variabel yang tersedia: %tag%, %subject%, %description%)"
                 ];
-                text = createList(data, list => `➛ ${list}`);
-                break;
-            }
-            case "translate": {
-                const data = (await axios.get(api.createUrl("https://raw.githubusercontent.com", "/itsecurityco/to-google-translate/refs/heads/master/supported_languages.json"))).data;
-                text = createList(data, list =>
-                    `➛ ${formatter.bold("Kode")}: ${list.code}\n` +
-                    `➛ ${formatter.bold("Bahasa")}: ${list.language}`
-                );
-                break;
-            }
-            case "waifuim": {
-                const data = ["ass", "ecchi", "ero", "hentai", "maid", "milf", "oppai", "oral", "paizuri", "selfies", "uniform", "waifu"];
-                text = createList(data, list => `➛ ${list}`);
-                break;
-            }
-            case "waifupics": {
-                const data = ["waifu", "neko", "shinobu", "megumin"];
-                text = createList(data, list => `➛ ${list}`);
-                break;
-            }
-            case "waifupicsnsfw": {
-                const data = ["waifu", "neko", "trap"];
                 text = createList(data, list => `➛ ${list}`);
                 break;
             }

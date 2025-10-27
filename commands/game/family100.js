@@ -63,7 +63,7 @@ module.exports = {
 
                     participantDb.coin += game.coin.answered;
                     participantDb.save();
-                    await ctx.sendMessage(ctx.id, {
+                    await ctx.core.sendMessage(ctx.id, {
                         text: `ⓘ ${formatter.italic(`${tools.msg.ucwords(participantAnswer)} benar! Jawaban tersisa: ${game.answers.size}`)}`
                     }, {
                         quoted: m
@@ -74,10 +74,10 @@ module.exports = {
                         collector.stop();
                         for (const participant of game.participants) {
                             participantDb.coin += game.coin.allAnswered;
-                            participantDb.winGame += 1
+                            participantDb.winGame += 1;
                             participantDb.save();
                         }
-                        await ctx.sendMessage(ctx.id, {
+                        await ctx.core.sendMessage(ctx.id, {
                             text: `ⓘ ${formatter.italic(`Selamat! Semua jawaban telah terjawab! Setiap anggota yang menjawab mendapat ${game.coin.allAnswered} koin.`)}`,
                             buttons: playAgain
                         }, {
@@ -88,14 +88,14 @@ module.exports = {
                     const remaining = [...game.answers].map(tools.msg.ucwords).join(", ").replace(/, ([^,]*)$/, ", dan $1");
                     session.delete(ctx.id);
                     collector.stop();
-                    await ctx.sendMessage(ctx.id, {
+                    await ctx.core.sendMessage(ctx.id, {
                         text: `ⓘ ${formatter.italic(`Anda menyerah! Jawaban yang belum terjawab adalah ${remaining}.`)}`,
                         buttons: playAgain
                     }, {
                         quoted: m
                     });
                 } else if (Gktw.didYouMean(participantAnswer, [game.answer]) === game.answer) {
-                    await ctx.sendMessage(ctx.id, {
+                    await ctx.core.sendMessage(ctx.id, {
                         text: `ⓘ ${formatter.italic("Sedikit lagi!")}`
                     }, {
                         quoted: m

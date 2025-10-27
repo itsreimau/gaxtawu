@@ -1,10 +1,10 @@
 const axios = require("axios");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
-const createSticker = async (stickerUrl, emoji, id, isCover = false) => {
+const createSticker = async (stickerUrl, packName, emoji, id, isCover = false) => {
     return await new Sticker(stickerUrl)
-        .setPack(config.sticker.packname)
-        .setAuthor(config.sticker.author)
+        .setPack(packName)
+        .setAuthor("")
         .setType(StickerTypes.FULL)
         .setCategories([emoji])
         .setID(id)
@@ -45,9 +45,10 @@ module.exports = {
 
             for (let packIndex = 0; packIndex < stickerChunks.length; packIndex++) {
                 const chunk = stickerChunks[packIndex];
+                const packName = `${result.title}${stickerChunks.length > 1 ? ` (${packIndex + 1}/${stickerChunks.length})` : ""}`;
 
                 const stickersPack = await Promise.all(chunk.map(async (sticker, i) => ({
-                    sticker: await createSticker(sticker.image_url, sticker.emoji, `${ctx.msg.key.id}_${packIndex}_${i}`),
+                    sticker: await createSticker(sticker.image_url, packName, sticker.emoji, `${ctx.msg.key.id}_${packIndex}_${i}`),
                     emojis: [sticker.emoji],
                     accessibilityLabel: `Sticker ${i + 1}`,
                     isLottie: false,
@@ -56,10 +57,10 @@ module.exports = {
 
                 await ctx.reply({
                     stickerPack: {
-                        name: `${result.title}${stickerChunks.length > 1 ? ` (${packIndex + 1}/${stickerChunks.length})` : ""}`,
-                        publisher: `t.me/${result.name}`,
-                        description: `Pack by ${config.bot.name}`,
-                        cover: await createSticker(result.stickers[0].image_url, result.stickers[0].emoji, ctx.msg.key.id, true),
+                        name: packName,
+                        publisher: "",
+                        description: "",
+                        cover: await createSticker(result.stickers[0].image_url, packName, result.stickers[0].emoji, ctx.msg.key.id, true),
                         stickers: stickersPack
                     }
                 });

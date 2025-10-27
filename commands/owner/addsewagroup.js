@@ -24,7 +24,7 @@ module.exports = {
         if (daysAmount && daysAmount <= 0) return await ctx.reply(`ⓘ ${formatter.italic("Durasi sewa (dalam hari) harus diisi dan lebih dari 0!")}`);
 
         try {
-            const userDb = ctx.getDb("groups", groupJid);
+            const senderDb = ctx.getDb("groups", groupJid);
 
             const flag = tools.cmd.parseFlag(ctx.args.join(" "), {
                 "-s": {
@@ -50,7 +50,7 @@ module.exports = {
                 groupDb.sewaExpiration = expirationDate;
                 groupDb.save();
 
-                if (!silent && groupOwner) await ctx.sendMessage(groupOwner, {
+                if (!silent && groupOwner) await ctx.core.sendMessage(groupOwner, {
                     text: `ⓘ ${formatter.italic(`Bot berhasil disewakan ke grup @${groupMentions.groupJid} selama ${daysAmount} hari!`)}`,
                     contextInfo: {
                         groupMentions
@@ -62,7 +62,7 @@ module.exports = {
                 delete groupDb?.sewaExpiration;
                 groupDb.save();
 
-                if (!silent && groupOwner) await ctx.sendMessage(groupOwner, {
+                if (!silent && groupOwner) await ctx.core.sendMessage(groupOwner, {
                     text: `ⓘ ${formatter.italic(`Bot berhasil disewakan ke grup @${groupMentions.groupJid} selamanya!`)}`,
                     contextInfo: {
                         groupMentions

@@ -17,22 +17,22 @@ module.exports = {
             return await ctx.reply(`ⓘ ${formatter.italic("Berhasil me-mute grup ini dari bot!")}`);
         }
 
-        const accountJid = ctx.quoted?.sender || ctx.getMentioned()[0] || null;
+        const targetJid = ctx.quoted?.sender || ctx.getMentioned()[0] || null;
 
-        if (!accountJid) return await ctx.reply({
+        if (!targetJid) return await ctx.reply({
             text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
                 tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target.", `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`]),
             mentions: ["6281234567891@s.whatsapp.net"]
         });
 
-        if (accountJid === ctx.me.lid || accountJid === ctx.me.id) return await ctx.reply(`ⓘ ${formatter.italic(`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`)}`);
-        if (await ctx.group().isOwner(accountJid)) return await ctx.reply(`ⓘ ${formatter.italic("Dia adalah Owner grup!")}`);
+        if (targetJid === ctx.me.lid || targetJid === ctx.me.id) return await ctx.reply(`ⓘ ${formatter.italic(`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`)}`);
+        if (await ctx.group().isOwner(targetJid)) return await ctx.reply(`ⓘ ${formatter.italic("Dia adalah Owner grup!")}`);
 
         try {
             const groupDb = ctx.db.group;
             const muteList = groupDb?.mute || [];
-            const targetJid = Baileys.isJidUser(accountJid) ? (await ctx.core.getLidUser(accountJid))?.[0].lid || accountJid : accountJid;
+            const targetJid = Baileys.isJidUser(targetJid) ? (await ctx.core.getLidUser(targetJid))?.[0].lid || targetJid : targetJid;
 
             const isAlreadyMuted = muteList.includes(targetJid);
             if (isAlreadyMuted) return await ctx.reply(`ⓘ ${formatter.italic("Pengguna sudah di-mute sebelumnya!")}`);

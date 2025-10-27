@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["tiktoks", "ttsearch"],
     category: "search",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || null;
@@ -16,10 +16,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("bagus", "/api/search/tiktok", {
+            const apiUrl = tools.api.createUrl("nekolabs", "/discovery/tiktok/search", {
                 q: input
             });
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.results).play_url;
+            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result).videoUrl;
 
             await ctx.reply({
                 video: {

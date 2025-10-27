@@ -6,13 +6,13 @@ module.exports = {
     aliases: ["imagetoprompt", "img2prompt", "imgtoprompt", "toprompt"],
     category: "ai-misc",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = await Promise.all([
+        const [checkMedia, checkQuotedMedia] = [
             tools.cmd.checkMedia(ctx.msg.contentType, "image"),
             tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, "image")
-        ]);
+        ];
 
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], "image"));
 

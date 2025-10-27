@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["youtube", "youtubes", "yt", "yts", "ytsearch"],
     category: "search",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || null;

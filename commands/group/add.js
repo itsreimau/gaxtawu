@@ -17,13 +17,13 @@ module.exports = {
             tools.msg.generateCmdExample(ctx.used, "6281234567891")
         );
 
-        const accountJid = input.replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET;
+        const targetJid = input.replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET;
 
-        const isOnWhatsApp = await ctx.core.onWhatsApp(accountJid);
+        const isOnWhatsApp = await ctx.core.onWhatsApp(targetJid);
         if (isOnWhatsApp.length === 0) return await ctx.reply(`ⓘ ${formatter.italic("Akun tidak ada di WhatsApp!")}`);
 
         try {
-            await ctx.group().add(accountJid);
+            await ctx.group().add(targetJid);
 
             await ctx.reply(`ⓘ ${formatter.italic("Berhasil ditambahkan!")}`);
         } catch (error) {

@@ -3,10 +3,10 @@ const axios = require("axios");
 
 module.exports = {
     name: "chatgpt",
-    aliases: ["ai", "gpt", "openai"],
+    aliases: ["ai", "gpt"],
     category: "ai-chat",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || ctx.quoted?.content || null;
@@ -24,7 +24,7 @@ module.exports = {
 
         try {
             const systemPrompt = `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.` // Dapat diubah sesuai keinginan
-            const uid = ctx.db.user.uid;
+            const uid = ctx.db.user.uid || "guest";
 
             if (checkMedia || checkQuotedMedia) {
                 const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
@@ -33,7 +33,7 @@ module.exports = {
                     text: input,
                     systemPrompt,
                     imageUrl: uploadUrl,
-                    sessionId: uid || "guest"
+                    sessionId: uid
                 });
                 const result = (await axios.get(apiUrl)).data.result;
 
@@ -42,7 +42,7 @@ module.exports = {
                 const apiUrl = tools.api.createUrl("nekolabs", "/ai/gpt/5", {
                     text: input,
                     systemPrompt,
-                    sessionId: uid || "guest"
+                    sessionId: uid
                 });
                 const result = (await axios.get(apiUrl)).data.result;
 

@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["diffusion", "sd"],
     category: "ai-generate",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || ctx.quoted?.content || null;

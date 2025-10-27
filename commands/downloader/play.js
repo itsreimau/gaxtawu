@@ -4,7 +4,7 @@ module.exports = {
     name: "play",
     category: "downloader",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const flag = tools.cmd.parseFlag(ctx.args.join(" ") || null, {
@@ -28,7 +28,7 @@ module.exports = {
             `${tools.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada -i 8 -s spotify")}\n` +
             tools.msg.generatesFlagInfo({
                 "-i <number>": "Pilihan pada data indeks",
-                "-s <text>": "Sumber untuk memutar lagu (tersedia: soundcloud, spotify, youtube | default: youtube)"
+                "-s <text>": "Sumber untuk memutar lagu (tersedia: spotify, youtube | default: youtube)"
             })
         );
 
@@ -36,29 +36,7 @@ module.exports = {
             const searchIndex = flag?.index || 0;
             let source = flag?.source || null;
 
-            if (source === "soundcloud") {
-                const searchApiUrl = tools.api.createUrl("izumi", "/search/soundcloud", {
-                    query: input
-                });
-                const searchResult = (await axios.get(searchApiUrl)).data.result[searchIndex];
-
-                await ctx.reply(
-                    `➛ ${formatter.bold("Judul")}: ${searchResult.title}\n` +
-                    `➛ ${formatter.bold("URL")}: ${searchResult.url}`
-                );
-
-                const downloadApiUrl = tools.api.createUrl("izumi", "/downloader/soundcloud", {
-                    url: searchResult.url
-                });
-                const downloadResult = (await axios.get(downloadApiUrl)).data.result.url;
-
-                await ctx.reply({
-                    audio: {
-                        url: downloadResult
-                    },
-                    mimetype: tools.mime.lookup("mp3")
-                });
-            } else if (source === "spotify") {
+            if (source === "spotify") {
                 const searchApiUrl = tools.api.createUrl("yp", "/api/search/spotify", {
                     q: input
                 });

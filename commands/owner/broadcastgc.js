@@ -59,11 +59,11 @@ module.exports = {
                         }
                     };
 
-                    await ctx.sendMessage(groupId, {
+                    await ctx.core.sendMessage(groupId, {
                         text: input,
                         contextInfo
                     }, {
-                        quoted: tools.cmd.fakeMetaAiQuotedText(config.msg.footer)
+                        quoted: tools.cmd.fakeQuotedText(config.msg.footer)
                     });
                 } catch (error) {
                     failedGroupIds.push(groupId);

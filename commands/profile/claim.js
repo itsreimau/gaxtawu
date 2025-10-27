@@ -16,9 +16,9 @@ module.exports = {
             return await ctx.reply(listText);
         }
 
-        const userDb = ctx.db.user;
+        const senderDb = ctx.db.user;
         const claim = claimRewards[input];
-        const level = userDb?.level || 0;
+        const level = senderDb?.level || 0;
 
         if (!claim) return await ctx.reply(`ⓘ ${formatter.italic("Hadiah tidak valid!")}`);
         if (ctx.citation.isOwner) return await ctx.reply(`ⓘ ${formatter.italic("Anda sudah memiliki koin tak terbatas!")}`);
@@ -26,16 +26,16 @@ module.exports = {
 
         const currentTime = Date.now();
 
-        const lastClaim = (userDb?.lastClaim ?? {})[input] || 0;
+        const lastClaim = (senderDb?.lastClaim ?? {})[input] || 0;
         const timePassed = currentTime - lastClaim;
         const remainingTime = claim.cooldown - timePassed;
         if (remainingTime > 0) return await ctx.reply(`ⓘ ${formatter.italic(`Anda telah mengklaim hadiah ${input}. Tunggu ${tools.msg.convertMsToDuration(remainingTime)} untuk mengklaim lagi.`)}`);
 
         try {
-            const rewardCoin = (userDb?.coin || 0) + claim.reward;
-            userDb.coin = rewardCoin;
-            (userDb.lastClaim ||= {})[input] = currentTime;
-            userDb.save();
+            const rewardCoin = (senderDb?.coin || 0) + claim.reward;
+            senderDb.coin = rewardCoin;
+            (senderDb.lastClaim ||= {})[input] = currentTime;
+            senderDb.save();
 
             await ctx.reply(`ⓘ ${formatter.italic(`Anda berhasil mengklaim hadiah ${input} sebesar ${claim.reward} koin! Koin Anda saat ini adalah ${rewardCoin}.`)}`);
         } catch (error) {

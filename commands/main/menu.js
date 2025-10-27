@@ -17,7 +17,6 @@ module.exports = {
                 "ai-misc": "AI (Miscellaneous)",
                 "converter": "Converter",
                 "downloader": "Downloader",
-                "entertainment": "Entertainment",
                 "game": "Game",
                 "group": "Group",
                 "maker": "Maker",
@@ -60,7 +59,7 @@ module.exports = {
                         if (cmd.permissions.premium) permissionsText += "Ⓟ";
                         if (cmd.permissions.private) permissionsText += "ⓟ";
 
-                        text += `┊ — ${ctx.used.prefix + cmd.name} ${permissionsText}\n`;
+                        text += `┊ ➛ ${ctx.used.prefix + cmd.name} ${permissionsText}\n`;
                     });
                 }
 
@@ -68,7 +67,7 @@ module.exports = {
 
             }
 
-            await ctx.sendMessage(ctx.id, {
+            await ctx.core.sendMessage(ctx.id, {
                 image: {
                     url: config.bot.thumbnail
                 },
@@ -88,7 +87,7 @@ module.exports = {
                     }
                 }]
             }, {
-                quoted: tools.cmd.fakeMetaAiQuotedText(config.msg.note)
+                quoted: tools.cmd.fakeQuotedText(config.msg.note)
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

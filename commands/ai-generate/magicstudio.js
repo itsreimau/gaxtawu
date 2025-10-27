@@ -2,7 +2,7 @@ module.exports = {
     name: "magicstudio",
     category: "ai-generate",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || ctx.quoted?.content || null;

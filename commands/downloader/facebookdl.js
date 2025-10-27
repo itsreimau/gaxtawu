@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["facebook", "fb", "fbdl"],
     category: "downloader",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const url = ctx.args[0] || null;
@@ -19,14 +19,14 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("hang", "/download/facebook", {
+            const apiUrl = tools.api.createUrl("deline", "/download/facebook", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result.media;
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 video: {
-                    url: result.video_hd || result.video_sd
+                    url: result.download
                 },
                 mimetype: tools.mime.lookup("mp4"),
                 caption: `➛ ${formatter.bold("URL")}: ${url}`

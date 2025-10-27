@@ -2,10 +2,10 @@ const axios = require("axios");
 
 module.exports = {
     name: "pinterest",
-    aliases: ["pin", "pint"],
+    aliases: ["pin"],
     category: "tool",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || null;

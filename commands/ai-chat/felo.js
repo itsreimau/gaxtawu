@@ -2,10 +2,9 @@ const axios = require("axios");
 
 module.exports = {
     name: "felo",
-    aliases: ["feloai"],
     category: "ai-chat",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || ctx.quoted?.content || null;
@@ -27,4 +26,4 @@ module.exports = {
             await tools.cmd.handleError(ctx, error, true);
         }
     }
-}
+};
