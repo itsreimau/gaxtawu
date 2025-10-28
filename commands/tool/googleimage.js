@@ -1,8 +1,8 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "pinterest",
-    aliases: ["pin"],
+    name: "googleimage",
+    aliases: ["gimage"],
     category: "tool",
     permissions: {
         coin: 5
@@ -16,10 +16,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/search/pinterest", {
+            const apiUrl = tools.api.createUrl("https://api.hanggts.xyz", "/search/gimage", {
                 q: input
             });
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.data).image;
+            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result).url;
 
             await ctx.reply({
                 image: {

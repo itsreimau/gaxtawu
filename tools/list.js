@@ -104,6 +104,14 @@ async function get(type) {
                 text = createList(data, list => `➛ ${list}`);
                 break;
             }
+            case "translate": {
+                const data = (await axios.get(api.createUrl("https://raw.githubusercontent.com", "/itsecurityco/to-google-translate/refs/heads/master/supported_languages.json"))).data;
+                text = createList(data, list =>
+                    `➛ ${formatter.bold("Kode")}: ${list.code}\n` +
+                    `➛ ${formatter.bold("Bahasa")}: ${list.language}`
+                );
+                break;
+            }
             default: {
                 text = `ⓘ ${formatter.italic(`Tipe tidak diketahui: ${type}`)}`;
                 break;

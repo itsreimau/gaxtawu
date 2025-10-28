@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "copilot",
+    name: "venice",
     category: "ai-chat",
     permissions: {
         coin: 5
@@ -16,7 +16,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/ai/copilot", {
+            const apiUrl = tools.api.createUrl("nekolabs", "/ai/venice", {
                 text: input
             });
             const result = (await axios.get(apiUrl)).data.result;

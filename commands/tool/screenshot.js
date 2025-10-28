@@ -1,9 +1,7 @@
-const axios = require("axios");
-
 module.exports = {
-    name: "spotifydl",
-    aliases: ["spotidl"],
-    category: "downloader",
+    name: "screenshot",
+    aliases: ["ss", "sspc", "ssweb"],
+    category: "tool",
     permissions: {
         coin: 5
     },
@@ -12,23 +10,23 @@ module.exports = {
 
         if (!url) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            tools.msg.generateCmdExample(ctx.used, "https://open.spotify.com/track/5RhWszHMSKzb7KiXk4Ae0M")
+            tools.msg.generateCmdExample(ctx.used, "https://itsreimau.is-a.dev")
         );
 
         const isUrl = tools.cmd.isUrl(url);
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/downloader/spotify", {
+            const apiUrl = tools.api.createUrl("deline", "/tools/screenshot", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.download;
 
             await ctx.reply({
-                audio: {
+                image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("mp3")
+                mimetype: tools.mime.lookup("png"),
+                caption: `➛ ${formatter.bold("URL")}: ${url}`
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

@@ -2,11 +2,11 @@ const { Gktw } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
-    name: "tofigure",
-    aliases: ["jadifigure"],
-    category: "ai-misc",
+    name: "removebackground",
+    aliases: ["removebg"],
+    category: "tool",
     permissions: {
-        premium: true
+        coin: 5
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
@@ -18,11 +18,11 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const uploadUrl = (await Gktw.uploadFile(buffer)).data.url;
-            const apiUrl = tools.api.createUrl("nekolabs", "/tools/convert/tofigure", {
-                imageUrl: uploadUrl
+            const uploadUrl = (await Gktw.uploadFile(buffer, "image")).data.url;
+            const apiUrl = tools.api.createUrl("deline", "/tools/removebg", {
+                url: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.cutoutUrl;
 
             await ctx.reply({
                 image: {

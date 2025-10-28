@@ -6,9 +6,6 @@ const APIs = {
     deline: {
         baseURL: "https://api.deline.my.id"
     },
-    izumi: {
-        baseURL: "https://api.ootaizumi.web.id"
-    },
     nekolabs: {
         baseURL: "https://rynekoo-api.hf.space"
     },

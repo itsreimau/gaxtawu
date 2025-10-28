@@ -48,10 +48,10 @@ module.exports = {
                     `➛ ${formatter.bold("URL")}: ${searchResult.url}`
                 );
 
-                const downloadApiUrl = tools.api.createUrl("izumi", "/downloader/spotify", {
+                const downloadApiUrl = tools.api.createUrl("deline", "/downloader/spotify", {
                     url: searchResult.url
                 });
-                const downloadResult = (await axios.get(downloadApiUrl)).data.result.download;
+                const downloadResult = (await axios.get(downloadApiUrl)).data.download;
 
                 await ctx.reply({
                     audio: {

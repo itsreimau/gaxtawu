@@ -1,32 +1,34 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "pinterest",
-    aliases: ["pin"],
-    category: "tool",
+    name: "stablediffusionxl",
+    aliases: ["sdxl"],
+    category: "ai-generate",
     permissions: {
         coin: 5
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || null;
+        const input = ctx.args.join(" ") || ctx.quoted?.content || null;
 
         if (!input) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            tools.msg.generateCmdExample(ctx.used, "rei ayanami")
+            `${tools.msg.generateCmdExample(ctx.used, "anime girl with short blue hair")}\n` +
+            tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."])
         );
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/search/pinterest", {
-                q: input
+            const apiUrl = tools.api.createUrl("nekolabs", "/ai/stable-diffusion/xl-lightning", {
+                prompt: input,
+                ratio: tools.cmd.getRandomElement(["1:1", "16:9", "9:16"])
             });
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.data).image;
+            const result = (await axios.get(apiUrl)).data.result[0];
 
             await ctx.reply({
                 image: {
                     url: result
                 },
                 mimetype: tools.mime.lookup("png"),
-                caption: `➛ ${formatter.bold("Kueri")}: ${input}`,
+                caption: `➛ ${formatter.bold("Prompt")}: ${input}`,
                 buttons: [{
                     buttonId: `${ctx.used.prefix + ctx.used.command} ${input}`,
                     buttonText: {

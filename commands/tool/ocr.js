@@ -2,11 +2,11 @@ const { Gktw } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
-    name: "tofigure",
-    aliases: ["jadifigure"],
-    category: "ai-misc",
+    name: "ocr",
+    aliases: ["image2text", "imagetotext", "img2text", "imgtotext", "read", "readtext", "totext"],
+    category: "tool",
     permissions: {
-        premium: true
+        coin: 5
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
@@ -19,17 +19,12 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = (await Gktw.uploadFile(buffer)).data.url;
-            const apiUrl = tools.api.createUrl("nekolabs", "/tools/convert/tofigure", {
-                imageUrl: uploadUrl
+            const apiUrl = tools.api.createUrl("deline", "/tools/ocr", {
+                url: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.Text;
 
-            await ctx.reply({
-                image: {
-                    url: result
-                },
-                mimetype: tools.mime.lookup("png")
-            });
+            await ctx.reply(result);
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

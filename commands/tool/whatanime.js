@@ -2,11 +2,11 @@ const { Gktw } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
-    name: "tofigure",
-    aliases: ["jadifigure"],
-    category: "ai-misc",
+    name: "whatanime",
+    aliases: ["wait"],
+    category: "tool",
     permissions: {
-        premium: true
+        coin: 5
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
@@ -19,17 +19,17 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = (await Gktw.uploadFile(buffer)).data.url;
-            const apiUrl = tools.api.createUrl("nekolabs", "/tools/convert/tofigure", {
-                imageUrl: uploadUrl
+            const apiUrl = tools.api.createUrl("deline", "/tools/whatanime", {
+                url: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.result;
 
-            await ctx.reply({
-                image: {
-                    url: result
-                },
-                mimetype: tools.mime.lookup("png")
-            });
+            await ctx.reply(
+                `➛ ${formatter.bold("Judul")}: ${result.title}\n` +
+                `➛ ${formatter.bold("Genre")}: ${result.genres[0]}\n` + +
+                `➛ ${formatter.bold("Karakter")}: ${result.character}\n` +
+                `➛ ${formatter.bold("Referensi")}: ${result.references[0].replace("MyAnimeList: ", "")}`
+            );
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }
