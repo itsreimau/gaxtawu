@@ -15,6 +15,17 @@ module.exports = {
             tools.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada")
         );
 
+        const isUrl = tools.cmd.isUrl(input);
+        if (isUrl) return await ctx.reply({
+            text: `ⓘ ${formatter.italic("Input berupa URL, gunakan tombol download di bawah:")}`,
+            buttons: [{
+                buttonId: `${ctx.used.prefix}spotifydl ${input}`,
+                buttonText: {
+                    displayText: "Download"
+                }
+            }]
+        });
+
         try {
             const apiUrl = tools.api.createUrl("yp", "/api/search/spotify", {
                 q: input

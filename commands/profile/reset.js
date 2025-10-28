@@ -32,7 +32,7 @@ module.exports = {
                     await ctx.reply(`ⓘ ${formatter.italic("Database Anda telah berhasil direset!")}`);
                     collector.stop();
                 } else if (content === "n") {
-                    await ctx.reply(`ⓘ ${formatter.italic("Proses reset data telah dibatalkan.")}`);
+                    await ctx.reply(`ⓘ ${formatter.italic("Proses reset database telah dibatalkan.")}`);
                     collector.stop();
                 }
             });

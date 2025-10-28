@@ -28,7 +28,7 @@ module.exports = {
             [top, bottom] = bottom ? [top || "_", bottom] : ["_", top || "_"];
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = (await Gktw.uploadFile(buffer)).data.url;
-            const result = tools.api.createUrl("https://api.memegen.link", `/images/custom/${top}${bottom}.png`, {
+            const result = tools.api.createUrl("https://api.memegen.link", `/images/custom/${top}/${bottom}.png`, {
                 background: uploadUrl
             });
             const sticker = await new Sticker(result)

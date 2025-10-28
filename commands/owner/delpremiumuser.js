@@ -36,10 +36,10 @@ module.exports = {
 
             const silent = flag?.silent || false;
             if (!silent) await ctx.core.sendMessage(targetJid, {
-                text: `ⓘ ${formatter.italic("Anda telah dihapus sebagai pengguna Premium oleh Owner!")}`
+                text: `ⓘ ${formatter.italic("Anda telah dihapus sebagai pengguna premium oleh owner!")}`
             });
 
-            await ctx.reply(`ⓘ ${formatter.italic("Berhasil menghapuskan Premium kepada pengguna itu!")}`);
+            await ctx.reply(`ⓘ ${formatter.italic("Berhasil menghapuskan premium kepada pengguna itu!")}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

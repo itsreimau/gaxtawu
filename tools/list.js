@@ -51,11 +51,11 @@ async function get(type) {
             }
             case "mode": {
                 const data = [
-                    "premium (Mode premium, hanya merespons pengguna Premium dan Ownernya)",
-                    "group (Mode group, hanya merespons dalam obrolan grup)",
+                    "premium (Mode premium, hanya merespons pengguna premium dan owner)",
+                    "group (Mode group, hanya merespons dalam grup)",
                     "private (Mode private, hanya merespons dalam obrolan pribadi)",
-                    "public (Mode publik, merespons dalam obrolan grup dan obrolan pribadi)",
-                    "self (Mode self, hanya merespons dirinya sendiri dan Ownernya)"
+                    "public (Mode publik, merespons dalam grup dan obrolan pribadi)",
+                    "self (Mode self, hanya merespons dirinya sendiri dan owner)"
                 ];
                 text = createList(data, list => `➛ ${list}`);
                 break;

@@ -44,7 +44,7 @@ module.exports = {
                     groupSubject: await group.name()
                 }];
                 await ctx.core.sendMessage(groupOwner, {
-                    text: `ⓘ ${formatter.italic(`Sewa bot untuk grup @${groupMentions.groupJid} telah dihentikan oleh Owner!`)}`,
+                    text: `ⓘ ${formatter.italic(`Sewa bot untuk grup @${groupMentions.groupJid} telah dihentikan oleh owner!`)}`,
                     contextInfo: {
                         groupMentions
                     }

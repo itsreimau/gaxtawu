@@ -35,7 +35,7 @@ module.exports = {
 
             const silent = flag?.silent || false;
             if (!silent) await ctx.core.sendMessage(targetJid, {
-                text: `ⓘ ${formatter.italic(`Anda telah menerima ${coinAmount} koin dari Owner!`)}`
+                text: `ⓘ ${formatter.italic(`Anda telah menerima ${coinAmount} koin dari owner!`)}`
             });
 
             await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menambahkan ${coinAmount} koin kepada pengguna itu!`)}`);

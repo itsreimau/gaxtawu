@@ -34,7 +34,7 @@ module.exports = {
 
             const silent = flag?.silent || false;
             if (!silent) await ctx.core.sendMessage(targetJid, {
-                text: `ⓘ ${formatter.italic("Anda telah diunbanned oleh Owner!")}`
+                text: `ⓘ ${formatter.italic("Anda telah diunbanned oleh owner!")}`
             });
 
             await ctx.reply(` ⓘ ${formatter.italic("Berhasil diunbanned!")}`);

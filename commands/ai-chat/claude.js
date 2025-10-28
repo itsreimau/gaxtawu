@@ -27,7 +27,7 @@ module.exports = {
             if (checkMedia || checkQuotedMedia) {
                 const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
                 const uploadUrl = (await Gktw.uploadFile(buffer)).data.url;
-                const apiUrl = tools.api.createUrl("nekolabs", "/ai/claude/sonnet-4", {
+                const apiUrl = tools.api.createUrl("nekolabs", "/ai/claude/sonnet-4.5", {
                     text: input,
                     systemPrompt,
                     imageUrl: uploadUrl
@@ -36,7 +36,7 @@ module.exports = {
 
                 await ctx.reply(result);
             } else {
-                const apiUrl = tools.api.createUrl("nekolabs", "/ai/claude/sonnet-4", {
+                const apiUrl = tools.api.createUrl("nekolabs", "/ai/claude/sonnet-4.5", {
                     text: input,
                     systemPrompt
                 });

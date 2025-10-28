@@ -16,7 +16,7 @@ module.exports = {
             mentions: ["6281234567891@s.whatsapp.net"]
         });
 
-        if (await ctx.group().isOwner(targetJid)) return await ctx.reply(`ⓘ ${formatter.italic("Dia adalah Owner grup!")}`);
+        if (await ctx.group().isOwner(targetJid)) return await ctx.reply(`ⓘ ${formatter.italic("Dia adalah owner grup!")}`);
 
         try {
             await ctx.group().promote(targetJid);

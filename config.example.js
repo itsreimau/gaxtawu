@@ -13,20 +13,20 @@ global.config = {
     // Pesan bot
     msg: {
         admin: "Perintah hanya dapat diakses oleh admin grup!", // Pesan saat perintah hanya untuk admin
-        banned: "Anda telah dibanned oleh Owner!", // Pesan untuk pengguna yang dibanned
-        botAdmin: "Bot bukan admin grup ini.", // Pesan jika bot bukan admin di grup
-        botGroupMembership: "Anda tidak bergabung dengan grup bot.", // Pesan jika pengguna tidak bergabung dengan grup bot
-        coin: "Koin Anda tidak cukup.", // Pesan saat koin tidak cukup
+        banned: "Anda telah dibanned!", // Pesan untuk pengguna yang dibanned
+        botAdmin: "Bot bukan admin grup ini!", // Pesan jika bot bukan admin di grup
+        botGroupMembership: "Anda tidak bergabung dengan grup bot!", // Pesan jika pengguna tidak bergabung dengan grup bot
+        coin: "Koin Anda tidak cukup!", // Pesan saat koin tidak cukup
         cooldown: "Perintah ini sedang dalam cooldown, tunggu...", // Pesan saat cooldown perintah
-        gamerestrict: "Grup ini membatasi game.", // Pesan jika grup membatasi game
+        gamerestrict: "Grup ini membatasi perintah game!", // Pesan jika grup membatasi game
         group: "Perintah hanya dapat diakses dalam grup!", // Pesan untuk perintah grup
-        groupSewa: "Bot tidak aktif karena grup ini belum melakukan sewa.", // Pesan jika grup belum melakukan sewa
-        owner: "Perintah hanya dapat diakses Owner!", // Pesan untuk perintah yang hanya owner bisa akses
-        premium: "Anda bukan pengguna Premium!", // Pesan jika pengguna bukan premium
+        groupSewa: "Bot tidak aktif karena grup ini belum melakukan sewa!", // Pesan jika grup belum melakukan sewa
+        owner: "Perintah hanya dapat diakses owner!", // Pesan untuk perintah yang hanya owner bisa akses
+        premium: "Anda bukan pengguna premium!", // Pesan jika pengguna bukan premium
         private: "Perintah hanya dapat diakses dalam obrolan pribadi!", // Pesan untuk perintah obrolan pribadi
-        privatePremiumOnly: "Menggunakan bot dalam obrolan pribadi hanya untuk pengguna Premium.", // Pesan jika pengguna bukan premium menggunakan bot dalam obrolan pribadi
-        restrict: "Perintah ini telah dibatasi karena alasan keamanan!", // Pesan pembatasan perintah
-        unavailableAtNight: "Bot tidak tersedia dari jam 12 malam sampai 6 pagi. Silakan kembali nanti!", // Pesan jika bot tidak tersedia pada malam hari
+        privatePremiumOnly: "Menggunakan bot dalam obrolan pribadi hanya untuk pengguna premium.", // Pesan jika pengguna bukan premium menggunakan bot dalam obrolan pribadi
+        restrict: "Perintah ini telah dibatasi!", // Pesan pembatasan perintah
+        unavailableAtNight: "Bot tidak tersedia dari jam 12 malam sampai 6 pagi! Silakan kembali nanti.", // Pesan jika bot tidak tersedia pada malam hari
 
         readmore: "\u200E".repeat(4001), // Read more...
         note: "“Lorem ipsum dolor sit amet, tenebris in umbra, vitae ad mortem.”", // Catatan
@@ -62,21 +62,21 @@ global.config = {
         antiCall: true, // Bot secara otomatis membanned orang yang menelepon
         autoRead: true, // Bot baca pesan otomatis
         autoTypingOnCmd: true, // Tampilkan status "sedang mengetik" saat memproses perintah
-        cooldown: 10 * 1000, // Jeda antar perintah (ms)
+        cooldown: 10 * 1000, // Jeda antar perintah
         maxListeners: 50, // Max listeners untuk events
-        port: 3000, // Port (Jika pakai server)
-        privatePremiumOnly: false, // Pengguna bukan premium tidak diperbolehkan menggunakan bot dalam percakapan pribadi
-        restrict: false, // Batasi akses perintah
+        port: 3000, // Port, jika pakai server
+        privatePremiumOnly: false, // Pengguna bukan premium tidak diperbolehkan menggunakan bot dalam obralan pribadi
+        restrict: false, // Batasi akses perintah rawan banned
         requireBotGroupMembership: false, // Harus gabung grup bot
-        requireGroupSewa: false, // Harus sewa bot untuk bisa dipakai di grup
+        requireGroupSewa: false, // Harus sewa untuk bisa dipakai di grup
         reportErrorToOwner: true, // Laporkan error ke owner bot
         selfOwner: false, // Bot jadi owner
-        selfReply: true, // Bot bisa balas pesan bot sendiri
-        timeZone: "Asia/Jakarta", // Zona waktu bot
-        unavailableAtNight: false, // Bot tidak tersedia pada malam hari, dari jam 12 malam sampai 6 pagi (Waktu akan disesuaikan menurut timeZone)
+        selfReply: true, // Bot bisa balas pesan sendiri
+        timeZone: "Asia/Jakarta", // Zona waktu
+        unavailableAtNight: false, // Bot tidak tersedia pada malam hari, dari jam 12 malam sampai 6 pagi, waktu akan disesuaikan menurut zona waktu
         useCoin: true, // Pakai koin
         usePairingCode: false, // Pakai kode pairing untuk koneksi
-        customPairingCode: "UMBR4L15", // Kode pairing kustom untuk koneksi (Opsional, jika menggunakan QR code, jika kosong kode pairing akan random)
+        customPairingCode: "UMBR4L15", // Kode pairing kustom untuk koneksi, tidak perlu jika menggunakan QR code, jika kosong kode pairing akan random
         useStore: false, // Store untuk menyimpan pesan masuk
         useServer: false // Jalankan bot dengan server
     }

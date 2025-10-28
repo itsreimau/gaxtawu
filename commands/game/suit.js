@@ -14,7 +14,7 @@ module.exports = {
         const targetJid = ctx.getMentioned()[0] || ctx.quoted?.sender || null;
         const targetId = ctx.getId(targetJid);
 
-        if (!targetJid) await ctx.reply({
+        if (!targetJid) return await ctx.reply({
             text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
                 tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]),

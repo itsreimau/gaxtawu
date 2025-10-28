@@ -28,7 +28,7 @@ module.exports = {
             if (checkMedia || checkQuotedMedia) {
                 const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
                 const uploadUrl = (await Gktw.uploadFile(buffer)).data.url;
-                const apiUrl = tools.api.createUrl("nekolabs", "/ai/gemini/1.5-flash", {
+                const apiUrl = tools.api.createUrl("nekolabs", "/ai/gemini/2.5-flash", {
                     text: input,
                     systemPrompt,
                     imageUrl: uploadUrl,
@@ -38,7 +38,7 @@ module.exports = {
 
                 await ctx.reply(result);
             } else {
-                const apiUrl = tools.api.createUrl("nekolabs", "/ai/gemini/1.5-flash", {
+                const apiUrl = tools.api.createUrl("nekolabs", "/ai/gemini/2.5-flash", {
                     text: input,
                     systemPrompt,
                     sessionId: uid
