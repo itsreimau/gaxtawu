@@ -19,7 +19,7 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("yp", "/downloader/instagram", {
+            const apiUrl = tools.api.createUrl("yp", "/api/downloader/instagram", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result.medias;

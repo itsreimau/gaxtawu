@@ -1,3 +1,4 @@
+const { Gktw } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
@@ -28,25 +29,24 @@ module.exports = {
                     id: senderDb.task.pixverse.id
                 });
                 const checkResult = (await axios.get(checkUrl)).data.result;
-                if (checkResult.success) {
-                    const taskStatus = checkResult.status;
-                    if (taskStatus === "succeeded") {
-                        delete senderDb.task.pixverse;
-                        senderDb.save();
-                        return await ctx.reply({
-                            video: {
-                                url: checkResult.output
-                            },
-                            mimetype: tools.mime.lookup("mp4"),
-                            caption: `➛ ${formatter.bold("Prompt")}: ${senderDb.task.pixverse.prompt}`
-                        });
-                    } else if (taskStatus === "processing" || taskStatus === "starting") {
-                        return await ctx.reply(`ⓘ ${formatter.italic("Video masih dalam proses pembuatan. Silakan tunggu beberapa saat dan kirim perintah lagi untuk mengecek hasilnya.")}`);
-                    } else {
-                        delete senderDb.task.pixverse;
-                        senderDb.save();
-                        return await ctx.reply(`ⓘ ${formatter.italic("Proses pembuatan video gagal!")}`);
-                    }
+
+                const taskStatus = checkResult.status;
+                if (taskStatus === "succeeded") {
+                    delete senderDb.task.pixverse;
+                    senderDb.save();
+                    return await ctx.reply({
+                        video: {
+                            url: checkResult.output
+                        },
+                        mimetype: tools.mime.lookup("mp4"),
+                        caption: `➛ ${formatter.bold("Prompt")}: ${senderDb.task.pixverse.prompt}`
+                    });
+                } else if (taskStatus === "processing" || taskStatus === "starting") {
+                    return await ctx.reply(`ⓘ ${formatter.italic("Video masih dalam proses pembuatan. Silakan tunggu beberapa saat dan kirim perintah lagi untuk mengecek hasilnya.")}`);
+                } else {
+                    delete senderDb.task.pixverse;
+                    senderDb.save();
+                    return await ctx.reply(`ⓘ ${formatter.italic("Proses pembuatan video gagal!")}`);
                 }
             }
 
