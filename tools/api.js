@@ -4,10 +4,10 @@ const util = require("node:util");
 // Daftar API gratis
 const APIs = {
     deline: {
-        baseURL: "https://api.deline.my.id"
+        baseURL: "https://api.deline.web.id"
     },
     nekolabs: {
-        baseURL: "https://rynekoo-api.hf.space"
+        baseURL: "https://api.nekolabs.web.id"
     },
     yp: {
         baseURL: "https://api.yupra.my.id"
