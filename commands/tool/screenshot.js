@@ -17,7 +17,7 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/tools/screenshot", {
+            const result = tools.api.createUrl("deline", "/tools/screenshot", {
                 url
             });
 

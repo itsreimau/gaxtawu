@@ -19,14 +19,14 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/download/facebook", {
+            const apiUrl = tools.api.createUrl("deline", "/downloader/facebook", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.download;
 
             await ctx.reply({
                 video: {
-                    url: result.download
+                    url: result
                 },
                 mimetype: tools.mime.lookup("mp4"),
                 caption: `➛ ${formatter.bold("URL")}: ${url}`

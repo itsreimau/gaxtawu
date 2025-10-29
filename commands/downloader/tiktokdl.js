@@ -27,7 +27,7 @@ module.exports = {
             if (!result.data[0].type.includes("photo")) {
                 await ctx.reply({
                     video: {
-                        url: result.data.find(item => item.type === "nowatermark")
+                        url: result.data.find(res => res.type === "nowatermark").url
                     },
                     mimetype: tools.mime.lookup("mp4"),
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
