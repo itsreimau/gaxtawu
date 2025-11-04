@@ -1,5 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "upload",
     aliases: ["up", "tourl"],
@@ -17,7 +15,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const result = await Baileys.uploadFile(buffer);
+            const result = await ctx.core.rexx.utils.uploadFile(buffer);
 
             await ctx.reply({
                 text: `➛ ${formatter.bold("URL")}: ${result}`,

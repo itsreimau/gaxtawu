@@ -1,5 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "hijabkan",
     aliases: ["hijab", "penghijaban"],
@@ -17,7 +15,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const uploadUrl = await Baileys.uploadFile(buffer);
+            const uploadUrl = await ctx.core.rexx.utils.uploadFile(buffer);
             const result = tools.api.createUrl("zell", "/ai/hijabkan", {
                 imageUrl: uploadUrl
             });

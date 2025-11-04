@@ -1,4 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
@@ -52,8 +51,8 @@ module.exports = {
 
             if (checkMedia || checkQuotedMedia) {
                 const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-                const uploadUrl = await Baileys.uploadFile(buffer);
-                const apiUrl = tools.api.createUrl("nekolabs", "/ai/pixverse/create", {
+                const uploadUrl = await ctx.core.rexx.utils.uploadFile(buffer);
+                const apiUrl = tools.api.createUrl("nekolabs", "/ai/pixverse-v5/create", {
                     prompt: input,
                     ratio: tools.cmd.getRandomElement(["16:9", "9:16"]),
                     imageUrl: uploadUrl

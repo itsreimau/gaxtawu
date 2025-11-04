@@ -1,4 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 module.exports = {
@@ -28,7 +27,7 @@ module.exports = {
 
             if (checkMedia || checkQuotedMedia) {
                 const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-                const uploadUrl = await Baileys.uploadFile(buffer);
+                const uploadUrl = await ctx.core.rexx.utils.uploadFile(buffer);
                 const apiUrl = tools.api.createUrl("nekolabs", "/ai/gpt/5", {
                     text: input,
                     systemPrompt,

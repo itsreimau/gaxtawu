@@ -1,4 +1,4 @@
-const { Baileys } = require("@itsreimau/gktw");
+const axios = require("axios");
 
 module.exports = {
     name: "hd",
@@ -16,10 +16,12 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const uploadUrl = await Baileys.uploadFile(buffer);
-            const result = tools.api.createUrl("yp", "/api/tools/hd", {
-                url: uploadUrl
+            const uploadUrl = await ctx.core.rexx.utils.uploadFile(buffer);
+            const apiUrl = tools.api.createUrl("yp", "/api/tools/hd", {
+                url: uploadUrl,
+                scale: tools.cmd.getRandomElement(["2", "4", "6", "8"])
             });
+            const result = (await axios.get(apiUrl)).data.result.imageUrl;
 
             await ctx.reply({
                 image: {
