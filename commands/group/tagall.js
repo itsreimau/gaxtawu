@@ -11,10 +11,10 @@ module.exports = {
         try {
             const members = await ctx.group().members();
             const mentions = members.map(member => {
-                const serialized = ctx.getId(member.id);
+                const serialized = ctx.getId(member.jid);
                 return {
                     tag: `@${serialized}`,
-                    mention: member.id
+                    mention: member.jid
                 };
             });
 
