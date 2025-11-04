@@ -28,7 +28,7 @@ module.exports = {
 
                 if (content === "y") {
                     const usersDb = ctx.db.users;
-                    usersDb.reset(user => user.jid === ctx.sender.jid || user.alt === ctx.sender.jid);
+                    usersDb.reset(user => user.jid === ctx.sender.jid);
                     await ctx.reply(`ⓘ ${formatter.italic("Database Anda telah berhasil direset!")}`);
                     collector.stop();
                 } else if (content === "n") {

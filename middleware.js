@@ -30,13 +30,13 @@ module.exports = (bot) => {
         if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;
         if (groupDb?.mutebot === "owner" && !isOwner) return;
         const muteList = groupDb?.mute || [];
-        if (muteList.includes(Baileys.isLidUser(senderJid) ? senderJid : ctx.msg.key.participantAlt || ctx.msg.key.remoteJidAlt)) return;
+        if (muteList.includes(Baileys.isJidUser(senderJid) ? await ctx.getLidUser(senderJid) : senderJid)) return;
 
         // Log command masuk
         if (isGroup && !ctx.msg.key.fromMe) {
-            consolefy.info(`Incoming command: ${ctx.used.command}, from group: ${groupId}, by: ${Baileys.isLidUser(senderJid) ? `${senderId} (LID)` : senderId}`);
+            consolefy.info(`Incoming command: ${ctx.used.command}, from group: ${groupId}, by: ${senderId}`);
         } else if (isPrivate && !ctx.msg.key.fromMe) {
-            consolefy.info(`Incoming command: ${ctx.used.command}, from: ${Baileys.isLidUser(senderJid) ? `${senderId} (LID)` : senderId}`);
+            consolefy.info(`Incoming command: ${ctx.used.command}, from: ${senderId}`);
         }
 
         // Menambah XP pengguna dan menangani level-up

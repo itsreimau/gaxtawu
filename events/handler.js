@@ -69,7 +69,7 @@ async function handleWelcome(ctxBot, m, type, isSimulate = false) {
 }
 
 // Fungsi untuk menambahkan warning
-async function addWarning(ctx, senderLid, isAdmin, groupDb) {
+async function addWarning(ctx, senderJid, senderLid, isAdmin, groupDb) {
     const maxWarnings = groupDb?.maxwarnings || 3;
     const warnings = groupDb?.warnings || [];
 
@@ -90,8 +90,8 @@ async function addWarning(ctx, senderLid, isAdmin, groupDb) {
     groupDb.warnings = warnings;
 
     await ctx.reply({
-        text: `ⓘ ${formatter.italic(`Warning ${currentWarnings}/${maxWarnings} untuk @${ctx.getId(senderLid)}!`)}`,
-        mentions: [senderLid]
+        text: `ⓘ ${formatter.italic(`Warning ${currentWarnings}/${maxWarnings} untuk @${ctx.getId(senderJid)}!`)}`,
+        mentions: [senderJid]
     });
 
     if (currentWarnings >= maxWarnings) {
@@ -145,7 +145,7 @@ module.exports = (bot) => {
             // Variabel umum
             const senderJid = ctx.sender.jid;
             const senderId = ctx.getId(senderJid);
-            const senderLid = Baileys.isLidUser(senderJid) ? senderJid : m.key.participantAlt || m.key.remoteJidAlt;
+            const senderLid = Baileys.isJidUser(senderJid) ? await ctx.getLidUser(senderJid) : senderJid;
             const groupJid = isGroup ? ctx.id : null;
             const groupId = isGroup ? ctx.getId(groupJid) : null;
             const isOwner = ctx.citation.isOwner;
@@ -226,7 +226,7 @@ module.exports = (bot) => {
 
             // Penanganan obrolan grup
             if (isGroup) {
-                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from group: ${groupId}, by: ${Baileys.isLidUser(senderJid) ? `${senderId} (LID)` : senderId}`); // Log pesan masuk
+                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from group: ${groupId}, by: ${senderId}`); // Log pesan masuk
 
                 // Variabel umum
                 const groupAutokick = groupDb?.option?.autokick;
@@ -261,7 +261,7 @@ module.exports = (bot) => {
                                 if (groupAutokick) {
                                     await ctx.group().kick(senderJid);
                                 } else {
-                                    await addWarning(ctx, senderLid, isAdmin, groupDb);
+                                    await addWarning(ctx, senderJid, senderLid, isAdmin, groupDb);
                                 }
                             }
                         }
@@ -275,7 +275,7 @@ module.exports = (bot) => {
                             if (groupAutokick) {
                                 await ctx.group().kick(senderJid);
                             } else {
-                                await addWarning(ctx, senderLid, isAdmin, groupDb);
+                                await addWarning(ctx, senderJid, senderLid, isAdmin, groupDb);
                             }
                         }
                     }
@@ -306,7 +306,7 @@ module.exports = (bot) => {
                             if (groupAutokick) {
                                 await ctx.group().kick(senderJid);
                             } else {
-                                await addWarning(ctx, senderLid, isAdmin, groupDb);
+                                await addWarning(ctx, senderJid, senderLid, isAdmin, groupDb);
                             }
                             groupDb.spam = spamData.filter(spam => spam.jid !== senderLid);
                         }
@@ -323,7 +323,7 @@ module.exports = (bot) => {
                             if (groupAutokick) {
                                 await ctx.group().kick(senderJid);
                             } else {
-                                await addWarning(ctx, senderLid, isAdmin, groupDb);
+                                await addWarning(ctx, senderJid, senderLid, isAdmin, groupDb);
                             }
                         }
                     }
@@ -337,7 +337,7 @@ module.exports = (bot) => {
                             if (groupAutokick) {
                                 await ctx.group().kick(senderJid);
                             } else {
-                                await addWarning(ctx, senderLid, isAdmin, groupDb);
+                                await addWarning(ctx, senderJid, senderLid, isAdmin, groupDb);
                             }
                         }
                     }
@@ -346,7 +346,7 @@ module.exports = (bot) => {
 
             // Penanganan obrolan pribadi
             if (isPrivate) {
-                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from: ${Baileys.isLidUser(senderJid) ? `${senderId} (LID)` : senderId}`); // Log pesan masuk
+                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from: ${senderId}`); // Log pesan masuk
 
                 // Apa yaa...
             }
@@ -365,7 +365,7 @@ module.exports = (bot) => {
 
             if (Baileys.isJidGroup(callId) || isOwner) return;
 
-            consolefy.info(`Incoming call from: ${Baileys.isLidUser(senderJid) ? `${senderId} (LID)` : senderId}`); // Log panggilan masuk
+            consolefy.info(`Incoming call from: ${senderId}`); // Log panggilan masuk
 
             await bot.core.rejectCall(callId, senderJid);
             const senderDb = bot.getDb("users", senderJid);
