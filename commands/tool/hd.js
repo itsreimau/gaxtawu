@@ -1,4 +1,4 @@
-const { Gktw } = require("@itsreimau/gktw");
+const { Baileys } = require("@itsreimau/gktw");
 
 module.exports = {
     name: "hd",
@@ -16,7 +16,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const uploadUrl = (await Gktw.uploadFile(buffer)).data.url;
+            const uploadUrl = await Baileys.uploadFile(buffer);
             const result = tools.api.createUrl("yp", "/api/tools/hd", {
                 url: uploadUrl
             });

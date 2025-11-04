@@ -1,4 +1,4 @@
-const { Gktw } = require("@itsreimau/gktw");
+const { Baileys } = require("@itsreimau/gktw");
 
 module.exports = {
     name: "upload",
@@ -17,7 +17,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const result = (await Gktw.uploadFile(buffer)).data.url;
+            const result = await Baileys.uploadFile(buffer);
 
             await ctx.reply({
                 text: `➛ ${formatter.bold("URL")}: ${result}`,
