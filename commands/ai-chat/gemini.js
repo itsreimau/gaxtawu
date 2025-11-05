@@ -16,8 +16,8 @@ module.exports = {
         );
 
         const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.contentType, "image"),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, "image")
+            tools.cmd.checkMedia(ctx.msg.messageType, "image"),
+            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, "image")
         ];
 
         try {

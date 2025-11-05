@@ -7,8 +7,8 @@ module.exports = {
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.contentType, ["audio", "document", "image", "video", "sticker"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["audio", "document", "image", "video", "sticker"])
+            tools.cmd.checkMedia(ctx.msg.messageType, ["audio", "document", "image", "video", "sticker"]),
+            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["audio", "document", "image", "video", "sticker"])
         ];
 
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["audio", "document", "image", "video", "sticker"]));

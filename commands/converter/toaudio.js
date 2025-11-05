@@ -9,8 +9,8 @@ module.exports = {
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.contentType, ["video"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, ["video"])
+            tools.cmd.checkMedia(ctx.msg.messageType, ["video"]),
+            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["video"])
         ];
 
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["video"]));

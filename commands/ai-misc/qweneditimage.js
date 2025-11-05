@@ -16,8 +16,8 @@ module.exports = {
         );
 
         const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.contentType, "image"),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.contentType, "image")
+            tools.cmd.checkMedia(ctx.msg.messageType, "image"),
+            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, "image")
         ];
 
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], "image"));
