@@ -26,7 +26,7 @@ module.exports = {
         try {
             let [top, bottom] = input.split("|").map(inp => inp);
             [top, bottom] = bottom ? [top || "_", bottom] : ["_", top || "_"];
-            const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
+            const buffer = await ctx.msg.download() || await ctx.quoted.download();
             const uploadUrl = await ctx.core.rexx.utils.uploadFile(buffer);
             const result = tools.api.createUrl("https://api.memegen.link", `/images/custom/${top}/${bottom}.png`, {
                 background: uploadUrl

@@ -14,7 +14,7 @@ module.exports = {
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["audio", "document", "image", "video", "sticker"]));
 
         try {
-            const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
+            const buffer = await ctx.msg.download() || await ctx.quoted.download();
             const result = await ctx.core.rexx.utils.uploadFile(buffer);
 
             await ctx.reply({

@@ -49,8 +49,8 @@ module.exports = {
                 }
             }
 
-            if (checkMedia || checkQuotedMedia) {
-                const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
+            if (!!checkMedia || !!checkQuotedMedia) {
+                const buffer = await ctx.msg.download() || await ctx.quoted.download();
                 const uploadUrl = await ctx.core.rexx.utils.uploadFile(buffer);
                 const apiUrl = tools.api.createUrl("nekolabs", "/ai/pixverse-v5/create", {
                     prompt: input,

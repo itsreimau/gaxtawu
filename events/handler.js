@@ -255,7 +255,7 @@ module.exports = (bot) => {
                     for (const type of ["audio", "document", "gif", "image", "sticker", "video"]) {
                         if (groupDb?.option?.[`anti${type}`]) {
                             const checkMedia = tools.cmd.checkMedia(ctx.getMessageType(), type);
-                            if (checkMedia) {
+                            if (!!checkMedia) {
                                 await ctx.reply(`ⓘ ${formatter.italic(`Jangan kirim ${type}!`)}`);
                                 await ctx.deleteMessage(m.key);
                                 if (groupAutokick) {
@@ -317,7 +317,7 @@ module.exports = (bot) => {
                     // Penanganan antitagsw
                     if (groupDb?.option?.antitagsw) {
                         const checkMedia = tools.cmd.checkMedia(ctx.getMessageType(), "groupStatusMentionMessage");
-                        if (checkMedia) {
+                        if (!!checkMedia) {
                             await ctx.reply(`ⓘ ${formatter.italic("Jangan tag grup di SW, gak ada yg peduli!")}`);
                             await ctx.deleteMessage(m.key);
                             if (groupAutokick) {

@@ -23,8 +23,8 @@ module.exports = {
         try {
             const systemPrompt = `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.` // Dapat diubah sesuai keinginan
 
-            if (checkMedia || checkQuotedMedia) {
-                const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
+            if (!!checkMedia || !!checkQuotedMedia) {
+                const buffer = await ctx.msg.download() || await ctx.quoted.download();
                 const uploadUrl = await ctx.core.rexx.utils.uploadFile(buffer);
                 const apiUrl = tools.api.createUrl("nekolabs", "/ai/claude/sonnet-4.5", {
                     text: input,

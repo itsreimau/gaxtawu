@@ -1,5 +1,3 @@
-const { MessageType } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "groupstatus",
     category: "group",
@@ -21,11 +19,11 @@ module.exports = {
         ];
 
         try {
-            const media = await ctx.msg.media.toBuffer() ? ctx.msg.media : ctx.quoted.media;
-            const buffer = await media?.toBuffer();
+            const media = await ctx.msg.download() ? ctx.msg.media : ctx.quoted.media;
+            const buffer = await media?.download();
             const type = checkMedia || checkQuotedMedia;
             const content = buffer && [MessageType.imageMessage, MessageType.videoMessage].includes(type) ? {
-                [type === MessageType.imageMessage ? "image" : "video"]: buffer,
+                [type]: buffer,
                 caption: input
             } : {
                 text: input

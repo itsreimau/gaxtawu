@@ -23,7 +23,7 @@ module.exports = {
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], "image"));
 
         try {
-            const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
+            const buffer = await ctx.msg.download() || await ctx.quoted.download();
             const uploadUrl = await ctx.core.rexx.utils.uploadFile(buffer);
             const apiUrl = tools.api.createUrl("nekolabs", "/ai/qwen/image-edit", {
                 prompt: input,

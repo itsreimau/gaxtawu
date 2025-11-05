@@ -13,7 +13,7 @@ module.exports = {
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image", "gif", "video"]));
 
         try {
-            const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
+            const buffer = await ctx.msg.download() || await ctx.quoted.download();
             const sticker = await new Sticker(buffer)
                 .setPack(config.sticker.packname)
                 .setAuthor(config.sticker.author)

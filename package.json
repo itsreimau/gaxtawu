@@ -1,6 +1,6 @@
 {
   "name": "gaxtawu",
-  "version": "1.5.1-alpha.2",
+  "version": "1.5.1-alpha.4",
   "description": "Useless WhatsApp Bot",
   "main": "index.js",
   "directories": {
@@ -21,7 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "@itsreimau/gktw": "github:itsreimau/gktw",
-    "axios": "^1.13.1",
+    "axios": "^1.13.2",
     "cfonts": "^3.3.1",
     "jimp": "^0.22.12",
     "link-preview-js": "^3.1.0",

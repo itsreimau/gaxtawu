@@ -52,7 +52,7 @@ module.exports = {
 
                 const batch = groupIds.slice(i, i + 5);
                 const mediaType = checkMedia || checkQuotedMedia;
-                const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
+                const buffer = await ctx.msg.download() || await ctx.quoted.download();
 
                 try {
                     await ctx.core.sendStatusMentions({

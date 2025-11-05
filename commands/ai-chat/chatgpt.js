@@ -25,8 +25,8 @@ module.exports = {
             const systemPrompt = `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.` // Dapat diubah sesuai keinginan
             const uid = ctx.db.user.uid || "guest";
 
-            if (checkMedia || checkQuotedMedia) {
-                const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
+            if (!!checkMedia || !!checkQuotedMedia) {
+                const buffer = await ctx.msg.download() || await ctx.quoted.download();
                 const uploadUrl = await ctx.core.rexx.utils.uploadFile(buffer);
                 const apiUrl = tools.api.createUrl("nekolabs", "/ai/gpt/5", {
                     text: input,
