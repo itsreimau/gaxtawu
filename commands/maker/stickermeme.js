@@ -29,7 +29,7 @@ module.exports = {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
             const uploadUrl = await ctx.core.rexx.utils.uploadFile(buffer);
             const result = tools.api.createUrl("nekolabs", `/canvas/meme`, {
-                imageUrl: uploadUrl
+                imageUrl: uploadUrl,
                 textT: top,
                 textB: bottom
             });
