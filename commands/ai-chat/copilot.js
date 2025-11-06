@@ -16,10 +16,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/ai/copilot", {
-                text: input
+            const apiUrl = tools.api.createUrl("izumi", "/ai/copilot", {
+                prompt: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.text;
 
             await ctx.reply(result);
         } catch (error) {

@@ -1,8 +1,9 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "deepseek",
-    category: "ai-chat",
+    name: "text2prompt",
+    aliases: ["texttoprompt", "text2prompt", "texttoprompt"],
+    category: "ai-misc",
     permissions: {
         coin: 5
     },
@@ -16,10 +17,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("izumi", "/ai/deepseek", {
-                messages: input
-            });
-            const result = (await axios.get(apiUrl)).data.message;
+            const apiUrl = tools.api.createUrl("anabot", "/api/ai/chat2prompt", {
+                prompt: input
+            }, "apikey");
+            const result = (await axios.get(apiUrl)).data.data.result;
 
             await ctx.reply(result);
         } catch (error) {

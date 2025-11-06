@@ -31,8 +31,8 @@ async function handleWelcome(ctxBot, m, type, isSimulate = false) {
 
         await ctxBot.core.sendMessage(groupJid, {
             text,
-            mentions: [jid],
             contextInfo: {
+                mentionedJid: [jid],
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
                     newsletterJid: config.bot.newsletterJid,

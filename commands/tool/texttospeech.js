@@ -1,8 +1,6 @@
-const axios = require("axios");
-
 module.exports = {
-    name: "translate",
-    aliases: ["tr"],
+    name: "texttospeech",
+    aliases: ["tts"],
     category: "tool",
     permissions: {
         coin: 5
@@ -13,18 +11,23 @@ module.exports = {
 
         if (!input) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            `${tools.msg.generateCmdExample(ctx.used, "en halo, dunia!")}\n` +
+            `${tools.msg.generateCmdExample(ctx.used, "id halo, dunia!")}\n` +
             tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."])
         );
 
         try {
-            const apiUrl = api.createUrl("deline", "/tools/translate", {
+            const result = api.createUrl("znx", "/tools/translate", {
                 text: input,
-                target: langCode
+                lang: langCode
             });
-            const result = (await axios.get(apiUrl)).data.data.hasil_terjemahan;
 
-            await ctx.reply(result);
+            await ctx.reply({
+                audio: {
+                    url: result
+                },
+                mimetype: tools.mime.lookup("mp3"),
+                ptt: true
+            });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

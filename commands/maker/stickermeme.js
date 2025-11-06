@@ -25,11 +25,13 @@ module.exports = {
 
         try {
             let [top, bottom] = input.split("|").map(inp => inp);
-            [top, bottom] = bottom ? [top || "_", bottom] : ["_", top || "_"];
+            [top, bottom] = bottom ? [top || " ", bottom] : [" ", top || " "];
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
             const uploadUrl = await ctx.core.rexx.utils.uploadFile(buffer);
-            const result = tools.api.createUrl("https://api.memegen.link", `/images/custom/${top}/${bottom}.png`, {
-                background: uploadUrl
+            const result = tools.api.createUrl("nekolabs", `/canvas/meme`, {
+                imageUrl: uploadUrl
+                textT: top,
+                textB: bottom
             });
             const sticker = await new Sticker(result)
                 .setPack(config.sticker.packname)

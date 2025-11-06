@@ -17,11 +17,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/ai/stable-diffusion/3.5-large-turbo", {
-                prompt: input,
-                ratio: tools.cmd.getRandomElement(["1:1", "16:9", "9:16"])
+            const apiUrl = tools.api.createUrl("cloudhost", "/ai/txt2img", {
+                query: input
             });
-            const result = (await axios.get(apiUrl)).data.result[0];
+            const result = (await axios.get(apiUrl)).data.result.imageUrl;
 
             await ctx.reply({
                 image: {

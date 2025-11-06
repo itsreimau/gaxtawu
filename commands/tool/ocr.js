@@ -18,10 +18,10 @@ module.exports = {
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
             const uploadUrl = await ctx.core.rexx.utils.uploadFile(buffer);
-            const apiUrl = tools.api.createUrl("deline", "/tools/ocr", {
-                url: uploadUrl
+            const apiUrl = tools.api.createUrl("znx", "/api/tools/ocr", {
+                imgUrl: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.Text;
+            const result = (await axios.get(apiUrl)).data.results;
 
             await ctx.reply(result);
         } catch (error) {

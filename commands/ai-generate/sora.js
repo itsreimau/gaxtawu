@@ -16,10 +16,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("kyyokatsu", "/ai/txt2video", {
-                text: input
-            });
-            const result = (await axios.get(apiUrl)).data.videoUrl;
+            const apiUrl = tools.api.createUrl("anabot", "/api/ai/sora", {
+                prompt: input
+            }, "apikey");
+            const result = (await axios.get(apiUrl)).data.data.result;
 
             await ctx.reply({
                 video: {

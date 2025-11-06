@@ -10,38 +10,20 @@ const APIs = {
     bagus: {
         baseURL: "https://api.baguss.xyz"
     },
-    davidcyril: {
-        baseURL: "https://apis.davidcyriltech.my.id"
+    cloudhost: {
+        baseURL: "https://api.cloudhostid.biz.id"
     },
     deline: {
         baseURL: "https://api.deline.web.id"
     },
-    hang: {
-        baseURL: "https://api.hanggts.xyz"
-    },
     izumi: {
         baseURL: "https://api.ootaizumi.web.id"
     },
-    k: {
-        baseURL: "https://api.kzy.my.id"
-    },
-    kyyokatsu: {
-        baseURL: "https://kyyokatsurestapi.my.id"
+    jere: {
+        baseURL: "https://api.jerexd666.wongireng.my.id"
     },
     nekolabs: {
         baseURL: "https://api.nekolabs.web.id"
-    },
-    omegatech: {
-        baseURL: "https://omegatech-api.dixonomega.tech"
-    },
-    rijalganzz: {
-        baseURL: "https://rijalganzz.web.id"
-    },
-    siputzx: {
-        baseURL: "https://api.siputzx.my.id"
-    },
-    vreden: {
-        baseURL: "https://api.vreden.my.id"
     },
     yp: {
         baseURL: "https://api.yupra.my.id"

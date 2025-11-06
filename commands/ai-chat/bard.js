@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "deepseek",
+    name: "bard",
     category: "ai-chat",
     permissions: {
         coin: 5
@@ -16,10 +16,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("izumi", "/ai/deepseek", {
-                messages: input
+            const apiUrl = tools.api.createUrl("znx", "/api/ai/bard", {
+                question: input
             });
-            const result = (await axios.get(apiUrl)).data.message;
+            const result = (await axios.get(apiUrl)).data.results;
 
             await ctx.reply(result);
         } catch (error) {

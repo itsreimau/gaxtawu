@@ -18,10 +18,10 @@ module.exports = {
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
             const uploadUrl = await ctx.core.rexx.utils.uploadFile(buffer);
-            const apiUrl = tools.api.createUrl("nekolabs", "/tools/convert/tofigure", {
-                imageUrl: uploadUrl
+            const apiUrl = tools.api.createUrl("jere", "/imagecreator/tofigure", {
+                url: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.image_url;
 
             await ctx.reply({
                 image: {

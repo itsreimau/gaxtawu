@@ -16,10 +16,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/discovery/tiktok/search", {
+            const apiUrl = tools.api.createUrl("znx", "/api/search/tiktok", {
                 q: input
             });
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result).videoUrl;
+            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.results).play;
 
             await ctx.reply({
                 video: {

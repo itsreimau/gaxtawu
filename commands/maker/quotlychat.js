@@ -9,7 +9,7 @@ module.exports = {
         coin: 5
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || null;
+        const input = ctx.args.join(" ") || ctx.quoted?.content || null;
 
         if (!input) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
@@ -22,23 +22,14 @@ module.exports = {
         try {
             const isQuoted = ctx.args.length === 0 && ctx.quoted;
             const profilePictureUrl = await ctx.core.profilePictureUrl(isQuoted ? ctx.quoted?.sender : ctx.sender.jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
-            const payload = {
-                backgroundColor: "#111b21",
-                scale: 2,
-                emojiBrand: "apple",
-                messages: [{
-                    from: {
-                        name: isQuoted ? ctx.quoted?.pushName : ctx.sender.pushName,
-                        photo: {
-                            url: profilePictureUrl
-                        }
-                    },
-                    text: input,
-                    avatar: true
-                }]
-            };
-            const apiurl = tools.api.createUrl("https://bot.lyo.su", "/quote/generate.webp");
-            const result = (await axios.post(apiurl, payload, {
+            const apiurl = tools.api.createUrl("znx", "/api/maker/qc");
+            const result = (await axios.post(apiurl, {
+                type: "quote",
+                text: input,
+                name: isQuoted ? ctx.quoted?.pushName : ctx.sender.pushName,
+                number: ctx.getId(ctx.sender.jid),
+                photo: profilePictureUrl
+            }, {
                 responseType: "arraybuffer"
             })).data;
             const sticker = await new Sticker(result)

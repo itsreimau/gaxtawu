@@ -1,8 +1,7 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "stablediffusionxl",
-    aliases: ["sdxl"],
+    name: "deepgen",
     category: "ai-generate",
     permissions: {
         coin: 5
@@ -17,11 +16,11 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/ai/stable-diffusion/xl-lightning", {
-                prompt: input,
-                ratio: tools.cmd.getRandomElement(["1:1", "16:9", "9:16"])
+            const apiUrl = tools.api.createUrl("cloudhost", "/ai/deepimg", {
+                query: input,
+                version: "hd"
             });
-            const result = (await axios.get(apiUrl)).data.result[0];
+            const result = (await axios.get(apiUrl)).data.result.output_url;
 
             await ctx.reply({
                 image: {

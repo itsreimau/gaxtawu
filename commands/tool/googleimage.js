@@ -16,10 +16,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("hang", "/search/gimage", {
-                q: input
+            const apiUrl = tools.api.createUrl("cloudhost", "/search/gimage", {
+                query: input
             });
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result).url;
+            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result);
 
             await ctx.reply({
                 image: {

@@ -19,10 +19,9 @@ module.exports = {
         ];
 
         try {
-            const media = await ctx.msg.download() ? ctx.msg.media : ctx.quoted.media;
-            const buffer = await media?.download();
+            const buffer = await ctx.msg.download() ? await ctx.msg.download() : await ctx.quoted.download();
             const type = checkMedia || checkQuotedMedia;
-            const content = buffer && [MessageType.imageMessage, MessageType.videoMessage].includes(type) ? {
+            const content = buffer && ["image", "video"].includes(type) ? {
                 [type]: buffer,
                 caption: input
             } : {
