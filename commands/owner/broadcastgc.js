@@ -43,25 +43,23 @@ module.exports = {
             for (const groupId of filteredGroupIds) {
                 await delay(500);
                 try {
-                    const contextInfo = {
-                        isForwarded: true,
-                        forwardedNewsletterMessageInfo: {
-                            newsletterJid: config.bot.newsletterJid,
-                            newsletterName: config.bot.name
-                        },
-                        externalAdReply: {
-                            title: config.bot.name,
-                            body: `v${require("../../package.json").version}`,
-                            mediaType: 1,
-                            thumbnailUrl: config.bot.thumbnail,
-                            renderLargerThumbnail: true,
-                            sourceUrl: config.bot.groupLink
-                        }
-                    };
-
                     await ctx.core.sendMessage(groupId, {
                         text: input,
-                        contextInfo
+                        contextInfo: {
+                            isForwarded: true,
+                            forwardedNewsletterMessageInfo: {
+                                newsletterJid: config.bot.newsletterJid,
+                                newsletterName: config.msg.footer
+                            },
+                            externalAdReply: {
+                                title: config.bot.name,
+                                body: config.msg.note,
+                                mediaType: 1,
+                                thumbnailUrl: config.bot.thumbnail,
+                                sourceUrl: config.bot.groupLink,
+                                renderLargerThumbnail: true
+                            }
+                        }
                     }, {
                         quoted: tools.cmd.fakeQuotedText(config.msg.footer)
                     });

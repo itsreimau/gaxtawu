@@ -36,14 +36,14 @@ async function handleWelcome(ctxBot, m, type, isSimulate = false) {
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
                     newsletterJid: config.bot.newsletterJid,
-                    newsletterName: config.bot.name
+                    newsletterName: config.msg.footer
                 },
                 externalAdReply: {
                     title: config.bot.name,
-                    body: `v${require("../package.json").version}`,
+                    body: config.msg.note,
+                    mediaType: 1,
                     thumbnailUrl: profilePictureUrl,
                     sourceUrl: config.bot.groupLink,
-                    mediaType: 1,
                     renderLargerThumbnail: true
                 }
             }
@@ -195,7 +195,7 @@ module.exports = (bot) => {
                 senderDb.banned = true;
                 senderDb.save();
 
-                await ctx.core.sendMessage(config.owner.id + Baileys.S_WHATSAPP_NET, {
+                await ctx.replyWithJid(config.owner.id + Baileys.S_WHATSAPP_NET, {
                     text: `ⓘ ${formatter.italic(`Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode(analyze.reason)}.`)}`,
                     mentions: [senderJid]
                 });
@@ -379,7 +379,7 @@ module.exports = (bot) => {
             await bot.core.sendMessage(senderJid, {
                 text: `ⓘ ${formatter.italic("Anda telah dibanned secara otomatis karena melanggar aturan!")}`,
                 buttons: [{
-                    buttonId: `/owner`,
+                    buttonId: "/owner",
                     buttonText: {
                         displayText: "Hubungi Owner"
                     }

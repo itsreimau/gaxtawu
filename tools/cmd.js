@@ -114,8 +114,8 @@ async function handleError(ctx, error, useAxios = false, reportErrorToOwner = tr
     if (config.system.reportErrorToOwner && reportErrorToOwner) await ctx.replyWithJid(config.owner.id + Baileys.S_WHATSAPP_NET, {
         text: `ⓘ ${formatter.italic(isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${ctx.getId(ctx.sender.jid)}` : `Terjadi kesalahan dari: @${ctx.getId(ctx.sender.jid)}`)}\n` +
             formatter.monospace(errorText),
-        mentions: [ctx.sender.jid],
         contextInfo: {
+            mentionJid: [ctx.sender.jid],
             groupMentions: isGroup ? [{
                 groupJid,
                 groupSubject
