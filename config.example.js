@@ -46,7 +46,7 @@ global.config = {
         co: [{
             name: "Budi Jr.", // Nama
             organization: "PT. Pencari Cinta Sejati II", // Nama organisasi
-            id "62987654321" // Nomor telepon
+            id: "62987654321" // Nomor telepon
         }]
     },
 
