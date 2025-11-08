@@ -15,3 +15,6 @@ package-lock.json
 
 # Abaikan file 'yarn.lock'
 yarn.lock
+
+# Abaikan file "pnpm-lock.yaml"
+pnpm-lock.yaml
