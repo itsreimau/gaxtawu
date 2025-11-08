@@ -11,7 +11,7 @@ module.exports = {
         restrict: true
     },
     code: async (ctx) => {
-        const targetJid = ctx.quoted?.sender || ctx.getMentioned()[0] || null;
+        let targetJid = ctx.quoted?.sender || ctx.getMentioned()[0] || null;
 
         if (!targetJid) return await ctx.reply({
             text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
@@ -26,7 +26,7 @@ module.exports = {
         try {
             const groupDb = ctx.db.group;
             const warnings = groupDb?.warnings || [];
-            const targetJid = Baileys.isJidUser(targetJid) ? await ctx.getLidUser(targetJid) || targetJid : targetJid;
+            targetJid = Baileys.isJidUser(targetJid) ? await ctx.getLidUser(targetJid) || targetJid : targetJid;
 
             const targetWarning = warnings.find(warning => warning.jid === targetJid);
 

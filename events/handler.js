@@ -99,7 +99,7 @@ async function addWarning(ctx, senderJid, senderLid, isAdmin, groupDb) {
             await ctx.reply(`ⓘ ${formatter.italic(`Anda telah menerima ${maxWarnings} warning dan akan dikeluarkan dari grup!`)}`);
             if (!config.system.restrict) await ctx.group().kick(senderLid);
             groupDb.warnings = warnings.filter(warning => warning.jid !== senderLid);
-        } else {
+        } else if (!isAdmin) {
             await ctx.reply(`ⓘ ${formatter.italic(`${config.msg.botAdmin} Tidak dapat mengeluarkan Anda yang telah mencapai ${maxWarnings} warning.`)}`);
         }
     }

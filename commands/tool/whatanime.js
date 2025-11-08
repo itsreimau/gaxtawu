@@ -25,7 +25,7 @@ module.exports = {
 
             await ctx.reply(
                 `➛ ${formatter.bold("Judul")}: ${result.title}\n` +
-                `➛ ${formatter.bold("Genre")}: ${result.genres[0]}\n` + +
+                `➛ ${formatter.bold("Genre")}: ${result.genres[0]}\n` +
                 `➛ ${formatter.bold("Karakter")}: ${result.character}\n` +
                 `➛ ${formatter.bold("Referensi")}: ${result.references[0].replace("MyAnimeList: ", "")}`
             );

@@ -73,7 +73,22 @@ module.exports = {
                 },
                 mimetype: tools.mime.lookup("png"),
                 caption: text.trim(),
-                mentions: [ctx.sender.jid],
+                contextInfo: {
+                    mentionedJid: [ctx.sender.jid],
+                    isForwarded: true,
+                    forwardedNewsletterMessageInfo: {
+                        newsletterJid: config.bot.newsletterJid,
+                        newsletterName: config.msg.footer
+                    },
+                    externalAdReply: {
+                        title: config.bot.name,
+                        body: config.msg.note,
+                        mediaType: 1,
+                        thumbnailUrl: config.bot.thumbnail,
+                        sourceUrl: config.bot.groupLink,
+                        renderLargerThumbnail: true
+                    }
+                },
                 footer: formatter.italic(config.msg.footer),
                 buttons: [{
                     buttonId: `${ctx.used.prefix}owner`,

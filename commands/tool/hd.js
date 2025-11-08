@@ -19,7 +19,7 @@ module.exports = {
             const uploadUrl = await ctx.core.rexx.utils.uploadFile(buffer);
             const apiUrl = tools.api.createUrl("yp", "/api/tools/hd", {
                 url: uploadUrl,
-                scale: tools.cmd.getRandomElement(["2", "4", "6", "8"])
+                scale: ctx.db.user.premium ? tools.cmd.getRandomElement(["6", "8"]) : tools.cmd.getRandomElement(["2", "4"])
             });
             const result = (await axios.get(apiUrl)).data.result.imageUrl;
 

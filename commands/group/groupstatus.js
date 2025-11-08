@@ -19,14 +19,18 @@ module.exports = {
         ];
 
         try {
-            const buffer = await ctx.msg.download() ? await ctx.msg.download() : await ctx.quoted.download();
             const type = checkMedia || checkQuotedMedia;
-            const content = buffer && ["image", "video"].includes(type) ? {
-                [type]: buffer,
-                caption: input
-            } : {
-                text: input
-            };
+            if (["image", "video"].includes(type)) {
+                const buffer = await ctx.msg.download() ? await ctx.msg.download() : await ctx.quoted.download();
+                const content = {
+                    [type]: buffer,
+                    caption: input
+                };
+            } else {
+                const content = {
+                    text: input
+                };
+            }
             await ctx.core.rexx.handleGroupStory({
                 groupStatusMessage: content
             }, ctx.id);

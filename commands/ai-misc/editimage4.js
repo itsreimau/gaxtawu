@@ -1,13 +1,20 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "toghibli",
-    aliases: ["jadighibli"],
+    name: "editimage4",
+    aliases: ["editimg4"],
     category: "ai-misc",
     permissions: {
         premium: true
     },
     code: async (ctx) => {
+        const input = ctx.args.join(" ") || null;
+
+        if (!input) return await ctx.reply(
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "make it evangelion art style")
+        );
+
         const [checkMedia, checkQuotedMedia] = [
             tools.cmd.checkMedia(ctx.msg.messageType, "image"),
             tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, "image")
@@ -18,10 +25,11 @@ module.exports = {
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
             const uploadUrl = await ctx.core.rexx.utils.uploadFile(buffer);
-            const apiUrl = tools.api.createUrl("jere", "/tools/toghibli", {
-                url: uploadUrl
+            const apiUrl = tools.api.createUrl("jere", "/imagecreator/image-edit", {
+                url: uploadUrl,
+                prompt: input
             });
-            const result = (await axios.get(apiUrl)).data.result.data[0].url;
+            const result = (await axios.get(apiUrl)).data.result.edited_image;
 
             await ctx.reply({
                 image: {

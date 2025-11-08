@@ -44,7 +44,7 @@ module.exports = {
                 `➛ ${formatter.bold("Durasi")}: ${res.duration}\n` +
                 `➛ ${formatter.bold("URL")}: ${res.url}`
             ).join("\n\n");
-            await ctx.reply(`ⓘ ${formatter.italic(config.msg.notFound)}`);
+            await ctx.reply(result.trim() || `ⓘ ${formatter.italic(config.msg.notFound)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

@@ -3,10 +3,6 @@ const util = require("node:util");
 
 // Daftar API gratis
 const APIs = {
-    anabot: {
-        baseURL: "https://anabot.my.id",
-        APIKey: "freeApikey"
-    },
     bagus: {
         baseURL: "https://api.baguss.xyz"
     },
@@ -21,6 +17,9 @@ const APIs = {
     },
     jere: {
         baseURL: "https://api.jerexd666.wongireng.my.id"
+    },
+    kyyokatsu: {
+        baseURL: "https://kyyokatsurestapi.my.id"
     },
     nekolabs: {
         baseURL: "https://api.nekolabs.web.id"

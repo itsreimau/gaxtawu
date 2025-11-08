@@ -16,10 +16,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("anabot", "/api/ai/felo", {
-                prompt: input
-            }, "apikey");
-            const result = (await axios.get(apiUrl)).data.data.result.chatgpt;
+            const apiUrl = tools.api.createUrl("znx", "/api/ai/felo", {
+                question: input
+            });
+            const result = (await axios.get(apiUrl)).data.data.results.answer;
 
             await ctx.reply(result);
         } catch (error) {

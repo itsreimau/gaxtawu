@@ -1,8 +1,6 @@
-const axios = require("axios");
-
 module.exports = {
-    name: "image2image",
-    aliases: ["imagetoimage", "img2img", "imgtoimg"],
+    name: "editimage2",
+    aliases: ["editimg2"],
     category: "ai-misc",
     permissions: {
         premium: true
@@ -25,11 +23,10 @@ module.exports = {
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
             const uploadUrl = await ctx.core.rexx.utils.uploadFile(buffer);
-            const apiUrl = tools.api.createUrl("cloudhost", "/ai/img2img", {
-                query: input,
-                imageUrl: uploadUrl
+            const result = tools.api.createUrl("znx", "/api/ai/edit-img", {
+                imageUrl: uploadUrl,
+                prompt: input
             });
-            const result = (await axios.get(apiUrl)).data.result.imageUrl;
 
             await ctx.reply({
                 image: {
