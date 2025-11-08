@@ -4,6 +4,9 @@ node_modules/
 # Abaikan direktori 'state'
 state/
 
+# Abaikan direktori 'database'
+database/
+
 # Abaikan file 'config.js'
 config.js
 
@@ -16,5 +19,5 @@ package-lock.json
 # Abaikan file 'yarn.lock'
 yarn.lock
 
-# Abaikan file "pnpm-lock.yaml"
+# Abaikan file 'pnpm-lock.yaml'
 pnpm-lock.yaml
