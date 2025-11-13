@@ -21,7 +21,7 @@ module.exports = {
         try {
             const type = checkMedia || checkQuotedMedia;
             if (["image", "video"].includes(type)) {
-                const buffer = await ctx.msg.download() ? await ctx.msg.download() : await ctx.quoted.download();
+                const buffer = await ctx.msg.download() || await ctx.quoted.download();
                 const content = {
                     [type]: buffer,
                     caption: input
@@ -31,9 +31,9 @@ module.exports = {
                     text: input
                 };
             }
-            await ctx.core.rexx.handleGroupStory({
+            await ctx.reply({
                 groupStatusMessage: content
-            }, ctx.id);
+            });
 
             await ctx.reply(`✅ Group status berhasil dikirim!`);
         } catch (error) {

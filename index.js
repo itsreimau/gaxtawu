@@ -13,7 +13,7 @@ Object.assign(global, {
     consolefy: new Consolefy({
         tag: pkg.name
     }),
-    formatter: require("@itsreimau/gktw").Formatter,
+    formatter: Formatter,
     tools: require("./tools/exports.js")
 });
 
@@ -24,7 +24,6 @@ CFonts.say(pkg.name, {
     colors: ["#00A1E0", "#00FFFF"],
     align: "center"
 });
-
 CFonts.say(`${pkg.description} - By ${pkg.author}`, {
     font: "console",
     colors: ["#E0F7FF"],

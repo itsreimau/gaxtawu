@@ -21,6 +21,7 @@ consolefy.log("Connecting..."); // Logging proses koneksi
 // Buat instance bot
 const bot = new Client({
     authDir: diretory.auth,
+    WAVersion: system.WAVersion,
     printQRInTerminal: !system.usePairingCode,
     phoneNumber: botConfig.phoneNumber,
     usePairingCode: system.usePairingCode,

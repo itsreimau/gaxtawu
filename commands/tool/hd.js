@@ -15,8 +15,7 @@ module.exports = {
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], "image"));
 
         try {
-            const buffer = await ctx.msg.download() || await ctx.quoted.download();
-            const uploadUrl = await ctx.core.rexx.utils.uploadFile(buffer);
+            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
             const apiUrl = tools.api.createUrl("yp", "/api/tools/hd", {
                 url: uploadUrl,
                 scale: ctx.db.user.premium ? tools.cmd.getRandomElement(["6", "8"]) : tools.cmd.getRandomElement(["2", "4"])

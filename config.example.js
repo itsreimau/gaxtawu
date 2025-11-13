@@ -75,6 +75,7 @@ global.config = {
         timeZone: "Asia/Jakarta", // Zona waktu
         unavailableAtNight: false, // Bot tidak tersedia pada malam hari, dari jam 12 malam sampai 6 pagi, waktu akan disesuaikan menurut zona waktu
         useCoin: true, // Pakai koin
+        WAVersion: [2, 3000, 1029030078], // Versi WA
         usePairingCode: false, // Pakai kode pairing untuk koneksi
         customPairingCode: "UMBR4L15", // Kode pairing kustom untuk koneksi, tidak perlu jika menggunakan QR code, jika kosong kode pairing akan random
         useStore: false, // Store untuk menyimpan pesan masuk

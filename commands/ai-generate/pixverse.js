@@ -50,8 +50,7 @@ module.exports = {
             }
 
             if (!!checkMedia || !!checkQuotedMedia) {
-                const buffer = await ctx.msg.download() || await ctx.quoted.download();
-                const uploadUrl = await ctx.core.rexx.utils.uploadFile(buffer);
+                const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
                 const apiUrl = tools.api.createUrl("nekolabs", "/ai/pixverse-v5/create", {
                     prompt: input,
                     ratio: tools.cmd.getRandomElement(["16:9", "9:16"]),
