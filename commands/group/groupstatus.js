@@ -1,3 +1,5 @@
+const { Baileys } = require("@itsreimau/gktw");
+
 module.exports = {
     name: "groupstatus",
     category: "group",
@@ -20,19 +22,28 @@ module.exports = {
 
         try {
             const type = checkMedia || checkQuotedMedia;
+            let content;
             if (["image", "video"].includes(type)) {
                 const buffer = await ctx.msg.download() || await ctx.quoted.download();
-                const content = {
+                content = {
                     [type]: buffer,
                     caption: input
                 };
             } else {
-                const content = {
+                content = {
                     text: input
                 };
             }
-            await ctx.reply({
-                groupStatusMessage: content
+            const message = Baileys.generateWAMessageContent(content, {
+                upload: ctx.core.waUploadToServer
+            }).message;
+
+            await ctx.core.relayMessage(ctx.id, {
+                groupStatusMessageV2: {
+                    message
+                }
+            }, {
+                messageId: Baileys.generateMessageIDV2()
             });
 
             await ctx.reply(`✅ Group status berhasil dikirim!`);
