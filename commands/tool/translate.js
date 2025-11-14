@@ -9,7 +9,7 @@ module.exports = {
     },
     code: async (ctx) => {
         const input = ctx.args.slice(ctx.args[0]?.length === 2 ? 1 : 0).join(" ") || ctx.quoted?.content || null;
-        const langCode = ctx.args[0]?.length === 2 ? ctx.args[0] : "id";
+        const langCode = ctx.args[0]?.length === 2 ? ctx.args[0] : "en";
 
         if (!input) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
