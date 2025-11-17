@@ -19,12 +19,12 @@ module.exports = {
             const groupIndex = blacklist.indexOf(ctx.id);
             if (groupIndex > -1) {
                 blacklist.splice(groupIndex, 1);
-                config.system?.blacklistBroadcast = blacklist;
+                config.system.blacklistBroadcast = blacklist;
                 config.save();
                 return await ctx.reply(`ⓘ ${formatter.italic("Grup ini telah dihapus dari blacklist broadcast")}`);
             } else {
                 blacklist.push(ctx.id);
-                config.system?.blacklistBroadcast = blacklist;
+                config.system.blacklistBroadcast = blacklist;
                 config.save();
                 return await ctx.reply(`ⓘ ${formatter.italic("Grup ini telah ditambahkan ke blacklist broadcast")}`);
             }
