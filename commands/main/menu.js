@@ -38,7 +38,7 @@ module.exports = {
                 `➛ ${formatter.bold("Library")}: @itsreimau/gktw (Fork of @mengkodingan/ckptw)\n` +
                 "\n" +
                 `☆ ${formatter.italic("Jangan lupa berdonasi agar bot tetap online.")}\n` +
-                `${config.msg.readmore}\n`;
+                `${"\u200E".repeat(4001)}\n`;
 
             for (const category of Object.keys(tag)) {
                 const cmds = Array.from(cmd.values()).filter(cmd => cmd.category === category).map(cmd => ({

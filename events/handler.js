@@ -7,11 +7,10 @@ const moment = require("moment-timezone");
 async function handleWelcome(ctxBot, m, type, isSimulate = false) {
     const groupJid = m.id;
     const groupDb = ctxBot.getDb("groups", groupJid);
-    const botDb = ctxBot.getDb("bot", Baileys.jidNormalizedUser(ctxBot.core.user.lid));
 
     if (!isSimulate && groupDb?.mutebot) return;
     if (!isSimulate && !groupDb?.option?.welcome) return;
-    if (!isSimulate && ["private", "self"].includes(botDb?.mode)) return;
+    if (!isSimulate && ["private", "self"].includes(config.system?.mode)) return;
 
     const now = moment().tz(config.system.timeZone);
     const hour = now.hour();
@@ -116,20 +115,20 @@ module.exports = (bot) => {
         consolefy.success(`${config.bot.name} by ${config.owner.name}, ready at ${m.user.id}`);
 
         // Mulai ulang bot
-        const botDb = bot.getDb("bot", Baileys.jidNormalizedUser(bot.core.user.lid));
-        const botRestart = botDb?.restart || {};
+        const botRestart = config?.restart || {};
         if (botRestart?.jid && botRestart?.timestamp) {
             const timeago = tools.msg.convertMsToDuration(Date.now() - botRestart.timestamp);
             await bot.core.sendMessage(botRestart.jid, {
                 text: `ⓘ ${formatter.italic(`Berhasil dimulai ulang! Membutuhkan waktu ${timeago}.`)}`,
                 edit: botRestart.key
             });
-            delete botDb.restart;
-            botDb.save();
+            delete config.restart;
+            config.save();
         }
 
         // Tetapkan config pada bot
-        config.bot.groupLink = `https://chat.whatsapp.com/${await bot.core.groupInviteCode(config.bot.groupJid).then(code => code).catch(() => "FxEYZl2UyzAEI2yhaH34Ye")}`;
+        if (!config.bot.groupLink) config.bot.groupLink = `https://chat.whatsapp.com/${await bot.core.groupInviteCode(config.bot.groupJid).then(code => code).catch(() => "FxEYZl2UyzAEI2yhaH34Ye")}`;
+        config.save();
     });
 
     // Event saat bot menerima pesan
@@ -153,7 +152,6 @@ module.exports = (bot) => {
             const isAdmin = isGroup ? await ctx.group().isSenderAdmin() : false;
 
             // Mengambil database
-            const botDb = ctx.db.bot;
             const senderDb = ctx.db.user;
             const groupDb = ctx.db.group;
 
@@ -171,10 +169,10 @@ module.exports = (bot) => {
             }
 
             // Pengecekan mode bot (premium, group, private, self)
-            if (botDb?.mode === "premium" && !isOwner && !senderDb?.premium) return;
-            if (botDb?.mode === "group" && isPrivate && !isOwner && !senderDb?.premium) return;
-            if (botDb?.mode === "private" && isGroup && !isOwner && !senderDb?.premium) return;
-            if (botDb?.mode === "self" && !isOwner) return;
+            if (config.system?.mode === "premium" && !isOwner && !senderDb?.premium) return;
+            if (config.system?.mode === "group" && isPrivate && !isOwner && !senderDb?.premium) return;
+            if (config.system?.mode === "private" && isGroup && !isOwner && !senderDb?.premium) return;
+            if (config.system?.mode === "self" && !isOwner) return;
 
             // Pengecekan mute pada grup
             if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;

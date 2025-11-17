@@ -31,7 +31,7 @@ npm install
 
 ### 3. Configuration
 
-Ubah nama `config.example.js` menjadi `config.js` dan sesuaikan konfigurasi termasuk nama bot, pesan default, nomor pemilik, dll.
+Ubah nama `config.example.json` menjadi `config.json` dan sesuaikan konfigurasi termasuk nama bot, pesan default, nomor pemilik, dll.
 
 ## ▶️ Running the Bot
 
@@ -105,13 +105,13 @@ module.exports = {
 
 ### Documentation
 
-`gaxtawu` menggunakan versi modifikasi dari `@mengkodingan/ckptw` yang khusus di-fork dan disesuaikan untuk bot ini. Pustaka ini dibangun di atas `@rexxhayanasi/elaina-bail` yang menawarkan fitur lebih lengkap dibandingkan `@whiskeysockets/baileys`.
+`gaxtawu` menggunakan versi modifikasi dari `@mengkodingan/ckptw` yang khusus di-fork dan disesuaikan untuk bot ini. Pustaka ini dibangun di atas `dcodemaxz/baileys` yang menawarkan fitur lebih lengkap dibandingkan `@whiskeysockets/baileys`.
 
 Untuk dokumentasi lengkap, silakan kunjungi:
 
 - [@mengkodingan/ckptw](https://www.npmjs.com/package/@mengkodingan/ckptw) - Referensi struktur perintah dasar
 - [itsreimau/gktw](https://github.com/itsreimau/gktw) - Dokumentasi fork kustom
-- [@rexxhayanasi/elaina-bail](https://www.npmjs.com/package/@rexxhayanasi/elaina-bail) - Panduan pengiriman pesan/media
+- [dcodemaxz/baileys](https://github.com/dcodemaxz/baileys) - Panduan pengiriman pesan/media
 
 ## 🤝 Contribution
 

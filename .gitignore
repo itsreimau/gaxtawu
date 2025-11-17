@@ -7,8 +7,8 @@ state/
 # Abaikan direktori 'database'
 database/
 
-# Abaikan file 'config.js'
-config.js
+# Abaikan file 'config.json'
+config.json
 
 # Abaikan file 'database.json'
 database.json

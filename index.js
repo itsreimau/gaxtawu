@@ -1,7 +1,6 @@
 // Impor modul dan dependensi yang diperlukan
-require("./config.js");
 const pkg = require("./package.json");
-const { Consolefy, Formatter } = require("@itsreimau/gktw");
+const { Config, Consolefy, Formatter } = require("@itsreimau/gktw");
 const CFonts = require("cfonts");
 const fs = require("node:fs");
 const http = require("node:http");
@@ -9,7 +8,7 @@ const path = require("node:path");
 
 // Tetapkan variabel global
 Object.assign(global, {
-    config,
+    config: new Config(path.resolve(__dirname, "config.json")),
     consolefy: new Consolefy({
         tag: pkg.name
     }),
@@ -31,10 +30,8 @@ CFonts.say(`${pkg.description} - By ${pkg.author}`, {
 });
 
 // Jalankan server jika diaktifkan dalam konfigurasi
-if (config.system.useServer) {
-    const {
-        port
-    } = config.system;
+if (config.system && config.system.useServer) {
+    const port = config.system.port;
     http.createServer((_, res) => res.end(`${pkg.name} berjalan di port ${port}`)).listen(port, () => consolefy.success(`${pkg.name} runs on port ${port}`));
 }
 

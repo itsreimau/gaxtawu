@@ -16,15 +16,14 @@ module.exports = (bot) => {
         const isAdmin = isGroup ? await ctx.group().isSenderAdmin() : false;
 
         // Mengambil database
-        const botDb = ctx.db.bot;
         const senderDb = ctx.db.user;
         const groupDb = ctx.db.group;
 
         // Pengecekan mode bot (group, private, self)
-        if (botDb?.mode === "premium" && !isOwner && !senderDb?.premium) return;
-        if (botDb?.mode === "group" && isPrivate && !isOwner && !senderDb?.premium) return;
-        if (botDb?.mode === "private" && isGroup && !isOwner && !senderDb?.premium) return;
-        if (botDb?.mode === "self" && !isOwner) return;
+        if (config.system?.mode === "premium" && !isOwner && !senderDb?.premium) return;
+        if (config.system?.mode === "group" && isPrivate && !isOwner && !senderDb?.premium) return;
+        if (config.system?.mode === "private" && isGroup && !isOwner && !senderDb?.premium) return;
+        if (config.system?.mode === "self" && !isOwner) return;
 
         // Pengecekan mute pada grup
         if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;

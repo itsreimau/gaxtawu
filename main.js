@@ -22,16 +22,13 @@ consolefy.log("Connecting..."); // Logging proses koneksi
 const bot = new Client({
     authDir: diretory.auth,
     WAVersion: system.WAVersion,
-    printQRInTerminal: !system.usePairingCode,
     phoneNumber: botConfig.phoneNumber,
     usePairingCode: system.usePairingCode,
     customPairingCode: system.customPairingCode,
     useStore: system.useStore,
-    readIncomingMsg: system.autoRead,
-    markOnlineOnConnect: system.alwaysOnline,
-    prefix: botConfig.prefix,
+    autoRead: system.autoRead,
+    alwaysOnline: system.alwaysOnline,
     selfReply: system.selfReply,
-    autoAiLabel: system.autoAiLabel,
     databaseDir: diretory.database,
     citation: {
         owner: [system.selfOwner ? "bot" : null, config.owner.id, ...config.owner.co.map(co => co.id)].filter(Boolean)

@@ -14,20 +14,18 @@ module.exports = {
             tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru.", `Gunakan ${formatter.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`])
         );
 
-        const botDb = ctx.db.bot;
-        let blacklist = botDb?.blacklistBroadcast || [];
-
+        let blacklist = config.system?.blacklistBroadcast || [];
         if (ctx.args[0]?.toLowerCase() === "blacklist" && ctx.isGroup()) {
             const groupIndex = blacklist.indexOf(ctx.id);
             if (groupIndex > -1) {
                 blacklist.splice(groupIndex, 1);
-                botDb.blacklistBroadcast = blacklist;
-                botDb.save();
+                config.system?.blacklistBroadcast = blacklist;
+                config.save();
                 return await ctx.reply(`ⓘ ${formatter.italic("Grup ini telah dihapus dari blacklist broadcast")}`);
             } else {
                 blacklist.push(ctx.id);
-                botDb.blacklistBroadcast = blacklist;
-                botDb.save();
+                config.system?.blacklistBroadcast = blacklist;
+                config.save();
                 return await ctx.reply(`ⓘ ${formatter.italic("Grup ini telah ditambahkan ke blacklist broadcast")}`);
             }
         }
