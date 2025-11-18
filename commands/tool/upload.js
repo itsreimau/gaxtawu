@@ -14,7 +14,7 @@ module.exports = {
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["audio", "document", "image", "video", "sticker"]));
 
         try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
+            const result = await ctx.msg.upload() || await ctx.quoted.upload();
 
             await ctx.reply({
                 text: `➛ ${formatter.bold("URL")}: ${result}`,

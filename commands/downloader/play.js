@@ -37,15 +37,15 @@ module.exports = {
             let source = flag?.source || null;
 
             if (source === "spotify") {
-                const searchApiUrl = tools.api.createUrl("yp", "/api/search/spotify", {
+                const searchApiUrl = tools.api.createUrl("znx", "/api/search/spotify", {
                     q: input
                 });
-                const searchResult = (await axios.get(searchApiUrl)).data.data[searchIndex];
+                const searchResult = (await axios.get(searchApiUrl)).data.results.data[searchIndex];
 
                 await ctx.reply(
                     `➛ ${formatter.bold("Judul")}: ${searchResult.title}\n` +
                     `➛ ${formatter.bold("Artis")}: ${searchResult.artist}\n` +
-                    `➛ ${formatter.bold("URL")}: ${searchResult.url}`
+                    `➛ ${formatter.bold("URL")}: ${searchResult.track_url}`
                 );
 
                 const downloadApiUrl = tools.api.createUrl("deline", "/downloader/spotify", {
@@ -60,14 +60,14 @@ module.exports = {
                     mimetype: tools.mime.lookup("mp3")
                 });
             } else {
-                const searchApiUrl = tools.api.createUrl("yp", "/api/search/youtube", {
+                const searchApiUrl = tools.api.createUrl("znx", "/api/search/youtube", {
                     q: input
                 });
-                const searchResult = ((await axios.get(searchApiUrl)).data.results.filter(res => res.videoId))[searchIndex];
+                const searchResult = (await axios.get(searchApiUrl)).data.results.filter(res => res.type === "video")[searchIndex];
 
                 await ctx.reply(
                     `➛ ${formatter.bold("Judul")}: ${searchResult.title}\n` +
-                    `➛ ${formatter.bold("Artis")}: ${searchResult.channel}\n` +
+                    `➛ ${formatter.bold("Artis")}: ${searchResult.author.name}\n` +
                     `➛ ${formatter.bold("URL")}: ${searchResult.url}`
                 );
 

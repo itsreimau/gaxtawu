@@ -1,5 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "groupstatus",
     category: "group",
@@ -34,16 +32,8 @@ module.exports = {
                     text: input
                 };
             }
-            const message = Baileys.generateWAMessageContent(content, {
-                upload: ctx.core.waUploadToServer
-            }).message;
-
-            await ctx.core.relayMessage(ctx.id, {
-                groupStatusMessageV2: {
-                    message
-                }
-            }, {
-                messageId: Baileys.generateMessageIDV2()
+            await ctx.reply({
+                groupStatusMessage: content
             });
 
             await ctx.reply(`✅ Group status berhasil dikirim!`);
