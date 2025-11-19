@@ -31,7 +31,7 @@ const APIs = {
         baseURL: "https://zellapi.autos"
     },
     znx: {
-        baseURL: "https://zenitsu.web.id"
+        baseURL: "https://api.zenitsu.web.id"
     }
 };
 
