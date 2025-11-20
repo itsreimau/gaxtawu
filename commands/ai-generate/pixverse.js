@@ -27,7 +27,9 @@ module.exports = {
                 const checkUrl = tools.api.createUrl("nekolabs", "/ai/pixverse-v5/get", {
                     id: senderDb.task.pixverse.id
                 });
-                const checkResult = (await axios.get(checkUrl)).data.result;
+                const checkResult = (await axios.get(checkUrl, {
+                    validateStatus: (status) => true
+                })).data.result;
 
                 const taskStatus = checkResult.status;
                 if (taskStatus === "succeeded") {
