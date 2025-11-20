@@ -32,9 +32,9 @@ module.exports = {
                     text: input
                 };
             }
-            await ctx.core.rexx.handleGroupStory({
+            await ctx.reply({
                 groupStatusMessage: content
-            }, ctx.id);
+            });
 
             await ctx.reply(`✅ Group status berhasil dikirim!`);
         } catch (error) {

@@ -194,7 +194,7 @@ module.exports = (bot) => {
                 senderDb.save();
 
                 await ctx.replyWithJid(config.owner.id + Baileys.S_WHATSAPP_NET, {
-                    text: `ⓘ ${formatter.italic(`Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode(analyze.reason)}.`)}`,
+                    text: `ⓘ ${formatter.italic(`Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode(`Anti Bug - ${analyze.reason}`)}.`)}`,
                     mentions: [senderJid]
                 });
             }
