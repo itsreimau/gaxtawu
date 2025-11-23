@@ -32,7 +32,7 @@ module.exports = {
         try {
             const groupDb = ctx.db.group;
             const muteList = groupDb?.mute || [];
-            targetJid = Baileys.isJidUser(targetJid) ? await ctx.getLidUser(targetJid) || targetJid : targetJid;
+            targetJid = Baileys.isJidUser(targetJid) ? await ctx.getLidUser(targetJid) : targetJid;
 
             const index = muteList.indexOf(targetJid);
             if (index === -1) return await ctx.reply(`ⓘ ${formatter.italic("Pengguna tidak ditemukan dalam daftar mute!")}`);

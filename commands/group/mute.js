@@ -32,7 +32,7 @@ module.exports = {
         try {
             const groupDb = ctx.db.group;
             const muteList = groupDb?.mute || [];
-            targetJid = Baileys.isJidUser(targetJid) ? await ctx.getLidUser(targetJid) || targetJid : targetJid;
+            targetJid = Baileys.isJidUser(targetJid) ? await ctx.getLidUser(targetJid) : targetJid;
 
             const isAlreadyMuted = muteList.includes(targetJid);
             if (isAlreadyMuted) return await ctx.reply(`ⓘ ${formatter.italic("Pengguna sudah di-mute sebelumnya!")}`);

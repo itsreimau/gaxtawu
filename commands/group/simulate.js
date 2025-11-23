@@ -20,7 +20,7 @@ module.exports = {
         try {
             const m = {
                 id: ctx.id,
-                participants: [ctx.sender.jid]
+                participant: ctx.sender.jid
             };
 
             switch (input.toLowerCase()) {

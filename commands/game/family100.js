@@ -53,9 +53,9 @@ module.exports = {
                 }
             }];
 
-            collector.on("collect", async (m) => {
-                const participantAnswer = m.content.toLowerCase();
-                const participantDb = ctx.getDb("users", m.sender);
+            collector.on("collect", async (collCtx) => {
+                const participantAnswer = collCtx.msg.text.toLowerCase();
+                const participantDb = ctx.getDb("users", collCtx.sender.jid);
 
                 if (game.answers.has(participantAnswer)) {
                     game.answers.delete(participantAnswer);
@@ -63,10 +63,8 @@ module.exports = {
 
                     participantDb.coin += game.coin.answered;
                     participantDb.save();
-                    await ctx.core.sendMessage(ctx.id, {
+                    await collCtx.reply({
                         text: `ⓘ ${formatter.italic(`${tools.msg.ucwords(participantAnswer)} benar! Jawaban tersisa: ${game.answers.size}`)}`
-                    }, {
-                        quoted: m
                     });
 
                     if (game.answers.size === 0) {
@@ -77,29 +75,21 @@ module.exports = {
                             participantDb.winGame += 1;
                             participantDb.save();
                         }
-                        await ctx.core.sendMessage(ctx.id, {
+                        await collCtx.reply({
                             text: `ⓘ ${formatter.italic(`Selamat! Semua jawaban telah terjawab! Setiap anggota yang menjawab mendapat ${game.coin.allAnswered} koin.`)}`,
                             buttons: playAgain
-                        }, {
-                            quoted: m
                         });
                     }
                 } else if (participantAnswer === `surrender_${ctx.used.command}`) {
                     const remaining = [...game.answers].map(tools.msg.ucwords).join(", ").replace(/, ([^,]*)$/, ", dan $1");
                     session.delete(ctx.id);
                     collector.stop();
-                    await ctx.core.sendMessage(ctx.id, {
+                    await collCtx.reply({
                         text: `ⓘ ${formatter.italic(`Anda menyerah! Jawaban yang belum terjawab adalah ${remaining}.`)}`,
                         buttons: playAgain
-                    }, {
-                        quoted: m
                     });
                 } else if (Gktw.didYouMean(participantAnswer, [game.answer]) === game.answer) {
-                    await ctx.core.sendMessage(ctx.id, {
-                        text: `ⓘ ${formatter.italic("Sedikit lagi!")}`
-                    }, {
-                        quoted: m
-                    });
+                    await collCtx.reply(`ⓘ ${formatter.italic("Sedikit lagi!")}`);
                 }
             });
 

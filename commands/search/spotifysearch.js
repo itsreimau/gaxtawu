@@ -37,7 +37,7 @@ module.exports = {
                 `➛ ${formatter.bold("Artis")}: ${res.artist}\n` +
                 `➛ ${formatter.bold("URL")}: ${res.track_url}`
             ).join("\n\n");
-            await ctx.reply(result.trim() || `ⓘ ${formatter.italic(config.msg.notFound)}`);
+            await ctx.reply(resultText.trim() || `ⓘ ${formatter.italic(config.msg.notFound)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

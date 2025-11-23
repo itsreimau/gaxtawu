@@ -8,7 +8,7 @@ module.exports = {
         premium: true
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || ctx.quoted?.content || null;
+        const input = ctx.args.join(" ") || ctx.quoted?.text || null;
 
         if (!input) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +

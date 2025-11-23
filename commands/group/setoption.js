@@ -31,7 +31,6 @@ module.exports = {
                 `➛ ${formatter.bold("Antigif")}: ${groupOption.antigif ? "Aktif" : "Nonaktif"}\n` +
                 `➛ ${formatter.bold("Antiimage")}: ${groupOption.antiimage ? "Aktif" : "Nonaktif"}\n` +
                 `➛ ${formatter.bold("Antilink")}: ${groupOption.antilink ? "Aktif" : "Nonaktif"}\n` +
-                `➛ ${formatter.bold("Antinsfw")}: ${groupOption.antinsfw ? "Aktif" : "Nonaktif"}\n` +
                 `➛ ${formatter.bold("Antispam")}: ${groupOption.antispam ? "Aktif" : "Nonaktif"}\n` +
                 `➛ ${formatter.bold("Antisticker")}: ${groupOption.antisticker ? "Aktif" : "Nonaktif"}\n` +
                 `➛ ${formatter.bold("Antitagsw")}: ${groupOption.antitagsw ? "Aktif" : "Nonaktif"}\n` +
@@ -53,7 +52,6 @@ module.exports = {
                 case "antigif":
                 case "antiimage":
                 case "antilink":
-                case "antinsfw":
                 case "antispam":
                 case "antisticker":
                 case "antitagsw":

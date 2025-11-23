@@ -56,7 +56,7 @@
     "restrict": false,
     "requireBotGroupMembership": false,
     "requireGroupSewa": false,
-    "reportErrorToOwner": true,
+    "reportToOwner": 1,
     "selfOwner": false,
     "selfReply": true,
     "timeZone": "Asia/Jakarta",

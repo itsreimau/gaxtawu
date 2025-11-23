@@ -9,7 +9,7 @@ module.exports = {
     code: async (ctx) => {
         const senderDb = ctx.db.user;
 
-        const input = ctx.args.join(" ") || ctx.quoted?.content || null;
+        const input = ctx.args.join(" ") || ctx.quoted?.text || null;
 
         if (!input && !senderDb.task?.pixverse) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +

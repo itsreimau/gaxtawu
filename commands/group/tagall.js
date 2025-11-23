@@ -6,7 +6,7 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || ctx.quoted?.content || `>ᴗ< ${formatter.italic("Halo, Dunia!")}`;
+        const input = ctx.args.join(" ") || ctx.quoted?.text || `>ᴗ< ${formatter.italic("Halo, Dunia!")}`;
 
         try {
             const members = await ctx.group().members();

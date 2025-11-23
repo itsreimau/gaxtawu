@@ -10,16 +10,13 @@ module.exports = {
 
         try {
             const collector = ctx.MessageCollector({
-                time: timeout
+                time: timeout,
+                filter: (collCtx) => !collCtx.msg.key.fromMe
             });
-            await ctx.reply(`ⓘ ${formatter.italic(`Collector dimulai dengan timeout ${tools.msg.convertMsToDuration(timeout)}`)}`);
+            await ctx.reply(`ⓘ ${formatter.italic(`Collector dimulai dengan timeout ${tools.msg.convertMsToDuration(timeout)}.`)}`);
 
-            collector.on("collect", async (m) => {
-                await ctx.core.sendMessage(ctx.id, {
-                    text: util.inspect(m)
-                }, {
-                    quoted: m
-                });
+            collector.on("collect", async (collCtx) => {
+                await collCtx.reply(util.inspect(collCtx.msg));
             });
 
             collector.on("end", async () => {

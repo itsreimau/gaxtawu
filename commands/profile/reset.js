@@ -23,16 +23,16 @@ module.exports = {
         try {
             ctx.awaitMessages({
                 time: 60000
-            }).then(async (m) => {
-                const content = m.content.trim().toLowerCase();
+            }).then(async (collCtx) => {
+                const text = collCtx.msg.text.trim().toLowerCase();
 
-                if (content === "y") {
+                if (text === "y") {
                     const usersDb = ctx.db.users;
                     usersDb.reset(user => user.jid === ctx.sender.jid);
-                    await ctx.reply(`ⓘ ${formatter.italic("Database Anda telah berhasil direset!")}`);
+                    await collCtx.reply(`ⓘ ${formatter.italic("Database Anda telah berhasil direset!")}`);
                     collector.stop();
-                } else if (content === "n") {
-                    await ctx.reply(`ⓘ ${formatter.italic("Proses reset database telah dibatalkan.")}`);
+                } else if (text === "n") {
+                    await collCtx.reply(`ⓘ ${formatter.italic("Proses reset database telah dibatalkan.")}`);
                     collector.stop();
                 }
             });

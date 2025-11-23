@@ -26,7 +26,7 @@ module.exports = {
         try {
             const groupDb = ctx.db.group;
             const warnings = groupDb?.warnings || [];
-            targetJid = Baileys.isJidUser(targetJid) ? await ctx.getLidUser(targetJid) || targetJid : targetJid;
+            targetJid = Baileys.isJidUser(targetJid) ? await ctx.getLidUser(targetJid) : targetJid;
 
             const targetWarning = warnings.find(warning => warning.jid === targetJid);
 

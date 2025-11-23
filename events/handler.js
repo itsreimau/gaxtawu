@@ -4,9 +4,10 @@ const axios = require("axios");
 const moment = require("moment-timezone");
 
 // Fungsi untuk menangani event pengguna bergabung/keluar grup
-async function handleWelcome(ctxBot, m, type, isSimulate = false) {
-    const groupJid = m.id;
+async function handleWelcome(ctxBot, ctx, type, isSimulate = false) {
+    const groupJid = ctx.id;
     const groupDb = ctxBot.getDb("groups", groupJid);
+    const jid = ctx.participant;
 
     if (!isSimulate && groupDb?.mutebot) return;
     if (!isSimulate && !groupDb?.option?.welcome) return;
@@ -14,57 +15,55 @@ async function handleWelcome(ctxBot, m, type, isSimulate = false) {
 
     const now = moment().tz(config.system.timeZone);
     const hour = now.hour();
-    if (!isSimulate && hour >= 0 && hour < 6) return;
+    if (config.system.unavailableAtNight && !isSimulate && hour >= 0 && hour < 6) return;
 
-    for (const jid of m.participants) {
-        const isWelcome = type === Events.UserJoin;
-        const tag = `@${ctxBot.getId(jid)}`;
-        const customText = isWelcome ? groupDb?.text?.welcome : groupDb?.text?.goodbye;
-        const metadata = await ctxBot.core.groupMetadata(groupJid);
-        const text = customText ?
-            customText.replace(/%tag%/g, tag).replace(/%subject%/g, metadata.subject).replace(/%description%/g, metadata.description) :
-            (isWelcome ?
-                `>ᴗ< ${formatter.italic(`Selamat datang ${tag} di grup ${metadata.subject}!`)}` :
-                `•︵• ${formatter.italic(`Selamat tinggal, ${tag}!`)}`);
-        const profilePictureUrl = await ctxBot.core.profilePictureUrl(jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
+    const isWelcome = type === Events.UserJoin;
+    const tag = `@${ctxBot.getId(jid)}`;
+    const customText = isWelcome ? groupDb?.text?.welcome : groupDb?.text?.goodbye;
+    const metadata = await ctxBot.core.groupMetadata(groupJid);
+    const text = customText ?
+        customText.replace(/%tag%/g, tag).replace(/%subject%/g, metadata.subject).replace(/%description%/g, metadata.description) :
+        (isWelcome ?
+            `>ᴗ< ${formatter.italic(`Selamat datang ${tag} di grup ${metadata.subject}!`)}` :
+            `•︵• ${formatter.italic(`Selamat tinggal, ${tag}!`)}`);
+    const profilePictureUrl = await ctxBot.core.profilePictureUrl(jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
 
-        await ctxBot.core.sendMessage(groupJid, {
-            text,
-            contextInfo: {
-                mentionedJid: [jid],
-                isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: config.bot.newsletterJid,
-                    newsletterName: config.msg.footer
-                },
-                externalAdReply: {
-                    title: config.bot.name,
-                    body: config.msg.note,
-                    mediaType: 1,
-                    thumbnailUrl: profilePictureUrl,
-                    sourceUrl: config.bot.groupLink,
-                    renderLargerThumbnail: true
-                }
+    await ctxBot.core.sendMessage(groupJid, {
+        text,
+        contextInfo: {
+            mentionedJid: [jid],
+            isForwarded: true,
+            forwardedNewsletterMessageInfo: {
+                newsletterJid: config.bot.newsletterJid,
+                newsletterName: config.msg.footer
+            },
+            externalAdReply: {
+                title: config.bot.name,
+                body: config.msg.note,
+                mediaType: 1,
+                thumbnailUrl: profilePictureUrl,
+                sourceUrl: config.bot.groupLink,
+                renderLargerThumbnail: true
             }
-        }, {
-            quoted: tools.cmd.fakeQuotedText(config.msg.footer)
-        });
+        }
+    }, {
+        quoted: tools.cmd.fakeQuotedText(config.msg.footer)
+    });
 
-        if (isWelcome && groupDb?.text?.intro) await ctxBot.core.sendMessage(groupJid, {
-            text: groupDb.text.intro,
-            mentions: [jid],
-            interactiveButtons: [{
-                name: "cta_copy",
-                buttonParamsJson: JSON.stringify({
-                    display_text: "Salin Teks",
-                    id: "copy_text",
-                    copy_code: text
-                })
-            }]
-        }, {
-            quoted: tools.cmd.fakeQuotedText(">ᴗ< Jangan lupa untuk mengisi intro!")
-        });
-    }
+    if (isWelcome && groupDb?.text?.intro) await ctxBot.core.sendMessage(groupJid, {
+        text: groupDb.text.intro,
+        mentions: [jid],
+        interactiveButtons: [{
+            name: "cta_copy",
+            buttonParamsJson: JSON.stringify({
+                display_text: "Salin Teks",
+                id: "copy_text",
+                copy_code: text
+            })
+        }]
+    }, {
+        quoted: tools.cmd.fakeQuotedText(">ᴗ< Jangan lupa untuk mengisi intro!")
+    });
 }
 
 // Fungsi untuk menambahkan warning
@@ -111,8 +110,8 @@ module.exports = (bot) => {
     bot.ev.setMaxListeners(config.system.maxListeners); // Tetapkan max listeners untuk events
 
     // Event saat bot siap
-    bot.ev.once(Events.ClientReady, async (m) => {
-        consolefy.success(`${config.bot.name} by ${config.owner.name}, ready at ${m.user.id}`);
+    bot.ev.once(Events.ClientReady, async (ctx) => {
+        consolefy.success(`${config.bot.name} by ${config.owner.name}, ready at ${ctx.user.id}`);
 
         // Mulai ulang bot
         const botRestart = config?.restart || {};
@@ -132,8 +131,11 @@ module.exports = (bot) => {
     });
 
     // Event saat bot menerima pesan
-    bot.ev.on(Events.MessagesUpsert, async (m, ctx) => {
-        if (m.key.fromMe) return;
+    bot.ev.on(Events.MessagesUpsert, async (ctx) => {
+        const {
+            msg
+        } = ctx;
+        if (msg.key.fromMe) return;
 
         // Variabel umum
         const isGroup = ctx.isGroup();
@@ -148,7 +150,7 @@ module.exports = (bot) => {
             const groupJid = isGroup ? ctx.id : null;
             const groupId = isGroup ? ctx.getId(groupJid) : null;
             const isOwner = ctx.citation.isOwner;
-            const isCmd = tools.cmd.isCmd(m.content, ctx.bot);
+            const isCmd = tools.cmd.isCmd(msg.text, ctx.bot);
             const isAdmin = isGroup ? await ctx.group().isSenderAdmin() : false;
 
             // Mengambil database
@@ -178,22 +180,22 @@ module.exports = (bot) => {
             if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;
             if (groupDb?.mutebot === "owner" && !isOwner) return;
             const muteList = groupDb?.mute || [];
-            if (muteList.includes(senderLid)) await ctx.deleteMessage(m.key);
+            if (muteList.includes(senderLid)) await ctx.deleteMessage(msg.key);
 
             // Pengecekan untuk tidak tersedia pada malam hari
             const now = moment().tz(config.system.timeZone);
             const hour = now.hour();
-            if (hour >= 0 && hour < 6 && !isOwner && !senderDb?.premium) return;
+            if (config.system.unavailableAtNight && !isOwner && !senderDb?.premium && hour >= 0 && hour < 6) return;
 
             // Penanganan bug hama!
-            const analyze = Gktw.analyzeBug(m.message);
+            const analyze = Gktw.analyzeBug(msg.message);
             if (analyze.isMalicious && !isOwner) {
-                await ctx.deleteMessage(m.key);
+                await ctx.deleteMessage(msg.key);
                 await ctx.block(senderJid);
                 senderDb.banned = true;
                 senderDb.save();
 
-                await ctx.replyWithJid(config.owner.id + Baileys.S_WHATSAPP_NET, {
+                await ctx.replyWithJid(config.system.reportToOwner === 1 ? config.owner.id : config.co[parseInt(config.system.reportToOwner) - 1].id + Baileys.S_WHATSAPP_NET, {
                     text: `ⓘ ${formatter.italic(`Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode(`Anti Bug - ${analyze.reason}`)}.`)}`,
                     mentions: [senderJid]
                 });
@@ -224,9 +226,10 @@ module.exports = (bot) => {
 
             // Penanganan obrolan grup
             if (isGroup) {
-                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from group: ${groupId}, by: ${senderId}`); // Log pesan masuk
+                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from group: ${groupId}, by: ${Baileys.isJidUser(senderJid) ? senderId : `${senderId} (LID)`}`); // Log pesan masuk
 
                 // Variabel umum
+                const messageType = ctx.getMessageType();
                 const groupAutokick = groupDb?.option?.autokick;
 
                 // Penanganan database grup
@@ -252,10 +255,10 @@ module.exports = (bot) => {
                     // Penanganan antimedia
                     for (const type of ["audio", "document", "gif", "image", "sticker", "video"]) {
                         if (groupDb?.option?.[`anti${type}`]) {
-                            const checkMedia = tools.cmd.checkMedia(ctx.getMessageType(), type);
+                            const checkMedia = tools.cmd.checkMedia(messageType, type);
                             if (!!checkMedia) {
                                 await ctx.reply(`ⓘ ${formatter.italic(`Jangan kirim ${type}!`)}`);
-                                await ctx.deleteMessage(m.key);
+                                await ctx.deleteMessage(msg.key);
                                 if (groupAutokick) {
                                     await ctx.group().kick(senderJid);
                                 } else {
@@ -267,9 +270,9 @@ module.exports = (bot) => {
 
                     // Penanganan antilink
                     if (groupDb?.option?.antilink) {
-                        if (m.content && tools.cmd.isUrl(m.content)) {
+                        if (msg.text && tools.cmd.isUrl(msg.text)) {
                             await ctx.reply(`ⓘ ${formatter.italic("Jangan kirim link!")}`);
-                            await ctx.deleteMessage(m.key);
+                            await ctx.deleteMessage(msg.key);
                             if (groupAutokick) {
                                 await ctx.group().kick(senderJid);
                             } else {
@@ -300,7 +303,7 @@ module.exports = (bot) => {
 
                         if (newCount > 5) {
                             await ctx.reply(`ⓘ ${formatter.italic("Jangan spam, ngelag woy!")}`);
-                            await ctx.deleteMessage(m.key);
+                            await ctx.deleteMessage(msg.key);
                             if (groupAutokick) {
                                 await ctx.group().kick(senderJid);
                             } else {
@@ -314,10 +317,10 @@ module.exports = (bot) => {
 
                     // Penanganan antitagsw
                     if (groupDb?.option?.antitagsw) {
-                        const checkMedia = tools.cmd.checkMedia(ctx.getMessageType(), "groupStatusMentionMessage");
+                        const checkMedia = tools.cmd.checkMedia(messageType, "groupStatusMentionMessage");
                         if (!!checkMedia) {
                             await ctx.reply(`ⓘ ${formatter.italic("Jangan tag grup di SW, gak ada yg peduli!")}`);
-                            await ctx.deleteMessage(m.key);
+                            await ctx.deleteMessage(msg.key);
                             if (groupAutokick) {
                                 await ctx.group().kick(senderJid);
                             } else {
@@ -329,9 +332,9 @@ module.exports = (bot) => {
                     // Penanganan antitoxic
                     if (groupDb?.option?.antitoxic) {
                         const toxicRegex = /anj(k|g)|ajn?(g|k)|a?njin(g|k)|bajingan|b(a?n)?gsa?t|ko?nto?l|me?me?(k|q)|pe?pe?(k|q)|meki|titi(t|d)|pe?ler|tetek|toket|ngewe|go?blo?k|to?lo?l|idiot|(k|ng)e?nto?(t|d)|jembut|bego|dajj?al|janc(u|o)k|pantek|puki ?(mak)?|kimak|kampang|lonte|col(i|mek?)|pelacur|henceu?t|nigga|fuck|dick|bitch|tits|bastard|asshole|dontol|kontoi|ontol/i;
-                        if (m.content && toxicRegex.test(m.content)) {
+                        if (msg.text && toxicRegex.test(msg.text)) {
                             await ctx.reply(`ⓘ ${formatter.italic("Jangan toxic!")}`);
-                            await ctx.deleteMessage(m.key);
+                            await ctx.deleteMessage(msg.key);
                             if (groupAutokick) {
                                 await ctx.group().kick(senderJid);
                             } else {
@@ -344,7 +347,7 @@ module.exports = (bot) => {
 
             // Penanganan obrolan pribadi
             if (isPrivate) {
-                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from: ${senderId}`); // Log pesan masuk
+                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from: ${Baileys.isJidUser(senderJid) ? senderId : `${senderId} (LID)`}`); // Log pesan masuk
 
                 // Apa yaa...
             }
@@ -352,42 +355,40 @@ module.exports = (bot) => {
     });
 
     // Event saat bot menerima panggilan
-    bot.ev.on(Events.Call, async (calls) => {
+    bot.ev.on(Events.Call, async (ctx) => {
         if (!config.system.antiCall) return;
 
-        for (const call of calls) {
-            const callId = call.id;
-            const senderJid = call.from;
-            const senderId = bot.getId(senderJid);
-            const isOwner = bot.checkCitation(senderJid, "owner");
+        const callId = ctx.id;
+        const senderJid = ctx.from;
+        const senderId = bot.getId(senderJid);
+        const isOwner = bot.checkCitation(senderJid, "owner");
 
-            if (Baileys.isJidGroup(callId) || isOwner) return;
+        if (Baileys.isJidGroup(callId) || isOwner) return;
 
-            consolefy.info(`Incoming call from: ${senderId}`); // Log panggilan masuk
+        consolefy.info(`Incoming call from: ${Baileys.isJidUser(senderJid) ? senderId : `${senderId} (LID)`}`); // Log panggilan masuk
 
-            await bot.core.rejectCall(callId, senderJid);
-            const senderDb = bot.getDb("users", senderJid);
-            senderDb.banned = true;
-            senderDb.save();
+        await bot.core.rejectCall(callId, senderJid);
+        const senderDb = bot.getDb("users", senderJid);
+        senderDb.banned = true;
+        senderDb.save();
 
-            await bot.core.sendMessage(config.owner.id + Baileys.S_WHATSAPP_NET, {
-                text: `ⓘ ${formatter.italic(`Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`)}`,
-                mentions: [senderJid]
-            });
-            await bot.core.sendMessage(senderJid, {
-                text: `ⓘ ${formatter.italic("Anda telah dibanned secara otomatis karena melanggar aturan!")}`,
-                buttons: [{
-                    buttonId: "/owner",
-                    buttonText: {
-                        displayText: "Hubungi Owner"
-                    }
-                }]
-            });
-        }
+        await bot.core.sendMessage(config.system.reportToOwner === 1 ? config.owner.id : config.co[parseInt(config.system.reportToOwner) - 1].id + Baileys.S_WHATSAPP_NET, {
+            text: `ⓘ ${formatter.italic(`Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`)}`,
+            mentions: [senderJid]
+        });
+        await bot.core.sendMessage(senderJid, {
+            text: `ⓘ ${formatter.italic("Anda telah dibanned secara otomatis karena melanggar aturan!")}`,
+            buttons: [{
+                buttonId: "/owner",
+                buttonText: {
+                    displayText: "Hubungi Owner"
+                }
+            }]
+        });
     });
 
     // Event saat pengguna bergabung atau keluar dari grup
-    bot.ev.on(Events.UserJoin, async (m) => handleWelcome(bot, m, Events.UserJoin));
-    bot.ev.on(Events.UserLeave, async (m) => handleWelcome(bot, m, Events.UserLeave));
+    bot.ev.on(Events.UserJoin, async (ctx) => handleWelcome(bot, ctx, Events.UserJoin));
+    bot.ev.on(Events.UserLeave, async (ctx) => handleWelcome(bot, ctx, Events.UserLeave));
 };
 module.exports.handleWelcome = handleWelcome; // Penanganan event pengguna bergabung/keluar grup

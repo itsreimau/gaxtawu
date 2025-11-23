@@ -72,7 +72,7 @@ function fakeQuotedText(text) {
 
     const quoted = {
         key: {
-            remoteJid: getRandomElement([Gktw.WHATSAPP_JID, Gktw.META_JID, Gktw.CHATGPT_JID, Gktw.COPILOT_JID, Gktw.INSTAGRAM_JID, Gktw.TIKTOK_JID])
+            remoteJid: Baileys.PSA_WID
         },
         message: {
             conversation: text
@@ -104,20 +104,14 @@ function getRandomElement(array) {
     return array[randomIndex];
 }
 
-async function handleError(ctx, error, useAxios = false, reportErrorToOwner = true) {
+async function handleError(ctx, error, useAxios = false, reportToOwner = true) {
     const isGroup = ctx.isGroup();
     const groupJid = isGroup ? ctx.id : null;
     const groupSubject = isGroup ? await ctx.group(groupJid).name() : null;
     const errorText = util.format(error);
-    let ownerJid;
-    if (reportErrorToOwner === true || reportErrorToOwner === 1) {
-        ownerJid = config.owner.id;
-    } else if (typeof reportErrorToOwner === "number") {
-        ownerJid = config.co[reportErrorToOwner - 2].id;
-    }
 
     consolefy.error(`Error: ${errorText}`);
-    if (config.system.reportErrorToOwner && reportErrorToOwner) await ctx.replyWithJid(ownerJid + Baileys.S_WHATSAPP_NET, {
+    if (config.system.reportToOwner && reportToOwner) await ctx.replyWithJid(config.system.reportToOwner === 1 ? config.owner.id : config.co[parseInt(config.system.reportToOwner) - 1].id + Baileys.S_WHATSAPP_NET, {
         text: `ⓘ ${formatter.italic(isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${ctx.getId(ctx.sender.jid)}` : `Terjadi kesalahan dari: @${ctx.getId(ctx.sender.jid)}`)}\n` +
             formatter.monospace(errorText),
         contextInfo: {
@@ -132,20 +126,20 @@ async function handleError(ctx, error, useAxios = false, reportErrorToOwner = tr
     await ctx.reply(`ⓘ ${formatter.italic(`Terjadi kesalahan: ${error.message}`)}`);
 }
 
-function isCmd(content, ctxBot) {
-    if (!content || !ctxBot) return false;
+function isCmd(text, ctxBot) {
+    if (!text || !ctxBot) return false;
 
-    const prefix = content.charAt(0);
-    if (!new RegExp(ctxBot.prefix, "i").test(content)) return false;
+    const prefix = text.charAt(0);
+    if (!new RegExp(ctxBot.prefix, "i").test(text)) return false;
 
-    const [cmdName, ...inputArray] = content.slice(1).trim().toLowerCase().split(/\s+/);
+    const [cmdName, ...inputArray] = text.slice(1).trim().toLowerCase().split(/\s+/);
     const input = inputArray.join(" ");
 
     const cmds = Array.from(ctxBot.cmd.values());
     const matchedCmd = cmds.find(cmd => cmd.name === cmdName || cmd?.aliases?.includes(cmdName));
 
     if (matchedCmd) return {
-        msg: content,
+        msg: text,
         prefix,
         name: cmdName,
         input
@@ -153,7 +147,7 @@ function isCmd(content, ctxBot) {
 
     const mean = Gktw.didYouMean(cmdName, cmds.flatMap(cmd => [cmd.name, ...(cmd.aliases || [])]));
     return mean ? {
-        msg: content,
+        msg: text,
         prefix,
         didyoumean: mean,
         input
@@ -167,20 +161,20 @@ function isUrl(url) {
     return urlRegex.test(url);
 }
 
-function parseFlag(argsString, customRules = {}) {
-    if (!argsString) return {
+function parseFlag(argsStr, rules = {}) {
+    if (!argsStr) return {
         input: null
     };
 
     const options = {};
     const input = [];
-    const args = argsString.trim().split(/\s+/);
+    const args = argsStr.trim().split(/\s+/);
 
     for (let i = 0; i < args.length; i++) {
         const arg = args[i];
 
-        if (customRules[arg]) {
-            const rule = customRules[arg];
+        if (rules[arg]) {
+            const rule = rules[arg];
 
             if (rule.type === "value") {
                 const value = args[i + 1];

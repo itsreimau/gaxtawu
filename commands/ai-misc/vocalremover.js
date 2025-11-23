@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["instrumental"],
     category: "ai-misc",
     permissions: {
-        premium: 10
+        premium: true
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [

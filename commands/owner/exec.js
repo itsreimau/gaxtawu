@@ -8,7 +8,7 @@ module.exports = {
         if (!ctx.citation.isOwner) return;
 
         try {
-            const command = ctx.msg.content.slice(2);
+            const command = ctx.msg.text.slice(2);
             const output = await util.promisify(exec)(command);
 
             await ctx.reply(formatter.monospace(output.stdout || output.stderr));
