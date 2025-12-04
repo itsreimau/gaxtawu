@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["koin"],
     category: "profile",
     code: async (ctx) => {
-        if (ctx.citation.isOwner) return await ctx.reply(`ⓘ ${formatter.italic("Anda memiliki koin tak terbatas.")}`);
+        if (ctx.sender.isOwner()) return await ctx.reply(`ⓘ ${formatter.italic("Anda memiliki koin tak terbatas.")}`);
 
         try {
             const coin = ctx.db.user.coin || 0;

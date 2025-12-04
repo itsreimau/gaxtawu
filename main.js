@@ -30,9 +30,7 @@ const bot = new Client({
     alwaysOnline: system.alwaysOnline,
     selfReply: system.selfReply,
     databaseDir: diretory.database,
-    citation: {
-        owner: [system.selfOwner ? "bot" : null, config.owner.id, ...config.owner.co.map(co => co.id)].filter(Boolean)
-    }
+    owner: [system.selfOwner ? "bot" : null, config.owner.id, ...config.owner.co.map(co => co.id)].filter(Boolean)
 });
 
 // Inisialisasi event dan middleware

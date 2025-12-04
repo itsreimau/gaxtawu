@@ -68,11 +68,7 @@ module.exports = {
             }
 
             await ctx.core.sendMessage(ctx.id, {
-                image: {
-                    url: config.bot.thumbnail
-                },
-                mimetype: tools.mime.lookup("png"),
-                caption: text.trim(),
+                text: text.trim(),
                 contextInfo: {
                     mentionedJid: [ctx.sender.jid],
                     isForwarded: true,

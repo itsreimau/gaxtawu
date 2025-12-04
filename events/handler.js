@@ -149,7 +149,7 @@ module.exports = (bot) => {
             const senderLid = Baileys.isJidUser(senderJid) ? await ctx.getLidUser(senderJid) : senderJid;
             const groupJid = isGroup ? ctx.id : null;
             const groupId = isGroup ? ctx.getId(groupJid) : null;
-            const isOwner = ctx.citation.isOwner;
+            const isOwner = ctx.sender.isOwner();
             const isCmd = tools.cmd.isCmd(msg.text, ctx.bot);
             const isAdmin = isGroup ? await ctx.group().isSenderAdmin() : false;
 
@@ -361,7 +361,7 @@ module.exports = (bot) => {
         const callId = ctx.id;
         const senderJid = ctx.from;
         const senderId = bot.getId(senderJid);
-        const isOwner = bot.checkCitation(senderJid, "owner");
+        const isOwner = bot.checkOwner(senderJid);
 
         if (Baileys.isJidGroup(callId) || isOwner) return;
 

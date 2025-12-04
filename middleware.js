@@ -12,7 +12,7 @@ module.exports = (bot) => {
         const senderId = ctx.getId(senderJid);
         const groupJid = isGroup ? ctx.id : null;
         const groupId = isGroup ? ctx.getId(groupJid) : null;
-        const isOwner = ctx.citation.isOwner;
+        const isOwner = ctx.sender.isOwner();
         const isAdmin = isGroup ? await ctx.group().isSenderAdmin() : false;
 
         // Mengambil database

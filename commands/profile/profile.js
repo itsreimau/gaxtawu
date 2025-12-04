@@ -17,9 +17,9 @@ module.exports = {
 
             await ctx.reply(
                 `➛ ${formatter.bold("Nama")}: ${ctx.sender.pushName} (${userDb?.username})\n` +
-                `➛ ${formatter.bold("Status")}: ${ctx.citation.isOwner ? "Owner" : userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${tools.msg.convertMsToDuration(Date.now() - userDb.premiumExpiration, ["hari"])} tersisa` : "Selamanya"})` : "Freemium"}\n` +
+                `➛ ${formatter.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${tools.msg.convertMsToDuration(Date.now() - userDb.premiumExpiration, ["hari"])} tersisa` : "Selamanya"})` : "Freemium"}\n` +
                 `➛ ${formatter.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
-                `➛ ${formatter.bold("Koin")}: ${ctx.citation.isOwner || userDb?.premium ? "Tak terbatas" : userDb?.coin}\n` +
+                `➛ ${formatter.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Tak terbatas" : userDb?.coin}\n` +
                 `➛ ${formatter.bold("Menang")}: ${userDb?.winGame || 0}\n` +
                 `➛ ${formatter.bold("Peringkat")}: ${leaderboardData.findIndex(user => user.id === ctx.sender.jid) + 1}`
             );

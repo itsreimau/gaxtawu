@@ -69,8 +69,7 @@ function checkQuotedMedia(type, required) {
 
 function fakeQuotedText(text) {
     if (!text) return null;
-
-    const quoted = {
+    return {
         key: {
             remoteJid: Baileys.PSA_WID
         },
@@ -78,7 +77,6 @@ function fakeQuotedText(text) {
             conversation: text
         }
     };
-    return quoted;
 }
 
 function generateUID(id, withBotName = true) {
@@ -99,9 +97,7 @@ function generateUID(id, withBotName = true) {
 
 function getRandomElement(array) {
     if (!array || !array.length) return null;
-
-    const randomIndex = Math.floor(Math.random() * array.length);
-    return array[randomIndex];
+    return array[Math.floor(Math.random() * array.length)];
 }
 
 async function handleError(ctx, error, useAxios = false, reportToOwner = true) {
@@ -156,9 +152,7 @@ function isCmd(text, ctxBot) {
 
 function isUrl(url) {
     if (!url) return false;
-
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    return urlRegex.test(url);
+    return /(https?:\/\/[^\s]+)/g.test(url);
 }
 
 function parseFlag(argsStr, rules = {}) {

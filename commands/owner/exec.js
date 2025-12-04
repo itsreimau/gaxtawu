@@ -5,7 +5,7 @@ module.exports = {
     name: /^\$ /,
     type: "hears",
     code: async (ctx) => {
-        if (!ctx.citation.isOwner) return;
+        if (!ctx.sender.isOwner()) return;
 
         try {
             const command = ctx.msg.text.slice(2);

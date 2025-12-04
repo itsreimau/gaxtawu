@@ -43,9 +43,7 @@ function formatSize(byteCount, withPerSecond = false) {
 
 function generateCmdExample(used, args) {
     if (!used || !args) return `${formatter.inlineCode("used")} atau ${formatter.inlineCode("args")} harus diberikan!`;
-
-    const cmdMsg = `Contoh: ${formatter.inlineCode(`${used.prefix + used.command} ${args}`)}`;
-    return cmdMsg;
+    return `Contoh: ${formatter.inlineCode(`${used.prefix + used.command} ${args}`)}`;
 }
 
 function generateInstruction(actions, mediaTypes) {
@@ -93,18 +91,14 @@ function generateInstruction(actions, mediaTypes) {
 
 function generatesFlagInfo(flags) {
     if (!flags || typeof flags !== "object") return `${formatter.inlineCode("flags")} harus berupa objek!`;
-
-    const flagInfo = "Flag:\n" +
+    return flagInfo = "Flag:\n" +
         Object.entries(flags).map(([flag, description]) => `- ${formatter.inlineCode(flag)}: ${description}`).join("\n");
-    return flagInfo;
 }
 
 function generateNotes(notes) {
     if (!notes || !Array.isArray(notes)) return `${formatter.inlineCode("notes")} harus berupa string!`;
-
-    const notesMsg = "Catatan:\n" +
+    return "Catatan:\n" +
         notes.map(note => `- ${note}`).join("\n");
-    return notesMsg;
 }
 
 function ucwords(text) {
