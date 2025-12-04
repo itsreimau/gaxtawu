@@ -135,6 +135,9 @@ module.exports = (bot) => {
         const {
             msg
         } = ctx;
+
+        if (!msg) return;
+        
         if (msg.key.fromMe) return;
 
         // Variabel umum
