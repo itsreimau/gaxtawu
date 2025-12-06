@@ -17,8 +17,8 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("jere", "/imagecreator/tofigure", {
-                url: uploadUrl
+            const apiUrl = tools.api.createUrl("gemini_antidonasi", "/figurine", {
+                imageUrl: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.result.image_url;
 

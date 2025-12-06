@@ -31,13 +31,13 @@ module.exports = {
             const apiUrl = tools.api.createUrl("yp", "/api/downloader/ytmp4", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.data;
 
             const document = flag?.document || false;
             if (document) {
                 await ctx.reply({
                     document: {
-                        url: result.formats[0].url
+                        url: result.download_url
                     },
                     fileName: `${result.title}.mp4`,
                     mimetype: tools.mime.lookup("mp4"),
@@ -46,7 +46,7 @@ module.exports = {
             } else {
                 await ctx.reply({
                     video: {
-                        url: result.formats[0].url
+                        url: result.download_url
                     },
                     mimetype: tools.mime.lookup("mp4"),
                     caption: `➛ ${formatter.bold("URL")}: ${url}`

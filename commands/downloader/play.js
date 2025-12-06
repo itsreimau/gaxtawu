@@ -74,7 +74,7 @@ module.exports = {
                 const downloadApiUrl = tools.api.createUrl("yp", "/api/downloader/ytmp3", {
                     url: searchResult.url
                 });
-                const downloadResult = (await axios.get(downloadApiUrl)).data.result.link;
+                const downloadResult = (await axios.get(downloadApiUrl)).data.data.download_url;
 
                 await ctx.reply({
                     audio: {

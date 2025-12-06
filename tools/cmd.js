@@ -107,7 +107,7 @@ async function handleError(ctx, error, useAxios = false, reportToOwner = true) {
     const errorText = util.format(error);
 
     consolefy.error(`Error: ${errorText}`);
-    if (config.system.reportToOwner && reportToOwner) await ctx.replyWithJid(config.system.reportToOwner === 1 ? config.owner.id : config.co[parseInt(config.system.reportToOwner) - 1].id + Baileys.S_WHATSAPP_NET, {
+    if (config.system.reportToOwner && reportToOwner) await ctx.replyWithJid(config.system.reportToOwner === 1 ? config.owner.id : config.owner.co[config.system.reportToOwner - 1].id + Baileys.S_WHATSAPP_NET, {
         text: `ⓘ ${formatter.italic(isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${ctx.getId(ctx.sender.jid)}` : `Terjadi kesalahan dari: @${ctx.getId(ctx.sender.jid)}`)}\n` +
             formatter.monospace(errorText),
         contextInfo: {

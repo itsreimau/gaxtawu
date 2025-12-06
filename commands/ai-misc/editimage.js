@@ -1,9 +1,11 @@
+const axios = require("axios");
+
 module.exports = {
     name: "editimage",
-    aliases: ["editimg"],
+    aliases["nanobanana"],
     category: "ai-misc",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || null;
@@ -22,10 +24,19 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("zell", "/ai/editimg", {
-                imageUrl: uploadUrl,
-                prompt: input
-            });
+            let result;
+            for (let v = 1; v <= 6; v++) {
+                const apiUrl = tools.api.createUrl("nekolabs", `/ai/gemini/nano-banana/v${v}`, {
+                    prompt: input,
+                    imageUrl: uploadUrl
+                });
+                try {
+                    result = (await axios.get(apiUrl)).data.result;
+                    break;
+                } catch (error) {
+                    if (v === 6) throw error;
+                }
+            }
 
             await ctx.reply({
                 image: {

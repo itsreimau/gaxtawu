@@ -195,7 +195,7 @@ module.exports = (bot) => {
                 senderDb.banned = true;
                 senderDb.save();
 
-                await ctx.replyWithJid(config.system.reportToOwner === 1 ? config.owner.id : config.co[parseInt(config.system.reportToOwner) - 1].id + Baileys.S_WHATSAPP_NET, {
+                await ctx.replyWithJid(config.system.reportToOwner === 1 ? config.owner.id : config.owner.co[config.system.reportToOwner - 1].id + Baileys.S_WHATSAPP_NET, {
                     text: `ⓘ ${formatter.italic(`Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode(`Anti Bug - ${analyze.reason}`)}.`)}`,
                     mentions: [senderJid]
                 });
@@ -372,7 +372,7 @@ module.exports = (bot) => {
         senderDb.banned = true;
         senderDb.save();
 
-        await bot.core.sendMessage(config.system.reportToOwner === 1 ? config.owner.id : config.co[parseInt(config.system.reportToOwner) - 1].id + Baileys.S_WHATSAPP_NET, {
+        await bot.core.sendMessage(config.system.reportToOwner === 1 ? config.owner.id : config.owner.co[config.system.reportToOwner - 1].id + Baileys.S_WHATSAPP_NET, {
             text: `ⓘ ${formatter.italic(`Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`)}`,
             mentions: [senderJid]
         });

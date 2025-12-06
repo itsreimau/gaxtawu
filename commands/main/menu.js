@@ -68,7 +68,12 @@ module.exports = {
             }
 
             await ctx.core.sendMessage(ctx.id, {
-                text: text.trim(),
+                video: {
+                    url: "https://i.pinimg.com/originals/18/ff/d4/18ffd4dadbe961b7c9f87da26edc4ec5.gif"
+                },
+                mimetype: tools.mime.lookup("mp4"),
+                gifPlayback: true,
+                caption: text.trim(),
                 contextInfo: {
                     mentionedJid: [ctx.sender.jid],
                     isForwarded: true,

@@ -17,10 +17,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("cloudhost", "/ai/txt2img", {
-                query: input
+            const apiUrl = tools.api.createUrl("nekolabs", "/image-generation/stable-diffusion/3.5", {
+                prompt: input
             });
-            const result = (await axios.get(apiUrl)).data.result.imageUrl;
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 image: {

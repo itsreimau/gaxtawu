@@ -6,20 +6,11 @@ const APIs = {
     bagus: {
         baseURL: "https://api.baguss.xyz"
     },
-    cloudhost: {
-        baseURL: "https://api.cloudhostid.biz.id"
-    },
     deline: {
         baseURL: "https://api.deline.web.id"
     },
-    izumi: {
-        baseURL: "https://api.ootaizumi.web.id"
-    },
-    jere: {
-        baseURL: "https://api.jerexd666.wongireng.my.id"
-    },
-    kyyokatsu: {
-        baseURL: "https://kyyokatsurestapi.my.id"
+    gemini_antidonasi: {
+        baseURL: "https://gemini.antidonasi.web.id"
     },
     nekolabs: {
         baseURL: "https://api.nekolabs.web.id"

@@ -16,7 +16,7 @@ module.exports = {
         );
 
         try {
-            const result = api.createUrl("znx", "/tools/translate", {
+            const result = api.createUrl("znx", "/api/tools/tts", {
                 text: input,
                 lang: langCode
             });

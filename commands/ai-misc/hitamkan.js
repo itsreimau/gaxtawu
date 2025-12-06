@@ -15,7 +15,7 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("zell", "/ai/hitamkan", {
+            const result = tools.api.createUrl("gemini_antidonasi", "/hitamkan", {
                 imageUrl: uploadUrl
             });
 

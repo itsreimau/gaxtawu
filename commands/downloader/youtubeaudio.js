@@ -31,13 +31,13 @@ module.exports = {
             const apiUrl = tools.api.createUrl("yp", "/api/downloader/ytmp3", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.data;
 
             const document = flag?.document || false;
             if (document) {
                 await ctx.reply({
                     document: {
-                        url: result.link
+                        url: result.download_url
                     },
                     fileName: `${result.title}.mp3`,
                     mimetype: tools.mime.lookup("mp3"),
@@ -46,7 +46,7 @@ module.exports = {
             } else {
                 await ctx.reply({
                     audio: {
-                        url: result.link
+                        url: result.download_url
                     },
                     mimetype: tools.mime.lookup("mp3")
                 });

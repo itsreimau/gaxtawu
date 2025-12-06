@@ -23,11 +23,19 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("nekolabs", "/ai/flux/kontext", {
-                prompt: input,
-                imageUrl: uploadUrl
-            });
-            const result = (await axios.get(apiUrl)).data.result;
+            let result;
+            for (let v = 1; v <= 2; v++) {
+                const apiUrl = tools.api.createUrl("nekolabs", `/ai/gemini/nano-banana/v${v}`, {
+                    prompt: input,
+                    imageUrl: uploadUrl
+                });
+                try {
+                    result = (await axios.get(apiUrl)).data.result;
+                    break;
+                } catch (error) {
+                    if (v === 2) throw error;
+                }
+            }
 
             await ctx.reply({
                 image: {
