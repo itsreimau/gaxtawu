@@ -2,7 +2,7 @@ const axios = require("axios");
 
 module.exports = {
     name: "editimage",
-    aliases["nanobanana"],
+    aliases: ["nanobanana"],
     category: "ai-misc",
     permissions: {
         coin: 10
