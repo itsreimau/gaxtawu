@@ -30,10 +30,8 @@ module.exports = {
                     }
                 }]
             });
-        });
-}
-catch (error) {
-    await tools.cmd.handleError(ctx, error);
-}
-}
+        } catch (error) {
+            await tools.cmd.handleError(ctx, error);
+        }
+    }
 };
