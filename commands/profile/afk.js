@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["turu"],
     category: "profile",
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || null;
+        const input = ctx.text || null;
 
         try {
             const senderDb = ctx.db.user;

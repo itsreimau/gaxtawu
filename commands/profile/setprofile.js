@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["set", "setp", "setprof"],
     category: "profile",
     code: async (ctx) => {
-        let input = ctx.args.join(" ") || null;
+        let input = ctx.text || null;
 
         if (!input) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +

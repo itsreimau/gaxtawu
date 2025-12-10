@@ -6,8 +6,8 @@ module.exports = {
         coin: 5
     },
     code: async (ctx) => {
-        const input = ctx.args.slice(ctx.args[0]?.length === 2 ? 1 : 0).join(" ") || ctx.quoted?.text || null;
         const langCode = ctx.args[0]?.length === 2 ? ctx.args[0] : "id";
+        const input = ctx.text ? (ctx.text.startsWith(`${langCode} `) ? ctx.text.slice(langCode.length + 1) : ctx.text) : (ctx.quoted?.text || null);
 
         if (!input) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +

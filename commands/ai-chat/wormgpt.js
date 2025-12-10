@@ -1,13 +1,13 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "felo",
+    name: "wormgpt",
     category: "ai-chat",
     permissions: {
         coin: 5
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || ctx.quoted?.text || null;
+        const input = ctx.text || ctx.quoted?.text || null;
 
         if (!input) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
@@ -16,10 +16,10 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("znx", "/api/ai/felo", {
+            const apiUrl = tools.api.createUrl("znx", "/api/ai/aihack", {
                 question: input
             });
-            const result = (await axios.get(apiUrl)).data.data.results.answer;
+            const result = (await axios.get(apiUrl)).data.results;
 
             await ctx.reply(result);
         } catch (error) {

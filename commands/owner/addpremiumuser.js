@@ -1,5 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "addpremiumuser",
     aliases: ["addpremuser", "addprem", "apu"],
@@ -8,10 +6,10 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const targetJid = ctx.quoted?.sender || ctx.getMentioned()[0] || (ctx.args[0] ? ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET : null);
+        let target = await ctx.target();;
         const daysAmount = parseInt(ctx.args[ctx.quoted ? 0 : 1], 10) || null;
 
-        if (!targetJid) return await ctx.reply({
+        if (!target) return await ctx.reply({
             text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "@6281234567891 30")}\n` +
                 `${tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])}\n` +
@@ -24,9 +22,9 @@ module.exports = {
         if (daysAmount && daysAmount <= 0) return await ctx.reply(`ⓘ ${formatter.italic("Durasi premium (dalam hari) harus diisi dan lebih dari 0!")}`);
 
         try {
-            const targetDb = ctx.getDb("users", targetJid);
+            const targetDb = ctx.getDb("users", target);
 
-            const flag = tools.cmd.parseFlag(ctx.args.join(" "), {
+            const flag = tools.cmd.parseFlag(ctx.text, {
                 "-s": {
                     type: "boolean",
                     key: "silent"
@@ -41,7 +39,7 @@ module.exports = {
                 targetDb.premiumExpiration = expirationDate;
                 targetDb.save();
 
-                if (!silent) await ctx.core.sendMessage(targetJid, {
+                if (!silent) await ctx.core.sendMessage(target, {
                     text: `ⓘ ${formatter.italic(`Anda telah ditambahkan sebagai pengguna premium oleh owner selama ${daysAmount} hari!`)}`
                 });
 
@@ -50,7 +48,7 @@ module.exports = {
                 delete targetDb?.premiumExpiration;
                 targetDb.save();
 
-                if (!silent) await ctx.core.sendMessage(targetJid, {
+                if (!silent) await ctx.core.sendMessage(target, {
                     text: `ⓘ ${formatter.italic("Anda telah ditambahkan sebagai pengguna premium selamanya oleh owner!")}`
                 });
 

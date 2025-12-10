@@ -5,39 +5,35 @@ module.exports = {
         private: true
     },
     code: async (ctx) => {
-        await ctx.reply({
-            text: `ⓘ ${formatter.italic("Yakin ingin mereset database Anda? Tindakan ini akan menghapus semua data yang tersimpan dan tidak dapat dipulihkan.")}`,
-            buttons: [{
-                buttonId: "y",
-                buttonText: {
-                    displayText: "Ya"
-                }
-            }, {
-                buttonId: "n",
-                buttonText: {
-                    displayText: "Tidak"
-                }
-            }]
-        });
+        const input = ctx.args[0] || null;
 
         try {
-            ctx.awaitMessages({
-                time: 60000
-            }).then(async (collCtx) => {
-                const text = collCtx.msg.text.trim().toLowerCase();
+            if (input === "y") {
+                const usersDb = ctx.db.users;
+                usersDb.reset(user => user.jid === ctx.sender.jid);
+                return await collCtx.reply(`ⓘ ${formatter.italic("Database Anda telah berhasil direset!")}`);
+            } else if (input === "n") {
+                return await collCtx.reply(`ⓘ ${formatter.italic("Proses reset database telah dibatalkan.")}`);
+            }
 
-                if (text === "y") {
-                    const usersDb = ctx.db.users;
-                    usersDb.reset(user => user.jid === ctx.sender.jid);
-                    await collCtx.reply(`ⓘ ${formatter.italic("Database Anda telah berhasil direset!")}`);
-                    collector.stop();
-                } else if (text === "n") {
-                    await collCtx.reply(`ⓘ ${formatter.italic("Proses reset database telah dibatalkan.")}`);
-                    collector.stop();
-                }
+            await ctx.reply({
+                text: `ⓘ ${formatter.italic("Yakin ingin mereset database Anda? Tindakan ini akan menghapus semua data yang tersimpan dan tidak dapat dipulihkan.")}`,
+                buttons: [{
+                    buttonId: `${ctx.used.prefix + ctx.used.command} yes`,
+                    buttonText: {
+                        displayText: "Ya"
+                    }
+                }, {
+                    buttonId: `${ctx.used.prefix + ctx.used.command} no`,
+                    buttonText: {
+                        displayText: "Tidak"
+                    }
+                }]
             });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error);
-        }
-    }
+        });
+}
+catch (error) {
+    await tools.cmd.handleError(ctx, error);
+}
+}
 };

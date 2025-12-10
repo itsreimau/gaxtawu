@@ -10,6 +10,7 @@ module.exports = (bot) => {
         const isPrivate = ctx.isPrivate();
         const senderJid = ctx.sender.jid;
         const senderId = ctx.getId(senderJid);
+        const senderLid = ctx.sender.lid;
         const groupJid = isGroup ? ctx.id : null;
         const groupId = isGroup ? ctx.getId(groupJid) : null;
         const isOwner = ctx.sender.isOwner();
@@ -74,7 +75,7 @@ module.exports = (bot) => {
 
             if (senderDb?.botGroupMembership && (now - senderDb.botGroupMembership.timestamp) < duration) return senderDb.botGroupMembership.isMember;
 
-            const isMember = await ctx.group(config.bot.groupJid).isMemberExist(senderJid);
+            const isMember = await ctx.group(config.bot.groupJid).isMemberExist(senderLid);
             senderDb.botGroupMembership = {
                 isMember: isMember,
                 timestamp: now

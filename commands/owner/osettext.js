@@ -7,7 +7,7 @@ module.exports = {
     },
     code: async (ctx) => {
         const key = ctx.args[0] || null;
-        const text = ctx.args.slice(1).join(" ") || ctx.quoted?.text || null;
+        const text = ctx.text ? (ctx.text.startsWith(`${key} `) ? ctx.text.slice(key.length + 1) : ctx.text) : (ctx.quoted?.text || null);
 
         if (key?.toLowerCase() === "list") {
             const listText = await tools.list.get("osettext");

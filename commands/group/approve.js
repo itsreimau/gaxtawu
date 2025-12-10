@@ -1,5 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "approve",
     category: "group",
@@ -9,7 +7,7 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || null;
+        const input = ctx.text || null;
 
         if (!input) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
@@ -32,13 +30,13 @@ module.exports = {
             }
         }
 
-        const targetJid = input.replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET;
+        const target = await ctx.target(["text"]);
 
-        const isPending = pendings.some(pending => pending.jid === targetJid);
+        const isPending = pendings.some(pending => pending.jid === target);
         if (!isPending) return await ctx.reply(`ⓘ ${formatter.italic("Akun tidak ditemukan di daftar anggota yang menunggu persetujuan.")}`);
 
         try {
-            await ctx.group().approvePendingMembers(targetJid);
+            await ctx.group().approvePendingMembers(target);
 
             await ctx.reply(`ⓘ ${formatter.italic("Berhasil disetujui!")}`);
         } catch (error) {

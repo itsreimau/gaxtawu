@@ -7,7 +7,7 @@ module.exports = {
         coin: 5
     },
     code: async (ctx) => {
-        const flag = tools.cmd.parseFlag(ctx.args.join(" ") || null, {
+        const flag = tools.cmd.parseFlag(ctx.text || null, {
             "-i": {
                 type: "value",
                 key: "index",

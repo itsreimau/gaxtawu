@@ -1,5 +1,3 @@
-const { Gktw } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "delsewagroup",
     aliases: ["delsewa", "delsewagrup", "dsg"],
@@ -8,9 +6,9 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const groupJid = ctx.isGroup() ? ctx.id : (ctx.args[0] ? ctx.args[0].replace(/[^\d]/g, "") + Gktw.G_US : null);
+        const target = ctx.isGroup() ? ctx.id : (await ctx.target("text_group"): null);
 
-        if (!groupJid) return await ctx.reply(
+        if (!target) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
             `${tools.msg.generateCmdExample(ctx.used, "1234567890")}\n` +
             `${tools.msg.generateNotes(["Gunakan di grup untuk otomatis menghapus sewa grup tersebut."])}\n` +
@@ -19,16 +17,16 @@ module.exports = {
             })
         );
 
-        if (!await ctx.group(groupJid)) return await ctx.reply(`ⓘ ${formatter.italic("Grup tidak valid atau bot tidak ada di grup tersebut!")}`);
+        if (!await ctx.group(target)) return await ctx.reply(`ⓘ ${formatter.italic("Grup tidak valid atau bot tidak ada di grup tersebut!")}`);
 
         try {
-            const groupDb = ctx.getDb("users", groupJid);
+            const groupDb = ctx.getDb("users", target);
 
             delete groupDb.premium;
             delete groupDb.premiumExpiration;
             groupDb.save();
 
-            const flag = tools.cmd.parseFlag(ctx.args.join(" "), {
+            const flag = tools.cmd.parseFlag(ctx.text, {
                 "-s": {
                     type: "boolean",
                     key: "silent"
@@ -36,7 +34,7 @@ module.exports = {
             });
 
             const silent = flag?.silent || false;
-            const group = await ctx.group(groupJid);
+            const group = await ctx.group(target);
             const groupOwner = await group.owner();
             if (!silent && groupOwner) {
                 const groupMentions = [{

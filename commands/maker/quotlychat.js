@@ -9,9 +9,9 @@ module.exports = {
         coin: 5
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || ctx.quoted?.text || null;
+        const input = ctx.text || ctx.quoted?.text || null;
 
-        if (!input) return await ctx.reply(
+        if (!input || !ctx.quoted) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
             `${tools.msg.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")}\n` +
             tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."])
@@ -20,7 +20,7 @@ module.exports = {
         if (input.length > 1000) return await ctx.reply(`ⓘ ${formatter.italic("Maksimal 1000 kata!")}`);
 
         try {
-            const isQuoted = ctx.args.length === 0 && ctx.quoted;
+            const isQuoted = ctx.text.length === 0 && ctx.quoted;
             const profilePictureUrl = await ctx.core.profilePictureUrl(isQuoted ? ctx.quoted?.sender : ctx.sender.jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
             const apiurl = tools.api.createUrl("znx", "/api/maker/qc");
             const result = (await axios.post(apiurl, {

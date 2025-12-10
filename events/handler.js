@@ -146,7 +146,7 @@ module.exports = (bot) => {
             // Variabel umum
             const senderJid = ctx.sender.jid;
             const senderId = ctx.getId(senderJid);
-            const senderLid = Baileys.isJidUser(senderJid) ? await ctx.getLidUser(senderJid) : senderJid;
+            const senderLid = ctx.sender.lid;
             const groupJid = isGroup ? ctx.id : null;
             const groupId = isGroup ? ctx.getId(groupJid) : null;
             const isOwner = ctx.sender.isOwner();
@@ -361,7 +361,10 @@ module.exports = (bot) => {
         const callId = ctx.id;
         const senderJid = ctx.from;
         const senderId = bot.getId(senderJid);
-        const isOwner = bot.checkOwner(senderJid);
+        const isOwner = bot.checkOwner(senderJid, {
+            id: "3V3NTC4LL",
+            fromMe: false
+        });
 
         if (Baileys.isJidGroup(callId) || isOwner) return;
 

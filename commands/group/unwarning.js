@@ -1,5 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "unwarning",
     aliases: ["unwarn"],
@@ -11,31 +9,30 @@ module.exports = {
         restrict: true
     },
     code: async (ctx) => {
-        let targetJid = ctx.quoted?.sender || ctx.getMentioned()[0] || null;
+        let target = await ctx.target(["quoted", "mentioned"]);
 
-        if (!targetJid) return await ctx.reply({
+        if (!target) return await ctx.reply({
             text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
                 tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]),
             mentions: ["6281234567891@s.whatsapp.net"]
         });
 
-        if (targetJid === ctx.me.lid || targetJid === ctx.me.id) return await ctx.reply(`ⓘ ${formatter.italic(`Tidak bisa mengubah warning bot!`)}`);
-        if (await ctx.group().isOwner(targetJid)) return await ctx.reply(`ⓘ ${formatter.italic("Tidak bisa memberikan warning ke owner grup!")}`);
+        if (target === ctx.me.lid) return await ctx.reply(`ⓘ ${formatter.italic(`Tidak bisa mengubah warning bot!`)}`);
+        if (await ctx.group().isOwner(target)) return await ctx.reply(`ⓘ ${formatter.italic("Tidak bisa memberikan warning ke owner grup!")}`);
 
         try {
             const groupDb = ctx.db.group;
             const warnings = groupDb?.warnings || [];
-            targetJid = Baileys.isJidUser(targetJid) ? await ctx.getLidUser(targetJid) : targetJid;
 
-            const targetWarning = warnings.find(warning => warning.jid === targetJid);
+            const targetWarning = warnings.find(warning => warning.jid === target);
             let currentWarnings = targetWarning ? targetWarning.count : 0;
 
             if (currentWarnings <= 0) return await ctx.reply(`ⓘ ${formatter.italic("Pengguna itu tidak memiliki warning.")}`);
 
             const newWarning = currentWarnings - 1;
             if (targetWarning && newWarning <= 0) {
-                groupDb.warnings = warnings.filter(warning => warning.jid !== targetJid);
+                groupDb.warnings = warnings.filter(warning => warning.jid !== target);
             } else {
                 targetWarning.count = newWarning;
             }

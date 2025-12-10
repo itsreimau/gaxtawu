@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "tofigure",
     aliases: ["jadifigure"],
@@ -17,10 +15,9 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("gemini_antidonasi", "/figurine", {
+            const result = tools.api.createUrl("gemini_antidonasi", "/figurine", {
                 imageUrl: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result.image_url;
 
             await ctx.reply({
                 image: {

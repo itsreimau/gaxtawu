@@ -8,10 +8,10 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const groupJid = ctx.isGroup() ? ctx.id : (ctx.args[0] ? ctx.args[0].replace(/[^\d]/g, "") + Gktw.G_US : null);
+        const target = ctx.isGroup() ? ctx.id : (await ctx.target("text_group"): null);
         const daysAmount = parseInt(ctx.args[ctx.isGroup() ? 0 : 1], 10) || null;
 
-        if (!groupJid) return await ctx.reply(
+        if (!target) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
             `${tools.msg.generateCmdExample(ctx.used, "1234567890 30")}\n` +
             `${tools.msg.generateNotes(["Gunakan di grup untuk otomatis menyewakan grup tersebut."])}\n` +
@@ -20,13 +20,13 @@ module.exports = {
             })
         );
 
-        if (!await ctx.group(groupJid)) return await ctx.reply(`ⓘ ${formatter.italic("Grup tidak valid atau bot tidak ada di grup tersebut!")}`);
+        if (!await ctx.group(target)) return await ctx.reply(`ⓘ ${formatter.italic("Grup tidak valid atau bot tidak ada di grup tersebut!")}`);
         if (daysAmount && daysAmount <= 0) return await ctx.reply(`ⓘ ${formatter.italic("Durasi sewa (dalam hari) harus diisi dan lebih dari 0!")}`);
 
         try {
-            const senderDb = ctx.getDb("groups", groupJid);
+            const senderDb = ctx.getDb("groups", target);
 
-            const flag = tools.cmd.parseFlag(ctx.args.join(" "), {
+            const flag = tools.cmd.parseFlag(ctx.text, {
                 "-s": {
                     type: "boolean",
                     key: "silent"
@@ -35,7 +35,7 @@ module.exports = {
 
             const silent = flag?.silent || false;
 
-            const group = await ctx.group(groupJid);
+            const group = await ctx.group(target);
             const groupOwner = await group.owner();
 
             if (!silent && groupOwner) {

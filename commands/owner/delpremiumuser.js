@@ -1,5 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "delpremiumuser",
     aliases: ["delpremuser", "delprem", "dpu"],
@@ -8,9 +6,9 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const targetJid = ctx.quoted?.sender || ctx.getMentioned()[0] || (ctx.args[0] ? ctx.args[0].replace(/[^\d]/g, "") + Baileys.S_WHATSAPP_NET : null);
+        let target = await ctx.target();;
 
-        if (!targetJid) return await ctx.reply({
+        if (!target) return await ctx.reply({
             text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
                 `${tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])}\n` +
@@ -21,13 +19,13 @@ module.exports = {
         });
 
         try {
-            const targetDb = ctx.getDb("users", targetJid);
+            const targetDb = ctx.getDb("users", target);
 
             delete targetDb.premium;
             delete targetDb?.premiumExpiration;
             targetDb.save();
 
-            const flag = tools.cmd.parseFlag(ctx.args.join(" "), {
+            const flag = tools.cmd.parseFlag(ctx.text, {
                 "-s": {
                     type: "boolean",
                     key: "silent"
@@ -35,7 +33,7 @@ module.exports = {
             });
 
             const silent = flag?.silent || false;
-            if (!silent) await ctx.core.sendMessage(targetJid, {
+            if (!silent) await ctx.core.sendMessage(target, {
                 text: `ⓘ ${formatter.italic("Anda telah dihapus sebagai pengguna premium oleh owner!")}`
             });
 

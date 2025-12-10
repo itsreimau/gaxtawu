@@ -1,5 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "mute",
     category: "group",
@@ -17,27 +15,26 @@ module.exports = {
             return await ctx.reply(`ⓘ ${formatter.italic("Berhasil me-mute grup ini dari bot!")}`);
         }
 
-        let targetJid = ctx.quoted?.sender || ctx.getMentioned()[0] || null;
+        const target = await ctx.target(["quoted", "mentioned"]);
 
-        if (!targetJid) return await ctx.reply({
+        if (!target) return await ctx.reply({
             text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
                 tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target.", `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`]),
             mentions: ["6281234567891@s.whatsapp.net"]
         });
 
-        if (targetJid === ctx.me.lid || targetJid === ctx.me.id) return await ctx.reply(`ⓘ ${formatter.italic(`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`)}`);
-        if (await ctx.group().isOwner(targetJid)) return await ctx.reply(`ⓘ ${formatter.italic("Dia adalah owner grup!")}`);
+        if (target === ctx.me.lid) return await ctx.reply(`ⓘ ${formatter.italic(`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`)}`);
+        if (await ctx.group().isOwner(target)) return await ctx.reply(`ⓘ ${formatter.italic("Dia adalah owner grup!")}`);
 
         try {
             const groupDb = ctx.db.group;
             const muteList = groupDb?.mute || [];
-            targetJid = Baileys.isJidUser(targetJid) ? await ctx.getLidUser(targetJid) : targetJid;
 
-            const isAlreadyMuted = muteList.includes(targetJid);
+            const isAlreadyMuted = muteList.includes(target);
             if (isAlreadyMuted) return await ctx.reply(`ⓘ ${formatter.italic("Pengguna sudah di-mute sebelumnya!")}`);
 
-            muteList.push(targetJid);
+            muteList.push(target);
             groupDb.mute = muteList;
             groupDb.save();
 

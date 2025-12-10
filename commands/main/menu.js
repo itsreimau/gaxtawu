@@ -69,7 +69,7 @@ module.exports = {
 
             await ctx.core.sendMessage(ctx.id, {
                 video: {
-                    url: "https://i.pinimg.com/originals/18/ff/d4/18ffd4dadbe961b7c9f87da26edc4ec5.gif"
+                    url: "https://files.cloudkuimages.guru/videos/74b7032426ad.mp4"
                 },
                 mimetype: tools.mime.lookup("mp4"),
                 gifPlayback: true,
