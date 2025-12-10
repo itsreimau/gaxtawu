@@ -8,7 +8,7 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const target = ctx.isGroup() ? ctx.id : (await ctx.target("text_group"): null);
+        const target = ctx.isGroup() ? ctx.id : await ctx.target("text_group");
         const daysAmount = parseInt(ctx.args[ctx.isGroup() ? 0 : 1], 10) || null;
 
         if (!target) return await ctx.reply(
