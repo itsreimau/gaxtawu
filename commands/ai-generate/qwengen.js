@@ -16,7 +16,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/ai/qwen/image", {
+            const apiUrl = tools.api.createUrl("nekolabs", "/image-generation/qwen/image", {
                 prompt: input,
                 ratio: tools.cmd.getRandomElement(["1:1", "16:9", "9:16"])
             });

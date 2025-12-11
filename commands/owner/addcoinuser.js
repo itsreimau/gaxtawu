@@ -24,7 +24,7 @@ module.exports = {
             targetDb.coin += coinAmount;
             targetDb.save();
 
-            const flag = tools.cmd.parseFlag(ctx.text, {
+            const flag = ctx.flag({
                 "-s": {
                     type: "boolean",
                     key: "silent"

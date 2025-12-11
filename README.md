@@ -21,6 +21,12 @@ git clone https://github.com/itsreimau/gaxtawu.git
 cd gaxtawu
 ```
 
+Jika Anda ingin melewati langkah 2 dan 3:
+
+```bash
+npm run setup
+```
+
 ### 2. Install Dependencies
 
 Instal semua dependensi yang diperlukan:

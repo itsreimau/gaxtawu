@@ -317,7 +317,7 @@ module.exports = (bot) => {
 
                     // Penanganan antitagsw
                     if (groupDb?.option?.antitagsw) {
-                        const checkMedia = tools.cmd.checkMedia(messageType, "groupStatusMentionMessage");
+                        const checkMedia = msg.message?.protocolMessage?.type === 25;
                         if (!!checkMedia) {
                             await ctx.reply(`ⓘ ${formatter.italic("Jangan tag grup di SW, gak ada yg peduli!")}`);
                             await ctx.deleteMessage(msg.key);

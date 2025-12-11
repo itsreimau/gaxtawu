@@ -22,7 +22,7 @@ module.exports = {
 
             switch (option) {
                 case "username": {
-                    input = ctx.args.slice(1).join(" ").trim();
+                    input = ctx.args.slice(1).join(" ");
 
                     if (!input) return await ctx.reply(`ⓘ ${formatter.italic("Mohon masukkan username yang ingin digunakan.")}`);
                     if (/[^a-zA-Z0-9._-]/.test(input)) return await ctx.reply(`ⓘ ${formatter.italic("Username hanya boleh berisi huruf, angka, titik (.), underscore (_) atau tanda hubung (-).")}`);

@@ -17,7 +17,6 @@ function checkMedia(type, required) {
         audio: MessageType.audioMessage,
         document: [MessageType.documentMessage, MessageType.documentWithCaptionMessage],
         gif: MessageType.videoMessage,
-        groupStatusMentionMessage: MessageType.groupStatusMentionMessageMessage,
         image: MessageType.imageMessage,
         sticker: MessageType.stickerMessage,
         text: [MessageType.conversation, MessageType.extendedTextMessage],
@@ -96,7 +95,7 @@ function generateUID(id, withBotName = true) {
 }
 
 function getRandomElement(array) {
-    if (!array || !array.length) return null;
+    if (!array || !array.length || array.length === 0) return null;
     return array[Math.floor(Math.random() * array.length)];
 }
 
@@ -128,7 +127,7 @@ function isCmd(text, ctxBot) {
     const prefix = text.charAt(0);
     if (!new RegExp(ctxBot.prefix, "i").test(text)) return false;
 
-    const [cmdName, ...inputArray] = text.slice(1).trim().toLowerCase().split(/\s+/);
+    const [cmdName, ...inputArray] = text.slice(1).toLowerCase().split(/\s+/);
     const input = inputArray.join(" ");
 
     const cmds = Array.from(ctxBot.cmd.values());
@@ -153,42 +152,6 @@ function isCmd(text, ctxBot) {
 function isUrl(url) {
     if (!url) return false;
     return /(https?:\/\/[^\s]+)/g.test(url);
-}
-
-function parseFlag(argsStr, rules = {}) {
-    if (!argsStr) return {
-        input: null
-    };
-
-    const options = {};
-    const input = [];
-    const args = argsStr.trim().split(/\s+/);
-
-    for (let i = 0; i < args.length; i++) {
-        const arg = args[i];
-
-        if (rules[arg]) {
-            const rule = rules[arg];
-
-            if (rule.type === "value") {
-                const value = args[i + 1];
-
-                if (value && rule.validator(value)) {
-                    options[rule.key] = rule.parser(value);
-                    i++;
-                } else {
-                    options[rule.key] = rule.default || null;
-                }
-            } else if (rule.type === "boolean") {
-                options[rule.key] = true;
-            }
-        } else {
-            input.push(arg);
-        }
-    }
-
-    options.input = input.join(" ");
-    return options;
 }
 
 module.exports = {

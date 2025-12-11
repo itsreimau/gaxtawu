@@ -43,10 +43,10 @@ module.exports = {
                     if (code !== 0) {
                         resolve(
                             `ⓘ Keluar dari proses dengan kode: ${code}\n` +
-                            errorData.trim()
+                            formatter.monospace(errorData)
                         );
                     } else {
-                        resolve(outputData.trim());
+                        resolve(formatter.monospace(outputData));
                     }
                 });
 
@@ -56,7 +56,7 @@ module.exports = {
                 }, 10000);
             });
 
-            await ctx.reply(formatter.monospace(output));
+            await ctx.reply(output);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

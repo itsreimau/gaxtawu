@@ -2,6 +2,7 @@ const axios = require("axios");
 
 module.exports = {
     name: "wormgpt",
+    aliases: ["wgpt"],
     category: "ai-chat",
     permissions: {
         coin: 5

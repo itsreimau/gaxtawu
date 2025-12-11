@@ -26,7 +26,7 @@ module.exports = {
         try {
             const senderDb = ctx.getDb("groups", target);
 
-            const flag = tools.cmd.parseFlag(ctx.text, {
+            const flag = ctx.flag({
                 "-s": {
                     type: "boolean",
                     key: "silent"

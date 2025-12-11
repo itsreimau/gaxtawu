@@ -8,7 +8,7 @@ module.exports = {
         coin: 5
     },
     code: async (ctx) => {
-        const flag = tools.cmd.parseFlag(ctx.text || null, {
+        const flag = ctx.flag({
             "-d": {
                 type: "boolean",
                 key: "document"

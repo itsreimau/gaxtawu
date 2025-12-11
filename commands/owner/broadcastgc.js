@@ -1,6 +1,6 @@
 module.exports = {
     name: "broadcastgc",
-    aliases: ["bc", "bcgc", "broadcast"],
+    aliases: ["bc", "bcht", "bcgc", "broadcast"],
     category: "owner",
     permissions: {
         owner: true
@@ -41,9 +41,15 @@ module.exports = {
             for (const groupId of filteredGroupIds) {
                 await delay(500);
                 try {
+                    let mentions = [];
+                    if (ctx.used.command === "bcht") {
+                        const members = await ctx.group(groupId).members();
+                        mentions = members.map(member => member.jid);
+                    }
                     await ctx.core.sendMessage(groupId, {
                         text: input,
                         contextInfo: {
+                            mentionedJid: mentions,
                             isForwarded: true,
                             forwardedNewsletterMessageInfo: {
                                 newsletterJid: config.bot.newsletterJid,

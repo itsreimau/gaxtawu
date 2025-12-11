@@ -1,6 +1,6 @@
 {
   "name": "gaxtawu",
-  "version": "1.5.2-beta.17",
+  "version": "1.5.2-beta.18",
   "description": "Useless WhatsApp Bot",
   "main": "index.js",
   "directories": {
@@ -10,6 +10,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "setup": "cp config.example.json config.json && npm install",
     "start": "node .",
     "start:pm2": "pm2 start ./index.js --name $(basename $(pwd))"
   },

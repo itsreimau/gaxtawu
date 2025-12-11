@@ -25,7 +25,7 @@ module.exports = {
 
             if (!!checkMedia || !!checkQuotedMedia) {
                 const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-                const apiUrl = tools.api.createUrl("nekolabs", "/ai/claude/sonnet-4.5", {
+                const apiUrl = tools.api.createUrl("nekolabs", "/text-generation/claude/sonnet-4.5", {
                     text: input,
                     systemPrompt,
                     imageUrl: uploadUrl
@@ -34,7 +34,7 @@ module.exports = {
 
                 await ctx.reply(result);
             } else {
-                const apiUrl = tools.api.createUrl("nekolabs", "/ai/claude/sonnet-4.5", {
+                const apiUrl = tools.api.createUrl("nekolabs", "/text-generation/claude/sonnet-4.5", {
                     text: input,
                     systemPrompt
                 });

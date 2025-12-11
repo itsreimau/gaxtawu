@@ -27,7 +27,7 @@ module.exports = {
 
             if (!!checkMedia || !!checkQuotedMedia) {
                 const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-                const apiUrl = tools.api.createUrl("nekolabs", "/ai/gpt/5", {
+                const apiUrl = tools.api.createUrl("nekolabs", "/text-generation/gpt/5", {
                     text: input,
                     systemPrompt,
                     imageUrl: uploadUrl,
@@ -37,7 +37,7 @@ module.exports = {
 
                 await ctx.reply(result);
             } else {
-                const apiUrl = tools.api.createUrl("nekolabs", "/ai/gpt/5", {
+                const apiUrl = tools.api.createUrl("nekolabs", "/text-generation/gpt/5", {
                     text: input,
                     systemPrompt,
                     sessionId: uid
