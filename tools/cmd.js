@@ -162,6 +162,5 @@ module.exports = {
     getRandomElement,
     handleError,
     isCmd,
-    isUrl,
-    parseFlag
+    isUrl
 };
