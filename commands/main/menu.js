@@ -69,10 +69,9 @@ module.exports = {
 
             await ctx.core.sendMessage(ctx.id, {
                 video: {
-                    url: "https://files.cloudkuimages.guru/videos/74b7032426ad.mp4"
+                    url: "https://picsum.photos/536/354"
                 },
-                mimetype: tools.mime.lookup("mp4"),
-                gifPlayback: true,
+                mimetype: tools.mime.lookup("png"),
                 caption: text.trim(),
                 contextInfo: {
                     mentionedJid: [ctx.sender.jid],

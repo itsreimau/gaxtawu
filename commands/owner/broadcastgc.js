@@ -11,7 +11,7 @@ module.exports = {
         if (!input) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
             `${tools.msg.generateCmdExample(ctx.used, "halo, dunia!")}\n` +
-            tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru.", `Gunakan ${formatter.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`])
+            tools.msg.generateNotes([`Gunakan ${formatter.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`])
         );
 
         let blacklist = config.system?.blacklistBroadcast || [];
@@ -31,49 +31,44 @@ module.exports = {
         }
 
         try {
-            const groupIds = Object.values(await ctx.core.groupFetchAllParticipating()).map(group => group.id);
-            const filteredGroupIds = groupIds.filter(groupId => !blacklist.includes(groupId));
+            const groupIds = (Object.values(await ctx.core.groupFetchAllParticipating()).map(group => group.id)).filter(groupId => !blacklist.includes(groupId));
 
-            const waitMsg = await ctx.reply(`ⓘ ${formatter.italic(`Mengirim siaran ke ${filteredGroupIds.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(filteredGroupIds.length * 0.5 * 1000)}`)}`);
+            const waitMsg = await ctx.reply(`ⓘ ${formatter.italic(`Mengirim siaran ke ${groupIds.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(groupIds.length * 0.5 * 1000)}`)}`);
 
             const delay = ms => new Promise(res => setTimeout(res, ms));
             const failedGroupIds = [];
-            for (const groupId of filteredGroupIds) {
+            for (const groupId of groupIds) {
                 await delay(500);
-                try {
-                    let mentions = [];
-                    if (ctx.used.command === "bcht") {
-                        const members = await ctx.group(groupId).members();
-                        mentions = members.map(member => member.jid);
-                    }
-                    await ctx.core.sendMessage(groupId, {
-                        text: input,
-                        contextInfo: {
-                            mentionedJid: mentions,
-                            isForwarded: true,
-                            forwardedNewsletterMessageInfo: {
-                                newsletterJid: config.bot.newsletterJid,
-                                newsletterName: config.msg.footer
-                            },
-                            externalAdReply: {
-                                title: config.bot.name,
-                                body: config.msg.note,
-                                mediaType: 1,
-                                thumbnailUrl: config.bot.thumbnail,
-                                sourceUrl: config.bot.groupLink,
-                                renderLargerThumbnail: true
-                            }
-                        }
-                    }, {
-                        quoted: tools.cmd.fakeQuotedText(config.msg.footer)
-                    });
-                } catch (error) {
-                    failedGroupIds.push(groupId);
-                }
-            }
-            const successCount = filteredGroupIds.length - failedGroupIds.length;
 
-            await ctx.editMessage(waitMsg.key, `ⓘ ${formatter.italic(`Berhasil mengirim ke ${successCount} grup. Gagal mengirim ke ${failedGroupIds.length} grup, ${blacklist.length} grup dalam blacklist tidak dikirim.`)}`);
+                let mentions = [];
+                if (ctx.used.command === "bcht") {
+                    const members = await ctx.group(groupId).members();
+                    mentions = members.map(member => member.jid);
+                }
+                await ctx.core.sendMessage(groupId, {
+                    text: input,
+                    contextInfo: {
+                        mentionedJid: mentions,
+                        isForwarded: true,
+                        forwardedNewsletterMessageInfo: {
+                            newsletterJid: config.bot.newsletterJid,
+                            newsletterName: config.msg.footer
+                        },
+                        externalAdReply: {
+                            title: config.bot.name,
+                            body: config.msg.note,
+                            mediaType: 1,
+                            thumbnailUrl: config.bot.thumbnail,
+                            sourceUrl: config.bot.groupLink,
+                            renderLargerThumbnail: true
+                        }
+                    }
+                }, {
+                    quoted: tools.cmd.fakeQuotedText(config.msg.footer)
+                });
+            }
+
+            await ctx.editMessage(waitMsg.key, `ⓘ ${formatter.italic(`Berhasil mengirim ke ${groupIds.length} grup.`)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

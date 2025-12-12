@@ -20,16 +20,24 @@ consolefy.log("Connecting..."); // Logging proses koneksi
 
 // Buat instance bot
 const bot = new Client({
-    authDir: diretory.auth,
-    WAVersion: system.WAVersion,
-    phoneNumber: botConfig.phoneNumber,
-    usePairingCode: system.usePairingCode,
-    customPairingCode: system.customPairingCode,
-    useStore: system.useStore,
-    autoRead: system.autoRead,
-    alwaysOnline: system.alwaysOnline,
-    selfReply: system.selfReply,
-    databaseDir: diretory.database,
+    auth: {
+        dir: diretory.auth,
+        phoneNumber: botConfig.phoneNumber,
+        usePairingCode: system.usePairingCode,
+        customPairingCode: system.customPairingCode,
+        useStore: system.useStore
+    },
+    connection: {
+        WAVersion: system.WAVersion,
+        alwaysOnline: system.alwaysOnline,
+        selfReply: system.selfReply
+    },
+    messaging: {
+        autoRead: system.autoRead
+    },
+    database: {
+        dir: diretory.database
+    },
     owner: [system.selfOwner ? "bot" : null, config.owner.id, ...config.owner.co.map(co => co.id)].filter(Boolean)
 });
 

@@ -12,7 +12,7 @@ module.exports = {
         if (!input) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
             `${tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
-            tools.msg.generateNotes(["AI ini dapat melihat gambar.", "Balas/quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."])
+            tools.msg.generateNotes(["AI ini dapat melihat gambar."])
         );
 
         const [checkMedia, checkQuotedMedia] = [

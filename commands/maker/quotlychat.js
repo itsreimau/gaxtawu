@@ -13,8 +13,7 @@ module.exports = {
 
         if (!input || !ctx.quoted) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            `${tools.msg.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")}\n` +
-            tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."])
+            tools.msg.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")
         );
 
         if (input.length > 1000) return await ctx.reply(`ⓘ ${formatter.italic("Maksimal 1000 kata!")}`);

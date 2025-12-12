@@ -6,8 +6,7 @@ module.exports = {
 
         if (!input) return await ctx.reply(
             `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            `${tools.msg.generateCmdExample(ctx.used, "rei ayanami")}\n` +
-            tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."])
+            tools.msg.generateCmdExample(ctx.used, "rei ayanami")
         );
 
         try {
