@@ -68,7 +68,7 @@ module.exports = {
             }
 
             await ctx.core.sendMessage(ctx.id, {
-                video: {
+                image: {
                     url: "https://picsum.photos/536/354"
                 },
                 mimetype: tools.mime.lookup("png"),
