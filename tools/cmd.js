@@ -66,6 +66,11 @@ function checkQuotedMedia(type, required) {
     return false;
 }
 
+function delay(ms) {
+    if (!ms) return null;
+    return new Promise(res => setTimeout(res, ms));
+}
+
 function fakeQuotedText(text) {
     if (!text) return null;
     return {
@@ -99,24 +104,41 @@ function getRandomElement(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
 
+function getReportOwner() {
+    const owners = [];
+    if (config.owner.report) owners.push(config.owner.id);
+    if (config.owner.co && Array.isArray(config.owner.co)) {
+        config.owner.co.forEach(co => {
+            if (co.report === true) owners.push(co.id);
+        });
+    }
+    return owners.length > 0 ? owners : false;
+}
+
 async function handleError(ctx, error, useAxios = false, reportToOwner = true) {
     const isGroup = ctx.isGroup();
     const groupJid = isGroup ? ctx.id : null;
     const groupSubject = isGroup ? await ctx.group(groupJid).name() : null;
     const errorText = util.format(error);
+    const reportOwner = getReportOwner();
 
     consolefy.error(`Error: ${errorText}`);
-    if (config.system.reportToOwner && reportToOwner) await ctx.replyWithJid(config.system.reportToOwner === 1 ? config.owner.id : config.owner.co[config.system.reportToOwner - 1].id + Baileys.S_WHATSAPP_NET, {
-        text: `ⓘ ${formatter.italic(isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${ctx.getId(ctx.sender.jid)}` : `Terjadi kesalahan dari: @${ctx.getId(ctx.sender.jid)}`)}\n` +
-            formatter.monospace(errorText),
-        contextInfo: {
-            mentionJid: [ctx.sender.jid],
-            groupMentions: isGroup ? [{
-                groupJid,
-                groupSubject
-            }] : []
+    if (reportToOwner && reportOwner && reportOwner.length > 0) {
+        for (const ownerId of reportOwner) {
+            await ctx.replyWithJid(ownerId + Baileys.S_WHATSAPP_NET, {
+                text: `ⓘ ${formatter.italic(isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${ctx.getId(ctx.sender.jid)}` : `Terjadi kesalahan dari: @${ctx.getId(ctx.sender.jid)}`)}\n` +
+                    formatter.monospace(errorText),
+                contextInfo: {
+                    mentionJid: [ctx.sender.jid],
+                    groupMentions: isGroup ? [{
+                        groupJid,
+                        groupSubject
+                    }] : []
+                }
+            });
+            await delay(500);
         }
-    });
+    }
     if (useAxios && error.status !== 200) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.notFound)}`);
     await ctx.reply(`ⓘ ${formatter.italic(`Terjadi kesalahan: ${error.message}`)}`);
 }
@@ -157,9 +179,11 @@ function isUrl(url) {
 module.exports = {
     checkMedia,
     checkQuotedMedia,
+    delay,
     fakeQuotedText,
     generateUID,
     getRandomElement,
+    getReportOwner,
     handleError,
     isCmd,
     isUrl

@@ -32,14 +32,8 @@ module.exports = {
 
         try {
             const groupIds = (Object.values(await ctx.core.groupFetchAllParticipating()).map(group => group.id)).filter(groupId => !blacklist.includes(groupId));
-
             const waitMsg = await ctx.reply(`ⓘ ${formatter.italic(`Mengirim siaran ke ${groupIds.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(groupIds.length * 0.5 * 1000)}`)}`);
-
-            const delay = ms => new Promise(res => setTimeout(res, ms));
-            const failedGroupIds = [];
             for (const groupId of groupIds) {
-                await delay(500);
-
                 let mentions = [];
                 if (ctx.used.command === "bcht") {
                     const members = await ctx.group(groupId).members();
@@ -66,6 +60,7 @@ module.exports = {
                 }, {
                     quoted: tools.cmd.fakeQuotedText(config.msg.footer)
                 });
+                await tools.cmd.delay(500);
             }
 
             await ctx.editMessage(waitMsg.key, `ⓘ ${formatter.italic(`Berhasil mengirim ke ${groupIds.length} grup.`)}`);

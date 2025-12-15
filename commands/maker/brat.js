@@ -14,7 +14,7 @@ module.exports = {
             tools.msg.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")
         );
 
-        if (input.length > 1000) return await ctx.reply(`ⓘ ${formatter.italic("Maksimal 1000 kata!")}`);
+        if (input.length > 1000) return await ctx.reply(`ⓘ ${formatter.italic("Maksimal 1000 karakter!")}`);
 
         try {
             const result = tools.api.createUrl("yp", "/api/image/brat", {

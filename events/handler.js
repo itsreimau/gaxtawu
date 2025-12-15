@@ -157,19 +157,6 @@ module.exports = (bot) => {
             const senderDb = ctx.db.user;
             const groupDb = ctx.db.group;
 
-            // Penanganan database pengguna
-            if (senderDb) {
-                if (!senderDb?.username) senderDb.username = `@user_${tools.cmd.generateUID(senderId, false)}`;
-                if (!senderDb?.uid || senderDb?.uid !== tools.cmd.generateUID(senderId)) senderDb.uid = tools.cmd.generateUID(senderId);
-                if (senderDb?.premium && Date.now() > senderDb.premiumExpiration) {
-                    delete senderDb.premium;
-                    delete senderDb.premiumExpiration;
-                }
-                if (isOwner || senderDb?.premium) senderDb.coin = 0;
-                if (!senderDb?.coin || !Number.isFinite(senderDb.coin)) senderDb.coin = 100;
-                senderDb.save();
-            }
-
             // Pengecekan mode bot (premium, group, private, self)
             if (config.system?.mode === "premium" && !isOwner && !senderDb?.premium) return;
             if (config.system?.mode === "group" && isPrivate && !isOwner && !senderDb?.premium) return;
@@ -195,10 +182,16 @@ module.exports = (bot) => {
                 senderDb.banned = true;
                 senderDb.save();
 
-                await ctx.replyWithJid(config.system.reportToOwner === 1 ? config.owner.id : config.owner.co[config.system.reportToOwner - 1].id + Baileys.S_WHATSAPP_NET, {
-                    text: `ⓘ ${formatter.italic(`Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode(`Anti Bug - ${analyze.reason}`)}.`)}`,
-                    mentions: [senderJid]
-                });
+                const reportOwner = tools.cmd.getReportOwner();
+                if (reportOwner && reportOwner.length > 0) {
+                    for (const ownerId of reportOwner) {
+                        await ctx.replyWithJid(ownerId + Baileys.S_WHATSAPP_NET, {
+                            text: `ⓘ ${formatter.italic(`Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode(`Anti Bug - ${analyze.reason}`)}.`)}`,
+                            mentions: [senderJid]
+                        });
+                        await tools.cmd.delay(500);
+                    }
+                }
             }
 
             // Did you mean?
@@ -375,10 +368,16 @@ module.exports = (bot) => {
         senderDb.banned = true;
         senderDb.save();
 
-        await bot.core.sendMessage(config.system.reportToOwner === 1 ? config.owner.id : config.owner.co[config.system.reportToOwner - 1].id + Baileys.S_WHATSAPP_NET, {
-            text: `ⓘ ${formatter.italic(`Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`)}`,
-            mentions: [senderJid]
-        });
+        const reportOwner = tools.cmd.getReportOwner();
+        if (reportOwner && reportOwner.length > 0) {
+            for (const ownerId of reportOwner) {
+                await bot.core.sendMessage(ownerId + Baileys.S_WHATSAPP_NET, {
+                    text: `ⓘ ${formatter.italic(`Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`)}`,
+                    mentions: [senderJid]
+                });
+                await tools.cmd.delay(500);
+            }
+        }
         await bot.core.sendMessage(senderJid, {
             text: `ⓘ ${formatter.italic("Anda telah dibanned secara otomatis karena melanggar aturan!")}`,
             buttons: [{

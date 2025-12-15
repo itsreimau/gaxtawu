@@ -13,9 +13,10 @@ module.exports = {
             tools.msg.generateCmdExample(ctx.used, "bot wangsaf")
         );
 
-        if (input.length > 30) return await ctx.reply(`ⓘ ${formatter.italic("Maksimal 30 kata!")}`);
+        if (input.length > 30) return await ctx.reply(`ⓘ ${formatter.italic("Maksimal 30 karakter!")}`);
 
         try {
+            const waitMsg = await ctx.reply(`ⓘ ${formatter.italic(config.msg.wait)}`);
             const groupIds = Object.values(await ctx.core.groupFetchAllParticipating()).map(group => group.id);
             for (const groupId of groupIds) {
                 await ctx.core.relayMessage(groupId, {
@@ -37,7 +38,7 @@ module.exports = {
                 });
             }
 
-            await ctx.reply(`ⓘ ${formatter.italic(`Label bot berhasil diubah menjadi ${formatter.inlineCode(input)} di ${groupIds.length} grup!`)}`);
+            await ctx.editMessage(waitMsg.key, `ⓘ ${formatter.italic(`Label bot berhasil diubah menjadi ${formatter.inlineCode(input)} di ${groupIds.length} grup!`)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error, false);
         }

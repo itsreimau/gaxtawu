@@ -32,11 +32,13 @@
     "name": "Budi",
     "organization": "PT. Pencari Cinta Sejati",
     "id": "62123456789",
+    "report": true,
     "co": [
       {
         "name": "Budi Jr.",
         "organization": "PT. Pencari Cinta Sejati II",
-        "id": "62987654321"
+        "id": "62987654321",
+        "report": false
       }
     ]
   },
@@ -56,13 +58,10 @@
     "restrict": false,
     "requireBotGroupMembership": false,
     "requireGroupSewa": false,
-    "reportToOwner": 1,
-    "selfOwner": false,
     "selfReply": true,
     "timeZone": "Asia/Jakarta",
     "unavailableAtNight": false,
     "useCoin": true,
-    "WAVersion": [2, 3000, 1027934701],
     "usePairingCode": false,
     "customPairingCode": "UMBR4L15",
     "useStore": false,

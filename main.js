@@ -28,17 +28,18 @@ const bot = new Client({
         useStore: system.useStore
     },
     connection: {
-        WAVersion: system.WAVersion,
+        version: system?.WAVersion,
         alwaysOnline: system.alwaysOnline,
         selfReply: system.selfReply
     },
     messaging: {
-        autoRead: system.autoRead
+        autoRead: system.autoRead,
+        prefix: botConfig?.prefix
     },
     database: {
         dir: diretory.database
     },
-    owner: [system.selfOwner ? "bot" : null, config.owner.id, ...config.owner.co.map(co => co.id)].filter(Boolean)
+    owner: [config.owner.id, ...config.owner.co.map(co => co.id)]
 });
 
 // Inisialisasi event dan middleware

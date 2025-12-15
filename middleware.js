@@ -20,6 +20,19 @@ module.exports = (bot) => {
         const senderDb = ctx.db.user;
         const groupDb = ctx.db.group;
 
+        // Penanganan database pengguna
+        if (senderDb) {
+            if (!senderDb?.username) senderDb.username = `@user_${tools.cmd.generateUID(senderId, false)}`;
+            if (!senderDb?.uid || senderDb?.uid !== tools.cmd.generateUID(senderId)) senderDb.uid = tools.cmd.generateUID(senderId);
+            if (senderDb?.premium && Date.now() > senderDb.premiumExpiration) {
+                delete senderDb.premium;
+                delete senderDb.premiumExpiration;
+            }
+            if (isOwner || senderDb?.premium) senderDb.coin = 0;
+            if (!senderDb?.coin || !Number.isFinite(senderDb.coin)) senderDb.coin = 100;
+            senderDb.save();
+        }
+
         // Pengecekan mode bot (group, private, self)
         if (config.system?.mode === "premium" && !isOwner && !senderDb?.premium) return;
         if (config.system?.mode === "group" && isPrivate && !isOwner && !senderDb?.premium) return;
