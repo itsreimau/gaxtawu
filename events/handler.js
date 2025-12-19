@@ -21,11 +21,11 @@ async function handleWelcome(ctxBot, ctx, type, isSimulate = false) {
     const tag = `@${ctxBot.getId(jid)}`;
     const customText = isWelcome ? groupDb?.text?.welcome : groupDb?.text?.goodbye;
     const metadata = await ctxBot.core.groupMetadata(groupJid);
-    const text = customText ?
-        customText.replace(/%tag%/g, tag).replace(/%subject%/g, metadata.subject).replace(/%description%/g, metadata.description) :
+    const text = customText ? customText.replace(/%tag%/g, tag).replace(/%subject%/g, metadata.subject).replace(/%description%/g, metadata.description) :
         (isWelcome ?
             `>ᴗ< ${formatter.italic(`Selamat datang ${tag} di grup ${metadata.subject}!`)}` :
-            `•︵• ${formatter.italic(`Selamat tinggal, ${tag}!`)}`);
+            `•︵• ${formatter.italic(`Selamat tinggal, ${tag}!`)}`
+        );
     const profilePictureUrl = await ctxBot.core.profilePictureUrl(jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
 
     await ctxBot.core.sendMessage(groupJid, {
@@ -50,20 +50,21 @@ async function handleWelcome(ctxBot, ctx, type, isSimulate = false) {
         quoted: tools.cmd.fakeQuotedText(config.msg.footer)
     });
 
-    if (isWelcome && groupDb?.text?.intro) await ctxBot.core.sendMessage(groupJid, {
-        text: groupDb.text.intro,
-        mentions: [jid],
-        interactiveButtons: [{
-            name: "cta_copy",
-            buttonParamsJson: JSON.stringify({
-                display_text: "Salin Teks",
-                id: "copy_text",
-                copy_code: text
-            })
-        }]
-    }, {
-        quoted: tools.cmd.fakeQuotedText(">ᴗ< Jangan lupa untuk mengisi intro!")
-    });
+    if (isWelcome && groupDb?.text?.intro)
+        await ctxBot.core.sendMessage(groupJid, {
+            text: groupDb.text.intro,
+            mentions: [jid],
+            interactiveButtons: [{
+                name: "cta_copy",
+                buttonParamsJson: JSON.stringify({
+                    display_text: "Salin Teks",
+                    id: "copy_text",
+                    copy_code: text
+                })
+            }]
+        }, {
+            quoted: tools.cmd.fakeQuotedText(">ᴗ< Jangan lupa untuk mengisi intro!")
+        });
 }
 
 // Fungsi untuk menambahkan warning
@@ -106,7 +107,7 @@ async function addWarning(ctx, senderJid, senderLid, isAdmin, groupDb) {
 }
 
 // Events utama bot
-module.exports = (bot) => {
+module.exports = bot => {
     bot.ev.setMaxListeners(config.system.maxListeners); // Tetapkan max listeners untuk events
 
     // Event saat bot siap
@@ -126,7 +127,7 @@ module.exports = (bot) => {
         }
 
         // Tetapkan config pada bot
-        if (!config.bot.groupLink) config.bot.groupLink = `https://chat.whatsapp.com/${await bot.core.groupInviteCode(config.bot.groupJid).then(code => code).catch(() => "FxEYZl2UyzAEI2yhaH34Ye")}`;
+        if (!config.bot.groupLink) config.bot.groupLink = `https://chat.whatsapp.com/${await bot.core.groupInviteCode(config.bot.groupJid).catch(() => "FxEYZl2UyzAEI2yhaH34Ye")}`;
         config.save();
     });
 
@@ -195,15 +196,16 @@ module.exports = (bot) => {
             }
 
             // Did you mean?
-            if (isCmd?.didyoumean) await ctx.reply({
-                text: `ⓘ ${formatter.italic(`Apakah maksudmu ${formatter.inlineCode(isCmd.prefix + isCmd.didyoumean)}?`)}`,
-                buttons: [{
-                    buttonId: `${isCmd.prefix + isCmd.didyoumean} ${isCmd.input}`,
-                    buttonText: {
-                        displayText: "Ya, benar!"
-                    }
-                }]
-            });
+            if (isCmd?.didyoumean)
+                await ctx.reply({
+                    text: `ⓘ ${formatter.italic(`Apakah maksudmu ${formatter.inlineCode(isCmd.prefix + isCmd.didyoumean)}?`)}`,
+                    buttons: [{
+                        buttonId: `${isCmd.prefix + isCmd.didyoumean} ${isCmd.input}`,
+                        buttonText: {
+                            displayText: "Ya, benar!"
+                        }
+                    }]
+                });
 
             // Penanganan AFK (Menghapus status AFK pengguna yang mengirim pesan)
             const senderAfk = senderDb?.afk || {};

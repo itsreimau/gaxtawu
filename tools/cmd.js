@@ -4,7 +4,7 @@ const { Baileys, MessageType, Gktw } = require("@itsreimau/gktw");
 const axios = require("axios");
 const util = require("node:util");
 
-const formatBotName = (botName) => {
+const formatBotName = botName => {
     if (!botName) return null;
     botName = botName.toLowerCase();
     return botName.replace(/[aiueo0-9\W_]/g, "");
@@ -129,7 +129,7 @@ async function handleError(ctx, error, useAxios = false, reportToOwner = true) {
                 text: `ⓘ ${formatter.italic(isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${ctx.getId(ctx.sender.jid)}` : `Terjadi kesalahan dari: @${ctx.getId(ctx.sender.jid)}`)}\n` +
                     formatter.monospace(errorText),
                 contextInfo: {
-                    mentionJid: [ctx.sender.jid],
+                    mentionedJid: [ctx.sender.jid],
                     groupMentions: isGroup ? [{
                         groupJid,
                         groupSubject
@@ -155,12 +155,13 @@ function isCmd(text, ctxBot) {
     const cmds = Array.from(ctxBot.cmd.values());
     const matchedCmd = cmds.find(cmd => cmd.name === cmdName || cmd?.aliases?.includes(cmdName));
 
-    if (matchedCmd) return {
-        msg: text,
-        prefix,
-        name: cmdName,
-        input
-    };
+    if (matchedCmd)
+        return {
+            msg: text,
+            prefix,
+            name: cmdName,
+            input
+        };
 
     const mean = Gktw.didYouMean(cmdName, cmds.flatMap(cmd => [cmd.name, ...(cmd.aliases || [])]));
     return mean ? {

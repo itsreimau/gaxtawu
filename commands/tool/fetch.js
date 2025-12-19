@@ -11,10 +11,11 @@ module.exports = {
     code: async (ctx) => {
         const url = ctx.args[0] || null;
 
-        if (!url) return await ctx.reply(
-            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            tools.msg.generateCmdExample(ctx.used, config.bot.thumbnail)
-        );
+        if (!url)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                tools.msg.generateCmdExample(ctx.used, config.bot.thumbnail)
+            );
 
         const isUrl = tools.cmd.isUrl(url);
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
@@ -22,7 +23,7 @@ module.exports = {
         try {
             const response = await axios.get(url, {
                 responseType: "arraybuffer",
-                validateStatus: (status) => true
+                validateStatus: status => true
             });
             const contentType = response?.headers?.["content-type"];
 

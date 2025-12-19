@@ -10,10 +10,11 @@ module.exports = {
     code: async (ctx) => {
         const input = ctx.text || null;
 
-        if (!input) return await ctx.reply(
-            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            tools.msg.generateCmdExample(ctx.used, "get in the fucking robot|shinji!")
-        );
+        if (!input)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                tools.msg.generateCmdExample(ctx.used, "get in the fucking robot|shinji!")
+            );
 
         const [checkMedia, checkQuotedMedia] = [
             tools.cmd.checkMedia(ctx.msg.messageType, ["image", "sticker"]),

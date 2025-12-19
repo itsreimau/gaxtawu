@@ -12,14 +12,12 @@ module.exports = {
                 .setNumber(config.owner.id)
                 .build();
             const coOwners = config.owner.co && Array.isArray(config.owner.co) && config.owner.co.length > 0 ? config.owner.co.map(co => {
-                return {
-                    displayName: co.name,
-                    vcard: new VCardBuilder()
-                        .setFullName(co.name)
-                        .setOrg(co.organization || config.owner.organization)
-                        .setNumber(co.id)
-                        .build()
-                };
+                displayName: co.name,
+                vcard: new VCardBuilder()
+                    .setFullName(co.name)
+                    .setOrg(co.organization || config.owner.organization)
+                    .setNumber(co.id)
+                    .build()
             }) : [];
 
             await ctx.reply({

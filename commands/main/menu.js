@@ -15,17 +15,17 @@ module.exports = {
                 "ai-chat": "AI (Chat)",
                 "ai-generate": "AI (Generate)",
                 "ai-misc": "AI (Miscellaneous)",
-                "converter": "Converter",
-                "downloader": "Downloader",
-                "game": "Game",
-                "group": "Group",
-                "maker": "Maker",
-                "profile": "Profile",
-                "search": "Search",
-                "tool": "Tool",
-                "owner": "Owner",
-                "information": "Information",
-                "misc": "Miscellaneous"
+                converter: "Converter",
+                downloader: "Downloader",
+                game: "Game",
+                group: "Group",
+                maker: "Maker",
+                profile: "Profile",
+                search: "Search",
+                tool: "Tool",
+                owner: "Owner",
+                information: "Information",
+                misc: "Miscellaneous"
             };
 
             let text = `— Halo, @${ctx.getId(ctx.sender.jid)}! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}. Saya bisa melakukan banyak perintah, seperti membuat stiker, menggunakan AI untuk pekerjaan tertentu, dan beberapa perintah berguna lainnya.\n` +
@@ -64,7 +64,6 @@ module.exports = {
                 }
 
                 text += "╰┈┈┈┈┈┈\n";
-
             }
 
             await ctx.core.sendMessage(ctx.id, {

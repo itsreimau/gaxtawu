@@ -2,7 +2,6 @@ module.exports = {
     name: "profile",
     aliases: ["me", "prof", "profil"],
     category: "profile",
-    permissions: {},
     code: async (ctx) => {
         try {
             const users = ctx.db.users.getAll();

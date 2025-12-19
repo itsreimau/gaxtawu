@@ -13,10 +13,7 @@ module.exports = {
         if (!pending.length === 0) return await ctx.reply(`ⓘ ${formatter.italic("Tidak ada anggota yang menunggu persetujuan.")}`);
 
         try {
-            const resultText = pending.map((member, index) => {
-                const id = ctx.getId(member.jid);
-                return `${index + 1}. ${id}`;
-            }).join("\n");
+            const resultText = pending.map((member, index) => `${index + 1}. ${ctx.getId(member.jid)}`).join("\n");
 
             await ctx.reply(resultText.trim());
         } catch (error) {

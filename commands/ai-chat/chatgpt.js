@@ -10,11 +10,12 @@ module.exports = {
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.text || null;
 
-        if (!input) return await ctx.reply(
-            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            `${tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
-            tools.msg.generateNotes(["AI ini dapat melihat gambar."])
-        );
+        if (!input)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
+                tools.msg.generateNotes(["AI ini dapat melihat gambar."])
+            );
 
         const [checkMedia, checkQuotedMedia] = [
             tools.cmd.checkMedia(ctx.msg.messageType, "image"),
@@ -22,12 +23,12 @@ module.exports = {
         ];
 
         try {
-            const systemPrompt = `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.` // Dapat diubah sesuai keinginan
+            const systemPrompt = `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.`; // Dapat diubah sesuai keinginan
             const uid = ctx.db.user.uid || "guest";
 
             if (!!checkMedia || !!checkQuotedMedia) {
                 const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-                const apiUrl = tools.api.createUrl("nekolabs", "/text-generation/gpt/5", {
+                const apiUrl = tools.api.createUrl("nekolabs", "/text-generation/gpt/5-nano", {
                     text: input,
                     systemPrompt,
                     imageUrl: uploadUrl,
@@ -37,7 +38,7 @@ module.exports = {
 
                 await ctx.reply(result);
             } else {
-                const apiUrl = tools.api.createUrl("nekolabs", "/text-generation/gpt/5", {
+                const apiUrl = tools.api.createUrl("nekolabs", "/text-generation/gpt/5-nano", {
                     text: input,
                     systemPrompt,
                     sessionId: uid

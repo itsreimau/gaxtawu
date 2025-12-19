@@ -3,7 +3,7 @@ const { Baileys, Cooldown } = require("@itsreimau/gktw");
 const moment = require("moment-timezone");
 
 // Middleware utama bot
-module.exports = (bot) => {
+module.exports = bot => {
     bot.use(async (ctx, next) => {
         // Variabel umum
         const isGroup = ctx.isGroup();
@@ -86,7 +86,7 @@ module.exports = (bot) => {
             const now = Date.now();
             const duration = 24 * 60 * 60 * 1000;
 
-            if (senderDb?.botGroupMembership && (now - senderDb.botGroupMembership.timestamp) < duration) return senderDb.botGroupMembership.isMember;
+            if (senderDb?.botGroupMembership.isMember && now - senderDb.botGroupMembership.timestamp < duration) return senderDb.botGroupMembership.isMember;
 
             const isMember = await ctx.group(config.bot.groupJid).isMemberExist(senderLid);
             senderDb.botGroupMembership = {

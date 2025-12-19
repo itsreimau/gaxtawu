@@ -59,14 +59,14 @@ function generateInstruction(actions, mediaTypes) {
     }
 
     const mediaTypeTranslations = {
-        "audio": "audio",
-        "document": "dokumen",
-        "gif": "GIF",
-        "image": "gambar",
-        "sticker": "stiker",
-        "text": "teks",
-        "video": "video",
-        "viewOnce": "sekali lihat"
+        audio: "audio",
+        document: "dokumen",
+        gif: "GIF",
+        image: "gambar",
+        sticker: "stiker",
+        text: "teks",
+        video: "video",
+        viewOnce: "sekali lihat"
     };
 
     const translatedMediaTypeList = translatedMediaTypes.map(type => mediaTypeTranslations[type]);
@@ -80,8 +80,8 @@ function generateInstruction(actions, mediaTypes) {
     }
 
     const actionTranslations = {
-        "send": "Kirim",
-        "reply": "Balas"
+        send: "Kirim",
+        reply: "Balas"
     };
 
     const instructions = actions.map(action => `${actionTranslations[action]}`);
@@ -91,7 +91,7 @@ function generateInstruction(actions, mediaTypes) {
 
 function generatesFlagInfo(flags) {
     if (!flags || typeof flags !== "object") return `${formatter.inlineCode("flags")} harus berupa objek!`;
-    return flagInfo = "Flag:\n" +
+    return "Flag:\n" +
         Object.entries(flags).map(([flag, description]) => `- ${formatter.inlineCode(flag)}: ${description}`).join("\n");
 }
 
@@ -103,7 +103,7 @@ function generateNotes(notes) {
 
 function ucwords(text) {
     if (!text) return null;
-    return text.toLowerCase().replace(/\b\w/g, (txt) => txt.toUpperCase());
+    return text.toLowerCase().replace(/\b\w/g, txt => txt.toUpperCase());
 }
 
 module.exports = {

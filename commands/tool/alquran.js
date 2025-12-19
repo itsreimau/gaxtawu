@@ -7,11 +7,14 @@ module.exports = {
     code: async (ctx) => {
         const [surat, ayat] = ctx.args;
 
-        if (!surat && !ayat) return await ctx.reply(
-            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            `${tools.msg.generateCmdExample(ctx.used, "21 35")}\n` +
-            tools.msg.generateNotes([`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`])
-        );
+        if (!surat && !ayat)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "21 35")}\n` +
+                tools.msg.generateNotes([
+                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
+                ])
+            );
 
         if (surat.toLowerCase() === "list") {
             const listText = await tools.list.get("alquran");
@@ -21,9 +24,7 @@ module.exports = {
         if (isNaN(surat) || surat < 1 || surat > 114) return await ctx.reply(`ⓘ ${formatter.italic("Surah harus berupa nomor antara 1 sampai 114!")}`);
 
         try {
-            const apiUrl = tools.api.createUrl("https://raw.githubusercontent.com", `/penggguna/QuranJSON/master/surah/${surat}.json`, {
-                id: surat
-            });
+            const apiUrl = tools.api.createUrl("https://raw.githubusercontent.com", `/penggguna/QuranJSON/master/surah/${surat}.json`);
             const result = (await axios.get(apiUrl)).data;
             const verses = result.verses;
 

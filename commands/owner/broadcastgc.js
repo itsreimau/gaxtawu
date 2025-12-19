@@ -8,11 +8,14 @@ module.exports = {
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.text || null;
 
-        if (!input) return await ctx.reply(
-            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            `${tools.msg.generateCmdExample(ctx.used, "halo, dunia!")}\n` +
-            tools.msg.generateNotes([`Gunakan ${formatter.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`])
-        );
+        if (!input)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "halo, dunia!")}\n` +
+                tools.msg.generateNotes([
+                    `Gunakan ${formatter.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`
+                ])
+            );
 
         let blacklist = config.system?.blacklistBroadcast || [];
         if (ctx.args[0]?.toLowerCase() === "blacklist" && ctx.isGroup()) {

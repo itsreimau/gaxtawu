@@ -9,15 +9,18 @@ module.exports = {
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.text || null;
 
-        if (!input) return await ctx.reply(
-            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            tools.msg.generateCmdExample(ctx.used, "halo, dunia!")
-        );
-
         const [checkMedia, checkQuotedMedia] = [
             tools.cmd.checkMedia(ctx.msg.messageType, "image", "video"),
             tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, "image", "video")
         ];
+
+        const type = checkMedia || checkQuotedMedia;
+
+        if (!input && !type)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                tools.msg.generateCmdExample(ctx.used, "halo, dunia!")
+            );
 
         try {
             const type = checkMedia || checkQuotedMedia;

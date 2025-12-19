@@ -6,18 +6,19 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        let target = await ctx.target();;
+        const target = await ctx.target();
         const coinAmount = parseInt(ctx.args[ctx.quoted ? 0 : 1], 10) || null;
 
-        if (!target || !coinAmount) return await ctx.reply({
-            text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "@6281234567891 8")}\n` +
-                `${tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])}\n` +
-                tools.msg.generatesFlagInfo({
-                    "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
-                }),
-            mentions: ["6281234567891@s.whatsapp.net"]
-        });
+        if (!target || !coinAmount)
+            return await ctx.reply({
+                text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                    `${tools.msg.generateCmdExample(ctx.used, "@6281234567891 8")}\n` +
+                    `${tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])}\n` +
+                    tools.msg.generatesFlagInfo({
+                        "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
+                    }),
+                mentions: ["6281234567891@s.whatsapp.net"]
+            });
 
         try {
             const targetDb = ctx.getDb("users", target);
@@ -32,9 +33,10 @@ module.exports = {
             });
 
             const silent = flag?.silent || false;
-            if (!silent) await ctx.core.sendMessage(target, {
-                text: `ⓘ ${formatter.italic(`Anda telah menerima ${coinAmount} koin dari owner!`)}`
-            });
+            if (!silent)
+                await ctx.core.sendMessage(target, {
+                    text: `ⓘ ${formatter.italic(`Anda telah menerima ${coinAmount} koin dari owner!`)}`
+                });
 
             await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menambahkan ${coinAmount} koin kepada pengguna itu!`)}`);
         } catch (error) {

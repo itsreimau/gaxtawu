@@ -8,10 +8,11 @@ module.exports = {
     code: async (ctx) => {
         const input = ctx.text || null;
 
-        if (!input) return await ctx.reply(
-            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            tools.msg.generateCmdExample(ctx.used, "bot wangsaf")
-        );
+        if (!input)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                tools.msg.generateCmdExample(ctx.used, "bot wangsaf")
+            );
 
         if (input.length > 30) return await ctx.reply(`ⓘ ${formatter.italic("Maksimal 30 karakter!")}`);
 

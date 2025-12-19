@@ -10,11 +10,14 @@ module.exports = {
     code: async (ctx) => {
         const [passage, number] = ctx.args;
 
-        if (!passage && !number) return await ctx.reply(
-            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            `${tools.msg.generateCmdExample(ctx.used, "kej 2:18")}\n` +
-            tools.msg.generateNotes([`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`])
-        );
+        if (!passage && !number)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "kej 2:18")}\n` +
+                tools.msg.generateNotes([
+                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
+                ])
+            );
 
         if (passage.toLowerCase() === "list") {
             const listText = await tools.list.get("alkitab");

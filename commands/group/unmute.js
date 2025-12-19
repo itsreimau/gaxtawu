@@ -15,14 +15,18 @@ module.exports = {
             return await ctx.reply(`ⓘ ${formatter.italic("Berhasil me-unmute grup ini dari bot!")}`);
         }
 
-        let target = await ctx.target(["quoted", "mentioned"]);
+        const target = await ctx.target(["quoted", "mentioned"]);
 
-        if (!target) return await ctx.reply({
-            text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
-                tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target.", `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-unmute bot.`]),
-            mentions: ["6281234567891@s.whatsapp.net"]
-        });
+        if (!target)
+            return await ctx.reply({
+                text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                    `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
+                    tools.msg.generateNotes([
+                        "Balas/quote pesan untuk menjadikan pengirim sebagai akun target.",
+                        `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-unmute bot.`
+                    ]),
+                mentions: ["6281234567891@s.whatsapp.net"]
+            });
 
         if (target === ctx.me.lid) return await ctx.reply(`ⓘ ${formatter.italic(`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-unmute bot.`)}`);
         if (await ctx.group().isOwner(target)) return await ctx.reply(`ⓘ ${formatter.italic("Dia adalah owner grup!")}`);

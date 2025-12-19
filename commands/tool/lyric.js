@@ -10,10 +10,11 @@ module.exports = {
     code: async (ctx) => {
         const input = ctx.text || null;
 
-        if (!input) return await ctx.reply(
-            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            tools.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada")
-        );
+        if (!input)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                tools.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada")
+            );
 
         try {
             const apiUrl = tools.api.createUrl("deline", "/tools/lyrics", {

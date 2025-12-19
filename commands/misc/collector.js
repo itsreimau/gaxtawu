@@ -11,17 +11,13 @@ module.exports = {
         try {
             const collector = ctx.MessageCollector({
                 time: timeout,
-                filter: (collCtx) => !collCtx.msg.key.fromMe
+                filter: collCtx => !collCtx.msg.key.fromMe
             });
             await ctx.reply(`ⓘ ${formatter.italic(`Collector dimulai dengan timeout ${tools.msg.convertMsToDuration(timeout)}.`)}`);
 
-            collector.on("collect", async (collCtx) => {
-                await collCtx.reply(util.format(collCtx.bot.m));
-            });
+            collector.on("collect", async (collCtx) => await collCtx.reply(util.format(collCtx.bot.m)));
 
-            collector.on("end", async () => {
-                await ctx.reply(`ⓘ ${formatter.italic("Collector berhenti!")}`);
-            });
+            collector.on("end", async () => await ctx.reply(`ⓘ ${formatter.italic("Collector berhenti!")}`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

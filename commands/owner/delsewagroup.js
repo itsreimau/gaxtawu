@@ -6,16 +6,17 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const target = ctx.isGroup() ? ctx.id : await ctx.target("text_group");
+        const target = ctx.isGroup() ? ctx.id : await ctx.target(["text_group"]);
 
-        if (!target) return await ctx.reply(
-            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            `${tools.msg.generateCmdExample(ctx.used, "1234567890")}\n` +
-            `${tools.msg.generateNotes(["Gunakan di grup untuk otomatis menghapus sewa grup tersebut."])}\n` +
-            tools.msg.generatesFlagInfo({
-                "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
-            })
-        );
+        if (!target)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "1234567890")}\n` +
+                `${tools.msg.generateNotes(["Gunakan di grup untuk otomatis menghapus sewa grup tersebut."])}\n` +
+                tools.msg.generatesFlagInfo({
+                    "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
+                })
+            );
 
         if (!await ctx.group(target)) return await ctx.reply(`ⓘ ${formatter.italic("Grup tidak valid atau bot tidak ada di grup tersebut!")}`);
 

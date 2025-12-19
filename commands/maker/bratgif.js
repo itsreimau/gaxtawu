@@ -10,10 +10,11 @@ module.exports = {
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.text || null;
 
-        if (!input) return await ctx.reply(
-            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            tools.msg.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")
-        );
+        if (!input)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                tools.msg.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")
+            );
 
         if (input.length > 1000) return await ctx.reply(`ⓘ ${formatter.italic("Maksimal 1000 karakter!")}`);
 

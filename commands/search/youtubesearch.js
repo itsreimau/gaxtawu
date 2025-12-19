@@ -10,26 +10,28 @@ module.exports = {
     code: async (ctx) => {
         const input = ctx.text || null;
 
-        if (!input) return await ctx.reply(
-            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            tools.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada")
-        );
+        if (!input)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                tools.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada")
+            );
 
         const isUrl = tools.cmd.isUrl(input);
-        if (isUrl) return await ctx.reply({
-            text: `ⓘ ${formatter.italic("Input berupa URL, gunakan tombol download di bawah:")}`,
-            buttons: [{
-                buttonId: `${ctx.used.prefix}youtubeaudio ${input}`,
-                buttonText: {
-                    displayText: "Download Audio"
-                }
-            }, {
-                buttonId: `${ctx.used.prefix}youtubevideo ${input}`,
-                buttonText: {
-                    displayText: "Download Video"
-                }
-            }]
-        });
+        if (isUrl)
+            return await ctx.reply({
+                text: `ⓘ ${formatter.italic("Input berupa URL, gunakan tombol download di bawah:")}`,
+                buttons: [{
+                    buttonId: `${ctx.used.prefix}youtubeaudio ${input}`,
+                    buttonText: {
+                        displayText: "Download Audio"
+                    }
+                }, {
+                    buttonId: `${ctx.used.prefix}youtubevideo ${input}`,
+                    buttonText: {
+                        displayText: "Download Video"
+                    }
+                }]
+            });
 
         try {
             const apiUrl = tools.api.createUrl("znx", "/api/search/youtube", {

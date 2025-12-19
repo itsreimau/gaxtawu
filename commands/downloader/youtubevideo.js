@@ -16,13 +16,14 @@ module.exports = {
         });
         const url = flag.input || null;
 
-        if (!url) return await ctx.reply(
-            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            `${tools.msg.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d")}\n` +
-            tools.msg.generatesFlagInfo({
-                "-d": "Kirim sebagai dokumen"
-            })
-        );
+        if (!url)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d")}\n` +
+                tools.msg.generatesFlagInfo({
+                    "-d": "Kirim sebagai dokumen"
+                })
+            );
 
         const isUrl = tools.cmd.isUrl(url);
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);

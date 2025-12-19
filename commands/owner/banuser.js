@@ -6,17 +6,18 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        let target = await ctx.target();
+        const target = await ctx.target();
 
-        if (!target) return await ctx.reply({
-            text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
-                `${tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])}\n` +
-                tools.msg.generatesFlagInfo({
-                    "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
-                }),
-            mentions: ["6281234567891@s.whatsapp.net"]
-        });
+        if (!target)
+            return await ctx.reply({
+                text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                    `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
+                    `${tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])}\n` +
+                    tools.msg.generatesFlagInfo({
+                        "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
+                    }),
+                mentions: ["6281234567891@s.whatsapp.net"]
+            });
 
         try {
             const targetDb = ctx.getDb("users", target);
@@ -31,9 +32,10 @@ module.exports = {
             });
 
             const silent = flag?.silent || false;
-            if (!silent) await ctx.core.sendMessage(target, {
-                text: `ⓘ ${formatter.italic("Anda telah dibanned oleh owner!")}`
-            });
+            if (!silent)
+                await ctx.core.sendMessage(target, {
+                    text: `ⓘ ${formatter.italic("Anda telah dibanned oleh owner!")}`
+                });
 
             await ctx.reply(`ⓘ ${formatter.italic("Berhasil dibanned!")}`);
         } catch (error) {

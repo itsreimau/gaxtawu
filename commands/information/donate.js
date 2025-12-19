@@ -6,13 +6,12 @@ module.exports = {
         try {
             const qrisLink = config?.text?.qris || null;
             const customText = config?.text?.donate || null;
-            const text = customText ?
-                customText.replace(/%tag%/g, `@${ctx.getId(ctx.sender.jid)}`).replace(/%name%/g, config.bot.name).replace(/%prefix%/g, ctx.used.prefix).replace(/%command%/g, ctx.used.command).replace(/%footer%/g, config.msg.footer).replace(/%readmore%/g, "\u200E".repeat(4001)) :
+            const text = customText ? customText.replace(/%tag%/g, `@${ctx.getId(ctx.sender.jid)}`).replace(/%name%/g, config.bot.name).replace(/%prefix%/g, ctx.used.prefix).replace(/%command%/g, ctx.used.command).replace(/%footer%/g, config.msg.footer).replace(/%readmore%/g, "\u200E".repeat(4001)) :
                 "➛ 083838039693 (DANA & Pulsa & Kuota)\n" +
                 "➛ https://paypal.me/itsreimau (PayPal)\n" +
                 "➛ https://saweria.co/itsreimau (Saweria)\n" +
                 "➛ https://tako.id/itsreimau (Tako)\n" +
-                "➛ https://trakteer.id/itsreimau (Trakteer)"
+                "➛ https://trakteer.id/itsreimau (Trakteer)";
 
             if (qrisLink) {
                 await ctx.reply({

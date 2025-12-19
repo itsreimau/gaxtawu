@@ -9,10 +9,11 @@ module.exports = {
     code: async (ctx) => {
         const input = ctx.text || null;
 
-        if (!input) return await ctx.reply(
-            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            tools.msg.generateCmdExample(ctx.used, "make it evangelion art style")
-        );
+        if (!input)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                tools.msg.generateCmdExample(ctx.used, "make it evangelion art style")
+            );
 
         const [checkMedia, checkQuotedMedia] = [
             tools.cmd.checkMedia(ctx.msg.messageType, "image"),
@@ -25,7 +26,7 @@ module.exports = {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
             let result;
             for (let v = 1; v <= 2; v++) {
-                const apiUrl = tools.api.createUrl("nekolabs", `/image-generation/gemini/nano-banana/v${v}`, {
+                const apiUrl = tools.api.createUrl("nekolabs", `/image-generation/flux/kontext/v${v}`, {
                     prompt: input,
                     imageUrl: uploadUrl
                 });

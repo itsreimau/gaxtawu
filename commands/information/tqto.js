@@ -6,7 +6,7 @@ module.exports = {
         await ctx.reply(
             "➛ ItsReimau (github.com/itsreimau)\n" +
             "➛ Jastin Linggar Tama (github.com/JastinXyz)\n" +
-            "➛ yemobyte (aka. Raol) (github.com/yemobyte)\n" +
+            "➛ Raol (github.com/yemobyte)\n" +
             "➛ Rippanteq7 (github.com/Rippanteq7)\n" +
             "➛ Rizky Pratama (github.com/Kyluxx)\n" +
             "➛ FandyAhmD (github.com/fandyahmd)\n" +

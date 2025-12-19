@@ -11,30 +11,31 @@ module.exports = {
             "-i": {
                 type: "value",
                 key: "index",
-                validator: (val) => !isNaN(val) && parseInt(val) > 0,
-                parser: (val) => parseInt(val) - 1
+                validator: val => !isNaN(val) && parseInt(val) > 0,
+                parser: val => parseInt(val) - 1
             },
             "-s": {
                 type: "value",
                 key: "source",
-                validator: (val) => true,
-                parser: (val) => val.toLowerCase()
+                validator: val => true,
+                parser: val => val.toLowerCase()
             }
         });
         const input = flag.input;
 
-        if (!input) return await ctx.reply(
-            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-            `${tools.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada -i 8 -s spotify")}\n` +
-            tools.msg.generatesFlagInfo({
-                "-i <number>": "Pilihan pada data indeks",
-                "-s <text>": "Sumber untuk memutar lagu (tersedia: spotify, youtube | default: youtube)"
-            })
-        );
+        if (!input)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada -i 8 -s spotify")}\n` +
+                tools.msg.generatesFlagInfo({
+                    "-i <number>": "Pilihan pada data indeks",
+                    "-s <text>": "Sumber untuk memutar lagu (tersedia: spotify, youtube | default: youtube)"
+                })
+            );
 
         try {
             const searchIndex = flag?.index || 0;
-            let source = flag?.source || null;
+            const source = flag?.source || null;
 
             if (source === "spotify") {
                 const searchApiUrl = tools.api.createUrl("znx", "/api/search/spotify", {

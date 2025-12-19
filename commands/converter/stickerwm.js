@@ -10,10 +10,11 @@ module.exports = {
     code: async (ctx) => {
         const input = ctx.text || null;
 
-        if (!input) return await ctx.reply(
-            `${tools.msg.generateInstruction(["send", "reply"], ["text", "sticker"])}\n` +
-            tools.msg.generateCmdExample(ctx.used, "does this impact the lore?|@rei-ayanami")
-        );
+        if (!input)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send", "reply"], ["text", "sticker"])}\n` +
+                tools.msg.generateCmdExample(ctx.used, "does this impact the lore?|@rei-ayanami")
+            );
 
         if (!tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["sticker"])) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["sticker"]));
 

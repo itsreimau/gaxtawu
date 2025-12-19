@@ -9,14 +9,15 @@ module.exports = {
         restrict: true
     },
     code: async (ctx) => {
-        let target = await ctx.target(["quoted", "mentioned"]);
+        const target = await ctx.target(["quoted", "mentioned"]);
 
-        if (!target) return await ctx.reply({
-            text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
-                tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]),
-            mentions: ["6281234567891@s.whatsapp.net"]
-        });
+        if (!target)
+            return await ctx.reply({
+                text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                    `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
+                    tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."]),
+                mentions: ["6281234567891@s.whatsapp.net"]
+            });
 
         if (target === ctx.me.lid) return await ctx.reply(`ⓘ ${formatter.italic(`Tidak bisa mengubah warning bot!`)}`);
         if (await ctx.group().isOwner(target)) return await ctx.reply(`ⓘ ${formatter.italic("Tidak bisa memberikan warning ke owner grup!")}`);
