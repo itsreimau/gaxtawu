@@ -17,7 +17,7 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/image-generation/stable-diffusion/3.5", {
+            const apiUrl = tools.api.createUrl("nekolabs", "/img.gen/stable-diffusion/3.5", {
                 prompt: input
             });
             const result = (await axios.get(apiUrl)).data.result;

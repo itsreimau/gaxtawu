@@ -69,7 +69,7 @@ module.exports = {
 
                 try {
                     json = JSON.parse(text);
-                } catch (error) {
+                } catch {
                     json = null;
                 }
 

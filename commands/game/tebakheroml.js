@@ -5,6 +5,7 @@ const session = new Map();
 
 module.exports = {
     name: "tebakheroml",
+    aliases: ["tebakml"],
     category: "game",
     code: async (ctx) => {
         if (session.has(ctx.id)) return await ctx.reply(`ⓘ ${formatter.italic("Sesi permainan sedang berjalan!")}`);

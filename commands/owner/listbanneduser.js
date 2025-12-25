@@ -11,9 +11,7 @@ module.exports = {
             const bannedUsers = [];
 
             for (const user of users) {
-                if (user.banned === true) {
-                    bannedUsers.push(user.jid);
-                }
+                if (user.banned === true) bannedUsers.push(user.jid);
             }
 
             let resultText = "";

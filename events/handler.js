@@ -356,10 +356,7 @@ module.exports = bot => {
         const callId = ctx.id;
         const senderJid = ctx.from;
         const senderId = bot.getId(senderJid);
-        const isOwner = bot.checkOwner(senderJid, {
-            id: "3V3NTC4LL",
-            fromMe: false
-        });
+        const isOwner = bot.checkOwner(senderJid);
 
         if (Baileys.isJidGroup(callId) || isOwner) return;
 

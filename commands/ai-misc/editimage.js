@@ -27,7 +27,7 @@ module.exports = {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
             let result;
             for (let v = 1; v <= 6; v++) {
-                const apiUrl = tools.api.createUrl("nekolabs", `/image-generation/gemini/nano-banana/v${v}`, {
+                const apiUrl = tools.api.createUrl("nekolabs", `/img.gen/nano-banana/v${v}`, {
                     prompt: input,
                     imageUrl: uploadUrl
                 });

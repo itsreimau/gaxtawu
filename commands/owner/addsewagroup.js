@@ -1,5 +1,3 @@
-const { Gktw } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "addsewagroup",
     aliases: ["addsewa", "addsewagrup", "adg"],
@@ -41,7 +39,7 @@ module.exports = {
 
             if (!silent && groupOwner) {
                 const groupMentions = [{
-                    groupJid: group.id + Gktw.G_US,
+                    groupJid: `${group.id}@g.us`,
                     groupSubject: await group.name()
                 }];
             }

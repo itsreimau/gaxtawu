@@ -11,12 +11,11 @@ module.exports = {
             const sewaGroups = [];
 
             for (const group of groups) {
-                if (group.sewa === true) {
+                if (group.sewa === true)
                     sewaGroups.push({
                         jid: group.jid,
                         expiration: group.sewaExpiration
                     });
-                }
             }
 
             let resultText = "";

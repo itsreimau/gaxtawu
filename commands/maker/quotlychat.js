@@ -21,7 +21,7 @@ module.exports = {
         try {
             const isQuoted = ctx.text.length === 0 && ctx.quoted;
             const profilePictureUrl = await ctx.core.profilePictureUrl(isQuoted ? ctx.quoted?.sender : ctx.sender.jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
-            const result = tools.api.createUrl("nekolabs", "/canvas/quote-chat", {
+            const result = tools.api.createUrl("nekolabs", "/cnv/quote-chat", {
                 text: input,
                 name: isQuoted ? ctx.quoted?.pushName : ctx.sender.pushName,
                 profile: profilePictureUrl

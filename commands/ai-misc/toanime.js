@@ -17,7 +17,7 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("nekolabs", "/style-changer/anime", {
+            const apiUrl = tools.api.createUrl("nekolabs", "/sty.chgr/anime", {
                 imageUrl: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.result;

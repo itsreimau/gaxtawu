@@ -11,12 +11,11 @@ module.exports = {
             const premiumUsers = [];
 
             for (const user of users) {
-                if (user.premium === true) {
+                if (user.premium === true)
                     premiumUsers.push({
                         jid: user.jid,
                         expiration: user.premiumExpiration
                     });
-                }
             }
 
             let resultText = "";

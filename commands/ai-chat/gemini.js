@@ -27,7 +27,7 @@ module.exports = {
 
             if (!!checkMedia || !!checkQuotedMedia) {
                 const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-                const apiUrl = tools.api.createUrl("nekolabs", "/text-generation/gemini/2.5-flash/v1", {
+                const apiUrl = tools.api.createUrl("nekolabs", "/txt.gen/gemini/2.5-flash/v1", {
                     text: input,
                     systemPrompt,
                     imageUrl: uploadUrl,
@@ -37,7 +37,7 @@ module.exports = {
 
                 await ctx.reply(result);
             } else {
-                const apiUrl = tools.api.createUrl("nekolabs", "/text-generation/gemini/2.5-flash/v1", {
+                const apiUrl = tools.api.createUrl("nekolabs", "/txt.gen/gemini/2.5-flash/v1", {
                     text: input,
                     systemPrompt,
                     sessionId: uid

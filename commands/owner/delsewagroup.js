@@ -39,7 +39,7 @@ module.exports = {
             const groupOwner = await group.owner();
             if (!silent && groupOwner) {
                 const groupMentions = [{
-                    groupJid: group.id + Gktw.G_US,
+                    groupJid: `${group.id}@g.us`,
                     groupSubject: await group.name()
                 }];
                 await ctx.core.sendMessage(groupOwner, {
