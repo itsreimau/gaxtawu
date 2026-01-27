@@ -2,6 +2,7 @@ const axios = require("axios");
 
 module.exports = {
     name: "hd",
+    aliases: ["remini"],
     category: "tool",
     permissions: {
         coin: 5
@@ -16,11 +17,10 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("yp", "/api/tools/hd", {
-                url: uploadUrl,
-                scale: ctx.db.user.premium ? tools.cmd.getRandomElement(["6", "8"]) : tools.cmd.getRandomElement(["2", "4"])
+            const apiUrl = tools.api.createUrl("bagus", "/api/edits/remini", {
+                url: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result.imageUrl;
+            const result = (await axios.get(apiUrl)).data.result.url;
 
             await ctx.reply({
                 image: {

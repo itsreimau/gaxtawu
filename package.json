@@ -1,6 +1,6 @@
 {
   "name": "gaxtawu",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Useless WhatsApp Bot",
   "main": "index.js",
   "directories": {
@@ -18,11 +18,11 @@
     "whatsapp",
     "whatsapp-bot"
   ],
-  "author": "Ikbal Maulana (ItsReimau)",
+  "author": "Reimau von Lilitz",
   "license": "MIT",
   "dependencies": {
     "@itsreimau/gktw": "github:itsreimau/gktw",
-    "axios": "^1.13.2",
+    "axios": "^1.13.4",
     "cfonts": "^3.3.1",
     "jimp": "^0.22.12",
     "link-preview-js": "^4.0.0",

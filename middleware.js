@@ -57,13 +57,25 @@ module.exports = bot => {
         const xpToLevelUp = 100;
         let newSenderXp = (senderDb?.xp || 0) + xpGain;
         if (newSenderXp >= xpToLevelUp) {
-            let newSenderLevel = (senderDb?.level || 0) + 1;
+            const senderLevel = senderDb?.level || 0;
+            let newSenderLevel = senderLevel + 1;
             newSenderXp -= xpToLevelUp;
 
             if (senderDb?.autolevelup) {
                 const profilePictureUrl = await ctx.core.profilePictureUrl(senderJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
+                const canvasUrl = tools.api.createUrl("deline", "/canvas/levelup", {
+                    backgroundURL: "https://picsum.photos/600/150",
+                    avatarURL: profilePictureUrl,
+                    fromLevel: senderLevel,
+                    toLevel: newSenderLevel,
+                    name: ctx.sender.pushName
+                });
                 await ctx.reply({
-                    text: `ⓘ ${formatter.italic(`Selamat! Anda telah naik ke level ${newSenderLevel}.`)}`,
+                    image: {
+                        url: canvasUrl
+                    },
+                    mimetype: tools.mime.lookup("png"),
+                    caption: `ⓘ ${formatter.italic(`Selamat! Anda telah naik ke level ${newSenderLevel}.`)}`,
                     buttons: [{
                         buttonId: `${ctx.used.prefix}setprofile autolevelup`,
                         buttonText: {

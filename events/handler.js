@@ -27,27 +27,21 @@ async function handleWelcome(ctxBot, ctx, type, isSimulate = false) {
             `•︵• ${formatter.italic(`Selamat tinggal, ${tag}!`)}`
         );
     const profilePictureUrl = await ctxBot.core.profilePictureUrl(jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
+    const canvasUrl = tools.api.createUrl("deline", "/canvas/welcome", {
+        username: ctxBot.getPushName(jid),
+        guildName: metadata.subject,
+        memberCount: metadata.participants.length,
+        avatar: profilePictureUrl,
+        background: "https://picsum.photos/1024/450",
+        quality: "99"
+    });
 
     await ctxBot.core.sendMessage(groupJid, {
-        text,
-        contextInfo: {
-            mentionedJid: [jid],
-            isForwarded: true,
-            forwardedNewsletterMessageInfo: {
-                newsletterJid: config.bot.newsletterJid,
-                newsletterName: config.msg.footer
-            },
-            externalAdReply: {
-                title: config.bot.name,
-                body: config.msg.note,
-                mediaType: 1,
-                thumbnailUrl: profilePictureUrl,
-                sourceUrl: config.bot.groupLink,
-                renderLargerThumbnail: true
-            }
-        }
-    }, {
-        quoted: tools.cmd.fakeQuotedText(config.msg.footer)
+        image: {
+            url: canvasUrl
+        },
+        mimetype: tools.mime.lookup("png"),
+        caption: text
     });
 
     if (isWelcome && groupDb?.text?.intro)
@@ -62,8 +56,6 @@ async function handleWelcome(ctxBot, ctx, type, isSimulate = false) {
                     copy_code: text
                 })
             }]
-        }, {
-            quoted: tools.cmd.fakeQuotedText(">ᴗ< Jangan lupa untuk mengisi intro!")
         });
 }
 
@@ -187,7 +179,7 @@ module.exports = bot => {
                 if (reportOwner && reportOwner.length > 0) {
                     for (const ownerId of reportOwner) {
                         await ctx.replyWithJid(ownerId + Baileys.S_WHATSAPP_NET, {
-                            text: `ⓘ ${formatter.italic(`Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode(`Anti Bug - ${analyze.reason}`)}.`)}`,
+                            text: `ⓘ ${formatter.italic(`Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode(`Anti Bug - ${analyze.reason}`)}, tingkat bahaya ${formatter.inlineCode(analyze.severity)}, jenis ancaman ${formatter.inlineCode(analyze.severity)}.`)}`,
                             mentions: [senderJid]
                         });
                         await tools.cmd.delay(500);

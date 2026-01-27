@@ -66,28 +66,12 @@ module.exports = {
                 text += "╰┈┈┈┈┈┈\n";
             }
 
-            await ctx.core.sendMessage(ctx.id, {
+            await ctx.reply({
                 image: {
-                    url: "https://picsum.photos/536/354"
+                    url: config.bot.thumbnail
                 },
                 mimetype: tools.mime.lookup("png"),
                 caption: text.trim(),
-                contextInfo: {
-                    mentionedJid: [ctx.sender.jid],
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: config.bot.newsletterJid,
-                        newsletterName: config.msg.footer
-                    },
-                    externalAdReply: {
-                        title: config.bot.name,
-                        body: config.msg.note,
-                        mediaType: 1,
-                        thumbnailUrl: config.bot.thumbnail,
-                        sourceUrl: config.bot.groupLink,
-                        renderLargerThumbnail: true
-                    }
-                },
                 footer: formatter.italic(config.msg.footer),
                 buttons: [{
                     buttonId: `${ctx.used.prefix}owner`,
@@ -100,8 +84,6 @@ module.exports = {
                         displayText: "Donasi"
                     }
                 }]
-            }, {
-                quoted: tools.cmd.fakeQuotedText(config.msg.note)
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

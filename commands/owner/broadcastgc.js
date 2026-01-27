@@ -43,25 +43,11 @@ module.exports = {
                     mentions = members.map(member => member.jid);
                 }
                 await ctx.core.sendMessage(groupId, {
-                    text: input,
-                    contextInfo: {
-                        mentionedJid: mentions,
-                        isForwarded: true,
-                        forwardedNewsletterMessageInfo: {
-                            newsletterJid: config.bot.newsletterJid,
-                            newsletterName: config.msg.footer
-                        },
-                        externalAdReply: {
-                            title: config.bot.name,
-                            body: config.msg.note,
-                            mediaType: 1,
-                            thumbnailUrl: config.bot.thumbnail,
-                            sourceUrl: config.bot.groupLink,
-                            renderLargerThumbnail: true
-                        }
-                    }
-                }, {
-                    quoted: tools.cmd.fakeQuotedText(config.msg.footer)
+                    image: {
+                        url: config.bot.thumbnail
+                    },
+                    mimetype: tools.mime.lookup("png"),
+                    caption: input
                 });
                 await tools.cmd.delay(500);
             }

@@ -72,10 +72,10 @@ module.exports = {
                     `➛ ${formatter.bold("URL")}: ${searchResult.url}`
                 );
 
-                const downloadApiUrl = tools.api.createUrl("yp", "/api/downloader/ytmp3", {
+                const downloadApiUrl = tools.api.createUrl("deline", "/downloader/ytmp3", {
                     url: searchResult.url
                 });
-                const downloadResult = (await axios.get(downloadApiUrl)).data.data.download_url;
+                const downloadResult = (await axios.get(downloadApiUrl)).data.result.dlink;
 
                 await ctx.reply({
                     audio: {

@@ -71,18 +71,6 @@ function delay(ms) {
     return new Promise(res => setTimeout(res, ms));
 }
 
-function fakeQuotedText(text) {
-    if (!text) return null;
-    return {
-        key: {
-            remoteJid: Baileys.PSA_WID
-        },
-        message: {
-            conversation: text
-        }
-    };
-}
-
 function generateUID(id, withBotName = true) {
     if (!id) return null;
 
@@ -181,7 +169,6 @@ module.exports = {
     checkMedia,
     checkQuotedMedia,
     delay,
-    fakeQuotedText,
     generateUID,
     getRandomElement,
     getReportOwner,

@@ -20,7 +20,6 @@ module.exports = {
                 `${tools.msg.generateCmdExample(ctx.used, "price $1 untuk sewa bot 1 bulan")}\n` +
                 tools.msg.generateNotes([
                     `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`,
-                    "Untuk teks satu baris, ketik saja langsung ke perintah. Untuk teks dengan baris baru, balas pesan yang berisi teks tersebut ke perintah.",
                     `Gunakan ${formatter.inlineCode("delete")} sebagai teks untuk menghapus teks yang disimpan sebelumnya.`
                 ])
             );

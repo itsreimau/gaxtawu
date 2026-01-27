@@ -22,22 +22,11 @@ module.exports = {
             const urlCode = new URL(url).pathname.split("/").pop();
             await ctx.groups.acceptInvite(urlCode).then(async (res) => {
                 await ctx.core.sendMessage(res, {
-                    text: `>ᴗ< ${formatter.italic(`Halo! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}. Saya bisa melakukan banyak perintah, seperti membuat stiker, menggunakan AI untuk pekerjaan tertentu, dan beberapa perintah berguna lainnya. Saya di sini untuk menghibur dan menyenangkan Anda!`)}`,
-                    contextInfo: {
-                        isForwarded: true,
-                        forwardedNewsletterMessageInfo: {
-                            newsletterJid: config.bot.newsletterJid,
-                            newsletterName: config.msg.footer
-                        },
-                        externalAdReply: {
-                            title: config.bot.name,
-                            body: config.msg.note,
-                            mediaType: 1,
-                            thumbnailUrl: config.bot.thumbnail,
-                            sourceUrl: config.bot.groupLink,
-                            renderLargerThumbnail: true
-                        }
-                    }
+                    image: {
+                        url: config.bot.thumbnail
+                    },
+                    mimetype: tools.mime.lookup("png"),
+                    caption: `>ᴗ< ${formatter.italic(`Halo! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}. Saya bisa melakukan banyak perintah, seperti membuat stiker, menggunakan AI untuk pekerjaan tertentu, dan beberapa perintah berguna lainnya. Saya di sini untuk menghibur dan menyenangkan Anda!`)}`
                 });
             });
 

@@ -23,7 +23,6 @@ module.exports = {
             );
 
         try {
-            const type = checkMedia || checkQuotedMedia;
             let content;
             if (["image", "video"].includes(type)) {
                 const buffer = await ctx.msg.download() || await ctx.quoted.download();
