@@ -26,11 +26,11 @@ module.exports = {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
             let result;
             for (let v = 1; v <= 2; v++) {
-                const apiUrl = tools.api.createUrl("nekolabs", `/img.gen/flux/kontext/v${v}`, {
-                    prompt: input,
-                    imageUrl: uploadUrl
-                });
                 try {
+                    const apiUrl = tools.api.createUrl("nekolabs", `/img.gen/flux/kontext/v${v}`, {
+                        prompt: input,
+                        imageUrl: uploadUrl
+                    });
                     result = (await axios.get(apiUrl)).data.result;
                     break;
                 } catch (error) {

@@ -25,25 +25,33 @@ module.exports = {
         try {
             const groupDb = ctx.db.group;
             const warnings = groupDb?.warnings || [];
+            const maxWarnings = groupDb?.maxwarnings || 3;
 
-            const targetWarning = warnings.find(warning => warning.jid === target);
+            const targetIndex = warnings.findIndex(warning => warning.jid === target);
 
-            let currentWarnings = targetWarning ? targetWarning.count : 0;
-            const newWarning = currentWarnings + 1;
+            let newWarningCount;
 
-            if (targetWarning) {
-                targetWarning.count = newWarning;
+            if (targetIndex !== -1) {
+                warnings[targetIndex].count += 1;
+                newWarningCount = warnings[targetIndex].count;
             } else {
+                newWarningCount = 1;
                 warnings.push({
                     jid: target,
-                    count: newWarning
+                    count: newWarningCount
                 });
             }
 
             groupDb.warnings = warnings;
             groupDb.save();
 
-            await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menambahkan warning pengguna itu menjadi ${newWarning}/${groupDb?.maxwarnings || 3}.`)}`);
+            if (newWarningCount >= maxWarnings) {
+                await ctx.reply(`ⓘ ${formatter.italic(`Pengguna mencapai batas warning (${newWarningCount}/${maxWarnings}).`)}`);
+                await ctx.group().kick(senderJid);
+                groupDb.warnings = warnings.filter(warning => warning.jid !== senderLid);
+            } else {
+                await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menambahkan warning menjadi ${newWarningCount}/${maxWarnings}.`)}`);
+            }
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

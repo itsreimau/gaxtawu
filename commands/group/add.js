@@ -8,15 +8,13 @@ module.exports = {
         restrict: true
     },
     code: async (ctx) => {
-        const input = ctx.text || null;
+        const target = await ctx.target(["text"]);
 
-        if (!input)
+        if (!target)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 tools.msg.generateCmdExample(ctx.used, "6281234567891")
             );
-
-        const target = await ctx.target(["text"]);
 
         const isOnWhatsApp = await ctx.core.onWhatsApp(target);
         if (isOnWhatsApp.length === 0) return await ctx.reply(`ⓘ ${formatter.italic("Akun tidak ada di WhatsApp!")}`);

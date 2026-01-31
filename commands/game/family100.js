@@ -55,11 +55,12 @@ module.exports = {
 
             collector.on("collect", async (collCtx) => {
                 const participantAnswer = collCtx.msg.text.toLowerCase();
-                const participantDb = ctx.getDb("users", collCtx.sender.jid);
+                const participantJid = collCtx.sender.jid;
+                const participantDb = ctx.getDb("users", participantJid);
 
                 if (game.answers.has(participantAnswer)) {
                     game.answers.delete(participantAnswer);
-                    game.participants.add(participantId);
+                    game.participants.add(participantJid);
 
                     participantDb.coin += game.coin.answered;
                     participantDb.save();
@@ -71,9 +72,10 @@ module.exports = {
                         session.delete(ctx.id);
                         collector.stop();
                         for (const participant of game.participants) {
-                            participantDb.coin += game.coin.allAnswered;
-                            participantDb.winGame += 1;
-                            participantDb.save();
+                            const allParticipantDb = ctx.getDb("users", participant);
+                            allParticipantDb.coin += game.coin.allAnswered;
+                            allParticipantDb.winGame += 1;
+                            allParticipantDb.save();
                         }
                         await collCtx.reply({
                             text: `ⓘ ${formatter.italic(`Selamat! Semua jawaban telah terjawab! Setiap anggota yang menjawab mendapat ${game.coin.allAnswered} koin.`)}`,

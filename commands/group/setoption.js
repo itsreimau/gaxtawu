@@ -26,7 +26,6 @@ module.exports = {
         }
 
         if (input.toLowerCase() === "status") {
-            const groupId = ctx.getId(ctx.id);
             const groupOption = ctx.db.group.option || {};
 
             return await ctx.reply(
@@ -47,7 +46,6 @@ module.exports = {
         }
 
         try {
-            const groupDb = ctx.db.group;
             let setKey;
 
             switch (input.toLowerCase()) {
@@ -69,6 +67,8 @@ module.exports = {
                 default:
                     return await ctx.reply(`ⓘ ${formatter.italic(`Opsi ${formatter.inlineCode(input)} tidak valid!`)}`);
             }
+
+            const groupDb = ctx.db.group;
 
             const currentStatus = groupDb?.option?.[setKey] || false;
             const newStatus = !currentStatus;

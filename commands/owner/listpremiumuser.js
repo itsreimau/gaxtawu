@@ -10,13 +10,11 @@ module.exports = {
             const users = ctx.db.users.getMany(user => user.premium === true);
             const premiumUsers = [];
 
-            for (const user of users) {
-                if (user.premium === true)
-                    premiumUsers.push({
-                        jid: user.jid,
-                        expiration: user.premiumExpiration
-                    });
-            }
+            for (const user of users)
+                premiumUsers.push({
+                    jid: user.jid,
+                    expiration: user.premiumExpiration
+                });
 
             let resultText = "";
             let userMentions = [];

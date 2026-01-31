@@ -27,7 +27,6 @@ module.exports = {
             );
 
         try {
-            const groupDb = ctx.db.group;
             let setKey;
 
             switch (key.toLowerCase()) {
@@ -39,6 +38,8 @@ module.exports = {
                 default:
                     return await ctx.reply(`ⓘ ${formatter.italic(`Teks ${formatter.inlineCode(key)} tidak valid!`)}`);
             }
+
+            const groupDb = ctx.db.group;
 
             if (text.toLowerCase() === "delete") {
                 delete groupDb?.text?.[setKey];

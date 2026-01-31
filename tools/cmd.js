@@ -134,27 +134,54 @@ async function handleError(ctx, error, useAxios = false, reportToOwner = true) {
 function isCmd(text, ctxBot) {
     if (!text || !ctxBot) return false;
 
-    const prefix = text.charAt(0);
-    if (!new RegExp(ctxBot.prefix, "i").test(text)) return false;
+    let selectedPrefix;
+    const prefix = ctxBot.prefix;
 
-    const [cmdName, ...inputArray] = text.slice(1).toLowerCase().split(/\s+/);
-    const input = inputArray.join(" ");
+    if (Array.isArray(prefix)) {
+        if (prefix[0] === "") {
+            const emptyIndex = prefix.findIndex(p => p === "");
+            if (emptyIndex !== -1) {
+                const newPrefix = [...prefix];
+                const [empty] = newPrefix.splice(emptyIndex, 1);
+                newPrefix.push(empty);
+                selectedPrefix = newPrefix.find(p => text.startsWith(p));
+            } else {
+                selectedPrefix = prefix.find(p => text.startsWith(p));
+            }
+        } else {
+            selectedPrefix = prefix.find(p => text.startsWith(p));
+        }
+    } else if (prefix instanceof RegExp) {
+        const match = text.match(prefix);
+        selectedPrefix = match ? match[0] : null;
+    } else if (typeof prefix === "string") {
+        selectedPrefix = text.startsWith(prefix) ? prefix : null;
+    }
 
-    const cmds = Array.from(ctxBot.cmd.values());
-    const matchedCmd = cmds.find(cmd => cmd.name === cmdName || cmd?.aliases?.includes(cmdName));
+    if (!selectedPrefix) return false;
 
-    if (matchedCmd)
+    let args = text.slice(selectedPrefix.length).trim().split(/\s+/) || [];
+    let commandName = args.shift()?.toLowerCase();
+    const input = text.slice(selectedPrefix.length).slice(commandName?.length || 0).trim();
+
+    if (!commandName) return false;
+
+    const cmds = Array.from(ctxBot.cmd?.values() || []);
+
+    const matchedCmds = cmds.filter(cmd => cmd.name?.toLowerCase() === commandName || (Array.isArray(cmd.aliases) ? cmd.aliases.includes(commandName) : cmd.aliases === commandName));
+
+    if (matchedCmds.length > 0)
         return {
             msg: text,
-            prefix,
-            name: cmdName,
+            prefix: selectedPrefix,
+            name: commandName,
             input
         };
 
-    const mean = Gktw.didYouMean(cmdName, cmds.flatMap(cmd => [cmd.name, ...(cmd.aliases || [])]));
+    const mean = Gktw?.didYouMean?.(commandName, cmds.flatMap(cmd => [cmd.name, ...(cmd.aliases || [])]));
     return mean ? {
         msg: text,
-        prefix,
+        prefix: selectedPrefix,
         didyoumean: mean,
         input
     } : false;

@@ -25,22 +25,33 @@ module.exports = {
         try {
             const groupDb = ctx.db.group;
             const warnings = groupDb?.warnings || [];
+            const maxWarnings = groupDb?.maxwarnings || 3;
 
-            const targetWarning = warnings.find(warning => warning.jid === target);
-            let currentWarnings = targetWarning ? targetWarning.count : 0;
+            const targetIndex = warnings.findIndex(warning => warning.jid === target);
 
-            if (currentWarnings <= 0) return await ctx.reply(`ⓘ ${formatter.italic("Pengguna itu tidak memiliki warning.")}`);
+            if (targetIndex === -1) return await ctx.reply(`ⓘ ${formatter.italic("Pengguna tidak memiliki warning.")}`);
 
-            const newWarning = currentWarnings - 1;
-            if (targetWarning && newWarning <= 0) {
-                groupDb.warnings = warnings.filter(warning => warning.jid !== target);
-            } else {
-                targetWarning.count = newWarning;
+            const currentCount = warnings[targetIndex].count || 0;
+
+            if (currentCount <= 0) {
+                warnings.splice(targetIndex, 1);
+                groupDb.warnings = warnings;
+                groupDb.save();
+                return await ctx.reply(`ⓘ ${formatter.italic("Pengguna tidak memiliki warning.")}`);
             }
 
+            const newWarningCount = currentCount - 1;
+
+            if (newWarningCount <= 0) {
+                warnings.splice(targetIndex, 1);
+            } else {
+                warnings[targetIndex].count = newWarningCount;
+            }
+
+            groupDb.warnings = warnings;
             groupDb.save();
 
-            await ctx.reply(`ⓘ ${formatter.italic(`Berhasil mengurangi warning pengguna itu menjadi ${newWarning}/${groupDb?.maxwarnings || 3}.`)}`);
+            await ctx.reply(`ⓘ ${formatter.italic(`Berhasil mengurangi warning menjadi ${newWarningCount}/${maxWarnings}.`)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

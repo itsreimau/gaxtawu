@@ -10,9 +10,7 @@ module.exports = {
             const users = ctx.db.users.getMany(user => user.banned === true);
             const bannedUsers = [];
 
-            for (const user of users) {
-                if (user.banned === true) bannedUsers.push(user.jid);
-            }
+            for (const user of users) bannedUsers.push(user.jid);
 
             let resultText = "";
             let userMentions = [];

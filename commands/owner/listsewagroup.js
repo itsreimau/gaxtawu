@@ -10,13 +10,11 @@ module.exports = {
             const groups = ctx.db.groups.getMany(group => group.sewa === true);
             const sewaGroups = [];
 
-            for (const group of groups) {
-                if (group.sewa === true)
-                    sewaGroups.push({
-                        jid: group.jid,
-                        expiration: group.sewaExpiration
-                    });
-            }
+            for (const group of groups)
+                sewaGroups.push({
+                    jid: group.jid,
+                    expiration: group.sewaExpiration
+                });
 
             let resultText = "";
             let groupMentions = [];

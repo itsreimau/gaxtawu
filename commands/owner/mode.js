@@ -23,14 +23,16 @@ module.exports = {
         }
 
         try {
+            const botDb = ctx.db.bot;
+
             switch (input.toLowerCase()) {
                 case "premium":
                 case "group":
                 case "private":
                 case "public":
                 case "self":
-                    config.system.mode = input.toLowerCase();
-                    config.save();
+                    botDb.mode = input.toLowerCase();
+                    botDb.save();
                     break;
                 default:
                     return await ctx.reply(`ⓘ ${formatter.italic(`Mode "${input}" tidak valid!`)}`);

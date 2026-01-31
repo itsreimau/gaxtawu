@@ -37,14 +37,16 @@ module.exports = {
                     return await ctx.reply(`ⓘ ${formatter.italic(`Teks ${formatter.inlineCode(key)} tidak valid!`)}`);
             }
 
+            const botDb = ctx.db.bot;
+
             if (text.toLowerCase() === "delete") {
-                delete config?.text[setKey];
-                config.save();
+                delete botDb?.text[setKey];
+                botDb.save();
                 return await ctx.reply(`ⓘ ${formatter.italic(`Pesan untuk teks ${formatter.inlineCode(key)} berhasil dihapus!`)}`);
             }
 
-            (config.text ||= {})[setKey] = text;
-            config.save();
+            (botDb.text ||= {})[setKey] = text;
+            botDb.save();
             await ctx.reply(`ⓘ ${formatter.italic(`Pesan untuk teks ${formatter.inlineCode(key)} berhasil disimpan!`)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

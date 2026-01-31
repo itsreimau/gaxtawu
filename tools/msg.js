@@ -1,24 +1,63 @@
 const moment = require("moment-timezone");
 
-function convertMsToDuration(ms) {
+function convertMsToDuration(ms, requestedParts = null) {
     if (!ms || ms <= 0) return "0 detik";
 
     const duration = moment.duration(ms);
     const hasLargerUnits = duration.asSeconds() >= 1;
 
+    const units = {
+        tahun: {
+            value: duration.years(),
+            condition: duration.years() > 0
+        },
+        bulan: {
+            value: duration.months(),
+            condition: duration.months() > 0
+        },
+        minggu: {
+            value: duration.weeks(),
+            condition: duration.weeks() > 0
+        },
+        hari: {
+            value: duration.days(),
+            condition: duration.days() > 0
+        },
+        jam: {
+            value: duration.hours(),
+            condition: duration.hours() > 0
+        },
+        menit: {
+            value: duration.minutes(),
+            condition: duration.minutes() > 0
+        },
+        detik: {
+            value: duration.seconds(),
+            condition: duration.seconds() > 0
+        },
+        milidetik: {
+            value: duration.milliseconds(),
+            condition: duration.milliseconds() > 0
+        }
+    };
+
     const parts = [];
 
-    if (duration.years() > 0) parts.push(`${duration.years()} tahun`);
-    if (duration.months() > 0) parts.push(`${duration.months()} bulan`);
-    if (duration.weeks() > 0) parts.push(`${duration.weeks()} minggu`);
-    if (duration.days() > 0) parts.push(`${duration.days()} hari`);
-    if (duration.hours() > 0) parts.push(`${duration.hours()} jam`);
-    if (duration.minutes() > 0) parts.push(`${duration.minutes()} menit`);
-    if (duration.seconds() > 0) parts.push(`${duration.seconds()} detik`);
+    if (requestedParts && Array.isArray(requestedParts)) {
+        for (const part of requestedParts) {
+            if (units[part]) parts.push(`${units[part].value} ${part}`);
+        }
+    } else {
+        for (const [unit, data] of Object.entries(units)) {
+            if (unit === "milidetik") {
+                if (!hasLargerUnits && data.value > 0) parts.push(`${data.value} ${unit}`);
+            } else if (data.condition) {
+                parts.push(`${data.value} ${unit}`);
+            }
+        }
+    }
 
-    if (!hasLargerUnits && duration.milliseconds() > 0) parts.push(`${duration.milliseconds()} milidetik`);
-
-    return parts.join(" ") || "0 detik";
+    return parts.length > 0 ? parts.join(" ") : "0 detik";
 }
 
 function formatSize(byteCount, withPerSecond = false) {

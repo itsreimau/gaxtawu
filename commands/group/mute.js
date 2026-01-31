@@ -7,9 +7,8 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const groupDb = ctx.db.group;
-
         if (ctx.args[0]?.toLowerCase() === "bot") {
+            const groupDb = ctx.db.group;
             groupDb.mutebot = true;
             await groupDb.save();
             return await ctx.reply(`ⓘ ${formatter.italic("Berhasil me-mute grup ini dari bot!")}`);

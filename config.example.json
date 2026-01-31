@@ -44,6 +44,7 @@
     },
     "system": {
         "alwaysOnline": true,
+        "antiBug": true,
         "antiCall": true,
         "autoRead": true,
         "autoTypingOnCmd": true,

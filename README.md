@@ -99,7 +99,8 @@ module.exports = {
         group: Boolean,
         owner: Boolean,
         premium: Boolean,
-        private: Boolean
+        private: Boolean,
+        restrict: Boolean
     },
     code: async (ctx) => {
         await ctx.reply("Hello, World!");

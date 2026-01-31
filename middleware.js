@@ -10,34 +10,21 @@ module.exports = bot => {
         const isPrivate = ctx.isPrivate();
         const senderJid = ctx.sender.jid;
         const senderId = ctx.getId(senderJid);
-        const senderLid = ctx.sender.lid;
         const groupJid = isGroup ? ctx.id : null;
         const groupId = isGroup ? ctx.getId(groupJid) : null;
         const isOwner = ctx.sender.isOwner();
         const isAdmin = isGroup ? await ctx.group().isSenderAdmin() : false;
 
         // Mengambil database
+        const botDb = ctx.db.bot;
         const senderDb = ctx.db.user;
         const groupDb = ctx.db.group;
 
-        // Penanganan database pengguna
-        if (senderDb) {
-            if (!senderDb?.username) senderDb.username = `@user_${tools.cmd.generateUID(senderId, false)}`;
-            if (!senderDb?.uid || senderDb?.uid !== tools.cmd.generateUID(senderId)) senderDb.uid = tools.cmd.generateUID(senderId);
-            if (senderDb?.premium && Date.now() > senderDb.premiumExpiration) {
-                delete senderDb.premium;
-                delete senderDb.premiumExpiration;
-            }
-            if (isOwner || senderDb?.premium) senderDb.coin = 0;
-            if (!senderDb?.coin || !Number.isFinite(senderDb.coin)) senderDb.coin = 100;
-            senderDb.save();
-        }
-
         // Pengecekan mode bot (group, private, self)
-        if (config.system?.mode === "premium" && !isOwner && !senderDb?.premium) return;
-        if (config.system?.mode === "group" && isPrivate && !isOwner && !senderDb?.premium) return;
-        if (config.system?.mode === "private" && isGroup && !isOwner && !senderDb?.premium) return;
-        if (config.system?.mode === "self" && !isOwner) return;
+        if (botDb?.mode === "premium" && !isOwner && !senderDb?.premium) return;
+        if (botDb?.mode === "group" && isPrivate && !isOwner && !senderDb?.premium) return;
+        if (botDb?.mode === "private" && isGroup && !isOwner && !senderDb?.premium) return;
+        if (botDb?.mode === "self" && !isOwner) return;
 
         // Pengecekan mute pada grup
         if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;
@@ -100,7 +87,7 @@ module.exports = bot => {
 
             if (senderDb?.botGroupMembership.isMember && now - senderDb.botGroupMembership.timestamp < duration) return senderDb.botGroupMembership.isMember;
 
-            const isMember = await ctx.group(config.bot.groupJid).isMemberExist(senderLid);
+            const isMember = await ctx.group(config.bot.groupJid).isMemberExist(ctx.sender.lid);
             senderDb.botGroupMembership = {
                 isMember: isMember,
                 timestamp: now

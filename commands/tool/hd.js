@@ -18,7 +18,7 @@ module.exports = {
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
             const apiUrl = tools.api.createUrl("bagus", "/api/edits/remini", {
-                url: uploadUrl
+                image: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.result.url;
 
