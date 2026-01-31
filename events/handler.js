@@ -120,7 +120,10 @@ module.exports = bot => {
         }
 
         // Tetapkan config pada bot
-        if (!config.bot.groupLink) config.core.set("bot.groupLink", `https://chat.whatsapp.com/${await bot.core.groupInviteCode(config.bot.groupJid).catch(() => "FxEYZl2UyzAEI2yhaH34Ye")}`);
+        const groupLink = `https://chat.whatsapp.com/${await bot.core.groupInviteCode(config.bot.groupJid).catch(() => "FxEYZl2UyzAEI2yhaH34Ye")}`;
+        if (!config.bot.groupLink || (config.bot.groupLink !== groupLink)) {
+            config.core.set("bot.groupLink", groupLink);
+        }
     });
 
     // Event saat bot menerima pesan

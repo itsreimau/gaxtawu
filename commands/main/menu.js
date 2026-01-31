@@ -28,7 +28,7 @@ module.exports = {
                 misc: "Miscellaneous"
             };
 
-            const arg = ctx.args[0].toLowerCase() || null;
+            const arg = ctx.args[0]?.toLowerCase() || null;
             if (arg === "all") {
                 let text = "";
 
@@ -83,8 +83,8 @@ module.exports = {
 
                 if (categoryCmds.length === 0) return await ctx.reply(`ⓘ ${formatter.italic("Menu tidak ditemukan!")}`);
 
-                let text = `◆ ${formatter.bold(tag[category] || category)}\n` +
-                    "\n";
+                let text = "╭┈┈┈┈┈┈ ♡\n" +
+                    `┊ ✿ — ${formatter.bold(tag[category] || category)}\n`;
 
                 categoryCmds.forEach(cmd => {
                     let permissionsText = "";
@@ -94,8 +94,8 @@ module.exports = {
                     if (cmd.permissions.premium) permissionsText += "Ⓟ";
                     if (cmd.permissions.private) permissionsText += "ⓟ";
 
-                    text += formatter.quote(formatter.monospace(`${ctx.used.prefix + cmd.name} ${permissionsText}`));
-                    text += "\n";
+                    text += `┊ ➛ ${ctx.used.prefix + cmd.name} ${permissionsText}\n`;
+                    text += "╰┈┈┈┈┈┈\n\n";
                 });
 
                 return await ctx.reply({
@@ -129,13 +129,13 @@ module.exports = {
             const rows = Object.keys(tag).map(category => ({
                 title: tag[category],
                 description: `Klik untuk melihat perintah ${tag[category]}`,
-                id: `.menu ${category}`
+                id: `${ctx.used.prefix + ctx.used.command} ${category}`
             }));
 
             rows.unshift({
                 title: "Semua Kategori",
                 description: "Klik untuk melihat semua perintah sekaligus",
-                id: ".menu all"
+                id: `${ctx.used.prefix + ctx.used.command} all`
             });
 
             return await ctx.reply({

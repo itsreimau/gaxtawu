@@ -105,6 +105,8 @@ function getReportOwner() {
 
 async function handleError(ctx, error, useAxios = false, reportToOwner = true) {
     const isGroup = ctx.isGroup();
+    const senderJid = ctx.sender.jid;
+    const senderId = ctx.getId(senderJid);
     const groupJid = isGroup ? ctx.id : null;
     const groupSubject = isGroup ? await ctx.group(groupJid).name() : null;
     const errorText = util.format(error);
@@ -114,10 +116,10 @@ async function handleError(ctx, error, useAxios = false, reportToOwner = true) {
     if (reportToOwner && reportOwner && reportOwner.length > 0) {
         for (const ownerId of reportOwner) {
             await ctx.replyWithJid(ownerId + Baileys.S_WHATSAPP_NET, {
-                text: `ⓘ ${formatter.italic(isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${ctx.getId(ctx.sender.jid)}` : `Terjadi kesalahan dari: @${ctx.getId(ctx.sender.jid)}`)}\n` +
+                text: `ⓘ ${formatter.italic(isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${senderId}` : `Terjadi kesalahan dari: @${senderId}`)}\n` +
                     formatter.monospace(errorText),
                 contextInfo: {
-                    mentionedJid: [ctx.sender.jid],
+                    mentionedJid: [senderJid],
                     groupMentions: isGroup ? [{
                         groupJid,
                         groupSubject
@@ -160,9 +162,10 @@ function isCmd(text, ctxBot) {
 
     if (!selectedPrefix) return false;
 
-    let args = text.slice(selectedPrefix.length).trim().split(/\s+/) || [];
-    let commandName = args.shift()?.toLowerCase();
-    const input = text.slice(selectedPrefix.length).slice(commandName?.length || 0).trim();
+    const textWithoutPrefix = m.text?.slice(selectedPrefix.length).trim() || "";
+    let args = textWithoutPrefix.split(/\s+/) || [];
+    let commandName = args?.shift()?.toLowerCase();
+    const input = textWithoutPrefix.slice(commandName.length) || "";
 
     if (!commandName) return false;
 
