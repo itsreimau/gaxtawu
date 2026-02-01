@@ -143,7 +143,7 @@ module.exports = {
                         },
                         mimetype: tools.mime.lookup("png"),
                         title: text.trim(),
-                        contextInfo {
+                        contextInfo: {
                             mentionedJid: [ctx.sender.jid]
                         },
                         footer: config.msg.footer,
