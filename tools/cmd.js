@@ -162,7 +162,7 @@ function isCmd(text, ctxBot) {
 
     if (!selectedPrefix) return false;
 
-    const textWithoutPrefix = m.text?.slice(selectedPrefix.length).trim() || "";
+    const textWithoutPrefix = text?.slice(selectedPrefix.length).trim() || "";
     let args = textWithoutPrefix.split(/\s+/) || [];
     let commandName = args?.shift()?.toLowerCase();
     const input = textWithoutPrefix.slice(commandName.length) || "";
