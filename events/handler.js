@@ -47,20 +47,16 @@ async function handleWelcome(botCtx, ctx, type, isSimulate = false) {
 
     if (isWelcome && groupDb?.text?.intro)
         await botCtx.core.sendMessage(groupJid, {
-            interactiveMessage: {
-                text: groupDb.text.intro,
-                contextInfo: {
-                    mentionedJid: [jid]
-                },
-                buttons: [{
-                    name: "cta_copy",
-                    buttonParamsJson: JSON.stringify({
-                        display_text: "Salin Teks",
-                        id: "copy_text",
-                        copy_code: text
-                    })
-                }]
-            }
+            text: groupDb.text.intro,
+            mentions: [jid],
+            interactiveButtons: [{
+                name: "cta_copy",
+                buttonParamsJson: JSON.stringify({
+                    display_text: "Salin Teks",
+                    id: "copy_text",
+                    copy_code: text
+                })
+            }]
         });
 }
 
@@ -188,7 +184,13 @@ module.exports = bot => {
             if (config.system.unavailableAtNight && !isOwner && !senderDb?.premium && hour >= 0 && hour < 6) return;
 
             // Penanganan bug hama!
-            const analyze = Gktw.analyzeBug(msg.message);
+            const analyze = Gktw.analyzeBug(msg.message, {
+                maxTextLength: 10000,
+                maxMentions: 1000,
+                maxFileLength: 2 * 1024 * 1024 * 1024,
+                maxPageCount: 10000,
+                maxCharacterFlood: 20000
+            });
             if (config.system.antiBug && analyze.isMalicious && !senderDb?.banned && !isOwner) {
                 await ctx.deleteMessage(msg.key);
                 await ctx.block(senderJid);

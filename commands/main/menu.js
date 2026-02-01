@@ -94,8 +94,9 @@ module.exports = {
                     if (cmd.permissions.private) permissionsText += "ⓟ";
 
                     text += `┊ ➛ ${ctx.used.prefix + cmd.name} ${permissionsText}\n`;
-                    text += "╰┈┈┈┈┈┈\n\n";
                 });
+
+                text += "╰┈┈┈┈┈┈";
 
                 return await ctx.reply({
                     text: text.trim(),
@@ -137,29 +138,31 @@ module.exports = {
                 });
 
                 return await ctx.reply({
-                    interactiveMessage: {
-                        image: {
-                            url: config.bot.thumbnail
+                    image: {
+                        url: config.bot.thumbnail
+                    },
+                    mimetype: tools.mime.lookup("png"),
+                    caption: text.trim(),
+                    mentions: [ctx.sender.jid],
+                    footer: config.msg.footer,
+                    buttons: [{
+                        buttonId: "action",
+                        buttonText: {
+                            displayText: "Daftar Menu"
                         },
-                        mimetype: tools.mime.lookup("png"),
-                        title: text.trim(),
-                        contextInfo: {
-                            mentionedJid: [ctx.sender.jid]
-                        },
-                        footer: config.msg.footer,
-                        buttons: [{
+                        type: 4,
+                        nativeFlowInfo: {
                             name: "single_select",
-                            buttonParamsJson: JSON.stringify({
+                            paramsJson: JSON.stringify({
                                 title: "Daftar Menu",
                                 sections: [{
                                     title: "Pilih Kategori Menu",
                                     highlight_label: "🌕",
                                     rows: rows
-                                }],
-                                has_multiple_buttons: true
+                                }]
                             })
-                        }]
-                    }
+                        }
+                    }]
                 });
             }
         } catch (error) {
