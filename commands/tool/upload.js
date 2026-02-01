@@ -17,15 +17,17 @@ module.exports = {
             const result = await ctx.msg.upload() || await ctx.quoted.upload();
 
             await ctx.reply({
-                text: `➛ ${formatter.bold("URL")}: ${result}`,
-                interactiveButtons: [{
-                    name: "cta_copy",
-                    buttonParamsJson: JSON.stringify({
-                        display_text: "Salin URL",
-                        id: "copy_code",
-                        copy_code: result
-                    })
-                }]
+                interactiveMessage: {
+                    title: `➛ ${formatter.bold("URL")}: ${result}`,
+                    buttons: [{
+                        name: "cta_copy",
+                        buttonParamsJson: JSON.stringify({
+                            display_text: "Salin URL",
+                            id: "copy_code",
+                            copy_code: result
+                        })
+                    }]
+                }
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

@@ -47,16 +47,20 @@ async function handleWelcome(botCtx, ctx, type, isSimulate = false) {
 
     if (isWelcome && groupDb?.text?.intro)
         await botCtx.core.sendMessage(groupJid, {
-            text: groupDb.text.intro,
-            mentions: [jid],
-            interactiveButtons: [{
-                name: "cta_copy",
-                buttonParamsJson: JSON.stringify({
-                    display_text: "Salin Teks",
-                    id: "copy_text",
-                    copy_code: text
-                })
-            }]
+            interactiveMessage: {
+                text: groupDb.text.intro,
+                contextInfo: {
+                    mentionedJid: [jid]
+                },
+                buttons: [{
+                    name: "cta_copy",
+                    buttonParamsJson: JSON.stringify({
+                        display_text: "Salin Teks",
+                        id: "copy_text",
+                        copy_code: text
+                    })
+                }]
+            }
         });
 }
 
