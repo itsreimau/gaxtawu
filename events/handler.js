@@ -153,16 +153,18 @@ module.exports = bot => {
             const groupDb = ctx.db.group;
 
             // Penanganan database pengguna
-            const senderUid = [tools.cmd.generateUID(senderId), tools.cmd.generateUID(senderId, false)];
-            if (!senderDb?.uid || senderDb?.uid !== senderUid[0]) senderDb.uid = senderUid[0];
-            if (!senderDb?.username) senderDb.username = `@user_${senderUid[1]}`;
-            if (senderDb?.premium && Date.now() > senderDb?.premiumExpiration) {
-                delete senderDb.premium;
-                delete senderDb.premiumExpiration;
+            if (senderDb) {
+                const senderUid = [tools.cmd.generateUID(senderId), tools.cmd.generateUID(senderId, false)];
+                if (!senderDb?.uid || senderDb?.uid !== senderUid[0]) senderDb.uid = senderUid[0];
+                if (!senderDb?.username) senderDb.username = `@user_${senderUid[1]}`;
+                if (senderDb?.premium && Date.now() > senderDb?.premiumExpiration) {
+                    delete senderDb.premium;
+                    delete senderDb.premiumExpiration;
+                }
+                if (isOwner || senderDb?.premium) senderDb.coin = 0;
+                if (!senderDb?.coin || !Number.isFinite(senderDb?.coin)) senderDb.coin = 100;
+                senderDb.save();
             }
-            if (isOwner || senderDb?.premium) senderDb.coin = 0;
-            if (!senderDb?.coin || !Number.isFinite(senderDb?.coin)) senderDb.coin = 100;
-            senderDb.save();
 
             // Pengecekan mode bot (premium, group, private, self)
             if (botDb?.mode === "premium" && !isOwner && !senderDb?.premium) return;
