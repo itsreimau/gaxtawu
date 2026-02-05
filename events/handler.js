@@ -8,7 +8,7 @@ async function handleWelcome(botCtx, ctx, type, isSimulate = false) {
     const groupJid = ctx.id;
     const groupDb = botCtx.getDb("groups", groupJid);
     const botDb = botCtx.getDb("bot");
-    const jid = ctx.participant;
+    const participantJid = ctx.participant.jid;
 
     if (!isSimulate && groupDb?.mutebot) return;
     if (!isSimulate && !groupDb?.option?.welcome) return;
@@ -16,10 +16,10 @@ async function handleWelcome(botCtx, ctx, type, isSimulate = false) {
 
     const now = moment().tz(config.system.timeZone);
     const hour = now.hour();
-    if (config.system.unavailableAtNight && !isSimulate && hour >= 0 && hour < 6) return;
+    if (!isSimulate && config.system.unavailableAtNight && hour >= 0 && hour < 6) return;
 
     const isWelcome = type === Events.UserJoin;
-    const tag = `@${botCtx.getId(jid)}`;
+    const tag = `@${botCtx.getId(participantJid)}`;
     const customText = isWelcome ? groupDb?.text?.welcome : groupDb?.text?.goodbye;
     const metadata = await botCtx.core.groupMetadata(groupJid);
     const text = customText ? customText.replace(/%tag%/g, tag).replace(/%subject%/g, metadata.subject).replace(/%description%/g, metadata.description) :
@@ -27,13 +27,13 @@ async function handleWelcome(botCtx, ctx, type, isSimulate = false) {
             `>ᴗ< ${formatter.italic(`Selamat datang ${tag} di grup ${metadata.subject}!`)}` :
             `•︵• ${formatter.italic(`Selamat tinggal, ${tag}!`)}`
         );
-    const profilePictureUrl = await botCtx.core.profilePictureUrl(jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
+    const profilePictureUrl = await botCtx.core.profilePictureUrl(participantJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
     const canvasUrl = tools.api.createUrl("deline", "/canvas/welcome", {
-        username: botCtx.getPushName(jid),
+        username: ctx.participant.pushName || "User",
         guildName: metadata.subject,
         memberCount: metadata.participants.length,
         avatar: profilePictureUrl,
-        background: "https://picsum.photos/1024/450",
+        background: "https://picsum.photos/1024/450.jpg",
         quality: "99"
     });
 
@@ -48,7 +48,7 @@ async function handleWelcome(botCtx, ctx, type, isSimulate = false) {
     if (isWelcome && groupDb?.text?.intro)
         await botCtx.core.sendMessage(groupJid, {
             text: groupDb.text.intro,
-            mentions: [jid],
+            mentions: [participantJid],
             interactiveButtons: [{
                 name: "cta_copy",
                 buttonParamsJson: JSON.stringify({
@@ -121,9 +121,7 @@ module.exports = bot => {
 
         // Tetapkan config pada bot
         const groupLink = `https://chat.whatsapp.com/${await bot.core.groupInviteCode(config.bot.groupJid).catch(() => "FxEYZl2UyzAEI2yhaH34Ye")}`;
-        if (!config.bot.groupLink || (config.bot.groupLink !== groupLink)) {
-            config.core.set("bot.groupLink", groupLink);
-        }
+        if (!config.bot.groupLink || (config.bot.groupLink !== groupLink)) config.core.set("bot.groupLink", groupLink);
     });
 
     // Event saat bot menerima pesan
@@ -368,31 +366,32 @@ module.exports = bot => {
         if (!config.system.antiCall) return;
 
         const callJid = ctx.id;
-        const senderJid = ctx.from;
-        const senderId = bot.getId(senderJid);
-        const isOwner = bot.checkOwner(senderJid);
-        const senderDb = bot.getDb("users", senderJid);
+        const fromJid = ctx.from.jid;
+        const fromId = bot.getId(fromJid);
+        const fromLid = ctx.from.lid;
+        const isOwner = bot.checkOwner(fromJid);
+        const fromDb = bot.getDb("users", fromLid);
 
-        if (Baileys.isJidGroup(callJid) || isOwner || senderDb?.banned) return;
+        if (Baileys.isJidGroup(callJid) || isOwner || fromDb?.banned) return;
 
-        consolefy.info(`Incoming call from: ${Baileys.isJidUser(senderJid) ? senderId : `${senderId} (LID)`}`); // Log panggilan masuk
+        consolefy.info(`Incoming call from: ${Baileys.isJidUser(fromJid) ? fromId : `${fromId} (LID)`}`); // Log panggilan masuk
 
-        await bot.core.rejectCall(callJid, senderJid);
+        await bot.core.rejectCall(callJid, fromJid);
 
-        senderDb.banned = true;
-        senderDb.save();
+        fromDb.banned = true;
+        fromDb.save();
 
         const reportOwner = tools.cmd.getReportOwner();
         if (reportOwner && reportOwner.length > 0) {
             for (const ownerId of reportOwner) {
                 await bot.core.sendMessage(ownerId + Baileys.S_WHATSAPP_NET, {
-                    text: `ⓘ ${formatter.italic(`Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`)}`,
-                    mentions: [senderJid]
+                    text: `ⓘ ${formatter.italic(`Akun @${fromId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`)}`,
+                    mentions: [fromJid]
                 });
                 await tools.cmd.delay(500);
             }
         }
-        await bot.core.sendMessage(senderJid, {
+        await bot.core.sendMessage(fromJid, {
             text: `ⓘ ${formatter.italic("Anda telah dibanned secara otomatis karena melanggar aturan!")}`,
             buttons: [{
                 buttonId: "/owner",

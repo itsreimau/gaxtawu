@@ -1,11 +1,20 @@
+const axios = require("axios");
+
 module.exports = {
-    name: "tofigure",
-    aliases: ["jadifigure"],
+    name: "nanobanana",
     category: "ai-misc",
     permissions: {
         premium: true
     },
     code: async (ctx) => {
+        const input = ctx.text || null;
+
+        if (!input)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                tools.msg.generateCmdExample(ctx.used, "make it evangelion art style")
+            );
+
         const [checkMedia, checkQuotedMedia] = [
             tools.cmd.checkMedia(ctx.msg.messageType, "image"),
             tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, "image")
@@ -15,9 +24,11 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("nekolabs", "/style.changer/figure", {
-                imageUrl: uploadUrl
+            const apiUrl = tools.api.createUrl("danzy", "/api/tools/nanobanana", {
+                prompt: input,
+                media: uploadUrl
             });
+            const result = (await axios.get(apiUrl)).data.data.image;
 
             await ctx.reply({
                 image: {

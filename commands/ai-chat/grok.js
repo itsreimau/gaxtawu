@@ -16,7 +16,7 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/txt.gen/grok/4-fast", {
+            const apiUrl = tools.api.createUrl("nekolabs", "/text.gen/grok/4-fast", {
                 text: input
             });
             const result = (await axios.get(apiUrl)).data.result;

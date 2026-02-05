@@ -53,7 +53,7 @@ module.exports = {
 
             collector.on("collect", async (collCtx) => {
                 const participantAnswer = collCtx.msg.text.toLowerCase();
-                const participantDb = ctx.getDb("users", collCtx.sender.jid);
+                const participantDb = ctx.getDb("users", collCtx.sender.lid);
 
                 if (participantAnswer === game.answer) {
                     session.delete(ctx.id);

@@ -17,10 +17,10 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("znx", "/api/tools/ocr", {
-                imgUrl: uploadUrl
+            const apiUrl = tools.api.createUrl("deline", "/tools/ocr", {
+                url: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.results;
+            const result = (await axios.get(apiUrl)).data.Text;
 
             await ctx.reply(result);
         } catch (error) {

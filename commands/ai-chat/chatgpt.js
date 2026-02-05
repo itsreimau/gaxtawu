@@ -28,7 +28,7 @@ module.exports = {
 
             if (!!checkMedia || !!checkQuotedMedia) {
                 const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-                const apiUrl = tools.api.createUrl("nekolabs", "/txt.gen/gpt/5-nano", {
+                const apiUrl = tools.api.createUrl("nekolabs", "/text.gen/gpt/5-nano", {
                     text: input,
                     systemPrompt,
                     imageUrl: uploadUrl,
@@ -38,7 +38,7 @@ module.exports = {
 
                 await ctx.reply(result);
             } else {
-                const apiUrl = tools.api.createUrl("nekolabs", "/txt.gen/gpt/5-nano", {
+                const apiUrl = tools.api.createUrl("nekolabs", "/text.gen/gpt/5-nano", {
                     text: input,
                     systemPrompt,
                     sessionId: uid

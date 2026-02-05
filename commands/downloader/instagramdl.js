@@ -20,17 +20,26 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("yp", "/api/downloader/Instagram", {
+            const apiUrl = tools.api.createUrl("deline", "/downloader/ig", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result.medias;
-            const album = result.map(res => {
-                return {
-                    [res.type]: {
-                        url: res.url
+            const result = (await axios.get(apiUrl)).data.result.media;
+            const album = [];
+            result.images.forEach(image => {
+                album.push({
+                    image: {
+                        url: image
                     },
-                    mimetype: tools.mime.lookup(res.type === "video" ? "mp4" : "png")
-                };
+                    mimetype: tools.mime.lookup("png")
+                });
+            });
+            result.videos.forEach(video => {
+                album.push({
+                    video: {
+                        url: video
+                    },
+                    mimetype: tools.mime.lookup("mp4")
+                });
             });
 
             await ctx.reply({

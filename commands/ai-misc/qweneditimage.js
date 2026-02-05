@@ -25,7 +25,7 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("nekolabs", "/img.gen/qwen/image-edit", {
+            const apiUrl = tools.api.createUrl("nekolabs", "/image.gen/qwen/image-edit", {
                 prompt: input,
                 imageUrl: uploadUrl
             });

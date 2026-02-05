@@ -47,8 +47,8 @@ module.exports = {
 
             if (newWarningCount >= maxWarnings) {
                 await ctx.reply(`ⓘ ${formatter.italic(`Pengguna mencapai batas warning (${newWarningCount}/${maxWarnings}).`)}`);
-                await ctx.group().kick(senderJid);
-                groupDb.warnings = warnings.filter(warning => warning.jid !== senderLid);
+                await ctx.group().kick(target);
+                groupDb.warnings = warnings.filter(warning => warning.jid !== target);
             } else {
                 await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menambahkan warning menjadi ${newWarningCount}/${maxWarnings}.`)}`);
             }

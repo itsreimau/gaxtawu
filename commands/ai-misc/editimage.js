@@ -1,8 +1,6 @@
-const axios = require("axios");
-
 module.exports = {
     name: "editimage",
-    aliases: ["editimg", "nanobanana"],
+    aliases: ["editimg"],
     category: "ai-misc",
     permissions: {
         coin: 10

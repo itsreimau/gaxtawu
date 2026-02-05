@@ -6,14 +6,14 @@ const APIs = {
     bagus: {
         baseURL: "https://api.baguss.xyz"
     },
+    danzy: {
+        baseURL: "https://api.danzy.web.id"
+    },
     deline: {
         baseURL: "https://api.deline.web.id"
     },
-    gemini_antidonasi: {
-        baseURL: "https://gemini.antidonasi.web.id"
-    },
     nekolabs: {
-        baseURL: "https://api.nekolabs.web.id"
+        baseURL: "https://rynekoo-api.hf.space"
     },
     yp: {
         baseURL: "https://api.yupra.my.id"

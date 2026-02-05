@@ -95,11 +95,10 @@ function getRandomElement(array) {
 function getReportOwner() {
     const owners = [];
     if (config.owner.report) owners.push(config.owner.id);
-    if (config.owner.co && Array.isArray(config.owner.co)) {
+    if (config.owner.co && Array.isArray(config.owner.co))
         config.owner.co.forEach(co => {
             if (co.report === true) owners.push(co.id);
         });
-    }
     return owners.length > 0 ? owners : false;
 }
 
@@ -133,25 +132,24 @@ async function handleError(ctx, error, useAxios = false, reportToOwner = true) {
     await ctx.reply(`ⓘ ${formatter.italic(`Terjadi kesalahan: ${error.message}`)}`);
 }
 
-function isCmd(text, ctxBot) {
-    if (!text || !ctxBot) return false;
+function isCmd(text, prefix, cmd) {
+    if (!text || !prefix || !cmd) return false;
 
     let selectedPrefix;
-    const prefix = ctxBot.prefix;
 
     if (Array.isArray(prefix)) {
         if (prefix[0] === "") {
-            const emptyIndex = prefix.findIndex(p => p === "");
+            const emptyIndex = prefix.findIndex(pref => pref === "");
             if (emptyIndex !== -1) {
                 const newPrefix = [...prefix];
                 const [empty] = newPrefix.splice(emptyIndex, 1);
                 newPrefix.push(empty);
-                selectedPrefix = newPrefix.find(p => text.startsWith(p));
+                selectedPrefix = newPrefix.find(pref => text.startsWith(pref));
             } else {
-                selectedPrefix = prefix.find(p => text.startsWith(p));
+                selectedPrefix = prefix.find(pref => text.startsWith(pref));
             }
         } else {
-            selectedPrefix = prefix.find(p => text.startsWith(p));
+            selectedPrefix = prefix.find(pref => text.startsWith(pref));
         }
     } else if (prefix instanceof RegExp) {
         const match = text.match(prefix);
@@ -162,16 +160,15 @@ function isCmd(text, ctxBot) {
 
     if (!selectedPrefix) return false;
 
-    const textWithoutPrefix = text?.slice(selectedPrefix.length).trim() || "";
-    let args = textWithoutPrefix.split(/\s+/) || [];
+    const command = text.slice(selectedPrefix.length).trim() || "";
+    let args = command.split(/\s+/) || [];
     let commandName = args?.shift()?.toLowerCase();
-    const input = textWithoutPrefix.slice(commandName.length) || "";
+    const text = command.slice(commandName.length) || "";
 
     if (!commandName) return false;
 
-    const cmds = Array.from(ctxBot.cmd?.values() || []);
-
-    const matchedCmds = cmds.filter(cmd => cmd.name?.toLowerCase() === commandName || (Array.isArray(cmd.aliases) ? cmd.aliases.includes(commandName) : cmd.aliases === commandName));
+    const commandsList = Array.from(cmd?.values() || []);
+    const matchedCommands = commandsList.filter(command => command.name?.toLowerCase() === commandName || (Array.isArray(command.aliases) ? command.aliases.includes(commandName) : command.aliases === commandName));
 
     if (matchedCmds.length > 0)
         return {

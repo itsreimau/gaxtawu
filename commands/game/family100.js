@@ -55,12 +55,12 @@ module.exports = {
 
             collector.on("collect", async (collCtx) => {
                 const participantAnswer = collCtx.msg.text.toLowerCase();
-                const participantJid = collCtx.sender.jid;
-                const participantDb = ctx.getDb("users", participantJid);
+                const participantLid = collCtx.sender.lid;
+                const participantDb = ctx.getDb("users", participantLid);
 
                 if (game.answers.has(participantAnswer)) {
                     game.answers.delete(participantAnswer);
-                    game.participants.add(participantJid);
+                    game.participants.add(participantLid);
 
                     participantDb.coin += game.coin.answered;
                     participantDb.save();

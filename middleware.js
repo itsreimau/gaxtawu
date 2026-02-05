@@ -30,7 +30,7 @@ module.exports = bot => {
         if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;
         if (groupDb?.mutebot === "owner" && !isOwner) return;
         const muteList = groupDb?.mute || [];
-        if (muteList.includes(Baileys.isJidUser(senderJid) ? await ctx.getLidUser(senderJid) : senderJid)) return;
+        if (muteList.includes(ctx.sender.lid)) return;
 
         // Log command masuk
         if (isGroup && !ctx.msg.key.fromMe) {
@@ -85,7 +85,7 @@ module.exports = bot => {
             const now = Date.now();
             const duration = 24 * 60 * 60 * 1000;
 
-            if (senderDb?.botGroupMembership.isMember && now - senderDb.botGroupMembership.timestamp < duration) return senderDb.botGroupMembership.isMember;
+            if (senderDb?.botGroupMembership?.isMember && now - senderDb?.botGroupMembership?.timestamp < duration) return senderDb.botGroupMembership.isMember;
 
             const isMember = await ctx.group(config.bot.groupJid).isMemberExist(ctx.sender.lid);
             senderDb.botGroupMembership = {
@@ -121,12 +121,12 @@ module.exports = bot => {
             reaction: "💤"
         }, {
             key: "gamerestrict",
-            condition: groupDb?.option?.gamerestrict && isGroup && !isAdmin && !isOwner && ctx.bot.cmd.get(ctx.used.command).category === "game",
+            condition: groupDb?.option?.gamerestrict && isGroup && !isOwner && !isAdmin && ctx.bot.cmd.get(ctx.used.command).category === "game",
             msg: config.msg.gamerestrict,
             reaction: "🎮"
         }, {
             key: "privatePremiumOnly",
-            condition: config.system.privatePremiumOnly && isPrivate && !isOwner && !senderDb?.premium && !["price", "owner"].includes(ctx.used.command),
+            condition: config.system.privatePremiumOnly && !isOwner && !senderDb?.premium && !["price", "owner"].includes(ctx.used.command),
             msg: config.msg.privatePremiumOnly,
             buttons: [{
                 buttonId: `${ctx.used.prefix}price`,
@@ -142,7 +142,7 @@ module.exports = bot => {
             reaction: "💎"
         }, {
             key: "requireBotGroupMembership",
-            condition: config.system.requireBotGroupMembership && !isOwner && !senderDb?.premium && ctx.used.command !== "botgroup" && config.bot.groupJid && !await checkBotGroupMembership(),
+            condition: config.system.requireBotGroupMembership && !isOwner && !senderDb?.premium && ctx.used.command !== "botgroup" && !await checkBotGroupMembership(),
             msg: config.msg.botGroupMembership,
             buttons: [{
                 buttonId: `${ctx.used.prefix}botgroup`,
@@ -217,7 +217,7 @@ module.exports = bot => {
             reaction: "🛡️"
         }, {
             key: "botAdmin",
-            condition: isGroup && !await ctx.group().isBotAdmin(),
+            condition: isGroup && !await ctx.group(groupJid, !config.system.selfReply).isBotAdmin(),
             msg: config.msg.botAdmin,
             reaction: "🤖"
         }, {

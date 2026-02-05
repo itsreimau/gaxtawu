@@ -1,3 +1,5 @@
+const axios = require("axios");
+
 module.exports = {
     name: "hitamkan",
     aliases: ["hitam", "penghitaman"],
@@ -15,9 +17,11 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("gemini_antidonasi", "/hitamkan", {
-                imageUrl: uploadUrl
+            const apiUrl = tools.api.createUrl("danzy", "/api/tools/nanobanana", {
+                prompt: "Change the model character to have black skin color.",
+                media: uploadUrl
             });
+            const result = (await axios.get(apiUrl)).data.data.image;
 
             await ctx.reply({
                 image: {

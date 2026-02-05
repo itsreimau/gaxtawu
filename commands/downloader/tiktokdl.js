@@ -20,21 +20,21 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("yp", "/api/downloader/tiktok", {
+            const apiUrl = tools.api.createUrl("bagus", "/api/downloader/tiktok", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;
 
-            if (!result.data[0].type.includes("photo")) {
+            if (result.slides.length === 0) {
                 await ctx.reply({
                     video: {
-                        url: result.data.find(res => res.type === "nowatermark").url
+                        url: result.video_nowm
                     },
                     mimetype: tools.mime.lookup("mp4"),
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
-                const album = result.data.map(res => ({
+                const album = result.slides.map(res => ({
                     image: {
                         url: res.url
                     },

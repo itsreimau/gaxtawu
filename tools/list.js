@@ -12,7 +12,7 @@ async function get(type) {
             case "alkitab": {
                 const data = (await axios.get(api.createUrl("https://api-alkitab.vercel.app", "/api/book"))).data.data;
                 text = createList(data, list =>
-                    `➛ ${formatter.bold("Buku")}: ${list.name} (${list.abbr})\n` +
+                    `➛ ${formatter.bold("Kitab")}: ${list.name} (${list.abbr})\n` +
                     `➛ ${formatter.bold("Jumlah Bab")}: ${list.chapter}`
                 );
                 break;
@@ -20,7 +20,7 @@ async function get(type) {
             case "alquran": {
                 const data = (await axios.get(api.createUrl("https://raw.githubusercontent.com", "/penggguna/QuranJSON/master/quran.json"))).data;
                 text = createList(data, list =>
-                    `➛ ${formatter.bold("Surah")}: ${list.name} (${list.number_of_surah}\n` +
+                    `➛ ${formatter.bold("Surah")}: ${list.name} (${list.number_of_surah})\n` +
                     `➛ ${formatter.bold("Jumlah Ayat")}: ${list.number_of_ayah}`
                 );
                 break;

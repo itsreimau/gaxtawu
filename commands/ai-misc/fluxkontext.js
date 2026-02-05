@@ -27,7 +27,7 @@ module.exports = {
             let result;
             for (let v = 1; v <= 2; v++) {
                 try {
-                    const apiUrl = tools.api.createUrl("nekolabs", `/img.gen/flux/kontext/v${v}`, {
+                    const apiUrl = tools.api.createUrl("nekolabs", `/image.gen/flux/kontext/v${v}`, {
                         prompt: input,
                         imageUrl: uploadUrl
                     });

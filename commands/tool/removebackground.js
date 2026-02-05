@@ -1,3 +1,5 @@
+const axios = require("axios");
+
 module.exports = {
     name: "removebackground",
     aliases: ["removebg"],
@@ -15,9 +17,10 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("znx", "/api/tools/removebg", {
-                imageUrl: uploadUrl
+            const apiUrl = tools.api.createUrl("deline", "/tools/removebg", {
+                url: uploadUrl
             });
+            const result = (await axios.get(apiUrl)).data.result.cutoutUrl;
 
             await ctx.reply({
                 image: {

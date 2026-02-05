@@ -16,7 +16,7 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/img.gen/grok/2-image", {
+            const apiUrl = tools.api.createUrl("nekolabs", "/image.gen/grok/2-image", {
                 prompt: input
             });
             const result = (await axios.get(apiUrl)).data.result;

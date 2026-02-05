@@ -16,7 +16,7 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/txt.gen/venice", {
+            const apiUrl = tools.api.createUrl("nekolabs", "/text.gen/venice", {
                 text: input
             });
             const result = (await axios.get(apiUrl)).data.result;

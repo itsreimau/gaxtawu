@@ -1,3 +1,5 @@
+const axios = require("axios");
+
 module.exports = {
     name: "hijabkan",
     aliases: ["hijab", "penghijaban"],
@@ -15,9 +17,11 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("gemini_antidonasi", "/hijabkan", {
-                imageUrl: uploadUrl
+            const apiUrl = tools.api.createUrl("danzy", "/api/tools/nanobanana", {
+                prompt: "Change the model's character to wear an Islamic hijab.",
+                media: uploadUrl
             });
+            const result = (await axios.get(apiUrl)).data.data.image;
 
             await ctx.reply({
                 image: {

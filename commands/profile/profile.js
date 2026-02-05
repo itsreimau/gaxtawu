@@ -20,7 +20,7 @@ module.exports = {
                 `➛ ${formatter.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
                 `➛ ${formatter.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Tak terbatas" : userDb?.coin}\n` +
                 `➛ ${formatter.bold("Menang")}: ${userDb?.winGame || 0}\n` +
-                `➛ ${formatter.bold("Peringkat")}: ${leaderboardData.findIndex(user => user.id === ctx.sender.jid) + 1}`
+                `➛ ${formatter.bold("Peringkat")}: ${leaderboardData.findIndex(user => user.jid === ctx.sender.lid) + 1}`
             );
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
