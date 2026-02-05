@@ -163,7 +163,7 @@ function isCmd(text, prefix, cmd) {
     const command = text.slice(selectedPrefix.length).trim() || "";
     let args = command.split(/\s+/) || [];
     let commandName = args?.shift()?.toLowerCase();
-    const text = command.slice(commandName.length) || "";
+    const txt = command.slice(commandName.length) || "";
 
     if (!commandName) return false;
 
@@ -175,7 +175,7 @@ function isCmd(text, prefix, cmd) {
             msg: text,
             prefix: selectedPrefix,
             name: commandName,
-            input
+            input: txt
         };
 
     const mean = Gktw?.didYouMean?.(commandName, cmds.flatMap(cmd => [cmd.name, ...(cmd.aliases || [])]));
@@ -183,7 +183,7 @@ function isCmd(text, prefix, cmd) {
         msg: text,
         prefix: selectedPrefix,
         didyoumean: mean,
-        input
+        input: txt
     } : false;
 }
 
