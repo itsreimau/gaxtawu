@@ -235,7 +235,7 @@ module.exports = bot => {
 
             // Penanganan obrolan grup
             if (isGroup) {
-                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from group: ${groupId}, by: ${Baileys.isJidUser(senderJid) ? senderId : `${senderId} (LID)`}`); // Log pesan masuk
+                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from group: ${groupId}, by: ${Baileys.isPnUser(senderJid) ? senderId : `${senderId} (LID)`}`); // Log pesan masuk
 
                 // Variabel umum
                 const messageType = ctx.getMessageType();
@@ -356,7 +356,7 @@ module.exports = bot => {
 
             // Penanganan obrolan pribadi
             if (isPrivate) {
-                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from: ${Baileys.isJidUser(senderJid) ? senderId : `${senderId} (LID)`}`); // Log pesan masuk
+                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from: ${Baileys.isPnUser(senderJid) ? senderId : `${senderId} (LID)`}`); // Log pesan masuk
 
                 // Apa yaa...
             }
@@ -376,7 +376,7 @@ module.exports = bot => {
 
         if (Baileys.isJidGroup(callJid) || isOwner || fromDb?.banned) return;
 
-        consolefy.info(`Incoming call from: ${Baileys.isJidUser(fromJid) ? fromId : `${fromId} (LID)`}`); // Log panggilan masuk
+        consolefy.info(`Incoming call from: ${Baileys.isPnUser(fromJid) ? fromId : `${fromId} (LID)`}`); // Log panggilan masuk
 
         await bot.core.rejectCall(callJid, fromJid);
 
