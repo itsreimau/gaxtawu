@@ -8,7 +8,7 @@ async function handleWelcome(botCtx, ctx, type, isSimulate = false) {
     const groupJid = ctx.id;
     const groupDb = botCtx.getDb("groups", groupJid);
     const botDb = botCtx.getDb("bot");
-    const participantJid = ctx.participant.jid;
+    const participantJid = ctx.participant;
 
     if (!isSimulate && groupDb?.mutebot) return;
     if (!isSimulate && !groupDb?.option?.welcome) return;
@@ -29,7 +29,7 @@ async function handleWelcome(botCtx, ctx, type, isSimulate = false) {
         );
     const profilePictureUrl = await botCtx.core.profilePictureUrl(participantJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
     const canvasUrl = tools.api.createUrl("deline", "/canvas/welcome", {
-        username: ctx.participant.pushName || "User",
+        username: botCtx.getPushName(participantJid) || "User",
         guildName: metadata.subject,
         memberCount: metadata.participants.length,
         avatar: profilePictureUrl,
@@ -368,11 +368,10 @@ module.exports = bot => {
         if (!config.system.antiCall) return;
 
         const callJid = ctx.id;
-        const fromJid = ctx.from.jid;
+        const fromJid = ctx.from;
         const fromId = bot.getId(fromJid);
-        const fromLid = ctx.from.lid;
         const isOwner = bot.checkOwner(fromJid);
-        const fromDb = bot.getDb("users", fromLid);
+        const fromDb = bot.getDb("users", fromJid);
 
         if (Baileys.isJidGroup(callJid) || isOwner || fromDb?.banned) return;
 
