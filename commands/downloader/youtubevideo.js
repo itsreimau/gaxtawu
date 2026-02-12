@@ -29,16 +29,17 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("yp", "/api/downloader/ytmp4", {
-                url
+            const apiUrl = tools.api.createUrl("izumi", "/downloader/youtube", {
+                url,
+                format: "720"
             });
-            const result = (await axios.get(apiUrl)).data.data;
+            const result = (await axios.get(apiUrl)).data.result;
 
             const document = flag?.document || false;
             if (document) {
                 await ctx.reply({
                     document: {
-                        url: result.download_url
+                        url: result.download
                     },
                     fileName: `${result.title}.mp4`,
                     mimetype: tools.mime.lookup("mp4"),
@@ -47,7 +48,7 @@ module.exports = {
             } else {
                 await ctx.reply({
                     video: {
-                        url: result.download_url
+                        url: result.download
                     },
                     mimetype: tools.mime.lookup("mp4"),
                     caption: `➛ ${formatter.bold("URL")}: ${url}`

@@ -21,7 +21,7 @@ module.exports = {
                 prompt: "naked",
                 media: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.data.image;
 
             await ctx.reply({
                 image: {
