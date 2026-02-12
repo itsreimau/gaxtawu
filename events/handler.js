@@ -30,7 +30,7 @@ async function handleWelcome(botCtx, ctx, type, isSimulate = false) {
     const profilePictureUrl = await botCtx.core.profilePictureUrl(participantJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
     const canvasUrl = tools.api.createUrl("deline", "/canvas/welcome", {
         username: botCtx.getPushName(participantJid) || "User",
-        guildName: metadata.subject,
+        guildName: metadata.subject.length > 30 ? `${metadata.subject.substring(0, 27)}...` : metadata.subject,
         memberCount: metadata.participants.length,
         avatar: profilePictureUrl,
         background: "https://picsum.photos/1024/450.jpg",
