@@ -1,11 +1,10 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "stablediffusion",
-    aliases: ["diffusion", "sd"],
+    name: "arting",
     category: "ai-generate",
     permissions: {
-        coin: 5
+        premium: true
     },
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.text || null;
@@ -17,7 +16,7 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/image.gen/stable-diffusion/3.5", {
+            const apiUrl = tools.api.createUrl("danzy", "/api/ai/arting", {
                 prompt: input
             });
             const result = (await axios.get(apiUrl)).data.result;

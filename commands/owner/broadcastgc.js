@@ -44,6 +44,7 @@ module.exports = {
                     const members = await ctx.group(groupJid).members();
                     mentions = members.map(member => member.jid);
                 }
+
                 await ctx.core.sendMessage(groupJid, {
                     image: {
                         url: config.bot.thumbnail

@@ -21,11 +21,11 @@ module.exports = {
         if (!await ctx.group(target)) return await ctx.reply(`ⓘ ${formatter.italic("Grup tidak valid atau bot tidak ada di grup tersebut!")}`);
 
         try {
-            const groupDb = ctx.getDb("users", target);
+            const targetDb = ctx.getDb("users", target);
 
-            delete groupDb.premium;
-            delete groupDb.premiumExpiration;
-            groupDb.save();
+            delete targetDb.premium;
+            delete targetDb.premiumExpiration;
+            targetDb.save();
 
             const flag = ctx.flag({
                 "-s": {

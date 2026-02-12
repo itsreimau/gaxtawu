@@ -1,20 +1,13 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "fluxkontext",
+    name: "toghibli",
+    aliases: ["jadighibli"],
     category: "ai-misc",
     permissions: {
         premium: true
     },
     code: async (ctx) => {
-        const input = ctx.text || null;
-
-        if (!input)
-            return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "make it evangelion art style")
-            );
-
         const [checkMedia, checkQuotedMedia] = [
             tools.cmd.checkMedia(ctx.msg.messageType, "image"),
             tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, "image")
@@ -24,19 +17,10 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            let result;
-            for (let v = 1; v <= 2; v++) {
-                try {
-                    const apiUrl = tools.api.createUrl("nekolabs", `/image.gen/flux/kontext/v${v}`, {
-                        prompt: input,
-                        imageUrl: uploadUrl
-                    });
-                    result = (await axios.get(apiUrl)).data.result;
-                    break;
-                } catch (error) {
-                    if (v === 2) throw error;
-                }
-            }
+            const apiUrl = tools.api.createUrl("nekolabs", "/style.changer/ghibli", {
+                imageUrl: uploadUrl
+            });
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 image: {

@@ -17,8 +17,8 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/tools/lyrics", {
-                title: input
+            const apiUrl = tools.api.createUrl("danzy", "/api/search/lyrics", {
+                q: input
             });
             const result = (await axios.get(apiUrl)).data.result?.[0];
 

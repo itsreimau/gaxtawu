@@ -1,3 +1,5 @@
+const moment = require("moment-timezone");
+
 module.exports = {
     name: "iphonequotedchat",
     aliases: ["iqc"],
@@ -17,8 +19,10 @@ module.exports = {
         if (input.length > 1000) return await ctx.reply(`ⓘ ${formatter.italic("Maksimal 1000 karakter!")}`);
 
         try {
-            const result = tools.api.createUrl("znx", "/api/maker/iqc", {
-                text: input
+            const result = tools.api.createUrl("deline", "/maker/iqc", {
+                text: input,
+                chatTime: moment.tz(config.system.timeZone).subtract(Math.floor(Math.random() * 60) + 1, "minutes").format("HH:mm"),
+                statusBarTime: moment.tz(config.system.timeZone).format("HH:mm")
             });
 
             await ctx.reply({

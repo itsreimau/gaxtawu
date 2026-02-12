@@ -16,10 +16,10 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("zell", "/ai/flux", {
+            const apiUrl = tools.api.createUrl("danzy", "/api/ai/deepimg", {
                 prompt: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.image;
 
             await ctx.reply({
                 image: {

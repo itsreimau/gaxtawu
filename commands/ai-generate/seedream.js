@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "grokgen",
+    name: "seedream",
     category: "ai-generate",
     permissions: {
         premium: true
@@ -16,10 +16,10 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/image.gen/grok/2-image", {
+            const apiUrl = tools.api.createUrl("danzy", "/api/ai/dream", {
                 prompt: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result[0];
 
             await ctx.reply({
                 image: {

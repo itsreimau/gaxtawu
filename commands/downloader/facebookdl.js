@@ -27,7 +27,7 @@ module.exports = {
 
             await ctx.reply({
                 video: {
-                    url: result.find(res => res.quality.includes("HD")).url || result.find(res => res.quality.includes("SD")).url
+                    url: result.find(res => res.quality.includes("HD") || res.quality.includes("SD")).url
                 },
                 mimetype: tools.mime.lookup("mp4"),
                 caption: `➛ ${formatter.bold("URL")}: ${url}`

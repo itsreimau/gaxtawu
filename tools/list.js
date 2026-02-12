@@ -25,6 +25,11 @@ async function get(type) {
                 );
                 break;
             }
+            case "cecan": {
+                const data = ["china", "indonesia", "japan", "vietnam", "korea", "malaysia", "thailand"];
+                text = createList(data, list => `➛ ${list}`);
+                break;
+            }
             case "claim": {
                 const data = [
                     "daily (Hadiah harian)",
@@ -57,6 +62,11 @@ async function get(type) {
                     "public (Mode publik, merespons dalam grup dan obrolan pribadi)",
                     "self (Mode self, hanya merespons dirinya sendiri dan owner)"
                 ];
+                text = createList(data, list => `➛ ${list}`);
+                break;
+            }
+            case "nsfwhub": {
+                const data = ["anal", "ass", "bdsm", "black", "blowjub", "boobs", "bottomless", "collared", "cum", "cumsluts", "dick", "dom", "dp", "easter", "extreme", "feet", "finger", "fuck", "futa", "gay", "group", "hentai", "kiss", "lesbian", "lick", "pegged", "puffies", "pussy", "real", "sixtynine", "suck", "tattoo", "tiny", "xmas"];
                 text = createList(data, list => `➛ ${list}`);
                 break;
             }
@@ -101,6 +111,29 @@ async function get(type) {
                     "intro (Teks intro)",
                     "welcome (Teks welcome, variabel yang tersedia: %tag%, %subject%, %description%)"
                 ];
+                text = createList(data, list => `➛ ${list}`);
+                break;
+            }
+            case "translate": {
+                const data = (await axios.get(api.createUrl("https://raw.githubusercontent.com", "/itsecurityco/to-google-translate/refs/heads/master/supported_languages.json"))).data;
+                text = createList(data, list =>
+                    `➛ ${formatter.bold("Kode")}: ${list.code}\n` +
+                    `➛ ${formatter.bold("Bahasa")}: ${list.language}`
+                );
+                break;
+            }
+            case "waifuim": {
+                const data = ["ass", "ecchi", "ero", "hentai", "maid", "milf", "oppai", "oral", "paizuri", "selfies", "uniform", "waifu"];
+                text = createList(data, list => `➛ ${list}`);
+                break;
+            }
+            case "waifupics": {
+                const data = ["waifu", "neko", "shinobu", "megumin"];
+                text = createList(data, list => `➛ ${list}`);
+                break;
+            }
+            case "waifupicsnsfw": {
+                const data = ["waifu", "neko", "trap"];
                 text = createList(data, list => `➛ ${list}`);
                 break;
             }

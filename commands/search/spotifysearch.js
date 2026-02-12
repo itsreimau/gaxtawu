@@ -29,10 +29,10 @@ module.exports = {
             });
 
         try {
-            const apiUrl = tools.api.createUrl("znx", "/api/search/spotify", {
+            const apiUrl = tools.api.createUrl("bagus", "/api/search/spotify", {
                 q: input
             });
-            const result = (await axios.get(apiUrl)).data.results.data;
+            const result = (await axios.get(apiUrl)).data.data;
 
             const resultText = result.map(res =>
                 `➛ ${formatter.bold("Judul")}: ${res.title}\n` +

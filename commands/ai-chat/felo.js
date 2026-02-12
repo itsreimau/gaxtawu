@@ -1,7 +1,8 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "grok",
+    name: "felo",
+    aliases: ["feloai"],
     category: "ai-chat",
     permissions: {
         coin: 5
@@ -16,14 +17,14 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/text.gen/grok/4-fast", {
-                text: input
+            const apiUrl = tools.api.createUrl("znx", "/api/ai/felo", {
+                question: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.results.answer;
 
             await ctx.reply(result);
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }
     }
-};
+}

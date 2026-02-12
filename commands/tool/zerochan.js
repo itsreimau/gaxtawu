@@ -1,33 +1,32 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "text2video",
-    aliases: ["text2vid", "texttovideo", "texttovid"],
-    category: "ai-generate",
+    name: "zerochan",
+    category: "tool",
     permissions: {
-        premium: true
+        coin: 5
     },
     code: async (ctx) => {
-        const input = ctx.text || ctx.quoted?.text || null;
+        const input = ctx.text || null;
 
         if (!input)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "anime girl with short blue hair")
+                tools.msg.generateCmdExample(ctx.used, "rei ayanami")
             );
 
         try {
-            const apiUrl = tools.api.createUrl("bagus", "/api/tools/text2video", {
-                prompt: input
+            const apiUrl = tools.api.createUrl("izumi", "/search/zerochan", {
+                query: input
             });
-            const result = (await axios.get(apiUrl)).data.video.url;
+            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result).downloadLink;
 
             await ctx.reply({
-                video: {
+                image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("mp4"),
-                caption: `➛ ${formatter.bold("Prompt")}: ${input}`,
+                mimetype: tools.mime.lookup("png"),
+                caption: `➛ ${formatter.bold("Kueri")}: ${input}`,
                 buttons: [{
                     buttonId: `${ctx.used.prefix + ctx.used.command} ${input}`,
                     buttonText: {

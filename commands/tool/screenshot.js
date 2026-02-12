@@ -1,6 +1,6 @@
 module.exports = {
     name: "screenshot",
-    aliases: ["ss", "sshp", "sspc", "sstab", "ssweb"],
+    aliases: ["ss", "sshp", "sspc", "ssweb"],
     category: "tool",
     permissions: {
         coin: 5
@@ -18,10 +18,9 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const result = tools.api.createUrl("znx", "/api/tools/ssweb", {
+            const result = tools.api.createUrl("danzy", "/api/tools/ssweb", {
                 url,
-                type: ctx.used.command == "sshp" ? "android" : ctx.used.command == "sstab" ? "tab" : "pc",
-                full: true
+                type: ctx.used.command == "sshp" ? "mobile" : "desktop"
             });
 
             await ctx.reply({

@@ -7,11 +7,11 @@ module.exports = {
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["audio", "document", "image", "video", "sticker"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["audio", "document", "image", "video", "sticker"])
+            tools.cmd.checkMedia(ctx.msg.messageType, ["audio", "document", "image", "sticker", "video"]),
+            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["audio", "document", "image", "sticker", "video"])
         ];
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["audio", "document", "image", "video", "sticker"]));
+        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["audio", "document", "image", "sticker", "video"]));
 
         try {
             const result = await ctx.msg.upload() || await ctx.quoted.upload();
@@ -22,7 +22,6 @@ module.exports = {
                     name: "cta_copy",
                     buttonParamsJson: JSON.stringify({
                         display_text: "Salin URL",
-                        id: "copy_code",
                         copy_code: result
                     })
                 }]

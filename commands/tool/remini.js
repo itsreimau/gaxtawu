@@ -1,21 +1,12 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "qweneditimage",
-    aliases: ["qweneditimg"],
-    category: "ai-misc",
+    name: "remini",
+    category: "tool",
     permissions: {
-        premium: true
+        coin: 5
     },
     code: async (ctx) => {
-        const input = ctx.text || null;
-
-        if (!input)
-            return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "make it evangelion art style")
-            );
-
         const [checkMedia, checkQuotedMedia] = [
             tools.cmd.checkMedia(ctx.msg.messageType, "image"),
             tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, "image")
@@ -25,9 +16,8 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("nekolabs", "/image.gen/qwen/image-edit", {
-                prompt: input,
-                imageUrl: uploadUrl
+            const apiUrl = tools.api.createUrl("hang", "/imagecreator/remini", {
+                url: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.result;
 

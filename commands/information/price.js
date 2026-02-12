@@ -4,8 +4,7 @@ module.exports = {
     category: "information",
     code: async (ctx) => {
         try {
-            const botDb = ctx.db.bot;
-            const customText = botDb?.text?.price || null;
+            const customText = ctx.db.bot.text?.price || null;
             const text = customText ? customText.replace(/%tag%/g, `@${ctx.getId(ctx.sender.jid)}`).replace(/%name%/g, config.bot.name).replace(/%prefix%/g, ctx.used.prefix).replace(/%command%/g, ctx.used.command).replace(/%footer%/g, config.msg.footer).replace(/%readmore%/g, "\u200E".repeat(4001)) :
                 `ⓘ ${formatter.italic("Bot ini tidak memiliki harga.")}`;
 

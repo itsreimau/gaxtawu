@@ -29,25 +29,25 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/downloader/ytmp3", {
+            const apiUrl = tools.api.createUrl("danzy", "/api/download/ytmp3", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.data;
 
             const document = flag?.document || false;
             if (document) {
                 await ctx.reply({
                     document: {
-                        url: result.dlink
+                        url: result.downloadUrl
                     },
-                    fileName: `${result.youtube.title}.mp3`,
+                    fileName: `${result.title}.mp3`,
                     mimetype: tools.mime.lookup("mp3"),
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
                 await ctx.reply({
                     audio: {
-                        url: result.dlink
+                        url: result.downloadUrl
                     },
                     mimetype: tools.mime.lookup("mp3")
                 });

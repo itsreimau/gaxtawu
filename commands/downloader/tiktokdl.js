@@ -20,7 +20,7 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("bagus", "/api/downloader/tiktok", {
+            const apiUrl = tools.api.createUrl("bagus", "/api/download/tiktok", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;
@@ -34,16 +34,16 @@ module.exports = {
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
-                const album = result.slides.map(res => ({
+                const album = result.slides.map((res, index) => ({
                     image: {
                         url: res.url
                     },
-                    mimetype: tools.mime.lookup("png")
+                    mimetype: tools.mime.lookup("png"),
+                    caption: index === 0 ? `➛ ${formatter.bold("URL")}: ${url}` : null
                 }));
 
                 await ctx.reply({
-                    album,
-                    caption: `➛ ${formatter.bold("URL")}: ${url}`
+                    album
                 });
             }
         } catch (error) {

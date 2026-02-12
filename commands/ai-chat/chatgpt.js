@@ -23,14 +23,14 @@ module.exports = {
         ];
 
         try {
-            const systemPrompt = `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.`; // Dapat diubah sesuai keinginan
+            const instruction = `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.`; // Dapat diubah sesuai keinginan
             const uid = ctx.db.user.uid || "guest";
 
             if (!!checkMedia || !!checkQuotedMedia) {
                 const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
                 const apiUrl = tools.api.createUrl("nekolabs", "/text.gen/gpt/5-nano", {
                     text: input,
-                    systemPrompt,
+                    systemPrompt: instruction,
                     imageUrl: uploadUrl,
                     sessionId: uid
                 });
@@ -40,7 +40,7 @@ module.exports = {
             } else {
                 const apiUrl = tools.api.createUrl("nekolabs", "/text.gen/gpt/5-nano", {
                     text: input,
-                    systemPrompt,
+                    systemPrompt: instruction,
                     sessionId: uid
                 });
                 const result = (await axios.get(apiUrl)).data.result;

@@ -1,5 +1,5 @@
 // Impor modul dan dependensi yang diperlukan
-const { Baileys, Events, Gktw } = require("@itsreimau/gktw");
+const { Baileys, Gktw, MessageType } = require("@itsreimau/gktw");
 const axios = require("axios");
 const moment = require("moment-timezone");
 
@@ -53,7 +53,6 @@ async function handleWelcome(botCtx, ctx, type, isSimulate = false) {
                 name: "cta_copy",
                 buttonParamsJson: JSON.stringify({
                     display_text: "Salin Teks",
-                    id: "copy_text",
                     copy_code: text
                 })
             }]
@@ -66,10 +65,8 @@ async function handleWarning(ctx, senderJid, senderId, senderLid, isAdmin, group
     const warnings = groupDb?.warnings || [];
 
     const senderWarning = warnings.find(warning => warning.jid === senderLid);
-
     let currentWarnings = senderWarning ? senderWarning.count : 0;
     currentWarnings += 1;
-
     if (senderWarning) {
         senderWarning.count = currentWarnings;
     } else {
@@ -78,7 +75,6 @@ async function handleWarning(ctx, senderJid, senderId, senderLid, isAdmin, group
             count: currentWarnings
         });
     }
-
     groupDb.warnings = warnings;
 
     await ctx.reply({
@@ -144,7 +140,7 @@ module.exports = bot => {
             const groupJid = isGroup ? ctx.id : null;
             const groupId = isGroup ? ctx.getId(groupJid) : null;
             const isOwner = ctx.sender.isOwner();
-            const isCmd = tools.cmd.isCmd(msg.text, ctx.bot);
+            const isCmd = ctx.isCmd();
             const isAdmin = isGroup ? await ctx.group().isSenderAdmin() : false;
 
             // Mengambil database
@@ -262,7 +258,7 @@ module.exports = bot => {
 
                 if (!isCmd && !isOwner && !isAdmin) {
                     // Penanganan antimedia
-                    for (const type of ["audio", "document", "gif", "image", "sticker", "video"]) {
+                    for (const type of ["audio", "document", "image", "sticker", "video"]) {
                         if (groupDb?.option?.[`anti${type}`]) {
                             const checkMedia = tools.cmd.checkMedia(messageType, type);
                             if (!!checkMedia) {
@@ -305,9 +301,7 @@ module.exports = bot => {
 
                         senderSpam.count = newCount;
                         senderSpam.lastMessageTime = now;
-
                         if (!spamData.some(spam => spam.jid === senderLid)) spamData.push(senderSpam);
-
                         groupDb.spam = spamData;
 
                         if (newCount > 5) {

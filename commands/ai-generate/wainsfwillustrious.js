@@ -1,10 +1,11 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "qwengen",
+    name: "wainsfwillustrious",
+    aliases: ["nsfwgen", "wai"],
     category: "ai-generate",
     permissions: {
-        coin: 5
+        premium: true
     },
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.text || null;
@@ -16,11 +17,10 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/image.gen/qwen/image", {
-                prompt: input,
-                ratio: tools.cmd.getRandomElement(["1:1", "16:9", "9:16"])
+            const apiUrl = tools.api.createUrl("danzy", "/api/ai/nsfwgen", {
+                q: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.images[0];
 
             await ctx.reply({
                 image: {

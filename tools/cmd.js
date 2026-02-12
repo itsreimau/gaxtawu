@@ -1,6 +1,6 @@
 // Impor modul dan dependensi yang diperlukan
 const api = require("./api.js");
-const { Baileys, MessageType, Gktw } = require("@itsreimau/gktw");
+const { Baileys, Gktw, MessageType } = require("@itsreimau/gktw");
 const axios = require("axios");
 const util = require("node:util");
 
@@ -16,18 +16,15 @@ function checkMedia(type, required) {
     const mediaMap = {
         audio: MessageType.audioMessage,
         document: [MessageType.documentMessage, MessageType.documentWithCaptionMessage],
-        gif: MessageType.videoMessage,
         image: MessageType.imageMessage,
         sticker: MessageType.stickerMessage,
         text: [MessageType.conversation, MessageType.extendedTextMessage],
         video: MessageType.videoMessage
     };
-
     const mediaList = Array.isArray(required) ? required : [required];
     for (const media of mediaList) {
         const mappedType = mediaMap[media];
         if (!mappedType) continue;
-
         if (Array.isArray(mappedType)) {
             if (mappedType.includes(type)) return media;
         } else {
@@ -44,18 +41,15 @@ function checkQuotedMedia(type, required) {
     const mediaMap = {
         audio: MessageType.audioMessage,
         document: [MessageType.documentMessage, MessageType.documentWithCaptionMessage],
-        gif: MessageType.videoMessage,
         image: MessageType.imageMessage,
         sticker: MessageType.stickerMessage,
         text: [MessageType.conversation, MessageType.extendedTextMessage],
         video: MessageType.videoMessage
     };
-
     const mediaList = Array.isArray(required) ? required : [required];
     for (const media of mediaList) {
         const mappedType = mediaMap[media];
         if (!mappedType) continue;
-
         if (Array.isArray(mappedType)) {
             if (mappedType.includes(type)) return media;
         } else {
@@ -132,61 +126,6 @@ async function handleError(ctx, error, useAxios = false, reportToOwner = true) {
     await ctx.reply(`ⓘ ${formatter.italic(`Terjadi kesalahan: ${error.message}`)}`);
 }
 
-function isCmd(text, prefix, cmd) {
-    if (!text || !prefix || !cmd) return false;
-
-    let selectedPrefix;
-
-    if (Array.isArray(prefix)) {
-        if (prefix[0] === "") {
-            const emptyIndex = prefix.findIndex(pref => pref === "");
-            if (emptyIndex !== -1) {
-                const newPrefix = [...prefix];
-                const [empty] = newPrefix.splice(emptyIndex, 1);
-                newPrefix.push(empty);
-                selectedPrefix = newPrefix.find(pref => text.startsWith(pref));
-            } else {
-                selectedPrefix = prefix.find(pref => text.startsWith(pref));
-            }
-        } else {
-            selectedPrefix = prefix.find(pref => text.startsWith(pref));
-        }
-    } else if (prefix instanceof RegExp) {
-        const match = text.match(prefix);
-        selectedPrefix = match ? match[0] : null;
-    } else if (typeof prefix === "string") {
-        selectedPrefix = text.startsWith(prefix) ? prefix : null;
-    }
-
-    if (!selectedPrefix) return false;
-
-    const command = text.slice(selectedPrefix.length).trim() || "";
-    let args = command.split(/\s+/) || [];
-    let commandName = args?.shift()?.toLowerCase();
-    const txt = command.slice(commandName.length) || "";
-
-    if (!commandName) return false;
-
-    const commandsList = Array.from(cmd?.values() || []);
-    const matchedCommands = commandsList.filter(command => command.name?.toLowerCase() === commandName || (Array.isArray(command.aliases) ? command.aliases.includes(commandName) : command.aliases === commandName));
-
-    if (matchedCmds.length > 0)
-        return {
-            msg: text,
-            prefix: selectedPrefix,
-            name: commandName,
-            input: txt
-        };
-
-    const mean = Gktw?.didYouMean?.(commandName, cmds.flatMap(cmd => [cmd.name, ...(cmd.aliases || [])]));
-    return mean ? {
-        msg: text,
-        prefix: selectedPrefix,
-        didyoumean: mean,
-        input: txt
-    } : false;
-}
-
 function isUrl(url) {
     if (!url) return false;
     return /(https?:\/\/[^\s]+)/g.test(url);
@@ -196,10 +135,10 @@ module.exports = {
     checkMedia,
     checkQuotedMedia,
     delay,
+    didYouMean: Baileys.didYouMean,
     generateUID,
     getRandomElement,
     getReportOwner,
     handleError,
-    isCmd,
     isUrl
 };

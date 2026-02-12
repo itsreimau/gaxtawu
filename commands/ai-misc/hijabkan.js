@@ -18,7 +18,7 @@ module.exports = {
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
             const apiUrl = tools.api.createUrl("danzy", "/api/tools/nanobanana", {
-                prompt: "Change the model's character to wear an Islamic hijab.",
+                prompt: "wear the islamic hijab",
                 media: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.data.image;

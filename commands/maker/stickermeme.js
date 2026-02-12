@@ -25,12 +25,12 @@ module.exports = {
 
         try {
             let [top, bottom] = input.split("|").map(inp => inp);
-            [top, bottom] = bottom ? [top || " ", bottom] : [" ", top || " "];
+            [top, bottom] = bottom ? [top || "_", bottom] : ["_", top || "_"];
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("nekolabs", `/canvas/meme`, {
-                imageUrl: uploadUrl,
-                textT: top,
-                textB: bottom
+            const result = tools.api.createUrl("deline", `/maker/smeme`, {
+                image: uploadUrl,
+                top,
+                bottom
             });
             const sticker = await new Sticker(result)
                 .setPack(config.sticker.packname)

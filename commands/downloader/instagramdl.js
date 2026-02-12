@@ -41,10 +41,10 @@ module.exports = {
                     mimetype: tools.mime.lookup("mp4")
                 });
             });
+            if (album[0]) album[0].caption = `➛ ${formatter.bold("URL")}: ${url}`;
 
             await ctx.reply({
-                album,
-                caption: `➛ ${formatter.bold("URL")}: ${url}`
+                album
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

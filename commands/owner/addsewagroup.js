@@ -23,7 +23,7 @@ module.exports = {
         if (daysAmount && daysAmount <= 0) return await ctx.reply(`ⓘ ${formatter.italic("Durasi sewa (dalam hari) harus diisi dan lebih dari 0!")}`);
 
         try {
-            const senderDb = ctx.getDb("groups", target);
+            const targetDb = ctx.getDb("groups", target);
 
             const flag = ctx.flag({
                 "-s": {
@@ -46,8 +46,8 @@ module.exports = {
 
             if (daysAmount && daysAmount > 0) {
                 const expirationDate = Date.now() + (daysAmount * 24 * 60 * 60 * 1000);
-                groupDb.sewaExpiration = expirationDate;
-                groupDb.save();
+                targetDb.sewaExpiration = expirationDate;
+                targetDb.save();
 
                 if (!silent && groupOwner)
                     await ctx.core.sendMessage(groupOwner, {
@@ -59,8 +59,8 @@ module.exports = {
 
                 await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menyewakan bot ke grup ${ctx.isGroup() ? "ini" : "itu"} selama ${daysAmount} hari!`)}`);
             } else {
-                delete groupDb?.sewaExpiration;
-                groupDb.save();
+                delete targetDb?.sewaExpiration;
+                targetDb.save();
 
                 if (!silent && groupOwner)
                     await ctx.core.sendMessage(groupOwner, {

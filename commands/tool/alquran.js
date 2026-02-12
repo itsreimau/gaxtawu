@@ -31,9 +31,8 @@ module.exports = {
             if (ayat) {
                 if (ayat.includes("-")) {
                     const [startAyat, endAyat] = ayat.split("-").map(Number);
-                    const selectedVerses = verses.filter(vers => vers.number >= startAyat && vers.number <= endAyat);
-
                     if (isNaN(startAyat) || isNaN(endAyat) || startAyat < 1 || endAyat < startAyat) return await ctx.reply(`ⓘ ${formatter.italic("Rentang ayat tidak valid!")}`);
+                    const selectedVerses = verses.filter(vers => vers.number >= startAyat && vers.number <= endAyat);
                     if (!selectedVerses.length) return await ctx.reply(`ⓘ ${formatter.italic(`Ayat dalam rentang ${startAyat}-${endAyat} tidak ada!`)}`);
 
                     const versesText = selectedVerses.map(vers =>
@@ -49,9 +48,8 @@ module.exports = {
                     );
                 } else {
                     const singleAyat = parseInt(ayat);
-                    const verse = verses.find(vers => vers.number === singleAyat);
-
                     if (isNaN(singleAyat) || singleAyat < 1) return await ctx.reply(`ⓘ ${formatter.italic("Ayat harus berupa nomor yang valid dan lebih besar dari 0!")}`);
+                    const verse = verses.find(vers => vers.number === singleAyat);
                     if (!verse) return await ctx.reply(`ⓘ ${formatter.italic(`Ayat ${singleAyat} tidak ada!`)}`);
 
                     await ctx.reply(

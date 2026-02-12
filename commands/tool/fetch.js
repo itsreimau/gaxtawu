@@ -64,17 +64,10 @@ module.exports = {
                     mimetype: tools.mime.contentType(contentType)
                 });
             } else {
-                let text = response?.data;
-                let json;
+                const text = response?.data;
+                const json = JSON.parse(text) || null;
 
-                try {
-                    json = JSON.parse(text);
-                } catch {
-                    json = null;
-                }
-
-                const responseText = json ? walkJSON(json) : text;
-                await ctx.reply(responseText);
+                await ctx.reply(json ? walkJSON(json) : text);
             }
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

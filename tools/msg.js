@@ -5,7 +5,6 @@ function convertMsToDuration(ms, requestedParts = null) {
 
     const duration = moment.duration(ms);
     const hasLargerUnits = duration.asSeconds() >= 1;
-
     const units = {
         tahun: {
             value: duration.years(),
@@ -42,7 +41,6 @@ function convertMsToDuration(ms, requestedParts = null) {
     };
 
     const parts = [];
-
     if (requestedParts && Array.isArray(requestedParts)) {
         for (const part of requestedParts) {
             if (units[part]) parts.push(`${units[part].value} ${part}`);
@@ -71,7 +69,6 @@ function formatSize(byteCount, withPerSecond = false) {
         size *= 1024;
         index--;
     }
-
     while (size >= 1024 && index < bytes.length - 1) {
         size /= 1024;
         index++;
@@ -100,16 +97,13 @@ function generateInstruction(actions, mediaTypes) {
     const mediaTypeTranslations = {
         audio: "audio",
         document: "dokumen",
-        gif: "GIF",
         image: "gambar",
         sticker: "stiker",
         text: "teks",
         video: "video",
         viewOnce: "sekali lihat"
     };
-
     const translatedMediaTypeList = translatedMediaTypes.map(type => mediaTypeTranslations[type]);
-
     let mediaTypesList;
     if (translatedMediaTypeList.length > 1) {
         const lastMediaType = translatedMediaTypeList[translatedMediaTypeList.length - 1];
@@ -122,9 +116,9 @@ function generateInstruction(actions, mediaTypes) {
         send: "Kirim",
         reply: "Balas"
     };
-
     const instructions = actions.map(action => `${actionTranslations[action]}`);
     const actionList = instructions.join(actions.length > 1 ? " atau " : "");
+
     return `ⓘ ${formatter.italic(`${actionList} ${mediaTypesList}!`)}`;
 }
 

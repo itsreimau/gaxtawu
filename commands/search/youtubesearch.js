@@ -34,17 +34,16 @@ module.exports = {
             });
 
         try {
-            const apiUrl = tools.api.createUrl("znx", "/api/search/youtube", {
+            const apiUrl = tools.api.createUrl("bagus", "/api/search/yts", {
                 q: input
             });
-            const result = (await axios.get(apiUrl)).data.results.filter(res => res.type === "video");
+            const result = (await axios.get(apiUrl)).data.result;
 
             const resultText = result.map(res =>
                 `➛ ${formatter.bold("Judul")}: ${res.title}\n` +
-                `➛ ${formatter.bold("Channel")}: ${res.author.name}\n` +
-                `➛ ${formatter.bold("Deskripsi")}: ${res.description}\n` +
-                `➛ ${formatter.bold("Durasi")}: ${res.duration.timestamp}\n` +
-                `➛ ${formatter.bold("URL")}: ${res.url}`
+                `➛ ${formatter.bold("Channel")}: ${res.channel}\n` +
+                `➛ ${formatter.bold("Durasi")}: ${res.duration}\n` +
+                `➛ ${formatter.bold("URL")}: ${res.link}`
             ).join("\n\n");
             await ctx.reply(resultText.trim() || `ⓘ ${formatter.italic(config.msg.notFound)}`);
         } catch (error) {

@@ -17,6 +17,7 @@ module.exports = {
                 "ai-misc": "AI (Miscellaneous)",
                 converter: "Converter",
                 downloader: "Downloader",
+                entertainment: "Entertainment",
                 game: "Game",
                 group: "Group",
                 maker: "Maker",
@@ -55,7 +56,7 @@ module.exports = {
             const input = ctx.args[0]?.toLowerCase() || null;
 
             if (input) {
-                const selectedCats = input === "all" ? Object.keys(tag) : (tag[input] ? [input] : []);
+                const selectedCats = input === "all" || ctx.used.command === "allmenu" ? Object.keys(tag) : (tag[input] ? [input] : []);
                 const commandsData = getCommands(selectedCats);
 
                 if (Object.keys(commandsData).length === 0) return await ctx.reply(`ⓘ ${formatter.italic("Menu tidak ditemukan!")}`);
@@ -70,7 +71,11 @@ module.exports = {
                     text += "╰┈┈┈┈┈┈\n\n";
                 }
 
-                return await ctx.reply({
+                await ctx.reply({
+                    location: {
+                        degreesLatitude: Math.random() * 180 - 90,
+                        degreesLongitude: Math.random() * 360 - 180
+                    },
                     text: text.trim(),
                     footer: config.msg.footer,
                     buttons: [{
@@ -85,47 +90,40 @@ module.exports = {
                         }
                     }]
                 });
-            }
+            } else {
+                const text = `— Halo, @${ctx.getId(ctx.sender.jid)}! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}.\n` +
+                    "\n" +
+                    `➛ ${formatter.bold("Tanggal")}: ${moment.tz(config.system.timeZone).locale("id").format("dddd, DD MMMM YYYY")}\n` +
+                    `➛ ${formatter.bold("Waktu")}: ${moment.tz(config.system.timeZone).format("HH.mm.ss")}\n\n` +
+                    `➛ ${formatter.bold("Uptime")}: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
+                    `➛ ${formatter.bold("Database")}: ${fs.existsSync(ctx.bot.databaseDir) ? tools.msg.formatSize(fs.readdirSync(ctx.bot.databaseDir).reduce((total, file) => total + fs.statSync(path.join(ctx.bot.databaseDir, file)).size, 0) / 1024) : "N/A"}\n` +
+                    `➛ ${formatter.bold("Library")}: @itsreimau/gktw\n` +
+                    "\n" +
+                    `☆ ${formatter.italic("Jangan lupa berdonasi agar bot tetap online.")}`;
 
-            const text = `— Halo, @${ctx.getId(ctx.sender.jid)}! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}.\n` +
-                "\n" +
-                `➛ ${formatter.bold("Tanggal")}: ${moment.tz(config.system.timeZone).locale("id").format("dddd, DD MMMM YYYY")}\n` +
-                `➛ ${formatter.bold("Waktu")}: ${moment.tz(config.system.timeZone).format("HH.mm.ss")}\n\n` +
-                `➛ ${formatter.bold("Uptime")}: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
-                `➛ ${formatter.bold("Database")}: ${fs.existsSync(ctx.bot.databaseDir) ? tools.msg.formatSize(fs.readdirSync(ctx.bot.databaseDir).reduce((total, file) => total + fs.statSync(path.join(ctx.bot.databaseDir, file)).size, 0) / 1024) : "N/A"}\n` +
-                `➛ ${formatter.bold("Library")}: @itsreimau/gktw\n` +
-                "\n" +
-                `☆ ${formatter.italic("Jangan lupa berdonasi agar bot tetap online.")}`;
+                const rows = Object.keys(tag).map(category => ({
+                    title: tag[category],
+                    description: `Klik untuk melihat perintah ${tag[category]}`,
+                    id: `${ctx.used.prefix + ctx.used.command} ${category}`
+                }));
 
-            const rows = Object.keys(tag).map(category => ({
-                title: tag[category],
-                description: `Klik untuk melihat perintah ${tag[category]}`,
-                id: `${ctx.used.prefix + ctx.used.command} ${category}`
-            }));
+                rows.unshift({
+                    title: "Semua Kategori",
+                    description: "Klik untuk melihat semua perintah sekaligus",
+                    id: `${ctx.used.prefix + ctx.used.command} all`
+                });
 
-            rows.unshift({
-                title: "Semua Kategori",
-                description: "Klik untuk melihat semua perintah sekaligus",
-                id: `${ctx.used.prefix + ctx.used.command} all`
-            });
-
-            return await ctx.reply({
-                image: {
-                    url: config.bot.thumbnail
-                },
-                mimetype: tools.mime.lookup("png"),
-                caption: text.trim(),
-                mentions: [ctx.sender.jid],
-                footer: config.msg.footer,
-                buttons: [{
-                    buttonId: "action",
-                    buttonText: {
-                        displayText: "Daftar Menu"
+                await ctx.reply({
+                    image: {
+                        url: config.bot.thumbnail
                     },
-                    type: 4,
-                    nativeFlowInfo: {
+                    mimetype: tools.mime.lookup("png"),
+                    caption: text.trim(),
+                    mentions: [ctx.sender.jid],
+                    footer: config.msg.footer,
+                    interactiveButtons: [{
                         name: "single_select",
-                        paramsJson: JSON.stringify({
+                        buttonParamsJson: JSON.stringify({
                             title: "Daftar Menu",
                             sections: [{
                                 title: "Pilih Kategori Menu",
@@ -133,11 +131,11 @@ module.exports = {
                                 rows
                             }]
                         })
-                    }
-                }]
-            });
+                    }]
+                });
+            }
         } catch (error) {
-            return await tools.cmd.handleError(ctx, error);
+            await tools.cmd.handleError(ctx, error);
         }
     }
 };

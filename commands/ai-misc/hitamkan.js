@@ -18,7 +18,7 @@ module.exports = {
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
             const apiUrl = tools.api.createUrl("danzy", "/api/tools/nanobanana", {
-                prompt: "Change the model character to have black skin color.",
+                prompt: "black skin color",
                 media: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.data.image;

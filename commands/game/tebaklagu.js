@@ -1,4 +1,3 @@
-const { Gktw } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 const session = new Map();
@@ -60,7 +59,7 @@ module.exports = {
 
             collector.on("collect", async (collCtx) => {
                 const participantAnswer = collCtx.msg.text.toLowerCase();
-                const participantDb = ctx.getDb("users", collCtx.sender.lid);
+                const participantDb = collCtx.db.user;
 
                 if (participantAnswer === game.answer) {
                     session.delete(ctx.id);
@@ -82,7 +81,7 @@ module.exports = {
                         text: `ⓘ ${formatter.italic(`Anda menyerah! Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`)}`,
                         buttons: playAgain
                     });
-                } else if (Gktw.didYouMean(participantAnswer, [game.answer]) === game.answer) {
+                } else if (tools.cmd.didYouMean(participantAnswer, [game.answer]) === game.answer) {
                     await collCtx.reply(`ⓘ ${formatter.italic("Sedikit lagi!")}`);
                 }
             });

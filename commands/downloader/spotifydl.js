@@ -20,7 +20,7 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/downloader/spotify", {
+            const apiUrl = tools.api.createUrl("bagus", "/api/download/spotify", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.download;

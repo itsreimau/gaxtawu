@@ -47,7 +47,6 @@ module.exports = bot => {
             const senderLevel = senderDb?.level || 0;
             let newSenderLevel = senderLevel + 1;
             newSenderXp -= xpToLevelUp;
-
             if (senderDb?.autolevelup) {
                 const profilePictureUrl = await ctx.core.profilePictureUrl(senderJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
                 const canvasUrl = tools.api.createUrl("deline", "/canvas/levelup", {
@@ -71,7 +70,6 @@ module.exports = bot => {
                     }]
                 });
             }
-
             senderDb.xp = newSenderXp;
             senderDb.level = newSenderLevel;
             senderDb.save();
@@ -84,16 +82,13 @@ module.exports = bot => {
         const checkBotGroupMembership = async () => {
             const now = Date.now();
             const duration = 24 * 60 * 60 * 1000;
-
             if (senderDb?.botGroupMembership?.isMember && now - senderDb?.botGroupMembership?.timestamp < duration) return senderDb.botGroupMembership.isMember;
-
             const isMember = await ctx.group(config.bot.groupJid).isMemberExist(ctx.sender.lid);
             senderDb.botGroupMembership = {
                 isMember: isMember,
                 timestamp: now
             };
             senderDb.save();
-
             return isMember;
         };
 

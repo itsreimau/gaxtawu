@@ -14,7 +14,7 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("deline", "/tools/hd", {
+            const result = tools.api.createUrl("danzy", "/api/tools/upscale", {
                 url: uploadUrl
             });
 

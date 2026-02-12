@@ -6,11 +6,11 @@ module.exports = {
     category: "converter",
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image", "gif", "video"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image", "gif", "video"])
+            tools.cmd.checkMedia(ctx.msg.messageType, ["image", "video"]),
+            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image", "video"])
         ];
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image", "gif", "video"]));
+        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image", "video"]));
 
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();

@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["editimg"],
     category: "ai-misc",
     permissions: {
-        coin: 10
+        coin: 5
     },
     code: async (ctx) => {
         const input = ctx.text || null;
@@ -26,7 +26,7 @@ module.exports = {
             let result;
             for (let v = 1; v <= 6; v++) {
                 try {
-                    const apiUrl = tools.api.createUrl("nekolabs", `/img.gen/nano-banana/v${v}`, {
+                    const apiUrl = tools.api.createUrl("nekolabs", `/image.gen/nano-banana/v${v}`, {
                         prompt: input,
                         imageUrl: uploadUrl
                     });

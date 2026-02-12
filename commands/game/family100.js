@@ -1,4 +1,3 @@
-const { Gktw } = require("@itsreimau/gktw");
 const axios = require("axios");
 
 const session = new Map();
@@ -55,12 +54,11 @@ module.exports = {
 
             collector.on("collect", async (collCtx) => {
                 const participantAnswer = collCtx.msg.text.toLowerCase();
-                const participantLid = collCtx.sender.lid;
-                const participantDb = ctx.getDb("users", participantLid);
+                const participantDb = collCtx.db.user;
 
                 if (game.answers.has(participantAnswer)) {
                     game.answers.delete(participantAnswer);
-                    game.participants.add(participantLid);
+                    game.participants.add(collCtx.sender.lid);
 
                     participantDb.coin += game.coin.answered;
                     participantDb.save();
@@ -90,7 +88,7 @@ module.exports = {
                         text: `ⓘ ${formatter.italic(`Anda menyerah! Jawaban yang belum terjawab adalah ${remaining}.`)}`,
                         buttons: playAgain
                     });
-                } else if (Gktw.didYouMean(participantAnswer, [game.answer]) === game.answer) {
+                } else if (tools.cmd.didYouMean(participantAnswer, [game.answer]) === game.answer) {
                     await collCtx.reply(`ⓘ ${formatter.italic("Sedikit lagi!")}`);
                 }
             });
