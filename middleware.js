@@ -78,20 +78,6 @@ module.exports = bot => {
             senderDb.save();
         }
 
-        // Fungsi untuk mengecek membership
-        const checkBotGroupMembership = async () => {
-            const now = Date.now();
-            const duration = 24 * 60 * 60 * 1000;
-            if (senderDb?.botGroupMembership?.isMember && now - senderDb?.botGroupMembership?.timestamp < duration) return senderDb.botGroupMembership.isMember;
-            const isMember = await ctx.group(config.bot.groupJid).isMemberExist(ctx.sender.lid);
-            senderDb.botGroupMembership = {
-                isMember: isMember,
-                timestamp: now
-            };
-            senderDb.save();
-            return isMember;
-        };
-
         // Simulasi mengetik
         const simulateTyping = async () => {
             if (config.system.autoTypingOnCmd) await ctx.simulateTyping();
@@ -137,7 +123,19 @@ module.exports = bot => {
             reaction: "💎"
         }, {
             key: "requireBotGroupMembership",
-            condition: config.system.requireBotGroupMembership && !isOwner && !senderDb?.premium && ctx.used.command !== "botgroup" && !await checkBotGroupMembership(),
+            condition: (() => {
+                if (!config.system.requireBotGroupMembership && !sOwner && senderDb?.premium && ctx.used.command === "botgroup" && !config.bot.groupJid) false;
+                const now = Date.now();
+                const duration = 24 * 60 * 60 * 1000;
+                if (senderDb?.botGroupMembership?.isMember && now - senderDb?.botGroupMembership?.timestamp < duration) return senderDb.botGroupMembership.isMember;
+                const isMember = await ctx.group(config.bot.groupJid).isMemberExist(ctx.sender.lid);
+                senderDb.botGroupMembership = {
+                    isMember: isMember,
+                    timestamp: now
+                };
+                senderDb.save();
+                return isMember;
+            })(),
             msg: config.msg.botGroupMembership,
             buttons: [{
                 buttonId: `${ctx.used.prefix}botgroup`,
@@ -165,9 +163,10 @@ module.exports = bot => {
         }, {
             key: "unavailableAtNight",
             condition: (() => {
+                if (!config.system.unavailableAtNight || isOwner || senderDb?.premium) return false;
                 const now = moment().tz(config.system.timeZone);
                 const hour = now.hour();
-                return config.system.unavailableAtNight && !isOwner && !senderDb?.premium && hour >= 0 && hour < 6;
+                return hour >= 0 && hour < 6;
             })(),
             msg: config.msg.unavailableAtNight,
             reaction: "😴"

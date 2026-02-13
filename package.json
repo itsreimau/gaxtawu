@@ -1,6 +1,6 @@
 {
   "name": "gaxtawu",
-  "version": "1.5.13",
+  "version": "1.5.14",
   "description": "Useless WhatsApp Bot",
   "main": "index.js",
   "directories": {
@@ -15,7 +15,6 @@
     "start:pm2": "pm2 start ./index.js --name $(basename $(pwd)) --cron-restart=\"*/30 * * * *\""
   },
   "keywords": [
-    "whatsapp",
     "whatsapp-bot"
   ],
   "author": "Reimau von Lilitz",

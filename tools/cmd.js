@@ -135,7 +135,7 @@ module.exports = {
     checkMedia,
     checkQuotedMedia,
     delay,
-    didYouMean: Baileys.didYouMean,
+    didYouMean: Gktw.didYouMean,
     generateUID,
     getRandomElement,
     getReportOwner,

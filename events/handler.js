@@ -42,7 +42,8 @@ async function handleWelcome(botCtx, ctx, type, isSimulate = false) {
             url: canvasUrl
         },
         mimetype: tools.mime.lookup("png"),
-        caption: text
+        caption: text,
+        mentions: [participantJid]
     });
 
     if (isWelcome && groupDb?.text?.intro)

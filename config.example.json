@@ -1,67 +1,69 @@
 {
-    "bot": {
-        "name": "GAXTAWU",
-        "phoneNumber": "",
-        "thumbnail": "https://repository-images.githubusercontent.com/753096396/3f4b7686-0f1d-43f2-8293-2ae1b4487220",
-        "groupJid": ""
-    },
-    "msg": {
-        "admin": "Perintah hanya dapat diakses oleh admin grup!",
-        "banned": "Anda telah dibanned!",
-        "botAdmin": "Bot bukan admin grup ini!",
-        "botGroupMembership": "Anda tidak bergabung dengan grup bot!",
-        "coin": "Koin Anda tidak cukup!",
-        "cooldown": "Perintah ini sedang dalam cooldown, tunggu...",
-        "gamerestrict": "Grup ini membatasi perintah game!",
-        "group": "Perintah hanya dapat diakses dalam grup!",
-        "groupSewa": "Bot tidak aktif karena grup ini belum melakukan sewa!",
-        "owner": "Perintah hanya dapat diakses owner!",
-        "premium": "Anda bukan pengguna premium!",
-        "private": "Perintah hanya dapat diakses dalam obrolan pribadi!",
-        "privatePremiumOnly": "Menggunakan bot dalam obrolan pribadi hanya untuk pengguna premium.",
-        "restrict": "Perintah ini telah dibatasi!",
-        "unavailableAtNight": "Bot tidak tersedia dari jam 12 malam sampai 6 pagi! Silakan kembali nanti.",
-        "footer": "Developed by Reimau von Lilitz with ♡",
-        "wait": "Tunggu sebentar...",
-        "notFound": "Tidak ada yang ditemukan! Coba lagi nanti.",
-        "urlInvalid": "URL tidak valid!"
-    },
-    "owner": {
-        "name": "Budi",
-        "organization": "PT. Pencari Cinta Sejati",
-        "id": "62123456789",
-        "report": true,
-        "co": [{
-            "name": "Budi Jr.",
-            "organization": "PT. Pencari Cinta Sejati II",
-            "id": "62987654321",
-            "report": false
-        }]
-    },
-    "sticker": {
-        "packname": "",
-        "author": "gaxtawu <github.com/itsreimau/gaxtawu>"
-    },
-    "system": {
-        "alwaysOnline": true,
-        "antiBug": true,
-        "antiCall": true,
-        "autoRead": true,
-        "autoTypingOnCmd": true,
-        "cooldown": 10000,
-        "maxListeners": 50,
-        "port": 3000,
-        "privatePremiumOnly": false,
-        "restrict": false,
-        "requireBotGroupMembership": false,
-        "requireGroupSewa": false,
-        "selfReply": true,
-        "timeZone": "Asia/Jakarta",
-        "unavailableAtNight": false,
-        "useCoin": true,
-        "usePairingCode": false,
-        "customPairingCode": "UMBR4L15",
-        "useStore": false,
-        "useServer": false
-    }
+  "bot": {
+    "name": "GAXTAWU",
+    "phoneNumber": "",
+    "thumbnail": "https://repository-images.githubusercontent.com/753096396/3f4b7686-0f1d-43f2-8293-2ae1b4487220",
+    "groupJid": ""
+  },
+  "msg": {
+    "admin": "Perintah hanya dapat diakses oleh admin grup!",
+    "banned": "Anda telah dibanned!",
+    "botAdmin": "Bot bukan admin grup ini!",
+    "botGroupMembership": "Anda tidak bergabung dengan grup bot!",
+    "coin": "Koin Anda tidak cukup!",
+    "cooldown": "Perintah ini sedang dalam cooldown, tunggu...",
+    "gamerestrict": "Grup ini membatasi perintah game!",
+    "group": "Perintah hanya dapat diakses dalam grup!",
+    "groupSewa": "Bot tidak aktif karena grup ini belum melakukan sewa!",
+    "owner": "Perintah hanya dapat diakses owner!",
+    "premium": "Anda bukan pengguna premium!",
+    "private": "Perintah hanya dapat diakses dalam obrolan pribadi!",
+    "privatePremiumOnly": "Menggunakan bot dalam obrolan pribadi hanya untuk pengguna premium.",
+    "restrict": "Perintah ini telah dibatasi!",
+    "unavailableAtNight": "Bot tidak tersedia dari jam 12 malam sampai 6 pagi! Silakan kembali nanti.",
+    "footer": "Developed by Reimau von Lilitz with ♡",
+    "wait": "Tunggu sebentar...",
+    "notFound": "Tidak ada yang ditemukan! Coba lagi nanti.",
+    "urlInvalid": "URL tidak valid!"
+  },
+  "owner": {
+    "name": "Budi",
+    "organization": "PT. Pencari Cinta Sejati",
+    "id": "62123456789",
+    "report": true,
+    "co": [
+      {
+        "name": "Budi Jr.",
+        "organization": "PT. Pencari Cinta Sejati II",
+        "id": "62987654321",
+        "report": false
+      }
+    ]
+  },
+  "sticker": {
+    "packname": "",
+    "author": "gaxtawu <github.com/itsreimau/gaxtawu>"
+  },
+  "system": {
+    "alwaysOnline": true,
+    "antiBug": true,
+    "antiCall": true,
+    "autoRead": true,
+    "autoTypingOnCmd": true,
+    "cooldown": 10000,
+    "maxListeners": 50,
+    "port": 3000,
+    "privatePremiumOnly": false,
+    "restrict": false,
+    "requireBotGroupMembership": false,
+    "requireGroupSewa": false,
+    "selfReply": true,
+    "timeZone": "Asia/Jakarta",
+    "unavailableAtNight": false,
+    "useCoin": true,
+    "usePairingCode": false,
+    "customPairingCode": "UMBR4L15",
+    "useStore": false,
+    "useServer": false
+  }
 }
