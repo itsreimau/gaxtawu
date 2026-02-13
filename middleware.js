@@ -124,7 +124,7 @@ module.exports = bot => {
         }, {
             key: "requireBotGroupMembership",
             condition: (async () => {
-                if (!config.system.requireBotGroupMembership && !sOwner && senderDb?.premium && ctx.used.command === "botgroup" && !config.bot.groupJid) false;
+                if (!config.system.requireBotGroupMembership && !isOwner && senderDb?.premium && ctx.used.command === "botgroup" && !config.bot.groupJid) false;
                 const now = Date.now();
                 const duration = 24 * 60 * 60 * 1000;
                 if (senderDb?.botGroupMembership?.isMember && now - senderDb?.botGroupMembership?.timestamp < duration) return senderDb.botGroupMembership.isMember;
