@@ -117,7 +117,7 @@ module.exports = bot => {
         }
 
         // Tetapkan config pada bot
-        const groupLink = `https://chat.whatsapp.com/${await bot.core.groupInviteCode(config.bot.groupJid).catch(() => "FxEYZl2UyzAEI2yhaH34Ye")}`;
+        const groupLink = `https://chat.whatsapp.com/${config.bot?.groupJid ? await bot.core.groupInviteCode(config.bot.groupJid).catch(() => "FxEYZl2UyzAEI2yhaH34Ye") : "FxEYZl2UyzAEI2yhaH34Ye"}`;
         if (!config.bot.groupLink || (config.bot.groupLink !== groupLink)) config.core.set("bot.groupLink", groupLink);
     });
 
