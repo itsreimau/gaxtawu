@@ -123,7 +123,7 @@ module.exports = bot => {
             reaction: "💎"
         }, {
             key: "requireBotGroupMembership",
-            condition: (() => {
+            condition: (async () => {
                 if (!config.system.requireBotGroupMembership && !sOwner && senderDb?.premium && ctx.used.command === "botgroup" && !config.bot.groupJid) false;
                 const now = Date.now();
                 const duration = 24 * 60 * 60 * 1000;
