@@ -21,7 +21,7 @@ module.exports = {
             );
 
         try {
-            const welcomeCtx = {
+            const welcome = {
                 id: ctx.id,
                 participant: ctx.sender.jid
             };
@@ -29,11 +29,11 @@ module.exports = {
             switch (input.toLowerCase()) {
                 case "j":
                 case "join":
-                    await handleWelcome(ctx, welcomeCtx, Events.UserJoin, true);
+                    await handleWelcome(ctx, welcome, Events.UserJoin, true);
                     break;
                 case "l":
                 case "leave":
-                    await handleWelcome(ctx, welcomeCtx, Events.UserLeave, true);
+                    await handleWelcome(ctx, welcome, Events.UserLeave, true);
                     break;
                 default:
                     await ctx.reply(`ⓘ ${formatter.italic(`Simulasi ${formatter.inlineCode(input)} tidak valid!`)}`);

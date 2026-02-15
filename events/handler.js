@@ -4,11 +4,11 @@ const axios = require("axios");
 const moment = require("moment-timezone");
 
 // Fungsi untuk menangani event pengguna bergabung/keluar grup
-async function handleWelcome(botCtx, ctx, type, isSimulate = false) {
-    const groupJid = ctx.id;
-    const groupDb = botCtx.getDb("groups", groupJid);
-    const botDb = botCtx.getDb("bot");
-    const participantJid = ctx.participant;
+async function handleWelcome(bot, welcome, type, isSimulate = false) {
+    const groupJid = welcome.id;
+    const groupDb = bot.getDb("groups", groupJid);
+    const botDb = bot.getDb("bot");
+    const participantJid = welcome.participant;
 
     if (!isSimulate && groupDb?.mutebot) return;
     if (!isSimulate && !groupDb?.option?.welcome) return;
@@ -19,17 +19,17 @@ async function handleWelcome(botCtx, ctx, type, isSimulate = false) {
     if (!isSimulate && config.system.unavailableAtNight && hour >= 0 && hour < 6) return;
 
     const isWelcome = type === Events.UserJoin;
-    const tag = `@${botCtx.getId(participantJid)}`;
+    const tag = `@${bot.getId(participantJid)}`;
     const customText = isWelcome ? groupDb?.text?.welcome : groupDb?.text?.goodbye;
-    const metadata = await botCtx.core.groupMetadata(groupJid);
+    const metadata = await bot.core.groupMetadata(groupJid);
     const text = customText ? customText.replace(/%tag%/g, tag).replace(/%subject%/g, metadata.subject).replace(/%description%/g, metadata.description) :
         (isWelcome ?
             `>ᴗ< ${formatter.italic(`Selamat datang ${tag} di grup ${metadata.subject}!`)}` :
             `•︵• ${formatter.italic(`Selamat tinggal, ${tag}!`)}`
         );
-    const profilePictureUrl = await botCtx.core.profilePictureUrl(participantJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
+    const profilePictureUrl = await bot.core.profilePictureUrl(participantJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
     const canvasUrl = tools.api.createUrl("deline", "/canvas/welcome", {
-        username: botCtx.getPushName(participantJid) || "User",
+        username: bot.getPushName(participantJid),
         guildName: metadata.subject.length > 30 ? `${metadata.subject.substring(0, 27)}...` : metadata.subject,
         memberCount: metadata.participants.length,
         avatar: profilePictureUrl,
@@ -37,7 +37,7 @@ async function handleWelcome(botCtx, ctx, type, isSimulate = false) {
         quality: "99"
     });
 
-    await botCtx.sendMessage(groupJid, {
+    await bot.core.sendMessage(groupJid, {
         image: {
             url: canvasUrl
         },
@@ -47,7 +47,7 @@ async function handleWelcome(botCtx, ctx, type, isSimulate = false) {
     });
 
     if (isWelcome && groupDb?.text?.intro)
-        await botCtx.sendMessage(groupJid, {
+        await bot.core.sendMessage(groupJid, {
             text: groupDb.text.intro,
             mentions: [participantJid],
             interactiveButtons: [{
@@ -359,20 +359,24 @@ module.exports = bot => {
         }
     });
 
-    // Event saat bot menerima panggilan
-    bot.ev.on(Events.Call, async (ctx) => {
-        if (!config.system.antiCall || ctx.status !== "offer") return;
+    // Event saat pengguna bergabung atau keluar dari grup
+    bot.ev.on(Events.UserJoin, async (welcome) => handleWelcome(bot, welcome, Events.UserJoin));
+    bot.ev.on(Events.UserLeave, async (welcome) => handleWelcome(bot, welcome, Events.UserLeave));
 
-        const fromJid = ctx.from;
+    // Event saat bot menerima panggilan
+    bot.ev.on(Events.Call, async (call) => {
+        if (!config.system.antiCall || call.status !== "offer") return;
+
+        const fromJid = call.from;
         const fromId = bot.getId(fromJid);
         const isOwner = bot.checkOwner(fromJid);
         const fromDb = bot.getDb("users", fromJid);
 
-        if (ctx?.isGroup || isOwner || fromDb?.banned) return;
+        if (call?.isGroup || isOwner || fromDb?.banned) return;
 
         consolefy.info(`Incoming call from: ${Baileys.isPnUser(fromJid) ? fromId : `${fromId} (LID)`}`); // Log panggilan masuk
 
-        await bot.core.rejectCall(ctx.id, fromJid);
+        await bot.core.rejectCall(call.id, fromJid);
 
         fromDb.banned = true;
         fromDb.save();
@@ -397,9 +401,5 @@ module.exports = bot => {
             }]
         });
     });
-
-    // Event saat pengguna bergabung atau keluar dari grup
-    bot.ev.on(Events.UserJoin, async (ctx) => handleWelcome(bot, ctx, Events.UserJoin));
-    bot.ev.on(Events.UserLeave, async (ctx) => handleWelcome(bot, ctx, Events.UserLeave));
 };
 module.exports.handleWelcome = handleWelcome; // Penanganan event pengguna bergabung/keluar grup

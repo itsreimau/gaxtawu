@@ -40,20 +40,14 @@ module.exports = {
                 targetDb.premiumExpiration = expirationDate;
                 targetDb.save();
 
-                if (!silent)
-                    await ctx.sendMessage(target, {
-                        text: `ⓘ ${formatter.italic(`Anda telah ditambahkan sebagai pengguna premium oleh owner selama ${daysAmount} hari!`)}`
-                    });
+                if (!silent) await ctx.sendMessage(target, `ⓘ ${formatter.italic(`Anda telah ditambahkan sebagai pengguna premium oleh owner selama ${daysAmount} hari!`)}`);
 
                 await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menambahkan premium selama ${daysAmount} hari kepada pengguna itu!`)}`);
             } else {
                 delete targetDb?.premiumExpiration;
                 targetDb.save();
 
-                if (!silent)
-                    await ctx.sendMessage(target, {
-                        text: `ⓘ ${formatter.italic("Anda telah ditambahkan sebagai pengguna premium selamanya oleh owner!")}`
-                    });
+                if (!silent) await ctx.sendMessage(target, `ⓘ ${formatter.italic("Anda telah ditambahkan sebagai pengguna premium selamanya oleh owner!")}`);
 
                 await ctx.reply(`ⓘ ${formatter.italic("Berhasil menambahkan premium selamanya kepada pengguna itu!")}`);
             }

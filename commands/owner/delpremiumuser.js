@@ -34,10 +34,7 @@ module.exports = {
             });
 
             const silent = flag?.silent || false;
-            if (!silent)
-                await ctx.sendMessage(target, {
-                    text: `ⓘ ${formatter.italic("Anda telah dihapus sebagai pengguna premium oleh owner!")}`
-                });
+            if (!silent) await ctx.sendMessage(target, `ⓘ ${formatter.italic("Anda telah dihapus sebagai pengguna premium oleh owner!")}`);
 
             await ctx.reply(`ⓘ ${formatter.italic("Berhasil menghapuskan premium kepada pengguna itu!")}`);
         } catch (error) {
