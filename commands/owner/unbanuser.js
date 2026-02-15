@@ -33,7 +33,7 @@ module.exports = {
 
             const silent = flag?.silent || false;
             if (!silent)
-                await ctx.core.sendMessage(target, {
+                await ctx.sendMessage(target, {
                     text: `ⓘ ${formatter.italic("Anda telah diunbanned oleh owner!")}`
                 });
 

@@ -37,7 +37,7 @@ async function handleWelcome(botCtx, ctx, type, isSimulate = false) {
         quality: "99"
     });
 
-    await botCtx.core.sendMessage(groupJid, {
+    await botCtx.sendMessage(groupJid, {
         image: {
             url: canvasUrl
         },
@@ -47,7 +47,7 @@ async function handleWelcome(botCtx, ctx, type, isSimulate = false) {
     });
 
     if (isWelcome && groupDb?.text?.intro)
-        await botCtx.core.sendMessage(groupJid, {
+        await botCtx.sendMessage(groupJid, {
             text: groupDb.text.intro,
             mentions: [participantJid],
             interactiveButtons: [{
@@ -105,15 +105,16 @@ module.exports = bot => {
         consolefy.success(`${config.bot.name} by ${config.owner.name}, ready at ${ctx.user.id}`);
 
         // Mulai ulang bot
-        const botRestart = bot.getDb("bot")?.restart || {};
+        const botDb = bot.getDb("bot");
+        const botRestart = botDb?.restart || {};
         if (botRestart?.jid && botRestart?.timestamp) {
             const timeago = tools.msg.convertMsToDuration(Date.now() - botRestart.timestamp);
-            await bot.core.sendMessage(botRestart.jid, {
+            await bot.sendMessage(botRestart.jid, {
                 text: `ⓘ ${formatter.italic(`Berhasil dimulai ulang! Membutuhkan waktu ${timeago}.`)}`,
                 edit: botRestart.key
             });
-            delete botRestart.restart;
-            botRestart.save();
+            delete botDb.restart;
+            botDb.save();
         }
 
         // Tetapkan config pada bot
@@ -360,19 +361,18 @@ module.exports = bot => {
 
     // Event saat bot menerima panggilan
     bot.ev.on(Events.Call, async (ctx) => {
-        if (!config.system.antiCall) return;
+        if (!config.system.antiCall || ctx.status !== "offer") return;
 
-        const callJid = ctx.id;
         const fromJid = ctx.from;
         const fromId = bot.getId(fromJid);
         const isOwner = bot.checkOwner(fromJid);
         const fromDb = bot.getDb("users", fromJid);
 
-        if (Baileys.isJidGroup(callJid) || isOwner || fromDb?.banned) return;
+        if (ctx?.isGroup || isOwner || fromDb?.banned) return;
 
         consolefy.info(`Incoming call from: ${Baileys.isPnUser(fromJid) ? fromId : `${fromId} (LID)`}`); // Log panggilan masuk
 
-        await bot.core.rejectCall(callJid, fromJid);
+        await bot.core.rejectCall(ctx.id, fromJid);
 
         fromDb.banned = true;
         fromDb.save();
@@ -380,14 +380,14 @@ module.exports = bot => {
         const reportOwner = tools.cmd.getReportOwner();
         if (reportOwner && reportOwner.length > 0) {
             for (const ownerId of reportOwner) {
-                await bot.core.sendMessage(ownerId + Baileys.S_WHATSAPP_NET, {
+                await bot.sendMessage(ownerId + Baileys.S_WHATSAPP_NET, {
                     text: `ⓘ ${formatter.italic(`Akun @${fromId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`)}`,
                     mentions: [fromJid]
                 });
                 await tools.cmd.delay(500);
             }
         }
-        await bot.core.sendMessage(fromJid, {
+        await bot.sendMessage(fromJid, {
             text: `ⓘ ${formatter.italic("Anda telah dibanned secara otomatis karena melanggar aturan!")}`,
             buttons: [{
                 buttonId: "/owner",

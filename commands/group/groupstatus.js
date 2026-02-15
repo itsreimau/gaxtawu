@@ -35,7 +35,9 @@ module.exports = {
                     text: input
                 };
             }
-            await ctx.core.sendStatusMentions(content, ctx.id);
+            await ctx.reply({
+                groupStatus: content
+            });
 
             await ctx.reply(`ⓘ Group status berhasil dikirim!`);
         } catch (error) {

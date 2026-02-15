@@ -41,7 +41,7 @@ module.exports = {
                 targetDb.save();
 
                 if (!silent)
-                    await ctx.core.sendMessage(target, {
+                    await ctx.sendMessage(target, {
                         text: `ⓘ ${formatter.italic(`Anda telah ditambahkan sebagai pengguna premium oleh owner selama ${daysAmount} hari!`)}`
                     });
 
@@ -51,7 +51,7 @@ module.exports = {
                 targetDb.save();
 
                 if (!silent)
-                    await ctx.core.sendMessage(target, {
+                    await ctx.sendMessage(target, {
                         text: `ⓘ ${formatter.italic("Anda telah ditambahkan sebagai pengguna premium selamanya oleh owner!")}`
                     });
 

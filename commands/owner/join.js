@@ -21,7 +21,7 @@ module.exports = {
         try {
             const urlCode = new URL(url).pathname.split("/").pop();
             await ctx.groups.acceptInvite(urlCode).then(async (res) => {
-                await ctx.core.sendMessage(res, {
+                await ctx.sendMessage(res, {
                     image: {
                         url: config.bot.thumbnail
                     },

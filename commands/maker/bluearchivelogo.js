@@ -15,7 +15,7 @@ module.exports = {
             );
 
         try {
-            const [left, right] = input.split("|");
+            const [left, right = " "] = input.split("|");
             const result = tools.api.createUrl("nekolabs", "/maker/ba-logo", {
                 textL: left,
                 textR: right

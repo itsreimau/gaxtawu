@@ -1,3 +1,4 @@
+// Saya tidak tahu mengapa stiker-stiker tersebut tidak bisa diunduh
 const axios = require("axios");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 

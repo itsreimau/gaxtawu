@@ -9,14 +9,14 @@ module.exports = {
     },
     code: async (ctx) => {
         try {
-            const apiUrl = tools.api.createUrl("https://jagokata-api.rf.gd", "/acak.php");
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.data.quotes);
+            const apiUrl = tools.api.createUrl("https://quotes.liupurnomo.com", "/api/quotes/random");
+            const result = (await axios.get(apiUrl)).data.data;
 
             await ctx.reply({
-                text: `— ${result.quote}\n` +
+                text: `— ${result.text}\n` +
                     "\n" +
-                    `➛ ${formatter.bold("Nama")}: ${result.author.name}\n` +
-                    `➛ ${formatter.bold("Deskripsi")}: ${result.author.description}`,
+                    `➛ ${formatter.bold("Oleh")}: ${result.author}\n` +
+                    `➛ ${formatter.bold("Kategori")}: ${result.category}`,
                 buttons: [{
                     buttonId: ctx.used.prefix + ctx.used.command,
                     buttonText: {

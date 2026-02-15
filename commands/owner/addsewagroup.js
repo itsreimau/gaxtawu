@@ -50,7 +50,7 @@ module.exports = {
                 targetDb.save();
 
                 if (!silent && groupOwner)
-                    await ctx.core.sendMessage(groupOwner, {
+                    await ctx.sendMessage(groupOwner, {
                         text: `ⓘ ${formatter.italic(`Bot berhasil disewakan ke grup @${groupMentions.groupJid} selama ${daysAmount} hari!`)}`,
                         contextInfo: {
                             groupMentions
@@ -63,7 +63,7 @@ module.exports = {
                 targetDb.save();
 
                 if (!silent && groupOwner)
-                    await ctx.core.sendMessage(groupOwner, {
+                    await ctx.sendMessage(groupOwner, {
                         text: `ⓘ ${formatter.italic(`Bot berhasil disewakan ke grup @${groupMentions.groupJid} selamanya!`)}`,
                         contextInfo: {
                             groupMentions
