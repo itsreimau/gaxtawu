@@ -253,7 +253,7 @@ module.exports = bot => {
                         if (mentionAfk.reason || mentionAfk.timestamp) {
                             const timeago = tools.msg.convertMsToDuration(Date.now() - mentionAfk.timestamp);
                             await ctx.reply({
-                                text: `ⓘ ${formatter.italic(`Jangan tag! @${ctx.getId(afkMention)} sedang AFK ${mentionAfk.reason ? `dengan alasan ${formatter.inlineCode(mentionAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`)}`
+                                text: `ⓘ ${formatter.italic(`Jangan tag! @${ctx.getId(afkMention)} sedang AFK ${mentionAfk.reason ? `dengan alasan ${formatter.inlineCode(mentionAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`)}`,
                                 mentions: [afkMention]
                             });
                         }
