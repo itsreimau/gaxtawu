@@ -100,8 +100,8 @@ module.exports = bot => {
     bot.ev.setMaxListeners(config.system.maxListeners); // Tetapkan max listeners untuk events
 
     // Event saat bot siap
-    bot.ev.once(Events.ClientReady, async () => {
-        consolefy.success(`${config.bot.name} by ${config.owner.name}, ready at ${bot.user.id}`);
+    bot.ev.once(Events.ClientReady, async (ready) => {
+        consolefy.success(`${config.bot.name} by ${config.owner.name}, ready at ${ready.user.id}`);
 
         // Mulai ulang bot
         const botDb = bot.getDb("bot");
