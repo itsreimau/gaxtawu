@@ -34,9 +34,9 @@ module.exports = bot => {
 
         // Log command masuk
         if (isGroup && !ctx.msg.key.fromMe) {
-            consolefy.info(`Incoming command: ${ctx.used.command}, from group: ${groupId}, by: ${Baileys.isPnUser(senderJid) ? senderId : `${senderId} (LID)`}`);
+            consolefy.info(`Incoming command: ${ctx.used.command}, from group: ${groupId}, by: ${senderId}`);
         } else if (isPrivate && !ctx.msg.key.fromMe) {
-            consolefy.info(`Incoming command: ${ctx.used.command}, from: ${Baileys.isPnUser(senderJid) ? senderId : `${senderId} (LID)`}`);
+            consolefy.info(`Incoming command: ${ctx.used.command}, from: ${senderId}`);
         }
 
         // Menambah XP pengguna dan menangani level-up

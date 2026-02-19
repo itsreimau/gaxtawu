@@ -1,10 +1,9 @@
 // Impor modul dan dependensi yang diperlukan
-const pkg = require("./package.json");
 const { Config, Consolefy, Formatter } = require("@itsreimau/gktw");
-const CFonts = require("cfonts");
-const fs = require("node:fs");
-const http = require("node:http");
 const path = require("node:path");
+const pkg = require("./package.json");
+const CFonts = require("cfonts");
+const http = require("node:http");
 
 // Tetapkan variabel global
 Object.assign(global, {

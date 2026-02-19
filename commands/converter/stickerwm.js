@@ -20,10 +20,10 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
-            const [packname, author] = input.split("|");
+            const [packname, author] = input.split("|") || ["", ""];
             const sticker = await new Sticker(buffer)
-                .setPack(packname || "")
-                .setAuthor(author || "")
+                .setPack(packname)
+                .setAuthor(author)
                 .setType(StickerTypes.FULL)
                 .setCategories(["🌕"])
                 .setID(ctx.msg.key.id)

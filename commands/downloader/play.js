@@ -8,17 +8,11 @@ module.exports = {
     },
     code: async (ctx) => {
         const flag = ctx.flag({
-            "-i": {
-                type: "value",
-                key: "index",
-                validator: val => !isNaN(val) && parseInt(val) > 0,
-                parser: val => parseInt(val) - 1
+            i: {
+                type: "number"
             },
-            "-s": {
-                type: "value",
-                key: "source",
-                validator: val => true,
-                parser: val => val.toLowerCase()
+            s: {
+                type: "string"
             }
         });
         const input = flag.input;
@@ -34,8 +28,8 @@ module.exports = {
             );
 
         try {
-            const searchIndex = flag?.index || 0;
-            const source = flag?.source || null;
+            const searchIndex = flag?.i || 0;
+            const source = flag?.s || null;
 
             if (source === "spotify") {
                 const searchApiUrl = tools.api.createUrl("bagus", "/api/search/spotify", {

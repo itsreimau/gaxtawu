@@ -12,10 +12,10 @@ module.exports = {
         if (!target)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "1234567890 30")}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "1234567890 8 -s")}\n` +
                 `${tools.msg.generateNotes(["Gunakan di grup untuk otomatis menyewakan grup tersebut."])}\n` +
                 tools.msg.generatesFlagInfo({
-                    "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
+                    "-s": "Tetap diam dengan tidak menyiarkan ke owner grup"
                 })
             );
 
@@ -23,27 +23,23 @@ module.exports = {
         if (daysAmount && daysAmount <= 0) return await ctx.reply(`ⓘ ${formatter.italic("Durasi sewa (dalam hari) harus diisi dan lebih dari 0!")}`);
 
         try {
-            const targetDb = ctx.getDb("groups", target);
-
             const flag = ctx.flag({
-                "-s": {
-                    type: "boolean",
-                    key: "silent"
+                s: {
+                    type: "boolean"
                 }
             });
-
-            const silent = flag?.silent || false;
+            const silent = flag?.s || false;
 
             const group = await ctx.group(target);
             const groupOwner = await group.owner();
 
-            if (!silent && groupOwner) {
+            if (!silent && groupOwner)
                 const groupMentions = [{
                     groupJid: `${group.id}@g.us`,
                     groupSubject: await group.name()
                 }];
-            }
 
+            const targetDb = ctx.getDb("groups", target);
             if (daysAmount && daysAmount > 0) {
                 const expirationDate = Date.now() + (daysAmount * 24 * 60 * 60 * 1000);
                 targetDb.sewaExpiration = expirationDate;

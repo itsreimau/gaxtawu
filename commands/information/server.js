@@ -1,5 +1,5 @@
-const fs = require("node:fs");
 const os = require("node:os");
+const fs = require("node:fs");
 const path = require("node:path");
 
 module.exports = {

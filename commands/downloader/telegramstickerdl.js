@@ -1,6 +1,6 @@
 // Saya tidak tahu mengapa stiker-stiker tersebut tidak bisa diunduh
-const axios = require("axios");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
+const axios = require("axios");
 
 const createSticker = async (stickerUrl, emoji, id) => {
     return await new Sticker(stickerUrl)
@@ -60,13 +60,13 @@ module.exports = {
                     stickerPack: {
                         name: `${result.title}${stickerChunks.length > 1 ? ` (${packIndex + 1}/${stickerChunks.length})` : ""}`,
                         publisher: `t.me/${result.name}`,
-                        description: `Pack by ${config.bot.name}`,
+                        description: `Sticker Pack by ${config.bot.name}`,
                         cover: await createSticker(result.stickers[0].image_url, result.stickers[0].emoji, ctx.msg.key.id),
                         stickers: stickersPack
                     }
                 });
 
-                if (packIndex < stickerChunks.length - 1) await new Promise(resolve => setTimeout(resolve, 1000));
+                if (packIndex < stickerChunks.length - 1) await tools.cmd.delay(1000);
             }
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

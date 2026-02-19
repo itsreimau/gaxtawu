@@ -1,7 +1,5 @@
 // Impor modul dan dependensi yang diperlukan
-const api = require("./api.js");
 const { Baileys, Gktw, MessageType } = require("@itsreimau/gktw");
-const axios = require("axios");
 const util = require("node:util");
 
 const formatBotName = botName => {

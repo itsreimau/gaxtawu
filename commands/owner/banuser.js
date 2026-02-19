@@ -11,10 +11,10 @@ module.exports = {
         if (!target)
             return await ctx.reply({
                 text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                    `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
+                    `${tools.msg.generateCmdExample(ctx.used, "@6281234567891 -s")}\n` +
                     `${tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])}\n` +
                     tools.msg.generatesFlagInfo({
-                        "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
+                        "-s": "Tetap diam dengan tidak menyiarkan ke akun target"
                     }),
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
@@ -25,13 +25,11 @@ module.exports = {
             targetDb.save();
 
             const flag = ctx.flag({
-                "-s": {
-                    type: "boolean",
-                    key: "silent"
+                s: {
+                    type: "boolean"
                 }
             });
-
-            const silent = flag?.silent || false;
+            const silent = flag?.s || false;
             if (!silent) await ctx.sendMessage(target, `ⓘ ${formatter.italic("Anda telah dibanned oleh owner!")}`);
 
             await ctx.reply(`ⓘ ${formatter.italic("Berhasil dibanned!")}`);

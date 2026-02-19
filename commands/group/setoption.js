@@ -27,7 +27,6 @@ module.exports = {
 
         if (input.toLowerCase() === "status") {
             const groupOption = ctx.db.group.option || {};
-
             return await ctx.reply(
                 `➛ ${formatter.bold("Antiaudio")}: ${groupOption.antiaudio ? "Aktif" : "Nonaktif"}\n` +
                 `➛ ${formatter.bold("Antidocument")}: ${groupOption.antidocument ? "Aktif" : "Nonaktif"}\n` +

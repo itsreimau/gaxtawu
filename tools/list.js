@@ -1,6 +1,6 @@
 // Impor modul dan dependensi yang diperlukan
-const api = require("./api.js");
 const axios = require("axios");
+const api = require("./api.js");
 const util = require("node:util");
 
 async function get(type) {

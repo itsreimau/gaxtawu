@@ -11,10 +11,10 @@ module.exports = {
         if (!target)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "1234567890")}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "1234567890 -s")}\n` +
                 `${tools.msg.generateNotes(["Gunakan di grup untuk otomatis menghapus sewa grup tersebut."])}\n` +
                 tools.msg.generatesFlagInfo({
-                    "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
+                    "-s": "Tetap diam dengan tidak menyiarkan ke owner grup"
                 })
             );
 
@@ -22,19 +22,16 @@ module.exports = {
 
         try {
             const targetDb = ctx.getDb("users", target);
-
             delete targetDb.premium;
             delete targetDb.premiumExpiration;
             targetDb.save();
 
             const flag = ctx.flag({
-                "-s": {
-                    type: "boolean",
-                    key: "silent"
+                s: {
+                    type: "boolean"
                 }
             });
-
-            const silent = flag?.silent || false;
+            const silent = flag?.s || false;
             const group = await ctx.group(target);
             const groupOwner = await group.owner();
             if (!silent && groupOwner) {
@@ -50,7 +47,7 @@ module.exports = {
                 });
             }
 
-            await ctx.reply(`ⓘ ${formatter.italic("Berhasil menghapus sewa bot untuk grup ini!")}`);
+            await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menghapus sewa bot untuk grup ${ctx.isGroup() ? "ini" : "itu"}!`)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

@@ -14,7 +14,7 @@ module.exports = {
             tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, "image", "video")
         ];
 
-        const type = checkMedia || checkQuotedMedia;
+        const type = checkMedia || checkQuotedMedia || null;
 
         if (!input && !type)
             return await ctx.reply(

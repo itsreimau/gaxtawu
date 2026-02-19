@@ -26,7 +26,7 @@ module.exports = {
                 },
                 mimetype: tools.mime.lookup("mp3")
             });
-            await collCtx.reply({
+            await ctx.reply({
                 text: `— Artisnya adalah, ${result.artis}.\n` +
                     "\n" +
                     `➛ ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +

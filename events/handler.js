@@ -1,6 +1,5 @@
 // Impor modul dan dependensi yang diperlukan
-const { Baileys, Events, Gktw, MessageType } = require("@itsreimau/gktw");
-const axios = require("axios");
+const { Baileys, Events, Gktw } = require("@itsreimau/gktw");
 const moment = require("moment-timezone");
 
 // Fungsi untuk menangani event pengguna bergabung/keluar grup
@@ -12,7 +11,7 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
 
     if (!isSimulate && groupDb?.mutebot) return;
     if (!isSimulate && !groupDb?.option?.welcome) return;
-    if (!isSimulate && ["private", "self"].includes(botDb?.mode)) return;
+    if (!isSimulate && botDb?.mode !== "group") return;
 
     const now = moment().tz(config.system.timeZone);
     const hour = now.hour();
@@ -101,15 +100,15 @@ module.exports = bot => {
     bot.ev.setMaxListeners(config.system.maxListeners); // Tetapkan max listeners untuk events
 
     // Event saat bot siap
-    bot.ev.once(Events.ClientReady, async (ctx) => {
-        consolefy.success(`${config.bot.name} by ${config.owner.name}, ready at ${ctx.user.id}`);
+    bot.ev.once(Events.ClientReady, async () => {
+        consolefy.success(`${config.bot.name} by ${config.owner.name}, ready at ${bot.user.id}`);
 
         // Mulai ulang bot
         const botDb = bot.getDb("bot");
         const botRestart = botDb?.restart || {};
         if (botRestart?.jid && botRestart?.timestamp) {
             const timeago = tools.msg.convertMsToDuration(Date.now() - botRestart.timestamp);
-            await bot.sendMessage(botRestart.jid, {
+            await bot.core.sendMessage(botRestart.jid, {
                 text: `ⓘ ${formatter.italic(`Berhasil dimulai ulang! Membutuhkan waktu ${timeago}.`)}`,
                 edit: botRestart.key
             });
@@ -233,7 +232,7 @@ module.exports = bot => {
 
             // Penanganan obrolan grup
             if (isGroup) {
-                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from group: ${groupId}, by: ${Baileys.isPnUser(senderJid) ? senderId : `${senderId} (LID)`}`); // Log pesan masuk
+                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from group: ${groupId}, by: ${senderId}`); // Log pesan masuk
 
                 // Variabel umum
                 const messageType = ctx.getMessageType();
@@ -253,7 +252,10 @@ module.exports = bot => {
                         const mentionAfk = ctx.getDb("users", afkMention)?.afk || {};
                         if (mentionAfk.reason || mentionAfk.timestamp) {
                             const timeago = tools.msg.convertMsToDuration(Date.now() - mentionAfk.timestamp);
-                            await ctx.reply(`ⓘ ${formatter.italic(`Jangan tag! Dia sedang AFK ${mentionAfk.reason ? `dengan alasan ${formatter.inlineCode(mentionAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`)}`);
+                            await ctx.reply({
+                                text: `ⓘ ${formatter.italic(`Jangan tag! @${ctx.getId(afkMention)} sedang AFK ${mentionAfk.reason ? `dengan alasan ${formatter.inlineCode(mentionAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`)}`
+                                mentions: [afkMention]
+                            });
                         }
                     }
                 }
@@ -352,7 +354,7 @@ module.exports = bot => {
 
             // Penanganan obrolan pribadi
             if (isPrivate) {
-                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from: ${Baileys.isPnUser(senderJid) ? senderId : `${senderId} (LID)`}`); // Log pesan masuk
+                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from: ${senderId}`); // Log pesan masuk
 
                 // Apa yaa...
             }
@@ -384,14 +386,14 @@ module.exports = bot => {
         const reportOwner = tools.cmd.getReportOwner();
         if (reportOwner && reportOwner.length > 0) {
             for (const ownerId of reportOwner) {
-                await bot.sendMessage(ownerId + Baileys.S_WHATSAPP_NET, {
+                await bot.core.sendMessage(ownerId + Baileys.S_WHATSAPP_NET, {
                     text: `ⓘ ${formatter.italic(`Akun @${fromId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`)}`,
                     mentions: [fromJid]
                 });
                 await tools.cmd.delay(500);
             }
         }
-        await bot.sendMessage(fromJid, {
+        await bot.core.sendMessage(fromJid, {
             text: `ⓘ ${formatter.italic("Anda telah dibanned secara otomatis karena melanggar aturan!")}`,
             buttons: [{
                 buttonId: "/owner",

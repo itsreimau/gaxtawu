@@ -13,7 +13,7 @@ module.exports = {
             tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, "image", "video")
         ];
 
-        const type = checkMedia || checkQuotedMedia;
+        const type = checkMedia || checkQuotedMedia || null;
 
         if (!input && !type)
             return await ctx.reply(
@@ -58,13 +58,13 @@ module.exports = {
                         text: input
                     };
                 }
-                await ctx.reply({
+                await ctx.sendMessage(groupJid, {
                     groupStatus: content
                 });
                 await tools.cmd.delay(500);
             }
 
-            await ctx.editMessage(waitMsg.key, `ⓘ ${formatter.italic(`Berhasil mengirim ke ${successCount} grup.`)}`);
+            await ctx.editMessage(waitMsg.key, `ⓘ ${formatter.italic(`Berhasil mengirim ke ${groupJids.length} grup.`)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

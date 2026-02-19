@@ -12,10 +12,10 @@ module.exports = {
         if (!target)
             return await ctx.reply({
                 text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                    `${tools.msg.generateCmdExample(ctx.used, "@6281234567891 30")}\n` +
+                    `${tools.msg.generateCmdExample(ctx.used, "@6281234567891 8 -s")}\n` +
                     `${tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])}\n` +
                     tools.msg.generatesFlagInfo({
-                        "-s": "Tetap diam dengan tidak menyiarkan ke orang yang relevan"
+                        "-s": "Tetap diam dengan tidak menyiarkan ke akun target"
                     }),
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
@@ -23,17 +23,14 @@ module.exports = {
         if (daysAmount && daysAmount <= 0) return await ctx.reply(`ⓘ ${formatter.italic("Durasi premium (dalam hari) harus diisi dan lebih dari 0!")}`);
 
         try {
-            const targetDb = ctx.getDb("users", target);
-
             const flag = ctx.flag({
-                "-s": {
-                    type: "boolean",
-                    key: "silent"
+                s: {
+                    type: "boolean"
                 }
             });
+            const silent = flag?.s || false;
 
-            const silent = flag?.silent || false;
-
+            const targetDb = ctx.getDb("users", target);
             targetDb.premium = true;
             if (daysAmount && daysAmount > 0) {
                 const expirationDate = Date.now() + (daysAmount * 24 * 60 * 60 * 1000);
