@@ -100,7 +100,7 @@ module.exports = (bot) => {
         consolefy.success(`${config.bot.name} by ${config.owner.name}, ready at ${b.user?.id || b.user?.lid}`);
 
         // Mulai ulang bot
-        const botDb = b.getDb("bot");
+        const botDb = bot.getDb("bot");
         const botRestart = botDb?.restart || {};
         if (botRestart?.jid && botRestart?.timestamp) {
             const timeago = tools.msg.convertMsToDuration(Date.now() - botRestart.timestamp);
