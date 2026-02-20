@@ -136,7 +136,7 @@ function generateNotes(notes) {
 
 function ucwords(text) {
     if (!text) return null;
-    return text.toLowerCase().replace(/\b\w/g, txt => txt.toUpperCase());
+    return text.toLowerCase().replace(/\b\w/g, (txt) => txt.toUpperCase());
 }
 
 module.exports = {

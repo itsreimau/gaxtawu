@@ -34,12 +34,12 @@ module.exports = {
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
-                const album = result.slides.map((res, index) => ({
+                const album = result.slides.map((res, i) => ({
                     image: {
                         url: res.url
                     },
                     mimetype: tools.mime.lookup("png"),
-                    caption: index === 0 ? `➛ ${formatter.bold("URL")}: ${url}` : null
+                    caption: i === 0 ? `➛ ${formatter.bold("URL")}: ${url}` : null
                 }));
 
                 await ctx.reply({

@@ -28,9 +28,8 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("izumi", "/downloader/youtube", {
-                url,
-                format: "720"
+            const apiUrl = tools.api.createUrl("danzy", "/api/download/ytmp4", {
+                url
             });
             const result = (await axios.get(apiUrl)).data.result;
 
@@ -38,7 +37,7 @@ module.exports = {
             if (document) {
                 await ctx.reply({
                     document: {
-                        url: result.download
+                        url: result.downloads.video.url
                     },
                     fileName: `${result.title}.mp4`,
                     mimetype: tools.mime.lookup("mp4"),
@@ -47,7 +46,7 @@ module.exports = {
             } else {
                 await ctx.reply({
                     video: {
-                        url: result.download
+                        url: result.downloads.video.url
                     },
                     mimetype: tools.mime.lookup("mp4"),
                     caption: `➛ ${formatter.bold("URL")}: ${url}`

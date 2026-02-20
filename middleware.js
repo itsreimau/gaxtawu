@@ -3,7 +3,7 @@ const { Baileys, Cooldown } = require("@itsreimau/gktw");
 const moment = require("moment-timezone");
 
 // Middleware utama bot
-module.exports = bot => {
+module.exports = (bot) => {
     bot.use(async (ctx, next) => {
         // Variabel umum
         const isGroup = ctx.isGroup();

@@ -3,17 +3,16 @@ module.exports = {
     aliases: ["rvo"],
     category: "misc",
     code: async (ctx) => {
-        if (!tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["audio", "image", "video"])) return await ctx.reply(tools.msg.generateInstruction(["reply"], ["audio", "image", "video"]));
+        if (!tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["audio", "image", "video"])) return await ctx.reply(tools.msg.generateInstruction(["reply"], ["viewOnce"]));
 
-        const quoted = ctx.quoted;
-        const quotedType = quoted.messageType;
+        const quotedMessage = ctx.quoted.message;
 
-        if (!quoted[quotedType].viewOnce) return await ctx.reply(tools.msg.generateInstruction(["reply"], ["audio", "image", "video"]));
+        if (!quotedMessage[ctx.quoted.messageType].viewOnce) return await ctx.reply(tools.msg.generateInstruction(["reply"], ["viewOnce"]));
 
         try {
-            delete quoted[quotedType].viewOnce;
+            delete quotedMessage[ctx.quoted.messageType].viewOnce;
 
-            await ctx.forwardMessage(ctx.id, quoted);
+            await ctx.forwardMessage(ctx.id, { message: quotedMessage });
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

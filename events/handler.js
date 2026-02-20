@@ -11,7 +11,7 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
 
     if (!isSimulate && groupDb?.mutebot) return;
     if (!isSimulate && !groupDb?.option?.welcome) return;
-    if (!isSimulate && botDb?.mode !== "group") return;
+    if (!isSimulate && !["group", "public"].includes(botDb?.mode || "public")) return;
 
     const now = moment().tz(config.system.timeZone);
     const hour = now.hour();
@@ -21,11 +21,7 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
     const tag = `@${bot.getId(participantJid)}`;
     const customText = isWelcome ? groupDb?.text?.welcome : groupDb?.text?.goodbye;
     const metadata = await bot.core.groupMetadata(groupJid);
-    const text = customText ? customText.replace(/%tag%/g, tag).replace(/%subject%/g, metadata.subject).replace(/%description%/g, metadata.description) :
-        (isWelcome ?
-            `>ᴗ< ${formatter.italic(`Selamat datang ${tag} di grup ${metadata.subject}!`)}` :
-            `•︵• ${formatter.italic(`Selamat tinggal, ${tag}!`)}`
-        );
+    const text = customText ? customText.replace(/%tag%/g, tag).replace(/%subject%/g, metadata.subject).replace(/%description%/g, metadata.description) : (isWelcome ? `>ᴗ< ${formatter.italic(`Selamat datang ${tag} di grup ${metadata.subject}!`)}` : `•︵• ${formatter.italic(`Selamat tinggal, ${tag}!`)}`);
     const profilePictureUrl = await bot.core.profilePictureUrl(participantJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
     const canvasUrl = tools.api.createUrl("deline", "/canvas/welcome", {
         username: bot.getPushName(participantJid),
@@ -96,19 +92,19 @@ async function handleWarning(ctx, senderJid, senderId, senderLid, isAdmin, group
 }
 
 // Events utama bot
-module.exports = bot => {
+module.exports = (bot) => {
     bot.ev.setMaxListeners(config.system.maxListeners); // Tetapkan max listeners untuk events
 
     // Event saat bot siap
-    bot.ev.once(Events.ClientReady, async () => {
-        consolefy.success(`${config.bot.name} by ${config.owner.name}, ready at ${bot.user?.id || bot.user?.lid}`);
+    bot.ev.once(Events.ClientReady, async (b) => {
+        consolefy.success(`${config.bot.name} by ${config.owner.name}, ready at ${b.user?.id || b.user?.lid}`);
 
         // Mulai ulang bot
-        const botDb = bot.getDb("bot");
+        const botDb = b.getDb("bot");
         const botRestart = botDb?.restart || {};
         if (botRestart?.jid && botRestart?.timestamp) {
             const timeago = tools.msg.convertMsToDuration(Date.now() - botRestart.timestamp);
-            await bot.core.sendMessage(botRestart.jid, {
+            await b.sendMessage(botRestart.jid, {
                 text: `ⓘ ${formatter.italic(`Berhasil dimulai ulang! Membutuhkan waktu ${timeago}.`)}`,
                 edit: botRestart.key
             });
@@ -117,8 +113,8 @@ module.exports = bot => {
         }
 
         // Tetapkan config pada bot
-        const groupLink = `https://chat.whatsapp.com/${config.bot?.groupJid ? await bot.core.groupInviteCode(config.bot.groupJid).catch(() => "FxEYZl2UyzAEI2yhaH34Ye") : "FxEYZl2UyzAEI2yhaH34Ye"}`;
-        if (!config.bot.groupLink || (config.bot.groupLink !== groupLink)) config.core.set("bot.groupLink", groupLink);
+        const groupLink = `https://chat.whatsapp.com/${config.bot?.groupJid ? await b.groupInviteCode(config.bot.groupJid).catch(() => "FxEYZl2UyzAEI2yhaH34Ye") : "FxEYZl2UyzAEI2yhaH34Ye"}`;
+        if (!config.bot.groupLink || config.bot.groupLink !== groupLink) config.core.set("bot.groupLink", groupLink);
     });
 
     // Event saat bot menerima pesan
@@ -246,7 +242,7 @@ module.exports = bot => {
                 }
 
                 // Penanganan AFK (Pengguna yang disebutkan atau di-balas/quote)
-                const afkMentions = ctx.quoted ? [ctx.getId(ctx.quoted.sender)] : ctx.getMentioned().map(jid => ctx.getId(jid));
+                const afkMentions = ctx.quoted ? [ctx.quoted.sender] : ctx.getMentioned();
                 if (afkMentions.length > 0) {
                     for (const afkMention of afkMentions) {
                         const mentionAfk = ctx.getDb("users", afkMention)?.afk || {};

@@ -11,7 +11,7 @@ module.exports = {
         try {
             const collector = ctx.MessageCollector({
                 time: timeout,
-                filter: collCtx => !collCtx.msg.key.fromMe
+                filter: (collCtx) => !collCtx.msg.key.fromMe
             });
             await ctx.reply(`ⓘ ${formatter.italic(`Collector dimulai dengan timeout ${tools.msg.convertMsToDuration(timeout)}.`)}`);
 

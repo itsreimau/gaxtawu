@@ -18,10 +18,10 @@ module.exports = {
             const topUsers = leaderboardData.slice(0, 10);
             let resultText = "";
 
-            topUsers.forEach((user, index) => {
+            topUsers.forEach((user, i) => {
                 const isSelf = user.jid === senderLid;
                 const displayName = isSelf ? `@${user.jid}` : user.username ? user.username : user.jid;
-                resultText += `➛ ${displayName} - Menang: ${user.winGame}, Level: ${user.level}, Peringkat: ${index + 1}\n`;
+                resultText += `➛ ${displayName} - Menang: ${user.winGame}, Level: ${user.level}, Peringkat: ${i + 1}\n`;
             });
 
             if (userRank > 10) {

@@ -44,20 +44,20 @@ module.exports = {
 
         try {
             const groupJids = (Object.values(await ctx.core.groupFetchAllParticipating()).map(group => group.id)).filter(groupJid => !blacklist.includes(groupJid));
+            let content;
+            if (["image", "video"].includes(type)) {
+                const buffer = await ctx.msg.download() || await ctx.quoted.download();
+                content = {
+                    [type]: buffer,
+                    caption: input
+                };
+            } else {
+                content = {
+                    text: input
+                };
+            }
             const waitMsg = await ctx.reply(`ⓘ ${formatter.italic(`Mengirim siaran ke ${groupJids.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(groupJids.length * 0.5 * 1000)}`)}`);
             for (const groupJid of groupJids) {
-                let content;
-                if (["image", "video"].includes(type)) {
-                    const buffer = await ctx.msg.download() || await ctx.quoted.download();
-                    content = {
-                        [type]: buffer,
-                        caption: input
-                    };
-                } else {
-                    content = {
-                        text: input
-                    };
-                }
                 await ctx.sendMessage(groupJid, {
                     groupStatus: content
                 });

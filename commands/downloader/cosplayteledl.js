@@ -24,12 +24,12 @@ module.exports = {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result.gallery_images;
-            const album = result.map((imageUrl, index) => ({
+            const album = result.map((imageUrl, i) => ({
                 image: {
                     url: imageUrl
                 },
                 mimetype: tools.mime.lookup("png"),
-                caption: index === 0 ? `➛ ${formatter.bold("URL")}: ${url}` : null
+                caption: i === 0 ? `➛ ${formatter.bold("URL")}: ${url}` : null
             }));
 
             await ctx.reply({

@@ -23,7 +23,7 @@ module.exports = {
         try {
             const response = await axios.get(url, {
                 responseType: "arraybuffer",
-                validateStatus: status => true
+                validateStatus: (() => true)
             });
             const contentType = response?.headers?.["content-type"];
 

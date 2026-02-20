@@ -10,7 +10,7 @@ module.exports = {
     },
     code: async (ctx) => {
         const input = ctx.args.join("");
-        const emojis = Array.from(input.matchAll(/\p{Emoji}/gu), match => match[0]);
+        const emojis = Array.from(input.matchAll(/\p{Emoji}/gu), (match) => match[0]);
         const [emoji] = emojis.slice(0, 1);
 
         if (!emoji)
