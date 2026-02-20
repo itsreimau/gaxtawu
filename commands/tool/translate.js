@@ -26,7 +26,7 @@ module.exports = {
         }
 
         try {
-            const apiUrl = api.createUrl("deline", "/tools/translate", {
+            const apiUrl = tools.api.createUrl("deline", "/tools/translate", {
                 text: input,
                 target: langCode
             });
