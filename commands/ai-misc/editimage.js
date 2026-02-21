@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["editimg"],
     category: "ai-misc",
     permissions: {
-        coin: 5
+        premium: true
     },
     code: async (ctx) => {
         const input = ctx.text || null;
@@ -25,19 +25,11 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            let result;
-            for (let v = 1; v <= 6; v++) {
-                try {
-                    const apiUrl = tools.api.createUrl("nekolabs", `/image.gen/nano-banana/v${v}`, {
-                        prompt: input,
-                        imageUrl: uploadUrl
-                    });
-                    result = (await axios.get(apiUrl)).data.result;
-                    break;
-                } catch (error) {
-                    if (v === 6) throw error;
-                }
-            }
+            const apiUrl = tools.api.createUrl("izuki", "/api/ai2/editimg", {
+                image_url: uploadUrl,
+                prompt: input
+            });
+            const result = (await axios.get(apiUrl)).data.result.output_image;
 
             await ctx.reply({
                 image: {

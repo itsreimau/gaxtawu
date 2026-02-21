@@ -8,14 +8,11 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const pending = await ctx.group().pendingMembers();
-
-        if (!pending.length === 0) return await ctx.reply(`ⓘ ${formatter.italic("Tidak ada anggota yang menunggu persetujuan.")}`);
-
         try {
-            const resultText = pending.map((member, i) => `${i + 1}. ${ctx.getId(member.id)}`).join("\n");
+            const pending = await ctx.group().pendingMembers();
+            const resultText = pending.map(member => `➛ ${ctx.getId(member.id)}`).join("\n");
 
-            await ctx.reply(resultText.trim());
+            await ctx.reply(resultText.trim() || `ⓘ ${formatter.italic(config.msg.notFound)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

@@ -122,11 +122,6 @@ async function get(type) {
                 );
                 break;
             }
-            case "waifuim": {
-                const data = ["ass", "ecchi", "ero", "hentai", "maid", "milf", "oppai", "oral", "paizuri", "selfies", "uniform", "waifu"];
-                text = createList(data, (list) => `➛ ${list}`);
-                break;
-            }
             case "waifupics": {
                 const data = ["waifu", "neko", "shinobu", "megumin"];
                 text = createList(data, (list) => `➛ ${list}`);

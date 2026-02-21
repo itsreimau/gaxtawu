@@ -23,7 +23,8 @@ module.exports = {
         try {
             const welcome = {
                 id: ctx.id,
-                participant: ctx.sender.jid
+                participant: ctx.sender.lid,
+                participantPn: ctx.sender.jid
             };
 
             switch (input.toLowerCase()) {

@@ -17,11 +17,11 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("danzy", "/api/tools/nanobanana", {
-                prompt: "black skin color",
-                media: uploadUrl
+            const apiUrl = tools.api.createUrl("izuki", "/api/ai2/editimg", {
+                image_url: uploadUrl,
+                prompt: "black skin color"
             });
-            const result = (await axios.get(apiUrl)).data.data.image;
+            const result = (await axios.get(apiUrl)).data.result.output_image;
 
             await ctx.reply({
                 image: {
