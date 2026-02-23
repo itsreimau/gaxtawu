@@ -11,7 +11,7 @@ module.exports = {
             index: {
                 type: "string",
                 short: "i",
-                default: 0
+                default: "0"
             },
             source: {
                 type: "string",
