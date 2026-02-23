@@ -7,14 +7,14 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const input = ctx.text || ctx.quoted?.text || null;
+        const input = ctx.text || ctx.quoted?.text;
 
         const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, "image", "video"),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, "image", "video")
+            tools.cmd.checkMedia(ctx.msg.messageType, ["image", "video"]),
+            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image", "video"])
         ];
 
-        const type = checkMedia || checkQuotedMedia || null;
+        const type = checkMedia || checkQuotedMedia;
 
         if (!input && !type)
             return await ctx.reply(

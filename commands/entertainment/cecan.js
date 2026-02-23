@@ -6,7 +6,7 @@ module.exports = {
         premium: true
     },
     code: async (ctx) => {
-        const input = ctx.text || null;
+        const input = ctx.text;
 
         if (input?.toLowerCase() === "list") {
             const listText = await tools.list.get("cecan");

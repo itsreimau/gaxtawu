@@ -5,7 +5,7 @@ module.exports = {
         private: true
     },
     code: async (ctx) => {
-        const input = ctx.args[0] || null;
+        const input = ctx.args[0];
 
         try {
             if (input === "y") {

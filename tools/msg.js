@@ -83,16 +83,7 @@ function generateCmdExample(used, args) {
 }
 
 function generateInstruction(actions, mediaTypes) {
-    if (!actions || !actions.length) return `${formatter.inlineCode("actions")} yang diperlukan harus ditentukan!`;
-
-    let translatedMediaTypes;
-    if (typeof mediaTypes === "string") {
-        translatedMediaTypes = [mediaTypes];
-    } else if (Array.isArray(mediaTypes)) {
-        translatedMediaTypes = mediaTypes;
-    } else {
-        return `${formatter.inlineCode("mediaTypes")} harus berupa string atau array string!`;
-    }
+    if (!actions || !mediaTypes || !Array.isArray(actions) || !Array.isArray(mediaTypes)) return `${formatter.inlineCode("actions")} dan ${formatter.inlineCode("mediaTypes")} harus berupa array!`;
 
     const mediaTypeTranslations = {
         audio: "audio",
@@ -103,11 +94,11 @@ function generateInstruction(actions, mediaTypes) {
         video: "video",
         viewOnce: "sekali lihat"
     };
-    const translatedMediaTypeList = translatedMediaTypes.map(type => mediaTypeTranslations[type]);
+    const translatedMediaTypeList = mediaTypes.map(type => mediaTypeTranslations[type]);
     let mediaTypesList;
     if (translatedMediaTypeList.length > 1) {
         const lastMediaType = translatedMediaTypeList[translatedMediaTypeList.length - 1];
-        mediaTypesList = `${translatedMediaTypeList.slice(0, -1).join(", ")}, atau ${lastMediaType}`;
+        mediaTypesList = `${translatedMediaTypeList.slice(0, -1).join(", ")} atau ${lastMediaType}`;
     } else {
         mediaTypesList = translatedMediaTypeList[0];
     }

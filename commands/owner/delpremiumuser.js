@@ -26,11 +26,13 @@ module.exports = {
             targetDb.save();
 
             const flag = ctx.flag({
-                s: {
-                    type: "boolean"
+                silent: {
+                    type: "boolean",
+                    short: "s",
+                    default: false
                 }
             });
-            const silent = flag?.s || false;
+            const silent = flag?.silent;
             if (!silent) await ctx.sendMessage(target, `ⓘ ${formatter.italic("Anda telah dihapus sebagai pengguna premium oleh owner!")}`);
 
             await ctx.reply(`ⓘ ${formatter.italic("Berhasil menghapuskan premium kepada pengguna itu!")}`);

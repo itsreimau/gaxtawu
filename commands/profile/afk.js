@@ -2,7 +2,7 @@ module.exports = {
     name: "afk",
     category: "profile",
     code: async (ctx) => {
-        const input = ctx.text || null;
+        const input = ctx.text;
 
         try {
             const senderDb = ctx.db.user;

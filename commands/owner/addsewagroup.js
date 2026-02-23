@@ -7,7 +7,7 @@ module.exports = {
     },
     code: async (ctx) => {
         const target = ctx.isGroup() ? ctx.id : await ctx.target(["text_group"]);
-        const daysAmount = parseInt(ctx.args[ctx.isGroup() ? 0 : 1], 10) || null;
+        const daysAmount = parseInt(ctx.args[ctx.isGroup() ? 0 : 1], 10);
 
         if (!target)
             return await ctx.reply(
@@ -24,11 +24,13 @@ module.exports = {
 
         try {
             const flag = ctx.flag({
-                s: {
-                    type: "boolean"
+                silent: {
+                    type: "boolean",
+                    short: "s",
+                    default: false
                 }
             });
-            const silent = flag?.s || false;
+            const silent = flag?.silent;
 
             const group = await ctx.group(target);
             const groupOwner = await group.owner();

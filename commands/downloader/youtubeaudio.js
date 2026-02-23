@@ -9,11 +9,13 @@ module.exports = {
     },
     code: async (ctx) => {
         const flag = ctx.flag({
-            d: {
-                type: "boolean"
+            document: {
+                type: "boolean",
+                short: "d",
+                default: false
             }
         });
-        const url = flag.input || null;
+        const url = flag.input;
 
         if (!url)
             return await ctx.reply(
@@ -33,7 +35,7 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.data;
 
-            const document = flag?.d || false;
+            const document = flag.document;
             if (document) {
                 await ctx.reply({
                     document: {

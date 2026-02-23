@@ -14,9 +14,7 @@ module.exports = {
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "kej 2:18")}\n` +
-                tools.msg.generateNotes([
-                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
-                ])
+                tools.msg.generateNotes([`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`])
             );
 
         if (passage.toLowerCase() === "list") {

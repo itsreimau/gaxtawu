@@ -9,19 +9,19 @@ module.exports = {
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, "image"),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, "image")
+            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
+            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
         ];
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], "image"));
+        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("izuki", "/api/ai2/editimg", {
-                image_url: uploadUrl,
-                prompt: "black skin color"
+            const apiUrl = tools.api.createUrl("danzy", "/api/tools/nanobanana", {
+                prompt: "black skin color",
+                media: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result.output_image;
+            const result = (await axios.get(apiUrl)).data.data.image;
 
             await ctx.reply({
                 image: {

@@ -9,15 +9,13 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const input = ctx.text || null;
+        const input = ctx.text;
 
         if (!input)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "join")}\n` +
-                tools.msg.generateNotes([
-                    `Gunakan ${formatter.inlineCode("leave")} untuk mensimulasikan keluar dari grup.`
-                ])
+                tools.msg.generateNotes([`Gunakan ${formatter.inlineCode("leave")} untuk mensimulasikan keluar dari grup.`])
             );
 
         try {

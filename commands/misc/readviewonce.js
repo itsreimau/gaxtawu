@@ -12,7 +12,11 @@ module.exports = {
         try {
             delete quotedMessage[ctx.quoted.messageType].viewOnce;
 
-            await ctx.forwardMessage(ctx.id, { message: quotedMessage });
+            await ctx.forwardMessage(ctx.id, {
+                message: quotedMessage
+            }, {
+                quoted: ctx._msg
+            });
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

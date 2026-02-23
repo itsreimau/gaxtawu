@@ -7,7 +7,7 @@ module.exports = {
     },
     code: async (ctx) => {
         const target = await ctx.target();
-        const coinAmount = parseInt(ctx.args[ctx.quoted ? 0 : 1], 10) || null;
+        const coinAmount = parseInt(ctx.args[ctx.quoted ? 0 : 1], 10);
 
         if (!target || !coinAmount)
             return await ctx.reply({
@@ -26,11 +26,13 @@ module.exports = {
             targetDb.save();
 
             const flag = ctx.flag({
-                s: {
-                    type: "boolean"
+                silent: {
+                    type: "boolean",
+                    short: "s",
+                    default: false
                 }
             });
-            const silent = flag?.s || false;
+            const silent = flag?.silent;
             if (!silent) await ctx.sendMessage(target, `ⓘ ${formatter.italic(`Anda telah menerima ${coinAmount} koin dari owner!`)}`);
 
             await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menambahkan ${coinAmount} koin kepada pengguna itu!`)}`);

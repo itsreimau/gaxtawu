@@ -7,7 +7,7 @@ module.exports = {
         premium: true
     },
     code: async (ctx) => {
-        const input = ctx.text || null;
+        const input = ctx.text;
 
         if (!input)
             return await ctx.reply(
@@ -16,11 +16,11 @@ module.exports = {
             );
 
         const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, "image"),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, "image")
+            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
+            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
         ];
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], "image"));
+        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();

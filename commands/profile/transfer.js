@@ -4,7 +4,7 @@ module.exports = {
     category: "profile",
     code: async (ctx) => {
         const target = await ctx.target();
-        const coinAmount = parseInt(ctx.args[ctx.quoted ? 0 : 1], 10) || null;
+        const coinAmount = parseInt(ctx.args[ctx.quoted ? 0 : 1], 10);
 
         if (!target || !coinAmount)
             return await ctx.reply({

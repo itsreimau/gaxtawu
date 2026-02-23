@@ -7,15 +7,13 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const input = ctx.text || null;
+        const input = ctx.text;
 
         if (!input)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "open")}\n` +
-                tools.msg.generateNotes([
-                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
-                ])
+                tools.msg.generateNotes([`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`])
             );
 
         if (input.toLowerCase() === "list") {

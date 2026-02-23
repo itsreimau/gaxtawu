@@ -6,7 +6,7 @@ module.exports = {
         coin: 5
     },
     code: async (ctx) => {
-        const url = ctx.args[0] || null;
+        const url = ctx.args[0];
 
         if (!url)
             return await ctx.reply(

@@ -8,8 +8,8 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const key = ctx.args[0] || null;
-        const text = ctx.text ? (ctx.text.startsWith(`${key} `) ? ctx.text.slice(key.length + 1) : ctx.text) : (ctx.quoted?.text || null);
+        const key = ctx.args[0];
+        const text = ctx.text ? (ctx.text.startsWith(`${key} `) ? ctx.text.slice(key.length + 1) : ctx.text) : ctx.quoted?.text;
 
         if (key?.toLowerCase() === "list") {
             const listText = await tools.list.get("settext");
@@ -20,10 +20,7 @@ module.exports = {
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "welcome Selamat datang di grup!")}\n` +
-                tools.msg.generateNotes([
-                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`,
-                    `Gunakan ${formatter.inlineCode("delete")} sebagai teks untuk menghapus teks yang disimpan sebelumnya.`
-                ])
+                tools.msg.generateNotes([`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`, `Gunakan ${formatter.inlineCode("delete")} sebagai teks untuk menghapus teks yang disimpan sebelumnya.`])
             );
 
         try {

@@ -9,7 +9,7 @@ module.exports = {
         coin: 5
     },
     code: async (ctx) => {
-        const input = ctx.text || null;
+        const input = ctx.text;
 
         if (!input)
             return await ctx.reply(

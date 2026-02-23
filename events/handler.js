@@ -49,7 +49,7 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
                 name: "cta_copy",
                 buttonParamsJson: JSON.stringify({
                     display_text: "Salin Teks",
-                    copy_code: text
+                    copy_code: groupDb.text.intro
                 })
             }]
         });

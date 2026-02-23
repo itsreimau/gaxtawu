@@ -7,9 +7,9 @@ module.exports = {
     },
     code: async (ctx) => {
         try {
-            const introText = ctx.db.group.text?.intro || `ⓘ ${formatter.italic("Grup ini tidak memiliki intro.")}`;
+            const introText = ctx.db.group.text?.intro;
 
-            await ctx.reply(introText);
+            await ctx.reply(introText || `ⓘ ${formatter.italic("Grup ini tidak memiliki intro.")}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

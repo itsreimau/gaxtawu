@@ -53,8 +53,7 @@ module.exports = {
                 return format;
             };
 
-            const input = ctx.args[0]?.toLowerCase() || null;
-
+            const input = ctx.args[0]?.toLowerCase();
             if (input) {
                 const selectedCats = input === "all" || ctx.used.command === "allmenu" ? Object.keys(tag) : (tag[input] ? [input] : []);
                 const commandsData = getCommands(selectedCats);

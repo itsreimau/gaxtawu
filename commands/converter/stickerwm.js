@@ -8,22 +8,22 @@ module.exports = {
         coin: 5
     },
     code: async (ctx) => {
-        const input = ctx.text || null;
+        const input = ctx.text;
 
         if (!input)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send", "reply"], ["text", "sticker"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "stiker saya|reimau von litz")
+                tools.msg.generateCmdExample(ctx.used, "stiker saya|reimau von lilitz")
             );
 
         if (!tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["sticker"])) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["sticker"]));
 
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
-            const [packname, author] = input.split("|") || ["", ""];
+            const [packname, author] = input.split("|");
             const sticker = await new Sticker(buffer)
-                .setPack(packname)
-                .setAuthor(author)
+                .setPack(packname || "")
+                .setAuthor(author || "")
                 .setType(StickerTypes.FULL)
                 .setCategories(["🌕"])
                 .setID(ctx.msg.key.id)

@@ -9,9 +9,7 @@ module.exports = {
         coin: 5
     },
     code: async (ctx) => {
-        const input = ctx.args.join("");
-        const emojis = Array.from(input.matchAll(/\p{Emoji}/gu), (match) => match[0]);
-        const [emoji] = emojis.slice(0, 1);
+        const [emoji] = Array.from(ctx.text?.matchAll(/\p{Emoji}/gu), (match) => match[0]).slice(0, 1);
 
         if (!emoji)
             return await ctx.reply(

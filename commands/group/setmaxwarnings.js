@@ -7,7 +7,7 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const input = parseInt(ctx.args[0], 10) || null;
+        const input = parseInt(ctx.args[0], 10);
 
         if (!input)
             return await ctx.reply(

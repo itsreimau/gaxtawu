@@ -9,11 +9,11 @@ module.exports = {
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, "audio"),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, "audio")
+            tools.cmd.checkMedia(ctx.msg.messageType, ["audio"]),
+            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["audio"])
         ];
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], "audio"));
+        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["audio"]));
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();

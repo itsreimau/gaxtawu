@@ -8,7 +8,7 @@ module.exports = {
         premium: true
     },
     code: async (ctx) => {
-        const url = ctx.args[0] || null;
+        const url = ctx.args[0];
 
         if (!url)
             return await ctx.reply(
@@ -24,7 +24,7 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result;
             const album = [];
-            let currentVideo = null;
+            let currentVideo;
             for (const item of result) {
                 if (item.type === "video") {
                     if (!currentVideo || item.resolution !== currentVideo.resolution) {

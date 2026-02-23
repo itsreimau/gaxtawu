@@ -9,7 +9,7 @@ const formatBotName = (botName) => {
 };
 
 function checkMedia(type, required) {
-    if (!type || !required) return false;
+    if (!type || !required || !Array.isArray(required)) return false;
 
     const mediaMap = {
         audio: MessageType.audioMessage,
@@ -19,8 +19,7 @@ function checkMedia(type, required) {
         text: [MessageType.conversation, MessageType.extendedTextMessage],
         video: MessageType.videoMessage
     };
-    const mediaList = Array.isArray(required) ? required : [required];
-    for (const media of mediaList) {
+    for (const media of required) {
         const mappedType = mediaMap[media];
         if (!mappedType) continue;
         if (Array.isArray(mappedType)) {
@@ -34,7 +33,7 @@ function checkMedia(type, required) {
 }
 
 function checkQuotedMedia(type, required) {
-    if (!type || !required) return false;
+    if (!type || !required || !Array.isArray(required)) return false;
 
     const mediaMap = {
         audio: MessageType.audioMessage,
@@ -44,8 +43,7 @@ function checkQuotedMedia(type, required) {
         text: [MessageType.conversation, MessageType.extendedTextMessage],
         video: MessageType.videoMessage
     };
-    const mediaList = Array.isArray(required) ? required : [required];
-    for (const media of mediaList) {
+    for (const media of required) {
         const mappedType = mediaMap[media];
         if (!mappedType) continue;
         if (Array.isArray(mappedType)) {
@@ -80,7 +78,7 @@ function generateUID(id, withBotName = true) {
 }
 
 function getRandomElement(array) {
-    if (!array || !array.length || array.length === 0) return null;
+    if (!array || !Array.isArray(array) || array.length === 0) return null;
     return array[Math.floor(Math.random() * array.length)];
 }
 

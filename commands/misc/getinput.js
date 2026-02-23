@@ -2,7 +2,7 @@ module.exports = {
     name: "getinput",
     category: "misc",
     code: async (ctx) => {
-        const input = ctx.text || ctx.quoted?.text || null;
+        const input = ctx.text || ctx.quoted?.text;
 
         if (!input)
             return await ctx.reply(

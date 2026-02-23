@@ -9,15 +9,13 @@ module.exports = {
     },
     code: async (ctx) => {
         const langCode = ctx.args[0]?.length === 2 ? ctx.args[0] : "en";
-        const input = ctx.text ? (ctx.text.startsWith(`${langCode} `) ? ctx.text.slice(langCode.length + 1) : ctx.text) : (ctx.quoted?.text || null);
+        const input = ctx.text?.startsWith(`${langCode} `) ? ctx.text.slice(langCode.length + 1) : ctx.quoted?.text;
 
         if (!input)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "en halo, dunia!")}\n` +
-                tools.msg.generateNotes([
-                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
-                ])
+                tools.msg.generateNotes([`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`])
             );
 
         if (input.toLowerCase() === "list") {

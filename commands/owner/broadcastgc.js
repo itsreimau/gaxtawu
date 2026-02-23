@@ -6,15 +6,13 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const input = ctx.text || ctx.quoted?.text || null;
+        const input = ctx.text || ctx.quoted?.text;
 
         if (!input)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "halo, dunia!")}\n` +
-                tools.msg.generateNotes([
-                    `Gunakan ${formatter.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`
-                ])
+                tools.msg.generateNotes([`Gunakan ${formatter.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`])
             );
 
         const botDb = ctx.db.bot;

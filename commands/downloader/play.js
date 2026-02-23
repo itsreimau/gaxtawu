@@ -8,11 +8,15 @@ module.exports = {
     },
     code: async (ctx) => {
         const flag = ctx.flag({
-            i: {
-                type: "number"
+            index: {
+                type: "string",
+                short: "i",
+                default: 0
             },
-            s: {
-                type: "string"
+            source: {
+                type: "string",
+                short: "s",
+                default: "youtube"
             }
         });
         const input = flag.input;
@@ -28,8 +32,8 @@ module.exports = {
             );
 
         try {
-            const searchIndex = flag?.i || 0;
-            const source = flag?.s || null;
+            const searchIndex = parseInt(flag.index, 10);
+            const source = flag.source;
 
             if (source === "spotify") {
                 const searchApiUrl = tools.api.createUrl("bagus", "/api/search/spotify", {

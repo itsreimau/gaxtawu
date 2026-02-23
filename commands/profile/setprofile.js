@@ -3,15 +3,13 @@ module.exports = {
     aliases: ["set", "setp", "setprof"],
     category: "profile",
     code: async (ctx) => {
-        let input = ctx.text || null;
+        let input = ctx.text;
 
         if (!input)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "autolevelup")}\n` +
-                tools.msg.generateNotes([
-                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
-                ])
+                tools.msg.generateNotes([`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`])
             );
 
         if (input.toLowerCase() === "list") {

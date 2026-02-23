@@ -9,7 +9,7 @@ module.exports = {
         coin: 5
     },
     code: async (ctx) => {
-        const url = ctx.args[0] || null;
+        const url = ctx.args[0];
 
         if (!url)
             return await ctx.reply(
@@ -78,7 +78,7 @@ module.exports = {
 function walkJSON(json, depth = 0, array = []) {
     for (const key in json) {
         array.push(`${"┊".repeat(depth)}${depth > 0 ? " " : ""}${formatter.bold(key)}:`);
-        if (typeof json[key] === "object" && json[key] !== null) {
+        if (typeof json[key] === "object" && json[key] !== undefined) {
             walkJSON(json[key], depth + 1, array);
         } else {
             array[array.length - 1] += ` ${json[key]}`;

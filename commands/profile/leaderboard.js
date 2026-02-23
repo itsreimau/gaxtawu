@@ -26,7 +26,7 @@ module.exports = {
 
             if (userRank > 10) {
                 const userStats = leaderboardData[userRank - 1];
-                const displayName = `@${senderLid}`;
+                const displayName = `@${ctx.getId(senderLid)}`;
                 resultText += `➛ ${displayName} - Menang: ${userStats.winGame}, Level: ${userStats.level}, Peringkat: ${userRank}\n`;
             }
 
