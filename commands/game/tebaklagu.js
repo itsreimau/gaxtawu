@@ -9,7 +9,7 @@ module.exports = {
         if (session.has(ctx.id)) return await ctx.reply(`ⓘ ${formatter.italic("Sesi permainan sedang berjalan!")}`);
 
         try {
-            const apiUrl = tools.api.createUrl("https://raw.githubusercontent.com", "/Aiinne/scrape/refs/heads/main/tebaklagu.json");
+            const apiUrl = tools.api.createUrl("https://raw.githubusercontent.com", "/Itsukichann/database/refs/heads/main/tebaklagu.json");
             const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data);
 
             const game = {

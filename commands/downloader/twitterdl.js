@@ -45,10 +45,10 @@ module.exports = {
                     });
                 }
             }
-            if (album[0]) album[0].caption = `➛ ${formatter.bold("URL")}: ${url}`;
 
             await ctx.reply({
-                album
+                album,
+                caption: `➛ ${formatter.bold("URL")}: ${url}`
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

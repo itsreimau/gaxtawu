@@ -24,16 +24,16 @@ module.exports = {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result.gallery_images;
-            const album = result.map((imageUrl, i) => ({
+            const album = result.map(imageUrl => ({
                 image: {
                     url: imageUrl
                 },
-                mimetype: tools.mime.lookup("png"),
-                caption: i === 0 ? `➛ ${formatter.bold("URL")}: ${url}` : null
+                mimetype: tools.mime.lookup("png")
             }));
 
             await ctx.reply({
-                album
+                album,
+                caption: `➛ ${formatter.bold("URL")}: ${url}`
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

@@ -30,20 +30,19 @@ module.exports = {
                     video: {
                         url: result.video_nowm
                     },
-                    mimetype: tools.mime.lookup("mp4"),
-                    caption: `➛ ${formatter.bold("URL")}: ${url}`
+                    mimetype: tools.mime.lookup("mp4")
                 });
             } else {
-                const album = result.slides.map((res, i) => ({
+                const album = result.slides.map(res => ({
                     image: {
                         url: res.url
                     },
-                    mimetype: tools.mime.lookup("png"),
-                    caption: i === 0 ? `➛ ${formatter.bold("URL")}: ${url}` : null
+                    mimetype: tools.mime.lookup("png")
                 }));
 
                 await ctx.reply({
-                    album
+                    album,
+                    caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             }
         } catch (error) {
