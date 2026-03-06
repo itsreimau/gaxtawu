@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "texttospeech",
     aliases: ["tts"],
@@ -24,7 +22,7 @@ module.exports = {
         }
 
         try {
-            const result = api.createUrl("znx", "/api/tools/tts", {
+            const result = tools.api.createUrl("znx", "/api/tools/tts", {
                 text: input,
                 lang: langCode
             });

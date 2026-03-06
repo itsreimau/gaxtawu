@@ -25,11 +25,6 @@ async function get(type) {
                 );
                 break;
             }
-            case "cecan": {
-                const data = ["china", "indonesia", "japan", "vietnam", "korea", "malaysia", "thailand"];
-                text = createList(data, (list) => `➛ ${list}`);
-                break;
-            }
             case "claim": {
                 const data = [
                     "daily (Hadiah harian)",
@@ -62,11 +57,6 @@ async function get(type) {
                     "public (Mode publik, merespons dalam grup dan obrolan pribadi)",
                     "self (Mode self, hanya merespons dirinya sendiri dan owner)"
                 ];
-                text = createList(data, (list) => `➛ ${list}`);
-                break;
-            }
-            case "nsfwhub": {
-                const data = ["anal", "ass", "bdsm", "black", "blowjub", "boobs", "bottomless", "collared", "cum", "cumsluts", "dick", "dom", "dp", "easter", "extreme", "feet", "finger", "fuck", "futa", "gay", "group", "hentai", "kiss", "lesbian", "lick", "pegged", "puffies", "pussy", "real", "sixtynine", "suck", "tattoo", "tiny", "xmas"];
                 text = createList(data, (list) => `➛ ${list}`);
                 break;
             }
@@ -120,16 +110,6 @@ async function get(type) {
                     `➛ ${formatter.bold("Kode")}: ${list.code}\n` +
                     `➛ ${formatter.bold("Bahasa")}: ${list.language}`
                 );
-                break;
-            }
-            case "waifupics": {
-                const data = ["waifu", "neko", "shinobu", "megumin"];
-                text = createList(data, (list) => `➛ ${list}`);
-                break;
-            }
-            case "waifupicsnsfw": {
-                const data = ["waifu", "neko", "trap"];
-                text = createList(data, (list) => `➛ ${list}`);
                 break;
             }
             default: {
