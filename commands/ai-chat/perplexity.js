@@ -16,10 +16,10 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("nexure", "/api/ai/perplexity", {
-                ask: input
+            const apiUrl = tools.api.createUrl("nexray", "/ai/perplexity", {
+                text: input
             });
-            const result = (await axios.get(apiUrl)).data.result.text;
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply(result);
         } catch (error) {

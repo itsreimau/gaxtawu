@@ -12,17 +12,21 @@ const APIs = {
     deline: {
         baseURL: "https://api.deline.web.id"
     },
-    izuki: {
-        baseURL: "https://restapis.xrizaldev.my.id"
-    },
     izumi: {
         baseURL: "https://api.ootaizumi.web.id"
     },
     nekolabs: {
         baseURL: "https://rynekoo-api.hf.space"
     },
-    nexure: {
-        baseURL: "https://api.ammaricano.my.id"
+    nexray: {
+        baseURL: "https://api.nexray.web.id"
+    },
+    sanka: {
+        baseURL: "https://www.sankavolereii.my.id",
+        APIKey: "planaai"
+    },
+    siputzx: {
+        baseURL: "https://api.siputzx.my.id"
     },
     yp: {
         baseURL: "https://api.yupra.my.id"

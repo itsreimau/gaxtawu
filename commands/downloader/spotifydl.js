@@ -8,12 +8,22 @@ module.exports = {
         coin: 5
     },
     code: async (ctx) => {
-        const url = ctx.args[0];
+        const flag = ctx.flag({
+            document: {
+                type: "boolean",
+                short: "d",
+                default: false
+            }
+        });
+        const url = flag.input;
 
         if (!url)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "https://open.spotify.com/track/5RhWszHMSKzb7KiXk4Ae0M")
+                `${tools.msg.generateCmdExample(ctx.used, "https://open.spotify.com/track/5RhWszHMSKzb7KiXk4Ae0M")}\n` +
+                tools.msg.generatesFlagInfo({
+                    "-d": "Kirim sebagai dokumen"
+                })
             );
 
         const isUrl = tools.cmd.isUrl(url);
@@ -23,14 +33,26 @@ module.exports = {
             const apiUrl = tools.api.createUrl("bagus", "/api/download/spotify", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.download;
+            const result = (await axios.get(apiUrl)).data;
 
-            await ctx.reply({
-                audio: {
-                    url: result
-                },
-                mimetype: tools.mime.lookup("mp3")
-            });
+            const document = flag.document;
+            if (document) {
+                await ctx.reply({
+                    document: {
+                        url: result.download
+                    },
+                    fileName: `${result.metadata.title}.mp3`,
+                    mimetype: tools.mime.lookup("mp3"),
+                    caption: `➛ ${formatter.bold("URL")}: ${url}`
+                });
+            } else {
+                await ctx.reply({
+                    audio: {
+                        url: result.download
+                    },
+                    mimetype: tools.mime.lookup("mp3")
+                });
+            }
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

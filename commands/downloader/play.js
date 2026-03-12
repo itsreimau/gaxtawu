@@ -36,10 +36,10 @@ module.exports = {
             const source = flag.source;
 
             if (source === "spotify") {
-                const searchApiUrl = tools.api.createUrl("bagus", "/api/search/spotify", {
+                const searchApiUrl = tools.api.createUrl("danzy", "/api/search/spotify", {
                     q: input
                 });
-                const searchResult = (await axios.get(searchApiUrl)).data.data[searchIndex];
+                const searchResult = (await axios.get(searchApiUrl)).data.result[searchIndex];
 
                 await ctx.reply(
                     `➛ ${formatter.bold("Judul")}: ${searchResult.title}\n` +

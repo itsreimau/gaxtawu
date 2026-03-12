@@ -49,7 +49,7 @@ module.exports = (bot) => {
             newSenderXp -= xpToLevelUp;
             if (senderDb?.autolevelup) {
                 const profilePictureUrl = await ctx.core.profilePictureUrl(senderJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
-                const canvasUrl = tools.api.createUrl("deline", "/canvas/levelup", {
+                const canvasUrl = tools.api.createUrl("siputzx", "/api/canvas/level-up", {
                     backgroundURL: "https://picsum.photos/600/150",
                     avatarURL: profilePictureUrl,
                     fromLevel: senderLevel,

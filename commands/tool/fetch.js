@@ -65,7 +65,10 @@ module.exports = {
                 });
             } else {
                 const text = response?.data;
-                const json = JSON.parse(text) || null;
+                let json = null;
+                try {
+                    json = JSON.parse(text);
+                } catch {}
 
                 await ctx.reply(json ? walkJSON(json) : text);
             }

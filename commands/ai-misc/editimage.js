@@ -1,11 +1,9 @@
-const axios = require("axios");
-
 module.exports = {
     name: "editimage",
     aliases: ["editimg"],
     category: "ai-misc",
     permissions: {
-        premium: true
+        coin: 5
     },
     code: async (ctx) => {
         const input = ctx.text;
@@ -25,11 +23,10 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("izuki", "/api/ai2/editimg", {
-                image_url: uploadUrl,
+            const result = tools.api.createUrl("sanka", "/ai/editimg", {
+                url: uploadUrl,
                 prompt: input
-            });
-            const result = (await axios.get(apiUrl)).data.result.output_image;
+            }, "apikey");
 
             await ctx.reply({
                 image: {

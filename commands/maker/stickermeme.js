@@ -27,7 +27,7 @@ module.exports = {
             let [top, bottom] = input.split("|").map(inp => inp);
             [top, bottom] = bottom ? [top || " ", bottom] : [" ", top || " "];
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("nekolabs", `/cnv/meme`, {
+            const result = tools.api.createUrl("nekolabs", `/canvas/meme`, {
                 imageUrl: uploadUrl,
                 textT: top,
                 textB: bottom

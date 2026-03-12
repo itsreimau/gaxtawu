@@ -17,17 +17,20 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("deline", "/tools/whatanime", {
+            const apiUrl = tools.api.createUrl("sanka", "/anime/what-anime", {
                 url: uploadUrl
-            });
+            }, "apikey");
             const result = (await axios.get(apiUrl)).data.result;
 
-            await ctx.reply(
-                `➛ ${formatter.bold("Judul")}: ${result.title}\n` +
-                `➛ ${formatter.bold("Genre")}: ${result.genres[0]}\n` +
-                `➛ ${formatter.bold("Karakter")}: ${result.character}\n` +
-                `➛ ${formatter.bold("Referensi")}: ${result.references[0]}`
-            );
+            await ctx.reply({
+                video: {
+                    url: result.video
+                },
+                mimetype: tools.mime.lookup("mp4"),
+                caption: `➛ ${formatter.bold("Judul")}: ${result.title.english} (${result.title.romaji})\n` +
+                    `➛ ${formatter.bold("Genre")}: ${result.genres.join(", ")}\n` +
+                    `➛ ${formatter.bold("Referensi")}: ${result.siteUrl}`
+            });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }
