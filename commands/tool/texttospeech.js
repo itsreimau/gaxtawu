@@ -22,7 +22,7 @@ module.exports = {
         }
 
         try {
-            const result = tools.api.createUrl("znx", "/api/tools/tts", {
+            const result = tools.api.createUrl("https://tts-api.netlify.app", "/", {
                 text: input,
                 lang: langCode
             });

@@ -101,7 +101,7 @@ async function handleError(ctx, error, useAxios = false, reportToOwner = true) {
     const errorText = util.format(error);
     const reportOwner = getReportOwner();
 
-    consolefy.error(`Error: ${errorText}`);
+    if (!reportToOwner) consolefy.error(`Error: ${errorText}`);
     if (reportToOwner && reportOwner && reportOwner.length > 0) {
         for (const ownerId of reportOwner) {
             await ctx.replyWithJid(ownerId + Baileys.S_WHATSAPP_NET, {

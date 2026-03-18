@@ -3,29 +3,27 @@ const axios = require("axios");
 const session = new Map();
 
 module.exports = {
-    name: "tebakhewan",
+    name: "tebakkalimat",
     category: "game",
     code: async (ctx) => {
         if (session.has(ctx.id)) return await ctx.reply(`ⓘ ${formatter.italic("Sesi permainan sedang berjalan!")}`);
 
         try {
-            const apiUrl = tools.api.createUrl("https://raw.githubusercontent.com", "/Aiinne/scrape/refs/heads/main/tebakhewan.json");
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data);
+            const apiUrl = tools.api.createUrl("deline", "/game/tebakkalimat");
+            const result = await axios.get(apiUrl).data.result;
 
             const game = {
                 coin: 5,
                 timeout: 60000,
-                answer: result.nama.toLowerCase()
+                answer: result.jawaban.toLowerCase()
             };
 
             session.set(ctx.id, true);
 
             await ctx.reply({
-                image: {
-                    url: result.img
-                },
-                mimetype: tools.mime.lookup("png"),
-                caption: `➛ ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +
+                text: `— ${result.soal}\n` +
+                    "\n" +
+                    `➛ ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +
                     `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
                 buttons: [{
                     buttonId: `hint_${ctx.used.command}`,

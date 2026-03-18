@@ -112,13 +112,13 @@ module.exports = {
 
 ### Documentation
 
-`gaxtawu` menggunakan versi modifikasi dari `@mengkodingan/ckptw` yang khusus di-fork dan disesuaikan untuk bot ini. Pustaka ini dibangun di atas `@itsukichan/baileys` yang menawarkan fitur lebih lengkap dibandingkan `@whiskeysockets/baileys`.
+`gaxtawu` menggunakan versi modifikasi dari `@mengkodingan/ckptw` yang khusus di-fork dan disesuaikan untuk bot ini. Pustaka ini dibangun di atas `innovatorssoft/Baileys` yang menawarkan fitur lebih lengkap dibandingkan `@whiskeysockets/baileys`.
 
 Untuk dokumentasi lengkap, silakan kunjungi:
 
 - [@mengkodingan/ckptw](https://www.npmjs.com/package/@mengkodingan/ckptw) - Referensi struktur perintah dasar
 - [itsreimau/gktw](https://github.com/itsreimau/gktw) - Dokumentasi fork kustom
-- [@itsukichan/baileys](https://www.npmjs.com/package/@itsukichan/baileys) - Panduan pengiriman pesan/media
+- [innovatorssoft/Baileys](https://github.com/innovatorssoft/Baileys) - Panduan pengiriman pesan/media
 
 ## 🤝 Contribution
 

@@ -30,7 +30,7 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("bagus", "/api/download/spotify", {
+            const apiUrl = tools.api.createUrl("azbry", "/api/download/spotify", {
                 url
             });
             const result = (await axios.get(apiUrl)).data;
@@ -39,16 +39,16 @@ module.exports = {
             if (document) {
                 await ctx.reply({
                     document: {
-                        url: result.download
+                        url: result.downloadLink
                     },
-                    fileName: `${result.metadata.title}.mp3`,
+                    fileName: `${result.title}.mp3`,
                     mimetype: tools.mime.lookup("mp3"),
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
                 await ctx.reply({
                     audio: {
-                        url: result.download
+                        url: result.downloadLink
                     },
                     mimetype: tools.mime.lookup("mp3")
                 });

@@ -3,6 +3,9 @@ const util = require("node:util");
 
 // Daftar API gratis
 const APIs = {
+    azbry: {
+        baseURL: "https://api.azbry.xyz"
+    },
     bagus: {
         baseURL: "https://api.baguss.xyz"
     },
@@ -12,14 +15,17 @@ const APIs = {
     deline: {
         baseURL: "https://api.deline.web.id"
     },
+    faaa: {
+        baseURL: "https://api-faa.my.id"
+    },
     izumi: {
         baseURL: "https://api.ootaizumi.web.id"
     },
     nekolabs: {
         baseURL: "https://rynekoo-api.hf.space"
     },
-    nexray: {
-        baseURL: "https://api.nexray.web.id"
+    neo: {
+        baseURL: "https://www.neoapis.my.id"
     },
     sanka: {
         baseURL: "https://www.sankavolereii.my.id",
@@ -28,14 +34,14 @@ const APIs = {
     siputzx: {
         baseURL: "https://api.siputzx.my.id"
     },
-    yp: {
-        baseURL: "https://api.yupra.my.id"
+    snowping: {
+        baseURL: "https://api.snowping.my.id"
     },
     zell: {
         baseURL: "https://zellapi.autos"
     },
-    znx: {
-        baseURL: "https://api.zenitsu.web.id"
+    zflorynz: {
+        baseURL: "https://kazztzyy.my.id"
     }
 };
 

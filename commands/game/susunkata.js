@@ -9,8 +9,8 @@ module.exports = {
         if (session.has(ctx.id)) return await ctx.reply(`ⓘ ${formatter.italic("Sesi permainan sedang berjalan!")}`);
 
         try {
-            const apiUrl = tools.api.createUrl("https://raw.githubusercontent.com", "/Itsukichann/database/refs/heads/main/susunkata.json");
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data);
+            const apiUrl = tools.api.createUrl("deline", "/game/susunkata");
+            const result = await axios.get(apiUrl).data.result;
 
             const game = {
                 coin: 5,
@@ -67,7 +67,7 @@ module.exports = {
                 } else if (participantAnswer === `hint_${ctx.used.command}`) {
                     const clue = game.answer.replace(/[aiueo]/g, "_");
                     await collCtx.reply(formatter.monospace(clue.toUpperCase()));
-                } else if (participantAnswer === "susunkata") {
+                } else if (participantAnswer === `surrender_${ctx.used.command}`) {
                     session.delete(ctx.id);
                     collector.stop();
                     await collCtx.reply({

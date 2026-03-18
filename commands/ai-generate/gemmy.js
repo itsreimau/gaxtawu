@@ -1,6 +1,5 @@
 module.exports = {
-    name: "text2image",
-    aliases: ["text2img", "texttoimage", "texttoimg"],
+    name: "gemmy",
     category: "ai-generate",
     permissions: {
         coin: 5
@@ -15,7 +14,7 @@ module.exports = {
             );
 
         try {
-            const result = tools.api.createUrl("faaa", "/faa/ai-text2img-pro", {
+            const result = tools.api.createUrl("neo", "/api/ai-image/gemmy", {
                 prompt: input
             });
 

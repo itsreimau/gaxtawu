@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "perplexity",
+    name: "gemini",
     category: "ai-chat",
     permissions: {
         coin: 5
@@ -16,10 +16,10 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("nexray", "/ai/perplexity", {
+            const apiUrl = tools.api.createUrl("neo", "/api/ai/gemini", {
                 text: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.data.answer;
 
             await ctx.reply(result);
         } catch (error) {

@@ -20,7 +20,23 @@ module.exports = {
             const waitMsg = await ctx.reply(`ⓘ ${formatter.italic(config.msg.wait)}`);
             const groupJids = Object.values(await ctx.core.groupFetchAllParticipating()).map(group => group.id);
             for (const groupJid of groupJids) {
-                await ctx.core.updateMemberLabel(groupJid, input);
+                await ctx.core.relayMessage(groupId, {
+                    protocolMessage: {
+                        type: 30,
+                        memberLabel: {
+                            label: input
+                        }
+                    }
+                }, {
+                    additionalNodes: [{
+                        tag: "meta",
+                        attrs: {
+                            tag_reason: "user_update",
+                            appdata: "member_tag"
+                        },
+                        content: undefined
+                    }]
+                });
             }
 
             await ctx.editMessage(waitMsg.key, `ⓘ ${formatter.italic(`Label bot berhasil diubah menjadi ${formatter.inlineCode(input)} di ${groupJids.length} grup!`)}`);

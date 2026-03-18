@@ -1,12 +1,21 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "hd",
-    category: "tool",
+    name: "editimage4",
+    aliases: ["editimg4"],
+    category: "ai-misc",
     permissions: {
         coin: 5
     },
     code: async (ctx) => {
+        const input = ctx.text;
+
+        if (!input)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                tools.msg.generateCmdExample(ctx.used, "make it evangelion art style")
+            );
+
         const [checkMedia, checkQuotedMedia] = [
             tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
             tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
@@ -16,11 +25,11 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("azbry", "/api/tools/hdimage", {
+            const apiUrl = tools.api.createUrl("snowping", "/api/imageai/nanobanana", {
                 url: uploadUrl,
-                scale: 8
+                prompt: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.image;
 
             await ctx.reply({
                 image: {

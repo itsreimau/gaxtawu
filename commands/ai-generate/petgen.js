@@ -1,6 +1,7 @@
+const axios = require("axios");
+
 module.exports = {
-    name: "text2image",
-    aliases: ["text2img", "texttoimage", "texttoimg"],
+    name: "petgen",
     category: "ai-generate",
     permissions: {
         coin: 5
@@ -15,9 +16,10 @@ module.exports = {
             );
 
         try {
-            const result = tools.api.createUrl("faaa", "/faa/ai-text2img-pro", {
+            const apiUrl = tools.api.createUrl("zflorynz", "/api/ai/petimg", {
                 prompt: input
             });
+            const result = (await axios.get(apiUrl)).data.url;
 
             await ctx.reply({
                 image: {

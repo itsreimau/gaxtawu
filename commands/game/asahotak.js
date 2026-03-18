@@ -9,8 +9,8 @@ module.exports = {
         if (session.has(ctx.id)) return await ctx.reply(`ⓘ ${formatter.italic("Sesi permainan sedang berjalan!")}`);
 
         try {
-            const apiUrl = tools.api.createUrl("https://raw.githubusercontent.com", "/Itsukichann/database/refs/heads/main/asahotak.json");
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data);
+            const apiUrl = tools.api.createUrl("deline", "/game/asahotak");
+            const result = await axios.get(apiUrl).data.data;
 
             const game = {
                 coin: 5,

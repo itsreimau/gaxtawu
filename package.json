@@ -1,6 +1,6 @@
 {
   "name": "gaxtawu",
-  "version": "1.5.34",
+  "version": "1.5.35",
   "description": "Useless WhatsApp Bot",
   "main": "index.js",
   "directories": {
@@ -11,8 +11,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "setup": "cp config.example.json config.json && npm install",
-    "start": "node .",
-    "start:pm2": "pm2 start ./index.js --name $(basename $(pwd)) --cron-restart=\"*/30 * * * *\""
+    "start": "node index.js",
+    "start:pm2": "pm2 start index.js --name $(basename $(pwd))"
   },
   "keywords": [
     "whatsapp-bot"
@@ -25,7 +25,7 @@
     "cfonts": "^3.3.1",
     "jimp": "^0.22.12",
     "link-preview-js": "^4.0.0",
-    "moment-timezone": "^0.6.0",
+    "moment-timezone": "^0.6.1",
     "wa-sticker-formatter": "^4.4.4"
   }
 }

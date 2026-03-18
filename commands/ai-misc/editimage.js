@@ -23,10 +23,10 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("sanka", "/ai/editimg", {
+            const result = tools.api.createUrl("faaa", "/faa/editfoto", {
                 url: uploadUrl,
                 prompt: input
-            }, "apikey");
+            });
 
             await ctx.reply({
                 image: {

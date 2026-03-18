@@ -22,15 +22,10 @@ module.exports = {
             }, "apikey");
             const result = (await axios.get(apiUrl)).data.result;
 
-            await ctx.reply({
-                video: {
-                    url: result.video
-                },
-                mimetype: tools.mime.lookup("mp4"),
-                caption: `➛ ${formatter.bold("Judul")}: ${result.title.english} (${result.title.romaji})\n` +
-                    `➛ ${formatter.bold("Genre")}: ${result.genres.join(", ")}\n` +
-                    `➛ ${formatter.bold("Referensi")}: ${result.siteUrl}`
-            });
+            await ctx.reply(
+                `➛ ${formatter.bold("Judul")}: ${result.title.english} (${result.title.romaji})\n` +
+                `➛ ${formatter.bold("Genre")}: ${result.genres.join(", ")}`
+            );
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

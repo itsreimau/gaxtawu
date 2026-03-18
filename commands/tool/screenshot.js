@@ -1,3 +1,5 @@
+const axios = require("axios");
+
 module.exports = {
     name: "screenshot",
     aliases: ["ss", "sshp", "sspc", "ssweb"],
@@ -18,10 +20,11 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const result = tools.api.createUrl("danzy", "/api/tools/ssweb", {
+            const apiUrl = tools.api.createUrl("azbry", "/api/tools/ssweb", {
                 url,
                 type: ctx.used.command == "sshp" ? "mobile" : "desktop"
             });
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 image: {

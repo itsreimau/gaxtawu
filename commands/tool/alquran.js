@@ -34,7 +34,7 @@ module.exports = {
                     if (!selectedVerses.length) return await ctx.reply(`ⓘ ${formatter.italic(`Ayat dalam rentang ${startAyat}-${endAyat} tidak ada!`)}`);
 
                     const versesText = selectedVerses.map(vers =>
-                        `${formatter.bold(`Ayat ${vers.number}:`)}\n` +
+                        `➛ ${formatter.bold("Ayat")}: ${vers.number}\n` +
                         `${vers.text}\n` +
                         formatter.italic(vers.translation_id)
                     ).join("\n");
@@ -56,12 +56,12 @@ module.exports = {
                         "\n" +
                         `➛ ${formatter.bold("Surat")}: ${result.name}\n` +
                         `➛ ${formatter.bold("Arti")}: ${result.name_translations.id}\n` +
-                        `➛ ${formatter.bold("Ayat")}: ${result.number}`
+                        `➛ ${formatter.bold("Ayat")}: ${singleAyat}`
                     );
                 }
             } else {
                 const versesText = verses.map(vers =>
-                    `${formatter.bold(`Ayat ${vers.number}:`)}\n` +
+                    `➛ ${formatter.bold("Ayat")}: ${vers.number}\n` +
                     `${vers.text}\n` +
                     formatter.italic(vers.translation_id)
                 ).join("\n");

@@ -4,7 +4,7 @@ const path = require("node:path");
 
 module.exports = {
     name: "menu",
-    aliases: ["allmenu", "help", "list", "listmenu"],
+    aliases: ["allmenu", "help"],
     category: "main",
     code: async (ctx) => {
         try {
@@ -17,7 +17,6 @@ module.exports = {
                 "ai-misc": "AI (Miscellaneous)",
                 converter: "Converter",
                 downloader: "Downloader",
-                entertainment: "Entertainment",
                 game: "Game",
                 group: "Group",
                 maker: "Maker",
@@ -54,7 +53,7 @@ module.exports = {
             };
 
             const input = ctx.args[0]?.toLowerCase();
-            if (input) {
+            if (input || ctx.used.command === "allmenu") {
                 const selectedCats = input === "all" || ctx.used.command === "allmenu" ? Object.keys(tag) : (tag[input] ? [input] : []);
                 const commandsData = getCommands(selectedCats);
 
