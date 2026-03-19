@@ -18,7 +18,7 @@ module.exports = {
 
         try {
             const waitMsg = await ctx.reply(`ⓘ ${formatter.italic(config.msg.wait)}`);
-            const groupJids = Object.values(await ctx.core.groupFetchAllParticipating()).map(group => group.id);
+            const groupJids = (Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id));
             for (const groupJid of groupJids) {
                 await ctx.core.relayMessage(groupId, {
                     protocolMessage: {
@@ -39,7 +39,7 @@ module.exports = {
                 });
             }
 
-            await ctx.editMessage(waitMsg.key, `ⓘ ${formatter.italic(`Label bot berhasil diubah menjadi ${formatter.inlineCode(input)} di ${groupJids.length} grup!`)}`);
+            await ctx.editMessage(ctx.id, waitMsg.key, `ⓘ ${formatter.italic(`Label bot berhasil diubah menjadi ${formatter.inlineCode(input)} di ${groupJids.length} grup!`)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error, false);
         }

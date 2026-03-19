@@ -39,7 +39,7 @@ const bot = new Client({
     database: {
         dir: diretory.database
     },
-    owner: [config.owner.id, ...config.owner.co.map(co => co.id)]
+    owner: [config.owner.id, ...config.owner.co.map(co => co.id)].filter(Boolean)
 });
 
 // Inisialisasi event dan middleware

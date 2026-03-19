@@ -34,7 +34,7 @@ module.exports = {
         }
 
         try {
-            const groupJids = (Object.values(await ctx.core.groupFetchAllParticipating()).map(group => group.id)).filter(groupJid => !blacklist.includes(groupJid));
+            const groupJids = (Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !blacklist.includes(group.id) && !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id));
             const waitMsg = await ctx.reply(`ⓘ ${formatter.italic(`Mengirim siaran ke ${groupJids.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(groupJids.length * 0.5 * 1000)}`)}`);
             for (const groupJid of groupJids) {
                 let mentions = [];
@@ -48,12 +48,25 @@ module.exports = {
                         url: config.bot.thumbnail
                     },
                     mimetype: tools.mime.lookup("png"),
-                    caption: input
+                    caption: input,
+                    mentions,
+                    footer: config.msg.footer,
+                    buttons: [{
+                        buttonId: `${ctx.used.prefix}owner`,
+                        buttonText: {
+                            displayText: "Hubungi Owner"
+                        }
+                    }, {
+                        buttonId: `${ctx.used.prefix}donate`,
+                        buttonText: {
+                            displayText: "Donasi"
+                        }
+                    }]
                 });
                 await tools.cmd.delay(500);
             }
 
-            await ctx.editMessage(waitMsg.key, `ⓘ ${formatter.italic(`Berhasil mengirim ke ${groupJids.length} grup.`)}`);
+            await ctx.editMessage(ctx.id, waitMsg.key, `ⓘ ${formatter.italic(`Berhasil mengirim ke ${groupJids.length} grup.`)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

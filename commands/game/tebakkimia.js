@@ -10,7 +10,7 @@ module.exports = {
 
         try {
             const apiUrl = tools.api.createUrl("deline", "/game/tebakkimia");
-            const result = await axios.get(apiUrl).data.data;
+            const result = (await axios.get(apiUrl)).data.data;
 
             const game = {
                 coin: 5,

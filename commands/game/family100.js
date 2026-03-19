@@ -13,7 +13,7 @@ module.exports = {
 
         try {
             const apiUrl = tools.api.createUrl("deline", "/game/family100");
-            const result = await axios.get(apiUrl).data.result;
+            const result = (await axios.get(apiUrl)).data.result;
 
             const game = {
                 coin: {

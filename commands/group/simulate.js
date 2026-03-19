@@ -37,6 +37,8 @@ module.exports = {
                 default:
                     await ctx.reply(`ⓘ ${formatter.italic(`Simulasi ${formatter.inlineCode(input)} tidak valid!`)}`);
             }
+
+            await ctx.reply(`ⓘ Simulasi berhasil!`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

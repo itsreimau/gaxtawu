@@ -1,6 +1,6 @@
 module.exports = {
-    name: "broadcasttagsw",
-    aliases: ["bctagsw"],
+    name: "broadcastgcsw",
+    aliases: ["bcgcsw"],
     category: "owner",
     permissions: {
         owner: true
@@ -41,7 +41,7 @@ module.exports = {
         }
 
         try {
-            const groupJids = (Object.values(await ctx.core.groupFetchAllParticipating()).map(group => group.id)).filter(groupJid => !blacklist.includes(groupJid));
+            const groupJids = (Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !blacklist.includes(group.id) && !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id));
             let content;
             if (["image", "video"].includes(type)) {
                 const buffer = await ctx.msg.download() || await ctx.quoted.download();
@@ -62,7 +62,7 @@ module.exports = {
                 await tools.cmd.delay(500);
             }
 
-            await ctx.editMessage(waitMsg.key, `ⓘ ${formatter.italic(`Berhasil mengirim ke ${groupJids.length} grup.`)}`);
+            await ctx.editMessage(ctx.id, waitMsg.key, `ⓘ ${formatter.italic(`Berhasil mengirim ke ${groupJids.length} grup.`)}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

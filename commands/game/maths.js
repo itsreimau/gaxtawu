@@ -25,7 +25,7 @@ module.exports = {
             const apiUrl = tools.api.createUrl("deline", "/game/maths", {
                 level: input
             });
-            const result = await axios.get(apiUrl).data.data;
+            const result = (await axios.get(apiUrl)).data.data;
 
             const game = {
                 coin: 5,
