@@ -166,7 +166,7 @@ module.exports = (bot) => {
             if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;
             if (groupDb?.mutebot === "owner" && !isOwner) return;
             const muteList = groupDb?.mute || [];
-            if (muteList.includes(senderLid)) await ctx.ctx.deleteMessage(ctx.id, msg.key);
+            if (muteList.includes(senderLid)) await ctx.deleteMessage(ctx.id, msg.key);
 
             // Pengecekan untuk tidak tersedia pada malam hari
             const now = moment().tz(config.system.timeZone);
@@ -182,7 +182,7 @@ module.exports = (bot) => {
                 maxCharacterFlood: 20000
             });
             if (config.system.antiBug && analyze.isMalicious && !senderDb?.banned && !isOwner) {
-                await ctx.ctx.deleteMessage(ctx.id, msg.key);
+                await ctx.deleteMessage(ctx.id, msg.key);
                 await ctx.block(senderJid);
                 senderDb.banned = true;
                 senderDb.save();
@@ -258,7 +258,7 @@ module.exports = (bot) => {
                             const checkMedia = tools.cmd.checkMedia(messageType, type);
                             if (!!checkMedia) {
                                 await ctx.reply(`ⓘ ${formatter.italic(`Jangan kirim ${type}!`)}`);
-                                await ctx.ctx.deleteMessage(ctx.id, msg.key);
+                                await ctx.deleteMessage(ctx.id, msg.key);
                                 if (groupAutokick) {
                                     await ctx.group().kick(senderJid);
                                 } else {
@@ -272,7 +272,7 @@ module.exports = (bot) => {
                     if (groupDb?.option?.antilink) {
                         if (msg.text && tools.cmd.isUrl(msg.text)) {
                             await ctx.reply(`ⓘ ${formatter.italic("Jangan kirim link!")}`);
-                            await ctx.ctx.deleteMessage(ctx.id, msg.key);
+                            await ctx.deleteMessage(ctx.id, msg.key);
                             if (groupAutokick) {
                                 await ctx.group().kick(senderJid);
                             } else {
@@ -301,7 +301,7 @@ module.exports = (bot) => {
 
                         if (newCount > 5) {
                             await ctx.reply(`ⓘ ${formatter.italic("Jangan spam, ngelag woy!")}`);
-                            await ctx.ctx.deleteMessage(ctx.id, msg.key);
+                            await ctx.deleteMessage(ctx.id, msg.key);
                             if (groupAutokick) {
                                 await ctx.group().kick(senderJid);
                             } else {
@@ -318,7 +318,7 @@ module.exports = (bot) => {
                         const checkMedia = msg.message?.protocolMessage?.type === 25;
                         if (!!checkMedia) {
                             await ctx.reply(`ⓘ ${formatter.italic("Jangan tag grup di SW, gak ada yg peduli!")}`);
-                            await ctx.ctx.deleteMessage(ctx.id, msg.key);
+                            await ctx.deleteMessage(ctx.id, msg.key);
                             if (groupAutokick) {
                                 await ctx.group().kick(senderJid);
                             } else {
@@ -332,7 +332,7 @@ module.exports = (bot) => {
                         const toxicRegex = /anj(k|g)|ajn?(g|k)|a?njin(g|k)|bajingan|b(a?n)?gsa?t|ko?nto?l|me?me?(k|q)|pe?pe?(k|q)|meki|titi(t|d)|pe?ler|tetek|toket|ngewe|go?blo?k|to?lo?l|idiot|(k|ng)e?nto?(t|d)|jembut|bego|dajj?al|janc(u|o)k|pantek|puki ?(mak)?|kimak|kampang|lonte|col(i|mek?)|pelacur|henceu?t|nigga|fuck|dick|bitch|tits|bastard|asshole|dontol|kontoi|ontol/i;
                         if (msg.text && toxicRegex.test(msg.text)) {
                             await ctx.reply(`ⓘ ${formatter.italic("Jangan toxic!")}`);
-                            await ctx.ctx.deleteMessage(ctx.id, msg.key);
+                            await ctx.deleteMessage(ctx.id, msg.key);
                             if (groupAutokick) {
                                 await ctx.group().kick(senderJid);
                             } else {
