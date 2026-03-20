@@ -1,5 +1,7 @@
 const util = require("node:util");
-const { exec } = require("node:child_process");
+const {
+    exec
+} = require("node:child_process");
 
 module.exports = {
     name: /^\$ /,

@@ -44,12 +44,9 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
         await bot.core.sendMessage(groupJid, {
             text: groupDb.text.intro,
             mentions: [participantJid],
-            interactiveButtons: [{
-                name: "cta_copy",
-                buttonParamsJson: JSON.stringify({
-                    display_text: "Salin Teks",
-                    copy_code: groupDb.text.intro
-                })
+            nativeFlow: [{
+                text: "Salin Teks",
+                copy: groupDb.text.intro
             }]
         });
 }
@@ -207,10 +204,8 @@ module.exports = (bot) => {
                 await ctx.reply({
                     text: `ⓘ ${formatter.italic(`Apakah maksudmu ${formatter.inlineCode(isCmd.prefix + isCmd.didyoumean)}?`)}`,
                     buttons: [{
-                        buttonId: `${isCmd.prefix + isCmd.didyoumean} ${isCmd.input}`,
-                        buttonText: {
-                            displayText: "Ya, benar!"
-                        }
+                        text: "Ya, benar!",
+                        id: `${isCmd.prefix + isCmd.didyoumean} ${isCmd.input}`
                     }]
                 });
 
@@ -372,7 +367,7 @@ module.exports = (bot) => {
 
         if (call?.isGroup || isOwner || fromDb?.banned) return;
 
-        consolefy.info(`Incoming call from: ${Baileys.isPnUser(fromJid) ? fromId : `${fromId} (LID)`}`); // Log panggilan masuk
+        consolefy.info(`Incoming call from: ${bot.getId(call.callerPn)}`); // Log panggilan masuk
 
         await bot.core.rejectCall(call.id, fromJid);
 
@@ -392,10 +387,8 @@ module.exports = (bot) => {
         await bot.core.sendMessage(fromJid, {
             text: `ⓘ ${formatter.italic("Anda telah dibanned secara otomatis karena melanggar aturan!")}`,
             buttons: [{
-                buttonId: "/owner",
-                buttonText: {
-                    displayText: "Hubungi Owner"
-                }
+                text: "Hubungi Owner",
+                id: "/owner"
             }]
         });
     });

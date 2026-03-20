@@ -29,10 +29,8 @@ module.exports = {
                 mimetype: tools.mime.lookup("png"),
                 caption: `➛ ${formatter.bold("Kueri")}: ${input}`,
                 buttons: [{
-                    buttonId: `${ctx.used.prefix + ctx.used.command} ${input}`,
-                    buttonText: {
-                        displayText: "Ambil Lagi"
-                    }
+                    text: "Ambil Lagi",
+                    id: `${ctx.used.prefix + ctx.used.command} ${input}`
                 }]
             });
         } catch (error) {

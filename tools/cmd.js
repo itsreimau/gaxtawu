@@ -56,11 +56,6 @@ function checkQuotedMedia(type, required) {
     return false;
 }
 
-function delay(ms) {
-    if (!ms) return null;
-    return new Promise(res => setTimeout(res, ms));
-}
-
 function generateUID(id, withBotName = true) {
     if (!id) return null;
 
@@ -115,7 +110,7 @@ async function handleError(ctx, error, useAxios = false, reportToOwner = true) {
                     }] : []
                 }
             });
-            await delay(500);
+            await Baileys.delay(500);
         }
     }
     if (useAxios && error.status !== 200) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.notFound)}`);
@@ -130,7 +125,7 @@ function isUrl(url) {
 module.exports = {
     checkMedia,
     checkQuotedMedia,
-    delay,
+    delay: Baileys.delay,
     didYouMean: Gktw.didYouMean,
     generateUID,
     getRandomElement,

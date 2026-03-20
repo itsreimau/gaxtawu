@@ -1,6 +1,6 @@
 module.exports = {
     name: "groupstatus",
-    aliases: ["swgc", "upswgc"],
+    aliases: ["gcsw", "swgc", "upgcsw", "upswgc"],
     category: "group",
     permissions: {
         admin: true,

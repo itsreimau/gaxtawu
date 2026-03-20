@@ -49,21 +49,17 @@ module.exports = {
                 const chunk = stickerChunks[packIndex];
 
                 const stickersPack = await Promise.all(chunk.map(async (sticker, i) => ({
-                    sticker: await createSticker(sticker.image_url, sticker.emoji, `${ctx.msg.key.id}_${packIndex}_${i}`),
+                    data: await createSticker(sticker.image_url, sticker.emoji, `${ctx.msg.key.id}_${packIndex}_${i}`),
                     emojis: [sticker.emoji],
-                    accessibilityLabel: `Sticker ${i + 1}`,
-                    isLottie: false,
-                    isAnimated: sticker.image_url.endsWith(".webm")
+                    accessibilityLabel: `Sticker ${i + 1}`
                 })));
 
                 await ctx.reply({
-                    stickerPack: {
-                        name: `${result.title}${stickerChunks.length > 1 ? ` (${packIndex + 1}/${stickerChunks.length})` : ""}`,
-                        publisher: `t.me/${result.name}`,
-                        description: `Sticker Pack by ${config.bot.name}`,
-                        cover: await createSticker(result.stickers[0].image_url, result.stickers[0].emoji, ctx.msg.key.id),
-                        stickers: stickersPack
-                    }
+                    cover: await createSticker(result.stickers[0].image_url, result.stickers[0].emoji, ctx.msg.key.id),
+                    stickers: stickersPack,
+                    name: `${result.title}${stickerChunks.length > 1 ? ` (${packIndex + 1}/${stickerChunks.length})` : ""}`,
+                    publisher: `t.me/${result.name}`,
+                    description: `Sticker Pack by ${config.bot.name}`
                 });
 
                 if (packIndex < stickerChunks.length - 1) await tools.cmd.delay(1000);

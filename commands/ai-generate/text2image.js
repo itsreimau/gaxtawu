@@ -26,10 +26,8 @@ module.exports = {
                 mimetype: tools.mime.lookup("png"),
                 caption: `➛ ${formatter.bold("Prompt")}: ${input}`,
                 buttons: [{
-                    buttonId: `${ctx.used.prefix + ctx.used.command} ${input}`,
-                    buttonText: {
-                        displayText: "Ambil Lagi"
-                    }
+                    text: "Ambil Lagi",
+                    id: `${ctx.used.prefix + ctx.used.command} ${input}`
                 }]
             });
         } catch (error) {

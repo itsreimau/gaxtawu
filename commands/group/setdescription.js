@@ -1,5 +1,6 @@
 module.exports = {
-    name: "setdesc",
+    name: "setdescription",
+    aliases: ["setdesc"],
     category: "group",
     permissions: {
         admin: true,

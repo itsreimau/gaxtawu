@@ -3,6 +3,7 @@ const { handleWelcome } = require("../../events/handler.js");
 
 module.exports = {
     name: "simulate",
+    aliases: ["sim"],
     category: "group",
     permissions: {
         botAdmin: true,
