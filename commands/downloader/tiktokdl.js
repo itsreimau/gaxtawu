@@ -30,7 +30,7 @@ module.exports = {
                     video: {
                         url: result.video_nowm
                     },
-                    mimetype: tools.mime.lookup("mp4")
+                    mimetype: tools.mime.lookup("mp4"),
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
