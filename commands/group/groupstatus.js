@@ -36,7 +36,7 @@ module.exports = {
                 };
             }
             await ctx.reply({
-                ...content
+                ...content,
                 groupStatus: true
             });
 
