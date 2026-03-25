@@ -57,7 +57,7 @@ module.exports = {
             const waitMsg = await ctx.reply(`ⓘ ${formatter.italic(`Mengirim siaran ke ${groupJids.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(groupJids.length * 0.5 * 1000)}`)}`);
             for (const groupJid of groupJids) {
                 await ctx.sendMessage(groupJid, {
-                    ...groupStatus,
+                    ...content,
                     groupStatus: true
                 });
                 await tools.cmd.delay(500);

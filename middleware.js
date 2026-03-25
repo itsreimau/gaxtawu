@@ -63,8 +63,10 @@ module.exports = (bot) => {
                     mimetype: tools.mime.lookup("png"),
                     caption: `ⓘ ${formatter.italic(`Selamat! Anda telah naik ke level ${newSenderLevel}.`)}`,
                     buttons: [{
-                        text: "Nonaktifkan Autolevelup",
-                        id: `${ctx.used.prefix}setprofile autolevelup`
+                        buttonId: `${ctx.used.prefix}setprofile autolevelup`,
+                        buttonText: {
+                            displayText: "Nonaktifkan Autolevelup"
+                        }
                     }]
                 });
             }
@@ -87,8 +89,10 @@ module.exports = (bot) => {
             condition: senderDb?.banned && ctx.used.command !== "owner",
             msg: config.msg.banned,
             buttons: [{
-                text: "Hubungi Owner",
-                id: `${ctx.used.prefix}owner`
+                buttonId: `${ctx.used.prefix}owner`,
+                buttonText: {
+                    displayText: "Hubungi Owner"
+                }
             }],
             reaction: "🚫"
         }, {
@@ -106,11 +110,15 @@ module.exports = (bot) => {
             condition: config.system.privatePremiumOnly && !isOwner && !senderDb?.premium && !["price", "owner"].includes(ctx.used.command),
             msg: config.msg.privatePremiumOnly,
             buttons: [{
-                text: "Harga Premium",
-                id: `${ctx.used.prefix}price`
+                buttonId: `${ctx.used.prefix}price`,
+                buttonText: {
+                    displayText: "Harga Premium"
+                }
             }, {
-                text: "Hubungi Owner",
-                id: `${ctx.used.prefix}owner`
+                buttonId: `${ctx.used.prefix}owner`,
+                buttonText: {
+                    displayText: "Hubungi Owner"
+                }
             }],
             reaction: "💎"
         }, {
@@ -130,8 +138,10 @@ module.exports = (bot) => {
             })(),
             msg: config.msg.botGroupMembership,
             buttons: [{
-                text: "Grup Bot",
-                id: `${ctx.used.prefix}botgroup`
+                buttonId: `${ctx.used.prefix}botgroup`,
+                buttonText: {
+                    displayText: "Grup Bot"
+                }
             }],
             reaction: "🚫"
         }, {
@@ -139,11 +149,15 @@ module.exports = (bot) => {
             condition: config.system.requireGroupSewa && isGroup && !isOwner && !["price", "owner"].includes(ctx.used.command) && groupDb?.sewa !== true,
             msg: config.msg.groupSewa,
             buttons: [{
-                text: "Harga Sewa",
-                id: `${ctx.used.prefix}price`
+                buttonId: `${ctx.used.prefix}price`,
+                buttonText: {
+                    displayText: "Harga Sewa"
+                }
             }, {
-                text: "Hubungi Owner",
-                id: `${ctx.used.prefix}owner`
+                buttonId: `${ctx.used.prefix}owner`,
+                buttonText: {
+                    displayText: "Hubungi Owner"
+                }
             }],
             reaction: "🔒"
         }, {
@@ -213,8 +227,10 @@ module.exports = (bot) => {
             })(),
             msg: config.msg.coin,
             buttons: [{
-                text: "Cek Koin",
-                id: `${ctx.used.prefix}coin`
+                buttonId: `${ctx.used.prefix}coin`,
+                buttonText: {
+                    displayText: "Cek Koin"
+                }
             }],
             reaction: "💰"
         }, {
@@ -232,11 +248,15 @@ module.exports = (bot) => {
             condition: !senderDb?.premium && !isOwner,
             msg: config.msg.premium,
             buttons: [{
-                text: "Harga Premium",
-                id: `${ctx.used.prefix}price`
+                buttonId: `${ctx.used.prefix}price`,
+                buttonText: {
+                    displayText: "Harga Premium"
+                }
             }, {
-                text: "Hubungi Owner",
-                id: `${ctx.used.prefix}owner`
+                buttonId: `${ctx.used.prefix}owner`,
+                buttonText: {
+                    displayText: "Hubungi Owner"
+                }
             }],
             reaction: "💎"
         }, {

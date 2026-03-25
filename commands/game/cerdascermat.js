@@ -1,5 +1,4 @@
 const axios = require("axios");
-
 const session = new Map();
 
 module.exports = {
@@ -22,25 +21,25 @@ module.exports = {
                 ipa: "Ilmu Pengetahuan Alam"
             };
             const input = ctx.args?.[0] && mapel[ctx.args[0]] ? ctx.args[0] : "tik";
-            const apiUrl = tools.api.createUrl("deline", "/game/cc-sd", {
+            const apiUrl = tools.api.createUrl("siputzx", "/api/games/cc-sd", {
                 matapelajaran: input
             });
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.soal);
+            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.data.soal);
 
             const game = {
                 coin: 10,
                 timeout: 60000,
-                answer: result.jawaban_benar.toLowerCase(),
-                answerText: result.semua_jawaban.find(sj => Object.keys(sj)[0] === result.jawaban_benar)[result.jawaban_benar]
+                answerKey: result.jawaban_benar,
+                answer: result.semua_jawaban.find(obj => Object.keys(obj)[0] === result.jawaban_benar)[result.jawaban_benar].toLowerCase()
             };
 
             session.set(ctx.id, true);
 
             await ctx.reply({
                 text: `— ${result.pertanyaan}\n` +
-                    `${result.semua_jawaban.map(sj => {
-                        const key = Object.keys(sj)[0];
-                        return `${key.toUpperCase()}. ${sj[key]}`;
+                    `${result.semua_jawaban.map(obj => {
+                        const key = Object.keys(obj)[0];
+                        return `${key.toUpperCase()}. ${obj[key]}`;
                     }).join("\n")}\n` +
                     "\n" +
                     `➛ ${formatter.bold("Mata Pelajaran")}: ${mapel[input]}\n` +
@@ -48,8 +47,10 @@ module.exports = {
                     `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}\n` +
                     `➛ ${formatter.bold("Cara menjawab")}: Ketik A, B, C, atau D`,
                 buttons: [{
-                    text: "Menyerah",
-                    id: `surrender_${ctx.used.command}`
+                    buttonId: `surrender_${ctx.used.command}`,
+                    buttonText: {
+                        displayText: "Menyerah"
+                    }
                 }]
             });
 
@@ -58,26 +59,32 @@ module.exports = {
             });
 
             const playAgain = [{
-                text: "Main Lagi",
-                id: `${ctx.used.prefix + ctx.used.command} ${input}`
+                name: "quick_reply",
+                buttonParamsJson: JSON.stringify({
+                    display_text: "Main Lagi",
+                    id: `${ctx.used.prefix + ctx.used.command} ${input}`
+                })
             }, {
-                text: "Daftar Mata Pelajaran",
-                sections: [{
-                    title: "Pilih Mata Pelajaran",
-                    highlight_label: "🌕",
-                    rows: Object.keys(mapel).map(key => ({
-                        title: key.toUpperCase(),
-                        description: `Klik untuk memainkan mata pelajaran ${mapel[key]}`,
-                        id: `${ctx.used.prefix + ctx.used.command} ${key}`
-                    }))
-                }]
+                name: "single_select",
+                buttonParamsJson: JSON.stringify({
+                    title: "Daftar Mata Pelajaran",
+                    sections: [{
+                        title: "Pilih Mata Pelajaran",
+                        highlight_label: "🌕",
+                        rows: Object.keys(mapel).map(key => ({
+                            title: key.toUpperCase(),
+                            description: `Klik untuk memainkan mata pelajaran ${mapel[key]}`,
+                            id: `${ctx.used.prefix + ctx.used.command} ${key}`
+                        }))
+                    }]
+                })
             }];
 
             collector.on("collect", async (collCtx) => {
-                const participantAnswer = collCtx.msg.text?.toLowerCase();
+                const participantAnswer = collCtx.msg.text?.toLowerCase().trim();
                 const participantDb = collCtx.db.user;
 
-                if (participantAnswer === game.answer) {
+                if (participantAnswer === game.answerKey) {
                     session.delete(ctx.id);
                     collector.stop();
                     participantDb.coin += game.coin;
@@ -91,9 +98,10 @@ module.exports = {
                     session.delete(ctx.id);
                     collector.stop();
                     await collCtx.reply({
-                        text: `ⓘ ${formatter.italic(`Anda menyerah! Jawabannya adalah ${game.answerText} (${game.answer.toUpperCase()}).`)}`,
+                        text: `ⓘ ${formatter.italic(`Anda menyerah! Jawabannya adalah ${game.answer} (${game.answerKey.toUpperCase()}).`)}`,
                         buttons: playAgain
                     });
+                    return;
                 }
             });
 
@@ -101,7 +109,7 @@ module.exports = {
                 if (session.has(ctx.id)) {
                     session.delete(ctx.id);
                     await ctx.reply({
-                        text: `ⓘ ${formatter.italic(`Waktu habis! Jawabannya adalah ${game.answerText} (${game.answer.toUpperCase()}).`)}`,
+                        text: `ⓘ ${formatter.italic(`Waktu habis! Jawabannya adalah ${game.answer} (${game.answerKey.toUpperCase()}).`)}`,
                         buttons: playAgain
                     });
                 }

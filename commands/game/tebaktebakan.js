@@ -3,13 +3,13 @@ const axios = require("axios");
 const session = new Map();
 
 module.exports = {
-    name: "tebakkata",
+    name: "tebaktebakan",
     category: "game",
     code: async (ctx) => {
         if (session.has(ctx.id)) return await ctx.reply(`ⓘ ${formatter.italic("Sesi permainan sedang berjalan!")}`);
 
         try {
-            const apiUrl = tools.api.createUrl("siputzx", "/api/games/tebakkata");
+            const apiUrl = tools.api.createUrl("siputzx", "/api/games/tebaktebakan");
             const result = (await axios.get(apiUrl)).data.data;
 
             const game = {

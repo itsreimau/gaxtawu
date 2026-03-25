@@ -29,8 +29,10 @@ module.exports = {
                 mimetype: tools.mime.lookup("mp4"),
                 caption: `➛ ${formatter.bold("Kueri")}: ${input}`,
                 buttons: [{
-                    text: "Ambil Lagi",
-                    id: `${ctx.used.prefix + ctx.used.command} ${input}`
+                    buttonId: `${ctx.used.prefix + ctx.used.command} ${input}`,
+                    buttonText: {
+                        displayText: "Ambil Lagi"
+                    }
                 }]
             });
         } catch (error) {

@@ -52,11 +52,15 @@ module.exports = {
                     mentions,
                     footer: config.msg.footer,
                     buttons: [{
-                        text: "Hubungi Owner",
-                        id: `${ctx.used.prefix}owner`
+                        buttonId: `${ctx.used.prefix}owner`,
+                        buttonText: {
+                            displayText: "Hubungi Owner"
+                        }
                     }, {
-                        text: "Donasi",
-                        id: `${ctx.used.prefix}donate`
+                        buttonId: `${ctx.used.prefix}donate`,
+                        buttonText: {
+                            displayText: "Donasi"
+                        }
                     }]
                 });
                 await tools.cmd.delay(500);

@@ -9,7 +9,7 @@ module.exports = {
         if (session.has(ctx.id)) return await ctx.reply(`ⓘ ${formatter.italic("Sesi permainan sedang berjalan!")}`);
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/game/caklontong");
+            const apiUrl = tools.api.createUrl("siputzx", "/api/games/caklontong");
             const result = (await axios.get(apiUrl)).data.data;
 
             const game = {
@@ -27,11 +27,15 @@ module.exports = {
                     `➛ ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +
                     `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
                 buttons: [{
-                    text: "Petunjuk",
-                    id: `hint_${ctx.used.command}`
+                    buttonId: `hint_${ctx.used.command}`,
+                    buttonText: {
+                        displayText: "Petunjuk"
+                    }
                 }, {
-                    text: "Menyerah",
-                    id: `surrender_${ctx.used.command}`
+                    buttonId: `surrender_${ctx.used.command}`,
+                    buttonText: {
+                        displayText: "Menyerah"
+                    }
                 }]
             });
 
@@ -40,8 +44,10 @@ module.exports = {
             });
 
             const playAgain = [{
-                text: "Main Lagi",
-                id: ctx.used.prefix + ctx.used.command
+                buttonId: ctx.used.prefix + ctx.used.command,
+                buttonText: {
+                    displayText: "Main Lagi"
+                }
             }];
 
             collector.on("collect", async (collCtx) => {

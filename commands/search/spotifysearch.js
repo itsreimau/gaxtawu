@@ -21,8 +21,10 @@ module.exports = {
             return await ctx.reply({
                 text: `ⓘ ${formatter.italic("Input berupa URL, gunakan tombol download di bawah:")}`,
                 buttons: [{
-                    text: "Download",
-                    id: `${ctx.used.prefix}spotifydl ${input}`
+                    buttonId: `${ctx.used.prefix}spotifydl ${input}`,
+                    buttonText: {
+                        displayText: "Unduh"
+                    }
                 }]
             });
 

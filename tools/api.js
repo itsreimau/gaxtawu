@@ -27,6 +27,9 @@ const APIs = {
     neo: {
         baseURL: "https://www.neoapis.my.id"
     },
+    nexray: {
+        baseURL: "https://api.nexray.web.id"
+    },
     sanka: {
         baseURL: "https://www.sankavolereii.my.id",
         APIKey: "planaai"
@@ -39,6 +42,9 @@ const APIs = {
     },
     zell: {
         baseURL: "https://zellapi.autos"
+    },
+    zenzxz: {
+        baseURL: "https://api.zenzxz.my.id"
     },
     zflorynz: {
         baseURL: "https://kazztzyy.my.id"

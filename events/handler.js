@@ -44,9 +44,12 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
         await bot.sendMessage(groupJid, {
             text: groupDb.text.intro,
             mentions: [participantJid],
-            nativeFlow: [{
-                text: "Salin Teks",
-                copy: groupDb.text.intro
+            interactiveButtons: [{
+                name: "cta_copy",
+                buttonParamsJson: JSON.stringify({
+                    display_text: "Salin Teks",
+                    copy_code: groupDb.text.intro
+                })
             }]
         });
 }
@@ -204,8 +207,10 @@ module.exports = (bot) => {
                 await ctx.reply({
                     text: `ⓘ ${formatter.italic(`Apakah maksudmu ${formatter.inlineCode(isCmd.prefix + isCmd.didyoumean)}?`)}`,
                     buttons: [{
-                        text: "Ya, benar!",
-                        id: `${isCmd.prefix + isCmd.didyoumean} ${isCmd.input}`
+                        buttonId: `${isCmd.prefix + isCmd.didyoumean} ${isCmd.input}`,
+                        buttonText: {
+                            displayText: "Ya, benar!"
+                        }
                     }]
                 });
 
@@ -387,8 +392,10 @@ module.exports = (bot) => {
         await bot.sendMessage(fromJid, {
             text: `ⓘ ${formatter.italic("Anda telah dibanned secara otomatis karena melanggar aturan!")}`,
             buttons: [{
-                text: "Hubungi Owner",
-                id: "/owner"
+                buttonId: "/owner",
+                buttonText: {
+                    displayText: "Hubungi Owner"
+                }
             }]
         });
     });

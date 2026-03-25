@@ -15,8 +15,10 @@ module.exports = {
             await ctx.reply({
                 text: result,
                 buttons: [{
-                    text: "Ambil Lagi",
-                    id: ctx.used.prefix + ctx.used.command
+                    buttonId: ctx.used.prefix + ctx.used.command,
+                    buttonText: {
+                        displayText: "Ambil Lagi"
+                    }
                 }]
             });
         } catch (error) {

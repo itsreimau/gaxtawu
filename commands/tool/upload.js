@@ -18,9 +18,12 @@ module.exports = {
 
             await ctx.reply({
                 text: `➛ ${formatter.bold("URL")}: ${result}`,
-                nativeFlow: [{
-                    text: "Salin URL",
-                    copy: result
+                interactiveButtons: [{
+                    name: "cta_copy",
+                    buttonParamsJson: JSON.stringify({
+                        display_text: "Salin URL",
+                        copy_code: result
+                    })
                 }]
             });
         } catch (error) {
