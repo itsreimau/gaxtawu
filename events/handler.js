@@ -31,7 +31,7 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
         background: "https://picsum.photos/1024/450"
     });
 
-    await bot.core.sendMessage(groupJid, {
+    await bot.sendMessage(groupJid, {
         image: {
             url: canvasUrl
         },
@@ -41,7 +41,7 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
     });
 
     if (isWelcome && groupDb?.text?.intro)
-        await bot.core.sendMessage(groupJid, {
+        await bot.sendMessage(groupJid, {
             text: groupDb.text.intro,
             mentions: [participantJid],
             nativeFlow: [{
@@ -101,7 +101,7 @@ module.exports = (bot) => {
         const botRestart = botDb?.restart || {};
         if (botRestart?.jid && botRestart?.timestamp) {
             const timeago = tools.msg.convertMsToDuration(Date.now() - botRestart.timestamp);
-            await b.sendMessage(botRestart.jid, {
+            await bot.sendMessage(botRestart.jid, {
                 text: `ⓘ ${formatter.italic(`Berhasil dimulai ulang! Membutuhkan waktu ${timeago}.`)}`,
                 edit: botRestart.key
             });
@@ -270,7 +270,7 @@ module.exports = (bot) => {
 
                     // Penanganan antilink
                     if (groupDb?.option?.antilink) {
-                        if (msg.text && tools.cmd.isUrl(msg.text)) {
+                        if (msg.body && tools.cmd.isUrl(msg.body)) {
                             await ctx.reply(`ⓘ ${formatter.italic("Jangan kirim link!")}`);
                             await ctx.deleteMessage(ctx.id, msg.key);
                             if (groupAutokick) {
@@ -330,7 +330,7 @@ module.exports = (bot) => {
                     // Penanganan antitoxic
                     if (groupDb?.option?.antitoxic) {
                         const toxicRegex = /anj(k|g)|ajn?(g|k)|a?njin(g|k)|bajingan|b(a?n)?gsa?t|ko?nto?l|me?me?(k|q)|pe?pe?(k|q)|meki|titi(t|d)|pe?ler|tetek|toket|ngewe|go?blo?k|to?lo?l|idiot|(k|ng)e?nto?(t|d)|jembut|bego|dajj?al|janc(u|o)k|pantek|puki ?(mak)?|kimak|kampang|lonte|col(i|mek?)|pelacur|henceu?t|nigga|fuck|dick|bitch|tits|bastard|asshole|dontol|kontoi|ontol/i;
-                        if (msg.text && toxicRegex.test(msg.text)) {
+                        if (msg.body && toxicRegex.test(msg.body)) {
                             await ctx.reply(`ⓘ ${formatter.italic("Jangan toxic!")}`);
                             await ctx.deleteMessage(ctx.id, msg.key);
                             if (groupAutokick) {
@@ -377,14 +377,14 @@ module.exports = (bot) => {
         const reportOwner = tools.cmd.getReportOwner();
         if (reportOwner && reportOwner.length > 0) {
             for (const ownerId of reportOwner) {
-                await bot.core.sendMessage(ownerId + Baileys.S_WHATSAPP_NET, {
+                await bot.sendMessage(ownerId + Baileys.S_WHATSAPP_NET, {
                     text: `ⓘ ${formatter.italic(`Akun @${fromId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`)}`,
                     mentions: [fromJid]
                 });
                 await tools.cmd.delay(500);
             }
         }
-        await bot.core.sendMessage(fromJid, {
+        await bot.sendMessage(fromJid, {
             text: `ⓘ ${formatter.italic("Anda telah dibanned secara otomatis karena melanggar aturan!")}`,
             buttons: [{
                 text: "Hubungi Owner",

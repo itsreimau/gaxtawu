@@ -36,7 +36,8 @@ module.exports = {
                 };
             }
             await ctx.reply({
-                groupStatus: content
+                ...content
+                groupStatus: true
             });
 
             await ctx.reply(`ⓘ Group status berhasil dikirim!`);
