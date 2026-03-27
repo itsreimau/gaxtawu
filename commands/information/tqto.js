@@ -10,6 +10,7 @@ module.exports = {
             "➛ Rippanteq7 (github.com/Rippanteq7)\n" +
             "➛ Kyluxx (github.com/Kyluxx)\n" +
             "➛ Fan (github.com/fandyahmd)\n" +
+            "➛ Luki Zainur (github.com/lzif)\n" +
             "➛ Arsani Ariadeni (Donatur)\n" +
             "➛ Mahesa (Donatur)\n" +
             "➛ Dan kepada semua pihak yang telah membantu dalam pengembangan bot ini. (Banyak kalo diketik satu-satu)"

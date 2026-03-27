@@ -2,7 +2,7 @@ const axios = require("axios");
 
 module.exports = {
     name: "screenshot",
-    aliases: ["ss", "sshp", "sspc", "ssweb"],
+    aliases: ["ss", "sshp", "sspc", "sstab", "ssweb"],
     category: "tool",
     permissions: {
         coin: 5
@@ -20,11 +20,12 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("azbry", "/api/tools/ssweb", {
+            const apiUrl = tools.api.createUrl("zenzxz", "/tools/ssweb", {
                 url,
-                type: ctx.used.command == "sshp" ? "mobile" : "desktop"
+                device: ctx.used.command == "sstab" ? "tablet" : (ctx.used.command === "sshp" ? "mobile" : "desktop"),
+                full_page: true
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.url;
 
             await ctx.reply({
                 image: {

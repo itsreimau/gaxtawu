@@ -13,30 +13,30 @@ module.exports = {
         if (!url)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "https://www.tiktok.com/@grazeuz/video/7486690677888158984")
+                tools.msg.generateCmdExample(ctx.used, "https://www.tiktok.com/@clero0_zi/video/7595185035498622216")
             );
 
         const isUrl = tools.cmd.isUrl(url);
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("bagus", "/api/download/tiktok", {
+            const apiUrl = tools.api.createUrl("nexray", "/downloader/tiktok", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.data;
 
-            if (result.slides.length === 0) {
+            if (!Array.isArray(result)) {
                 await ctx.reply({
                     video: {
-                        url: result.video_nowm
+                        url: result
                     },
                     mimetype: tools.mime.lookup("mp4"),
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
-                const album = result.slides.map(res => ({
+                const album = result.data.map(res => ({
                     image: {
-                        url: res.url
+                        url: res
                     },
                     mimetype: tools.mime.lookup("png")
                 }));

@@ -47,10 +47,10 @@ module.exports = {
                     `➛ ${formatter.bold("URL")}: ${searchResult.track_url}`
                 );
 
-                const downloadApiUrl = tools.api.createUrl("azbry", "/api/download/spotify", {
+                const downloadApiUrl = tools.api.createUrl("nexray", "/downloader/spotify", {
                     url: searchResult.url
                 });
-                const downloadResult = (await axios.get(downloadApiUrl)).data.downloadLink;
+                const downloadResult = (await axios.get(downloadApiUrl)).data.result.url;
 
                 await ctx.reply({
                     audio: {
@@ -70,10 +70,10 @@ module.exports = {
                     `➛ ${formatter.bold("URL")}: ${searchResult.link}`
                 );
 
-                const downloadApiUrl = tools.api.createUrl("faaa", "/faa/ytmp3", {
+                const downloadApiUrl = tools.api.createUrl("nexray", "/downloader/ytmp3", {
                     url: searchResult.link
                 });
-                const downloadResult = (await axios.get(downloadApiUrl)).data.result.mp3;
+                const downloadResult = (await axios.get(downloadApiUrl)).data.result.url;
 
                 await ctx.reply({
                     audio: {

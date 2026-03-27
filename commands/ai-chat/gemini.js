@@ -12,16 +12,37 @@ module.exports = {
         if (!input)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")
+                `${tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
+                tools.msg.generateNotes(["AI ini dapat melihat gambar."])
             );
 
-        try {
-            const apiUrl = tools.api.createUrl("neo", "/api/ai/gemini", {
-                text: input
-            });
-            const result = (await axios.get(apiUrl)).data.data.answer;
+        const [checkMedia, checkQuotedMedia] = [
+            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
+            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
+        ];
 
-            await ctx.reply(result);
+        try {
+            const model = "gemini-2.0-flash";
+
+            if (!!checkMedia || !!checkQuotedMedia) {
+                const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
+                const apiUrl = tools.api.createUrl("zenzxz", "/ai/gemini", {
+                    q: input,
+                    model,
+                    url: uploadUrl
+                });
+                const result = (await axios.get(apiUrl)).data.result;
+
+                await ctx.reply(result);
+            } else {
+                const apiUrl = tools.api.createUrl("zenzxz", "/ai/gemini", {
+                    q: input,
+                    model
+                });
+                const result = (await axios.get(apiUrl)).data.result;
+
+                await ctx.reply(result);
+            }
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

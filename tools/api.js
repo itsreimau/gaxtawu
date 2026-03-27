@@ -40,6 +40,9 @@ const APIs = {
     snowping: {
         baseURL: "https://api.snowping.my.id"
     },
+    yp: {
+        baseURL: "https://api.yupra.my.id"
+    },
     zell: {
         baseURL: "https://zellapi.autos"
     },

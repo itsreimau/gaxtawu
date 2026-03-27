@@ -30,7 +30,7 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("danzy", "/api/download/ytmp4", {
+            const apiUrl = tools.api.createUrl("nexray", "/downloader/v1/ytmp4", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;
@@ -39,7 +39,7 @@ module.exports = {
             if (document) {
                 await ctx.reply({
                     document: {
-                        url: result.downloads.video.url
+                        url: result.url
                     },
                     fileName: `${result.title}.mp4`,
                     mimetype: tools.mime.lookup("mp4"),
@@ -48,7 +48,7 @@ module.exports = {
             } else {
                 await ctx.reply({
                     video: {
-                        url: result.downloads.video.url
+                        url: result.url
                     },
                     mimetype: tools.mime.lookup("mp4"),
                     caption: `➛ ${formatter.bold("URL")}: ${url}`

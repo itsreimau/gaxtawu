@@ -19,7 +19,7 @@ module.exports = {
         if (input.length > 1000) return await ctx.reply(`ⓘ ${formatter.italic("Maksimal 1000 karakter!")}`);
 
         try {
-            const result = tools.api.createUrl("azbry", "/api/maker/bratvid", {
+            const result = tools.api.createUrl("yp", "/api/video/bratv", {
                 text: input
             });
             const sticker = await new Sticker(result)

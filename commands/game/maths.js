@@ -30,13 +30,13 @@ module.exports = {
             const game = {
                 coin: result.bonus,
                 timeout: result.time,
-                answer: result.jawaban.toLowerCase()
+                answer: result.result.toLowerCase()
             };
 
             session.set(ctx.id, true);
 
             await ctx.reply({
-                text: `— ${result.pertanyaan}\n` +
+                text: `— ${result.str}\n` +
                     "\n" +
                     `➛ ${formatter.bold("Level")}: ${levels[result.mode]}\n` +
                     `➛ ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +
