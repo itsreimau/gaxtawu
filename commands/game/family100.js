@@ -53,7 +53,7 @@ module.exports = {
             }];
 
             collector.on("collect", async (collCtx) => {
-                const participantAnswer = collCtx.msg.text?.toLowerCase();
+                const participantAnswer = collCtx.msg.body?.toLowerCase();
                 const participantDb = collCtx.db.user;
 
                 if (game.answers.has(participantAnswer)) {

@@ -13,33 +13,25 @@ module.exports = {
         if (!url)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "https://www.instagram.com/p/DLzgi9pORzS")
+                tools.msg.generateCmdExample(ctx.used, "https://www.instagram.com/p/DVKVfnVjyep")
             );
 
         const isUrl = tools.cmd.isUrl(url);
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/downloader/ig", {
+            const apiUrl = tools.api.createUrl("nexray", "/downloader/instagram", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result.media;
-            const album = [];
-            result.images.forEach(image => {
-                album.push({
-                    image: {
-                        url: image
+            const result = (await axios.get(apiUrl)).data.result;
+            const album = result.map(res => {
+                const isVideo = res.type === "video";
+                return {
+                    [isVideo ? "video" : "image"]: {
+                        url: res.url
                     },
-                    mimetype: tools.mime.lookup("png")
-                });
-            });
-            result.videos.forEach(video => {
-                album.push({
-                    video: {
-                        url: video
-                    },
-                    mimetype: tools.mime.lookup("mp4")
-                });
+                    mimetype: tools.mime.lookup(isVideo ? "mp4" : "png")
+                }
             });
 
             await ctx.reply({

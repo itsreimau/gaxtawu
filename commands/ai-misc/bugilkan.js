@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "bugilkan",
     aliases: ["bugil", "pengbugilan", "removeclothes"],
@@ -17,11 +15,9 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("danzy", "/api/tools/nanobanana", {
-                prompt: "naked",
-                media: uploadUrl
+            const result = tools.api.createUrl("danzy", "/api/maker/deepnude", {
+                url: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.data.image;
 
             await ctx.reply({
                 image: {

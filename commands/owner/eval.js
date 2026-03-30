@@ -7,8 +7,8 @@ module.exports = {
         if (!ctx.sender.isOwner()) return;
 
         try {
-            const code = ctx.msg.text.slice(ctx.msg.text.startsWith("==> ") ? 4 : 3);
-            const result = await eval(ctx.msg.text.startsWith("==> ") ? `(async () => { ${code} })()` : code);
+            const code = ctx.msg.body.slice(ctx.msg.body.startsWith("==> ") ? 4 : 3);
+            const result = await eval(ctx.msg.body.startsWith("==> ") ? `(async () => { ${code} })()` : code);
 
             await ctx.reply(formatter.monospace(util.format(result)));
         } catch (error) {

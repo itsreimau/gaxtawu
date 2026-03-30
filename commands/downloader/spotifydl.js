@@ -30,25 +30,25 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("nexray", "/downloader/spotify", {
+            const apiUrl = tools.api.createUrl("bagus", "/api/download/spotify", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data;
 
             const document = flag.document;
             if (document) {
                 await ctx.reply({
                     document: {
-                        url: result.url
+                        url: result.download
                     },
-                    fileName: `${result.title}.mp3`,
+                    fileName: `${result.metadata.title}.mp3`,
                     mimetype: tools.mime.lookup("mp3"),
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
                 await ctx.reply({
                     audio: {
-                        url: result.url
+                        url: result.download
                     },
                     mimetype: tools.mime.lookup("mp3")
                 });

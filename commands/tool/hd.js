@@ -16,11 +16,10 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("azbry", "/api/tools/hdimage", {
-                url: uploadUrl,
-                scale: 8
+            const apiUrl = tools.api.createUrl("bagus", "/api/edits/remini", {
+                image: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.url;
 
             await ctx.reply({
                 image: {

@@ -3,9 +3,6 @@ const util = require("node:util");
 
 // Daftar API gratis
 const APIs = {
-    azbry: {
-        baseURL: "https://api.azbry.xyz"
-    },
     bagus: {
         baseURL: "https://api.baguss.xyz"
     },

@@ -23,27 +23,13 @@ module.exports = {
         try {
             const response = await axios.get(url, {
                 responseType: "arraybuffer",
-                validateStatus: (() => true)
+                validateStatus: () => true
             });
-            const contentType = response?.headers?.["content-type"];
+            const contentType = response?.headers?.["content-type"] || "";
+            const data = response?.data;
 
-            if (/image/.test(contentType)) {
-                await ctx.reply({
-                    image: response?.data,
-                    mimetype: tools.mime.contentType(contentType)
-                });
-            } else if (/video/.test(contentType)) {
-                await ctx.reply({
-                    video: response?.data,
-                    mimetype: tools.mime.contentType(contentType)
-                });
-            } else if (/audio/.test(contentType)) {
-                await ctx.reply({
-                    audio: response?.data,
-                    mimetype: tools.mime.contentType(contentType)
-                });
-            } else if (/webp/.test(contentType)) {
-                const sticker = await new Sticker(response?.data)
+            if (/webp/.test(contentType)) {
+                const sticker = await new Sticker(data)
                     .setPack(config.sticker.packname)
                     .setAuthor(config.sticker.author)
                     .setType(StickerTypes.FULL)
@@ -55,17 +41,38 @@ module.exports = {
                 await ctx.reply({
                     sticker
                 });
-            } else if (!/utf-8|json|html|plain/.test(contentType)) {
-                const fileName = /filename/i.test(response?.headers?.["content-disposition"]) ? response?.headers?.["content-disposition"]?.match(/filename=(.*)/)?.[1]?.replace(/["";]/g, "") : "";
+            } else if (/image/.test(contentType)) {
+                await ctx.reply({
+                    image: data,
+                    mimetype: tools.mime.contentType(contentType)
+                });
+            } else if (/video/.test(contentType)) {
+                await ctx.reply({
+                    video: data,
+                    mimetype: tools.mime.contentType(contentType)
+                });
+            } else if (/audio/.test(contentType)) {
+                await ctx.reply({
+                    audio: data,
+                    mimetype: tools.mime.contentType(contentType)
+                });
+            } else if (!/text|json|html|plain|utf-8/i.test(contentType)) {
+                let fileName = "";
+                const contentDisposition = response?.headers?.["content-disposition"];
+                if (contentDisposition && /filename/i.test(contentDisposition)) {
+                    const match = contentDisposition.match(/filename[=*]?["']?(.*?)["']?[;]?$/i);
+                    fileName = match?.[1]?.replace(/["';]/g, "") || "";
+                }
 
                 await ctx.reply({
-                    document: response?.data,
+                    document: data,
                     fileName,
                     mimetype: tools.mime.contentType(contentType)
                 });
             } else {
-                const text = response?.data;
+                let text = data.toString();
                 let json = null;
+
                 try {
                     json = JSON.parse(text);
                 } catch {}

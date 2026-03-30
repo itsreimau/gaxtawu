@@ -1,6 +1,6 @@
 module.exports = {
     name: "carbonify",
-    aliases: ["carbon"],
+    aliases: ["carbon", "codesnap"],
     category: "maker",
     permissions: {
         coin: 5
@@ -15,7 +15,7 @@ module.exports = {
             );
 
         try {
-            const result = tools.api.createUrl("nekolabs", "/canvas/carbonify", {
+            const result = tools.api.createUrl("nexray", "/maker/codesnap", {
                 code: input
             });
 

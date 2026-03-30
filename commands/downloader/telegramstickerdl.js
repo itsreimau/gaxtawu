@@ -65,8 +65,6 @@ module.exports = {
                         stickers: stickersPack
                     }
                 });
-
-                if (packIndex < stickerChunks.length - 1) await tools.cmd.delay(1000);
             }
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

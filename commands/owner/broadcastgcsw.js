@@ -54,13 +54,13 @@ module.exports = {
                     text: input
                 };
             }
-            const waitMsg = await ctx.reply(`ⓘ ${formatter.italic(`Mengirim siaran ke ${groupJids.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(groupJids.length * 0.5 * 1000)}`)}`);
+            const waitMsg = await ctx.reply(`ⓘ ${formatter.italic(`Mengirim siaran ke ${groupJids.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(groupJids.length * 1.5 * 1000)}`)}`);
             for (const groupJid of groupJids) {
                 await ctx.sendMessage(groupJid, {
                     ...content,
                     groupStatus: true
                 });
-                await tools.cmd.delay(500);
+                await tools.cmd.delay(1000);
             }
 
             await ctx.editMessage(ctx.id, waitMsg.key, `ⓘ ${formatter.italic(`Berhasil mengirim ke ${groupJids.length} grup.`)}`);

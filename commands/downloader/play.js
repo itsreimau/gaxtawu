@@ -47,10 +47,10 @@ module.exports = {
                     `➛ ${formatter.bold("URL")}: ${searchResult.track_url}`
                 );
 
-                const downloadApiUrl = tools.api.createUrl("nexray", "/downloader/spotify", {
+                const downloadApiUrl = tools.api.createUrl("bagus", "/api/download/spotify", {
                     url: searchResult.url
                 });
-                const downloadResult = (await axios.get(downloadApiUrl)).data.result.url;
+                const downloadResult = (await axios.get(downloadApiUrl)).data.download;
 
                 await ctx.reply({
                     audio: {

@@ -1,32 +1,32 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "seedream",
-    category: "ai-generate",
+    name: "bingimage",
+    category: "tool",
     permissions: {
-        premium: true
+        coin: 5
     },
     code: async (ctx) => {
-        const input = ctx.text || ctx.quoted?.text;
+        const input = ctx.text;
 
         if (!input)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "anime girl with short blue hair")
+                tools.msg.generateCmdExample(ctx.used, "rei ayanami")
             );
 
         try {
-            const apiUrl = tools.api.createUrl("danzy", "/api/ai/dream", {
-                prompt: input
+            const apiUrl = tools.api.createUrl("bagus", "/api/search/bingimg", {
+                q: input
             });
-            const result = (await axios.get(apiUrl)).data.result[0];
+            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.results).image_url;
 
             await ctx.reply({
                 image: {
                     url: result
                 },
                 mimetype: tools.mime.lookup("png"),
-                caption: `➛ ${formatter.bold("Prompt")}: ${input}`,
+                caption: `➛ ${formatter.bold("Kueri")}: ${input}`,
                 buttons: [{
                     buttonId: `${ctx.used.prefix + ctx.used.command} ${input}`,
                     buttonText: {

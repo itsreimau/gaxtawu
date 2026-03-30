@@ -35,7 +35,7 @@ module.exports = {
 
         try {
             const groupJids = (Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !blacklist.includes(group.id) && !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id));
-            const waitMsg = await ctx.reply(`ⓘ ${formatter.italic(`Mengirim siaran ke ${groupJids.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(groupJids.length * 0.5 * 1000)}`)}`);
+            const waitMsg = await ctx.reply(`ⓘ ${formatter.italic(`Mengirim siaran ke ${groupJids.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(groupJids.length * 1.5 * 1000)}`)}`);
             for (const groupJid of groupJids) {
                 let mentions = [];
                 if (ctx.used.command === "bcht") {
@@ -63,7 +63,7 @@ module.exports = {
                         }
                     }]
                 });
-                await tools.cmd.delay(500);
+                await tools.cmd.delay(1000);
             }
 
             await ctx.editMessage(ctx.id, waitMsg.key, `ⓘ ${formatter.italic(`Berhasil mengirim ke ${groupJids.length} grup.`)}`);
