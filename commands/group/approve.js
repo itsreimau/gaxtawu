@@ -31,7 +31,7 @@ module.exports = {
             );
 
         const pendings = await ctx.group().pendingMembers();
-        const isPending = pendings.some(pending => pending.jid === target);
+        const isPending = pendings.some(pending => tools.cmd.areJidsSameUser(pending.jid, target));
         if (!isPending) return await ctx.reply(`ⓘ ${formatter.italic("Akun tidak ditemukan di daftar anggota yang menunggu persetujuan.")}`);
 
         try {

@@ -82,38 +82,40 @@ function getReportOwner() {
     if (config.owner.report) owners.push(config.owner.id);
     if (config.owner.co && Array.isArray(config.owner.co))
         config.owner.co.forEach(co => {
-            if (co.report === true) owners.push(co.id);
+            if (co.report) owners.push(co.id);
         });
     return owners.length > 0 ? owners : false;
 }
 
-async function handleError(ctx, error, useAxios = false, reportToOwner = true) {
-    const isGroup = ctx.isGroup();
-    const senderJid = ctx.sender.jid;
-    const senderId = ctx.getId(senderJid);
-    const groupJid = isGroup ? ctx.id : null;
-    const groupSubject = isGroup ? await ctx.group(groupJid).name() : null;
-    const errorText = util.format(error);
-    const reportOwner = getReportOwner();
+async function handleError(ctx, error, useAxios = false, silent = false) {
+    if (!silent) {
+        const isGroup = ctx.isGroup();
+        const senderJid = ctx.sender.jid;
+        const senderId = ctx.getId(senderJid);
+        const groupJid = isGroup ? ctx.id : null;
+        const groupSubject = isGroup ? await ctx.group(groupJid).name() : null;
+        const errorText = util.format(error);
+        const reportOwner = getReportOwner();
 
-    if (!reportToOwner) consolefy.error(`Error: ${errorText}`);
-    if (reportToOwner && reportOwner && reportOwner.length > 0) {
-        for (const ownerId of reportOwner) {
-            await ctx.replyWithJid(ownerId + Baileys.S_WHATSAPP_NET, {
-                text: `ⓘ ${formatter.italic(isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${senderId}` : `Terjadi kesalahan dari: @${senderId}`)}\n` +
-                    formatter.monospace(errorText),
-                contextInfo: {
-                    mentionedJid: [senderJid],
-                    groupMentions: isGroup ? [{
-                        groupJid,
-                        groupSubject
-                    }] : []
-                }
-            });
-            await Baileys.delay(500);
+        consolefy.error(`Error: ${errorText}`);
+        if (reportOwner && reportOwner.length > 0) {
+            for (const ownerId of reportOwner) {
+                await ctx.replyWithJid(ownerId + Baileys.S_WHATSAPP_NET, {
+                    text: `ⓘ ${formatter.italic(isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${senderId}` : `Terjadi kesalahan dari: @${senderId}`)}\n` +
+                        formatter.monospace(errorText),
+                    contextInfo: {
+                        mentionedJid: [senderJid],
+                        groupMentions: isGroup ? [{
+                            groupJid,
+                            groupSubject
+                        }] : []
+                    }
+                });
+                await Baileys.delay(500);
+            }
         }
+        if (useAxios && error.status !== 200) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.notFound)}`);
     }
-    if (useAxios && error.status !== 200) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.notFound)}`);
     await ctx.reply(`ⓘ ${formatter.italic(`Terjadi kesalahan: ${error.message}`)}`);
 }
 
@@ -123,6 +125,7 @@ function isUrl(url) {
 }
 
 module.exports = {
+    areJidsSameUser: Baileys.areJidsSameUser,
     checkMedia,
     checkQuotedMedia,
     delay: Baileys.delay,

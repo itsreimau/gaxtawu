@@ -7,7 +7,7 @@ module.exports = {
     },
     code: async (ctx) => {
         try {
-            const users = ctx.db.users.getMany(user => user.banned === true);
+            const users = ctx.db.users.getMany(user => user.banned);
             const bannedUsers = [];
 
             for (const user of users) bannedUsers.push(user.jid);

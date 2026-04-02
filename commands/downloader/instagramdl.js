@@ -24,15 +24,12 @@ module.exports = {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;
-            const album = result.map(res => {
-                const isVideo = res.type === "video";
-                return {
-                    [isVideo ? "video" : "image"]: {
-                        url: res.url
-                    },
-                    mimetype: tools.mime.lookup(isVideo ? "mp4" : "png")
-                }
-            });
+            const album = result.map(res => ({
+                [res.type]: {
+                    url: res.url
+                },
+                mimetype: tools.mime.lookup(res.type === "video" ? "mp4" : "png")
+            }));
 
             await ctx.reply({
                 album,

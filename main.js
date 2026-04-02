@@ -18,6 +18,21 @@ const diretory = {
 
 consolefy.log("Connecting..."); // Logging proses koneksi
 
+// Fungsi untuk mengurai prefix
+const parsePrefix = function(prefix) {
+    if (typeof prefix !== "string") return prefix;
+    var match = prefix.match(/(\/?)(.+)\1([a-z]*)/i);
+    if (!match) return prefix;
+    var validFlags = Array.from(new Set(match[3])).filter(function(flag) {
+        return "gimsuy".includes(flag);
+    }).join("");
+    try {
+        return new RegExp(match[2], validFlags);
+    } catch (error) {
+        return prefix;
+    }
+};
+
 // Buat instance bot
 const bot = new Client({
     auth: {
@@ -34,7 +49,7 @@ const bot = new Client({
     },
     messaging: {
         autoRead: system.autoRead,
-        prefix: botConfig?.prefix
+        prefix: parsePrefix(botConfig?.prefix)
     },
     database: {
         dir: diretory.database

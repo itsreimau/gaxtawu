@@ -59,7 +59,7 @@ async function handleWarning(ctx, senderJid, senderId, senderLid, groupJid, grou
     const maxWarnings = groupDb?.maxwarnings || 3;
     const warnings = groupDb?.warnings || [];
 
-    const senderWarning = warnings.find(warning => warning.jid === senderLid);
+    const senderWarning = warnings.find(warning => tools.cmd.areJidsSameUser(warning.jid, senderLid));
     let currentWarnings = senderWarning ? senderWarning.count : 0;
     currentWarnings += 1;
     if (senderWarning) {
@@ -166,8 +166,8 @@ module.exports = (bot) => {
             if (botDb?.mode === "self" && !isOwner) return;
 
             // Pengecekan mute pada grup
-            if (groupDb?.mutebot === true && !isOwner && !isAdmin) return;
             if (groupDb?.mutebot === "owner" && !isOwner) return;
+            if (groupDb?.mutebot && !isOwner && !isAdmin) return;
             const muteList = groupDb?.mute || [];
             if (muteList.includes(senderLid)) await ctx.deleteMessage(ctx.id, msg.key);
 
@@ -186,7 +186,7 @@ module.exports = (bot) => {
             });
             if (config.system.antiBug && analyze.isMalicious && !senderDb?.banned && !isOwner) {
                 await ctx.deleteMessage(ctx.id, msg.key);
-                await ctx.block(senderJid);
+                await ctx.block(senderLid);
                 senderDb.banned = true;
                 senderDb.save();
 
@@ -290,7 +290,7 @@ module.exports = (bot) => {
                     if (groupDb?.option?.antispam) {
                         const now = Date.now();
                         const spamData = groupDb?.spam || [];
-                        const senderSpam = spamData.find(spam => spam.jid === senderLid) || {
+                        const senderSpam = spamData.find(spam => tools.cmd.areJidsSameUser(spam.jid, senderLid)) || {
                             jid: senderLid,
                             count: 0,
                             lastMessageTime: 0
@@ -301,7 +301,7 @@ module.exports = (bot) => {
 
                         senderSpam.count = newCount;
                         senderSpam.lastMessageTime = now;
-                        if (!spamData.some(spam => spam.jid === senderLid)) spamData.push(senderSpam);
+                        if (!spamData.some(spam => tools.cmd.areJidsSameUser(spam.jid, senderLid))) spamData.push(senderSpam);
                         groupDb.spam = spamData;
 
                         if (newCount > 5) {

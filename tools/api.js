@@ -22,7 +22,7 @@ const APIs = {
         baseURL: "https://rynekoo-api.hf.space"
     },
     neo: {
-        baseURL: "https://www.neoapis.my.id"
+        baseURL: "https://www.neoapis.xyz"
     },
     nexray: {
         baseURL: "https://api.nexray.web.id"

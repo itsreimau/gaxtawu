@@ -24,7 +24,7 @@ module.exports = {
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (target === ctx.me.lid) return await ctx.reply(`ⓘ ${formatter.italic(`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-unmute bot.`)}`);
+        if (tools.cmd.areJidsSameUser(target, ctx.me.lid)) return await ctx.reply(`ⓘ ${formatter.italic(`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-unmute bot.`)}`);
         if (await ctx.group().isOwner(target)) return await ctx.reply(`ⓘ ${formatter.italic("Dia adalah owner grup!")}`);
 
         try {

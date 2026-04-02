@@ -12,7 +12,7 @@ module.exports = {
 
             await ctx.reply(formatter.monospace(util.format(result)));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, false, false);
+            await tools.cmd.handleError(ctx, error, false, true);
         }
     }
 };

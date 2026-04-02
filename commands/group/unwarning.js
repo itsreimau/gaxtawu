@@ -19,7 +19,7 @@ module.exports = {
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (target === ctx.me.lid) return await ctx.reply(`ⓘ ${formatter.italic(`Tidak bisa mengubah warning bot!`)}`);
+        if (tools.cmd.areJidsSameUser(target, ctx.me.lid)) return await ctx.reply(`ⓘ ${formatter.italic(`Tidak bisa mengubah warning bot!`)}`);
         if (await ctx.group().isOwner(target)) return await ctx.reply(`ⓘ ${formatter.italic("Tidak bisa memberikan warning ke owner grup!")}`);
 
         try {
@@ -27,7 +27,7 @@ module.exports = {
             const warnings = groupDb?.warnings || [];
             const maxWarnings = groupDb?.maxwarnings || 3;
 
-            const targetIndex = warnings.findIndex(warning => warning.jid === target);
+            const targetIndex = warnings.findIndex(warning => tools.cmd.areJidsSameUser(warning.jid, target));
 
             if (targetIndex === -1) return await ctx.reply(`ⓘ ${formatter.italic("Pengguna tidak memiliki warning.")}`);
 
