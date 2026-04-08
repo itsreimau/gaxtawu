@@ -1,41 +1,49 @@
 module.exports = {
-    name: "texttospeech",
-    aliases: ["tts"],
-    category: "tool",
-    permissions: {
-        coin: 5
-    },
-    code: async (ctx) => {
-        const langCode = ctx.args[0]?.length === 2 ? ctx.args[0] : "id";
-        const input = ctx.text?.startsWith(`${langCode} `) ? ctx.text.slice(langCode.length + 1) : ctx.quoted?.text;
+	name: "texttospeech",
+	aliases: ["tts"],
+	category: "tool",
+	permissions: {
+		coin: 5,
+	},
+	code: async (ctx) => {
+		const langCode = ctx.args[0]?.length === 2 ? ctx.args[0] : "id";
+		const input = ctx.text?.startsWith(`${langCode} `)
+			? ctx.text.slice(langCode.length + 1)
+			: ctx.quoted?.text;
 
-        if (!input)
-            return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "id halo, dunia!")}\n` +
-                tools.msg.generateNotes([`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`])
-            );
+		if (!input)
+			return await ctx.reply(
+				`${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+					`${tools.msg.generateCmdExample(ctx.used, "id halo, dunia!")}\n` +
+					tools.msg.generateNotes([
+						`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`,
+					])
+			);
 
-        if (input.toLowerCase() === "list") {
-            const listText = await tools.list.get("translate");
-            return await ctx.reply(listText);
-        }
+		if (input.toLowerCase() === "list") {
+			const listText = await tools.list.get("translate");
+			return await ctx.reply(listText);
+		}
 
-        try {
-            const result = tools.api.createUrl("https://tts-api.netlify.app", "/", {
-                text: input,
-                lang: langCode
-            });
+		try {
+			const result = tools.api.createUrl(
+				"https://tts-api.netlify.app",
+				"/",
+				{
+					text: input,
+					lang: langCode,
+				}
+			);
 
-            await ctx.reply({
-                audio: {
-                    url: result
-                },
-                mimetype: tools.mime.lookup("mp3"),
-                ptt: true
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
+			await ctx.reply({
+				audio: {
+					url: result,
+				},
+				mimetype: tools.mime.lookup("mp3"),
+				ptt: true,
+			});
+		} catch (error) {
+			await tools.cmd.handleError(ctx, error, true);
+		}
+	},
 };

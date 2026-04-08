@@ -3,109 +3,138 @@ const axios = require("axios");
 const session = new Map();
 
 module.exports = {
-    name: "family100",
-    category: "game",
-    permissions: {
-        group: true
-    },
-    code: async (ctx) => {
-        if (session.has(ctx.id)) return await ctx.reply(`ⓘ ${formatter.italic("Sesi permainan sedang berjalan!")}`);
+	name: "family100",
+	category: "game",
+	permissions: {
+		group: true,
+	},
+	code: async (ctx) => {
+		if (session.has(ctx.id))
+			return await ctx.reply(
+				`ⓘ ${formatter.italic("Sesi permainan sedang berjalan!")}`
+			);
 
-        try {
-            const apiUrl = tools.api.createUrl("siputzx", "/api/games/family100");
-            const result = (await axios.get(apiUrl)).data.data;
+		try {
+			const apiUrl = tools.api.createUrl(
+				"siputzx",
+				"/api/games/family100"
+			);
+			const result = (await axios.get(apiUrl)).data.data;
 
-            const game = {
-                coin: {
-                    answered: 10,
-                    allAnswered: 100
-                },
-                timeout: 90000,
-                answers: new Set(result.jawaban.map(ans => ans.toLowerCase())),
-                participants: new Set()
-            };
+			const game = {
+				coin: {
+					answered: 10,
+					allAnswered: 100,
+				},
+				timeout: 90000,
+				answers: new Set(
+					result.jawaban.map((ans) => ans.toLowerCase())
+				),
+				participants: new Set(),
+			};
 
-            session.set(ctx.id, true);
+			session.set(ctx.id, true);
 
-            await ctx.reply({
-                text: `— ${result.soal}\n` +
-                    "\n" +
-                    `➛ ${formatter.bold("Bonus")}: ${game.coin.answered} Koin untuk 1 jawaban benar, ${game.coin.allAnswered} Koin untuk semua jawaban benar\n` +
-                    `➛ ${formatter.bold("Jumlah jawaban")}: ${game.answers.size}\n` +
-                    `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
-                buttons: [{
-                    buttonId: `surrender_${ctx.used.command}`,
-                    buttonText: {
-                        displayText: "Menyerah"
-                    }
-                }]
-            });
+			await ctx.reply({
+				text:
+					`— ${result.soal}\n` +
+					"\n" +
+					`➛ ${formatter.bold("Bonus")}: ${game.coin.answered} Koin untuk 1 jawaban benar, ${game.coin.allAnswered} Koin untuk semua jawaban benar\n` +
+					`➛ ${formatter.bold("Jumlah jawaban")}: ${game.answers.size}\n` +
+					`➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
+				buttons: [
+					{
+						buttonId: `surrender_${ctx.used.command}`,
+						buttonText: {
+							displayText: "Menyerah",
+						},
+					},
+				],
+			});
 
-            const collector = ctx.MessageCollector({
-                time: game.timeout
-            });
+			const collector = ctx.MessageCollector({
+				time: game.timeout,
+			});
 
-            const playAgain = [{
-                buttonId: ctx.used.prefix + ctx.used.command,
-                buttonText: {
-                    displayText: "Main Lagi"
-                }
-            }];
+			const playAgain = [
+				{
+					buttonId: ctx.used.prefix + ctx.used.command,
+					buttonText: {
+						displayText: "Main Lagi",
+					},
+				},
+			];
 
-            collector.on("collect", async (collCtx) => {
-                const participantAnswer = collCtx.msg.body?.toLowerCase();
-                const participantDb = collCtx.db.user;
+			collector.on("collect", async (collCtx) => {
+				const participantAnswer = collCtx.msg.body?.toLowerCase();
+				const participantDb = collCtx.db.user;
 
-                if (game.answers.has(participantAnswer)) {
-                    game.answers.delete(participantAnswer);
-                    game.participants.add(collCtx.sender.lid);
+				if (game.answers.has(participantAnswer)) {
+					game.answers.delete(participantAnswer);
+					game.participants.add(collCtx.sender.lid);
 
-                    participantDb.coin += game.coin.answered;
-                    participantDb.save();
-                    await collCtx.reply({
-                        text: `ⓘ ${formatter.italic(`${tools.msg.ucwords(participantAnswer)} benar! Jawaban tersisa: ${game.answers.size}`)}`
-                    });
+					participantDb.coin += game.coin.answered;
+					participantDb.save();
+					await collCtx.reply({
+						text: `ⓘ ${formatter.italic(`${tools.msg.ucwords(participantAnswer)} benar! Jawaban tersisa: ${game.answers.size}`)}`,
+					});
 
-                    if (game.answers.size === 0) {
-                        session.delete(ctx.id);
-                        collector.stop();
-                        for (const participant of game.participants) {
-                            const allParticipantDb = ctx.getDb("users", participant);
-                            allParticipantDb.coin += game.coin.allAnswered;
-                            allParticipantDb.winGame += 1;
-                            allParticipantDb.save();
-                        }
-                        await collCtx.reply({
-                            text: `ⓘ ${formatter.italic(`Selamat! Semua jawaban telah terjawab! Setiap anggota yang menjawab mendapat ${game.coin.allAnswered} koin.`)}`,
-                            buttons: playAgain
-                        });
-                    }
-                } else if (participantAnswer === `surrender_${ctx.used.command}`) {
-                    const remaining = [...game.answers].map(tools.msg.ucwords).join(", ").replace(/, ([^,]*)$/, ", dan $1");
-                    session.delete(ctx.id);
-                    collector.stop();
-                    await collCtx.reply({
-                        text: `ⓘ ${formatter.italic(`Anda menyerah! Jawaban yang belum terjawab adalah ${remaining}.`)}`,
-                        buttons: playAgain
-                    });
-                } else if (tools.cmd.didYouMean(participantAnswer, [game.answer]) === game.answer) {
-                    await collCtx.reply(`ⓘ ${formatter.italic("Sedikit lagi!")}`);
-                }
-            });
+					if (game.answers.size === 0) {
+						session.delete(ctx.id);
+						collector.stop();
+						for (const participant of game.participants) {
+							const allParticipantDb = ctx.getDb(
+								"users",
+								participant
+							);
+							allParticipantDb.coin += game.coin.allAnswered;
+							allParticipantDb.winGame += 1;
+							allParticipantDb.save();
+						}
+						await collCtx.reply({
+							text: `ⓘ ${formatter.italic(`Selamat! Semua jawaban telah terjawab! Setiap anggota yang menjawab mendapat ${game.coin.allAnswered} koin.`)}`,
+							buttons: playAgain,
+						});
+					}
+				} else if (
+					participantAnswer === `surrender_${ctx.used.command}`
+				) {
+					const remaining = [...game.answers]
+						.map(tools.msg.ucwords)
+						.join(", ")
+						.replace(/, ([^,]*)$/, ", dan $1");
+					session.delete(ctx.id);
+					collector.stop();
+					await collCtx.reply({
+						text: `ⓘ ${formatter.italic(`Anda menyerah! Jawaban yang belum terjawab adalah ${remaining}.`)}`,
+						buttons: playAgain,
+					});
+				} else if (
+					tools.cmd.didYouMean(participantAnswer, [game.answer]) ===
+					game.answer
+				) {
+					await collCtx.reply(
+						`ⓘ ${formatter.italic("Sedikit lagi!")}`
+					);
+				}
+			});
 
-            collector.on("end", async () => {
-                const remaining = [...game.answers].map(tools.msg.ucwords).join(", ").replace(/, ([^,]*)$/, ", dan $1");
+			collector.on("end", async () => {
+				const remaining = [...game.answers]
+					.map(tools.msg.ucwords)
+					.join(", ")
+					.replace(/, ([^,]*)$/, ", dan $1");
 
-                if (session.has(ctx.id)) {
-                    session.delete(ctx.id);
-                    await ctx.reply({
-                        text: `ⓘ ${formatter.italic(`Waktu habis! Jawaban yang belum terjawab adalah ${remaining}.`)}`,
-                        buttons: playAgain
-                    });
-                }
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
+				if (session.has(ctx.id)) {
+					session.delete(ctx.id);
+					await ctx.reply({
+						text: `ⓘ ${formatter.italic(`Waktu habis! Jawaban yang belum terjawab adalah ${remaining}.`)}`,
+						buttons: playAgain,
+					});
+				}
+			});
+		} catch (error) {
+			await tools.cmd.handleError(ctx, error, true);
+		}
+	},
 };

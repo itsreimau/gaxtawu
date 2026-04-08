@@ -1,29 +1,32 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "qwen",
-    category: "ai-chat",
-    permissions: {
-        coin: 5
-    },
-    code: async (ctx) => {
-        const input = ctx.text || ctx.quoted?.text;
+	name: "qwen",
+	category: "ai-chat",
+	permissions: {
+		coin: 5,
+	},
+	code: async (ctx) => {
+		const input = ctx.text || ctx.quoted?.text;
 
-        if (!input)
-            return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")
-            );
+		if (!input)
+			return await ctx.reply(
+				`${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+					tools.msg.generateCmdExample(
+						ctx.used,
+						"apa itu evangelion?"
+					)
+			);
 
-        try {
-            const apiUrl = tools.api.createUrl("neo", "/api/ai/qwen", {
-                text: input
-            });
-            const result = (await axios.get(apiUrl)).data.data;
+		try {
+			const apiUrl = tools.api.createUrl("neo", "/api/ai/qwen", {
+				text: input,
+			});
+			const result = (await axios.get(apiUrl)).data.data;
 
-            await ctx.reply(result);
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
+			await ctx.reply(result);
+		} catch (error) {
+			await tools.cmd.handleError(ctx, error, true);
+		}
+	},
 };

@@ -1,52 +1,65 @@
 module.exports = {
-    name: "osettext",
-    aliases: ["osettxt"],
-    category: "owner",
-    permissions: {
-        owner: true
-    },
-    code: async (ctx) => {
-        const key = ctx.args[0];
-        const text = ctx.text ? (ctx.text.startsWith(`${key} `) ? ctx.text.slice(key.length + 1) : ctx.text) : ctx.quoted?.text;
+	name: "osettext",
+	aliases: ["osettxt"],
+	category: "owner",
+	permissions: {
+		owner: true,
+	},
+	code: async (ctx) => {
+		const key = ctx.args[0];
+		const text = ctx.text
+			? ctx.text.startsWith(`${key} `)
+				? ctx.text.slice(key.length + 1)
+				: ctx.text
+			: ctx.quoted?.text;
 
-        if (key?.toLowerCase() === "list") {
-            const listText = await tools.list.get("osettext");
-            return await ctx.reply(listText);
-        }
+		if (key?.toLowerCase() === "list") {
+			const listText = await tools.list.get("osettext");
+			return await ctx.reply(listText);
+		}
 
-        if (!key || !text)
-            return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "price $1 untuk sewa bot 1 bulan")}\n` +
-                tools.msg.generateNotes([`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`, `Gunakan ${formatter.inlineCode("delete")} sebagai teks untuk menghapus teks yang disimpan sebelumnya.`])
-            );
+		if (!key || !text)
+			return await ctx.reply(
+				`${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+					`${tools.msg.generateCmdExample(ctx.used, "price $1 untuk sewa bot 1 bulan")}\n` +
+					tools.msg.generateNotes([
+						`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`,
+						`Gunakan ${formatter.inlineCode("delete")} sebagai teks untuk menghapus teks yang disimpan sebelumnya.`,
+					])
+			);
 
-        try {
-            let setKey;
+		try {
+			let setKey;
 
-            switch (key.toLowerCase()) {
-                case "donate":
-                case "price":
-                case "qris":
-                    setKey = key.toLowerCase();
-                    break;
-                default:
-                    return await ctx.reply(`ⓘ ${formatter.italic(`Teks ${formatter.inlineCode(key)} tidak valid!`)}`);
-            }
+			switch (key.toLowerCase()) {
+				case "donate":
+				case "price":
+				case "qris":
+					setKey = key.toLowerCase();
+					break;
+				default:
+					return await ctx.reply(
+						`ⓘ ${formatter.italic(`Teks ${formatter.inlineCode(key)} tidak valid!`)}`
+					);
+			}
 
-            const botDb = ctx.db.bot;
+			const botDb = ctx.db.bot;
 
-            if (text.toLowerCase() === "delete") {
-                delete botDb?.text[setKey];
-                botDb.save();
-                return await ctx.reply(`ⓘ ${formatter.italic(`Pesan untuk teks ${formatter.inlineCode(key)} berhasil dihapus!`)}`);
-            }
+			if (text.toLowerCase() === "delete") {
+				delete botDb?.text[setKey];
+				botDb.save();
+				return await ctx.reply(
+					`ⓘ ${formatter.italic(`Pesan untuk teks ${formatter.inlineCode(key)} berhasil dihapus!`)}`
+				);
+			}
 
-            (botDb.text ||= {})[setKey] = text;
-            botDb.save();
-            await ctx.reply(`ⓘ ${formatter.italic(`Pesan untuk teks ${formatter.inlineCode(key)} berhasil disimpan!`)}`);
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error);
-        }
-    }
+			(botDb.text ||= {})[setKey] = text;
+			botDb.save();
+			await ctx.reply(
+				`ⓘ ${formatter.italic(`Pesan untuk teks ${formatter.inlineCode(key)} berhasil disimpan!`)}`
+			);
+		} catch (error) {
+			await tools.cmd.handleError(ctx, error);
+		}
+	},
 };

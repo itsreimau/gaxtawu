@@ -89,22 +89,22 @@ Untuk menambah perintah baru:
 // commands/test/helloworld.js
 
 module.exports = {
-    name: "helloworld",
-    aliases: ["hello"],
-    category: "test",
-    permissions: {
-        admin: Boolean,
-        botAdmin: Boolean,
-        coin: Number,
-        group: Boolean,
-        owner: Boolean,
-        premium: Boolean,
-        private: Boolean,
-        restrict: Boolean
-    },
-    code: async (ctx) => {
-        await ctx.reply("Hello, World!");
-    }
+	name: "helloworld",
+	aliases: ["hello"],
+	category: "test",
+	permissions: {
+		admin: Boolean,
+		botAdmin: Boolean,
+		coin: Number,
+		group: Boolean,
+		owner: Boolean,
+		premium: Boolean,
+		private: Boolean,
+		restrict: Boolean,
+	},
+	code: async (ctx) => {
+		await ctx.reply("Hello, World!");
+	},
 };
 ```
 

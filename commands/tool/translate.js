@@ -1,38 +1,42 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "translate",
-    aliases: ["tr"],
-    category: "tool",
-    permissions: {
-        coin: 5
-    },
-    code: async (ctx) => {
-        const langCode = ctx.args[0]?.length === 2 ? ctx.args[0] : "en";
-        const input = ctx.text?.startsWith(`${langCode} `) ? ctx.text.slice(langCode.length + 1) : ctx.quoted?.text;
+	name: "translate",
+	aliases: ["tr"],
+	category: "tool",
+	permissions: {
+		coin: 5,
+	},
+	code: async (ctx) => {
+		const langCode = ctx.args[0]?.length === 2 ? ctx.args[0] : "en";
+		const input = ctx.text?.startsWith(`${langCode} `)
+			? ctx.text.slice(langCode.length + 1)
+			: ctx.quoted?.text;
 
-        if (!input)
-            return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "en halo, dunia!")}\n` +
-                tools.msg.generateNotes([`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`])
-            );
+		if (!input)
+			return await ctx.reply(
+				`${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+					`${tools.msg.generateCmdExample(ctx.used, "en halo, dunia!")}\n` +
+					tools.msg.generateNotes([
+						`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`,
+					])
+			);
 
-        if (input.toLowerCase() === "list") {
-            const listText = await tools.list.get("translate");
-            return await ctx.reply(listText);
-        }
+		if (input.toLowerCase() === "list") {
+			const listText = await tools.list.get("translate");
+			return await ctx.reply(listText);
+		}
 
-        try {
-            const apiUrl = tools.api.createUrl("deline", "/tools/translate", {
-                text: input,
-                target: langCode
-            });
-            const result = (await axios.get(apiUrl)).data.data.hasil_terjemahan;
+		try {
+			const apiUrl = tools.api.createUrl("deline", "/tools/translate", {
+				text: input,
+				target: langCode,
+			});
+			const result = (await axios.get(apiUrl)).data.data.hasil_terjemahan;
 
-            await ctx.reply(result);
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
+			await ctx.reply(result);
+		} catch (error) {
+			await tools.cmd.handleError(ctx, error, true);
+		}
+	},
 };

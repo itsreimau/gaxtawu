@@ -1,44 +1,55 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "editimage4",
-    aliases: ["editimg4"],
-    category: "ai-misc",
-    permissions: {
-        coin: 5
-    },
-    code: async (ctx) => {
-        const input = ctx.text;
+	name: "editimage4",
+	aliases: ["editimg4"],
+	category: "ai-misc",
+	permissions: {
+		coin: 5,
+	},
+	code: async (ctx) => {
+		const input = ctx.text;
 
-        if (!input)
-            return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "make it evangelion art style")
-            );
+		if (!input)
+			return await ctx.reply(
+				`${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+					tools.msg.generateCmdExample(
+						ctx.used,
+						"make it evangelion art style"
+					)
+			);
 
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
+		const [checkMedia, checkQuotedMedia] = [
+			tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
+			tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"]),
+		];
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
+		if (!checkMedia && !checkQuotedMedia)
+			return await ctx.reply(
+				tools.msg.generateInstruction(["send", "reply"], ["image"])
+			);
 
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("snowping", "/api/imageai/nanobanana", {
-                url: uploadUrl,
-                prompt: input
-            });
-            const result = (await axios.get(apiUrl)).data.result.image;
+		try {
+			const uploadUrl =
+				(await ctx.msg.upload()) || (await ctx.quoted.upload());
+			const apiUrl = tools.api.createUrl(
+				"snowping",
+				"/api/imageai/nanobanana",
+				{
+					url: uploadUrl,
+					prompt: input,
+				}
+			);
+			const result = (await axios.get(apiUrl)).data.result.image;
 
-            await ctx.reply({
-                image: {
-                    url: result
-                },
-                mimetype: tools.mime.lookup("png")
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
+			await ctx.reply({
+				image: {
+					url: result,
+				},
+				mimetype: tools.mime.lookup("png"),
+			});
+		} catch (error) {
+			await tools.cmd.handleError(ctx, error, true);
+		}
+	},
 };

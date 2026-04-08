@@ -1,42 +1,47 @@
 module.exports = {
-    name: "banuser",
-    aliases: ["ban", "bu"],
-    category: "owner",
-    permissions: {
-        owner: true
-    },
-    code: async (ctx) => {
-        const target = await ctx.target();
+	name: "banuser",
+	aliases: ["ban", "bu"],
+	category: "owner",
+	permissions: {
+		owner: true,
+	},
+	code: async (ctx) => {
+		const target = await ctx.target();
 
-        if (!target)
-            return await ctx.reply({
-                text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                    `${tools.msg.generateCmdExample(ctx.used, "@6281234567891 -s")}\n` +
-                    `${tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])}\n` +
-                    tools.msg.generatesFlagInfo({
-                        "-s": "Tetap diam dengan tidak menyiarkan ke akun target"
-                    }),
-                mentions: ["6281234567891@s.whatsapp.net"]
-            });
+		if (!target)
+			return await ctx.reply({
+				text:
+					`${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+					`${tools.msg.generateCmdExample(ctx.used, "@6281234567891 -s")}\n` +
+					`${tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])}\n` +
+					tools.msg.generatesFlagInfo({
+						"-s": "Tetap diam dengan tidak menyiarkan ke akun target",
+					}),
+				mentions: ["6281234567891@s.whatsapp.net"],
+			});
 
-        try {
-            const targetDb = ctx.getDb("users", target);
-            targetDb.banned = true;
-            targetDb.save();
+		try {
+			const targetDb = ctx.getDb("users", target);
+			targetDb.banned = true;
+			targetDb.save();
 
-            const flag = ctx.flag({
-                silent: {
-                    type: "boolean",
-                    short: "s",
-                    default: false
-                }
-            });
-            const silent = flag?.silent;
-            if (!silent) await ctx.sendMessage(target, `ⓘ ${formatter.italic("Anda telah dibanned oleh owner!")}`);
+			const flag = ctx.flag({
+				silent: {
+					type: "boolean",
+					short: "s",
+					default: false,
+				},
+			});
+			const silent = flag?.silent;
+			if (!silent)
+				await ctx.sendMessage(
+					target,
+					`ⓘ ${formatter.italic("Anda telah dibanned oleh owner!")}`
+				);
 
-            await ctx.reply(`ⓘ ${formatter.italic("Berhasil dibanned!")}`);
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error);
-        }
-    }
+			await ctx.reply(`ⓘ ${formatter.italic("Berhasil dibanned!")}`);
+		} catch (error) {
+			await tools.cmd.handleError(ctx, error);
+		}
+	},
 };

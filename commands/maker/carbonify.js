@@ -1,32 +1,35 @@
 module.exports = {
-    name: "carbonify",
-    aliases: ["carbon", "codesnap"],
-    category: "maker",
-    permissions: {
-        coin: 5
-    },
-    code: async (ctx) => {
-        const input = ctx.text || ctx.quoted?.text;
+	name: "carbonify",
+	aliases: ["carbon", "codesnap"],
+	category: "maker",
+	permissions: {
+		coin: 5,
+	},
+	code: async (ctx) => {
+		const input = ctx.text || ctx.quoted?.text;
 
-        if (!input)
-            return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, 'console.log("halo, dunia!");')
-            );
+		if (!input)
+			return await ctx.reply(
+				`${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+					tools.msg.generateCmdExample(
+						ctx.used,
+						'console.log("halo, dunia!");'
+					)
+			);
 
-        try {
-            const result = tools.api.createUrl("nexray", "/maker/codesnap", {
-                code: input
-            });
+		try {
+			const result = tools.api.createUrl("nexray", "/maker/codesnap", {
+				code: input,
+			});
 
-            await ctx.reply({
-                image: {
-                    url: result
-                },
-                mimetype: tools.mime.lookup("png")
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
+			await ctx.reply({
+				image: {
+					url: result,
+				},
+				mimetype: tools.mime.lookup("png"),
+			});
+		} catch (error) {
+			await tools.cmd.handleError(ctx, error, true);
+		}
+	},
 };

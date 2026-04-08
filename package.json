@@ -1,31 +1,36 @@
 {
-  "name": "gaxtawu",
-  "version": "1.5.45",
-  "description": "Useless WhatsApp Bot",
-  "main": "index.js",
-  "directories": {
-    "commands": "commands",
-    "events": "events",
-    "tools": "tools"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "setup": "cp config.example.json config.json && npm install",
-    "start": "node index.js",
-    "start:pm2": "pm2 start index.js --name $(basename $(pwd))"
-  },
-  "keywords": [
-    "whatsapp-bot"
-  ],
-  "author": "Reimau von Lilitz",
-  "license": "MIT",
-  "dependencies": {
-    "@itsreimau/gktw": "github:itsreimau/gktw",
-    "axios": "^1.14.0",
-    "cfonts": "^3.3.1",
-    "jimp": "^0.22.12",
-    "link-preview-js": "^4.0.0",
-    "moment-timezone": "^0.6.1",
-    "wa-sticker-formatter": "^4.4.4"
-  }
+	"name": "gaxtawu",
+	"version": "1.5.45",
+	"description": "Useless WhatsApp Bot",
+	"main": "index.js",
+	"directories": {
+		"commands": "commands",
+		"events": "events",
+		"tools": "tools"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"setup": "cp config.example.json config.json && npm install",
+		"start": "node index.js",
+		"start:pm2": "pm2 start index.js --name $(basename $(pwd))",
+		"format": "npx prettier . --write"
+	},
+	"keywords": [
+		"whatsapp-bot"
+	],
+	"author": "Reimau von Lilitz",
+	"license": "MIT",
+	"dependencies": {
+		"@itsreimau/gktw": "github:itsreimau/gktw",
+		"axios": "^1.14.0",
+		"cfonts": "^3.3.1",
+		"jimp": "^0.22.12",
+		"link-preview-js": "^4.0.0",
+		"moment-timezone": "^0.6.1",
+		"wa-sticker-formatter": "^4.4.4"
+	},
+	"devDependencies": {
+		"@trivago/prettier-plugin-sort-imports": "^5.2.2",
+		"prettier": "^3.8.1"
+	}
 }
