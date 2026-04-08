@@ -17,7 +17,7 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("danzy", "/api/ai/nsfwgen", {
+            const apiUrl = tools.api.createUrl("kuroneko", "/api/ai/nsfwgen", {
                 q: input
             });
             const result = (await axios.get(apiUrl)).data.result.images[0];

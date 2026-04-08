@@ -20,17 +20,17 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("bagus", "/api/download/gdrive", {
+            const apiUrl = tools.api.createUrl("deline", "/downloader/gdrive", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.data;
 
             await ctx.reply({
                 document: {
-                    url: result.download
+                    url: result.downloadUrl
                 },
-                fileName: result.name,
-                mimetype: tools.mime.lookup(result.name),
+                fileName: result.fileName,
+                mimetype: result.mimetype,
                 caption: `➛ ${formatter.bold("URL")}: ${url}`
             });
         } catch (error) {

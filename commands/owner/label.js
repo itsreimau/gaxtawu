@@ -1,5 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "label",
     aliases: ["tag"],
@@ -22,23 +20,7 @@ module.exports = {
             const waitMsg = await ctx.reply(`ⓘ ${formatter.italic(config.msg.wait)}`);
             const groupJids = (Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id));
             for (const groupJid of groupJids) {
-                await ctx.core.relayMessage(jid, {
-                    protocolMessage: {
-                        type: Baileys.proto.Message.ProtocolMessage.Type.GROUP_MEMBER_LABEL_CHANGE,
-                        memberLabel: {
-                            label: input,
-                            labelTimestamp: Baileys.unixTimestampSeconds()
-                        }
-                    }
-                }, {
-                    additionalNodes: [{
-                        tag: "meta",
-                        attrs: {
-                            tag_reason: "user_update",
-                            appdata: "member_tag"
-                        }
-                    }]
-                })
+                await ctx.core.updateMemberLabel(jid, input);
             }
 
             await ctx.editMessage(ctx.id, waitMsg.key, `ⓘ ${formatter.italic(`Label bot berhasil diubah menjadi ${formatter.inlineCode(input)} di ${groupJids.length} grup!`)}`);

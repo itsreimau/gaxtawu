@@ -15,7 +15,7 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("danzy", "/api/maker/removebg", {
+            const result = tools.api.createUrl("kuroneko", "/api/maker/removebg", {
                 url: uploadUrl
             });
 

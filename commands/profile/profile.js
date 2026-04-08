@@ -13,7 +13,7 @@ module.exports = {
                 level: user.level || 0,
                 winGame: user.winGame || 0
             })).sort((a, b) => b.winGame - a.winGame || b.level - a.level);
-            const profilePictureUrl = await bot.core.profilePictureUrl(participantJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
+            const profilePictureUrl = await ctx.core.profilePictureUrl(participantJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
             const canvasUrl = tools.api.createUrl("siputzx", "/api/canvas/profile", {
                 backgroundURL: "https://picsum.photos/850/300",
                 avatarURL: profilePictureUrl,

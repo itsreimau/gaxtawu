@@ -17,7 +17,7 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("danzy", "/api/search/lyrics", {
+            const apiUrl = tools.api.createUrl("deline", "/tools/lyrics", {
                 q: input
             });
             const result = (await axios.get(apiUrl)).data.result[0];
@@ -26,7 +26,7 @@ module.exports = {
                 `— ${result.plainLyrics}\n` +
                 "\n" +
                 `➛ ${formatter.bold("Judul")}: ${result.trackName}\n` +
-                `➛ ${formatter.bold("Artis")}: ${result.albumName}`
+                `➛ ${formatter.bold("Artis")}: ${result.artistName}`
             );
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

@@ -1,4 +1,3 @@
-const util = require("node:util");
 const { exec } = require("node:child_process");
 
 module.exports = {
@@ -21,7 +20,7 @@ module.exports = {
             };
             botDb.save();
 
-            await util.promisify(exec)("pm2 restart $(basename $(pwd))"); // Hanya berfungsi saat menggunakan PM2
+            exec("pm2 restart $(basename $(pwd))"); // Hanya berfungsi saat menggunakan PM2
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

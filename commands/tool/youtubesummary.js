@@ -20,7 +20,7 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("danzy", "/api/tools/ytsum", {
+            const apiUrl = tools.api.createUrl("kuroneko", "/api/tools/ytsum", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.data.content;

@@ -34,7 +34,7 @@ module.exports = {
             });
 
         try {
-            const apiUrl = tools.api.createUrl("bagus", "/api/search/yts", {
+            const apiUrl = tools.api.createUrl("deline", "/search/youtube", {
                 q: input
             });
             const result = (await axios.get(apiUrl)).data.result;

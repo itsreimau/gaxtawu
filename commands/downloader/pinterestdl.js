@@ -20,28 +20,19 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("bagus", "/api/download/pinterest", {
+            const apiUrl = tools.api.createUrl("deline", "/downloader/pinterest", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result.media;
+            const result = (await axios.get(apiUrl)).data.result;
+            const media = result.video === "Tidak ada" ? "image" : "video";
 
-            if (result.type.includes("MP4")) {
-                await ctx.reply({
-                    video: {
-                        url: result.url
-                    },
-                    mimetype: tools.mime.lookup("mp4"),
-                    caption: `➛ ${formatter.bold("URL")}: ${url}`
-                });
-            } else {
-                await ctx.reply({
-                    image: {
-                        url: result.url
-                    },
-                    mimetype: tools.mime.lookup("png"),
-                    caption: `➛ ${formatter.bold("URL")}: ${url}`
-                });
-            }
+            await ctx.reply({
+                [media]: {
+                    url: result[media]
+                },
+                mimetype: media === "image" ? tools.mime.lookup("png") : tools.mime.lookup("mp4"),
+                caption: `➛ ${formatter.bold("URL")}: ${url}`
+            });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

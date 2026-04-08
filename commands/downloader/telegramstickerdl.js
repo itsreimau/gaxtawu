@@ -33,7 +33,7 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("izumi", "/downloader/telegram-sticker", {
+            const apiUrl = tools.api.createUrl("izukumii", "/downloader/telegram-sticker", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;

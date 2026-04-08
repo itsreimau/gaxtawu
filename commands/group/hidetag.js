@@ -10,12 +10,9 @@ module.exports = {
         const input = ctx.text || ctx.quoted?.text;
 
         try {
-            const members = await ctx.group().members();
-            const mentions = members.map(member => member.id);
-
             await ctx.reply({
                 text: input || `>ᴗ< ${formatter.italic("Halo, Dunia!")}`,
-                mentions
+                mentionAll: true
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

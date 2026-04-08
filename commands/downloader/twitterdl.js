@@ -19,7 +19,7 @@ module.exports = {
         if (!tools.cmd.isUrl(url)) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("izumi", "/downloader/twitter", {
+            const apiUrl = tools.api.createUrl("izukumii", "/downloader/twitter", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;

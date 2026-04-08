@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "hd",
     category: "tool",
@@ -16,10 +14,9 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("bagus", "/api/edits/remini", {
-                image: uploadUrl
+            const result = tools.api.createUrl("deline", "/tools/hd", {
+                url: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result.url;
 
             await ctx.reply({
                 image: {

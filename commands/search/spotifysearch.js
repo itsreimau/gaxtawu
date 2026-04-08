@@ -29,7 +29,7 @@ module.exports = {
             });
 
         try {
-            const apiUrl = tools.api.createUrl("danzy", "/api/search/spotify", {
+            const apiUrl = tools.api.createUrl("kuroneko", "/api/search/spotify", {
                 q: input
             });
             const result = (await axios.get(apiUrl)).data.result;

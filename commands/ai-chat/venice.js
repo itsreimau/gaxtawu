@@ -16,7 +16,7 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("danzy", "/api/ai/venice", {
+            const apiUrl = tools.api.createUrl("kuroneko", "/api/ai/venice", {
                 message: input,
                 system: `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.` // Dapat diubah sesuai keinginan
             });

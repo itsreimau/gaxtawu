@@ -37,19 +37,13 @@ module.exports = {
             const groupJids = (Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !blacklist.includes(group.id) && !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id));
             const waitMsg = await ctx.reply(`ⓘ ${formatter.italic(`Mengirim siaran ke ${groupJids.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(groupJids.length * 1.5 * 1000)}`)}`);
             for (const groupJid of groupJids) {
-                let mentions = [];
-                if (ctx.used.command === "bcht") {
-                    const members = await ctx.group(groupJid).members();
-                    mentions = members.map(member => member.jid);
-                }
-
                 await ctx.sendMessage(groupJid, {
                     image: {
                         url: config.bot.thumbnail
                     },
                     mimetype: tools.mime.lookup("png"),
                     caption: input,
-                    mentions,
+                    mentionAll: ctx.used.command === "bcht" ? true : false,
                     footer: config.msg.footer,
                     buttons: [{
                         buttonId: `${ctx.used.prefix}owner`,

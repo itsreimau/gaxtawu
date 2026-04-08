@@ -16,7 +16,7 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("izumi", "/search/zerochan", {
+            const apiUrl = tools.api.createUrl("izukumii", "/search/zerochan", {
                 query: input
             });
             const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result).downloadLink;

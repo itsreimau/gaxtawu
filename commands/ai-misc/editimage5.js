@@ -25,7 +25,7 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("danzy", "/api/tools/nanobanana", {
+            const apiUrl = tools.api.createUrl("kuroneko", "/api/tools/nanobanana", {
                 prompt: input,
                 media: uploadUrl
             });

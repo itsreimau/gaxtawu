@@ -17,7 +17,7 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("izumi", "/search/pinterest", {
+            const apiUrl = tools.api.createUrl("izukumii", "/search/pinterest", {
                 query: input
             });
             const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result).media.images.orig.url;

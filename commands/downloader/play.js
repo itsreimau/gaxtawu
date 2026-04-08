@@ -36,7 +36,7 @@ module.exports = {
             const source = flag.source;
 
             if (source === "spotify") {
-                const searchApiUrl = tools.api.createUrl("danzy", "/api/search/spotify", {
+                const searchApiUrl = tools.api.createUrl("kuroneko", "/api/search/spotify", {
                     q: input
                 });
                 const searchResult = (await axios.get(searchApiUrl)).data.result[searchIndex];
@@ -47,10 +47,10 @@ module.exports = {
                     `➛ ${formatter.bold("URL")}: ${searchResult.track_url}`
                 );
 
-                const downloadApiUrl = tools.api.createUrl("bagus", "/api/download/spotify", {
+                const downloadApiUrl = tools.api.createUrl("izukumii", "/downloader/spotify", {
                     url: searchResult.url
                 });
-                const downloadResult = (await axios.get(downloadApiUrl)).data.download;
+                const downloadResult = (await axios.get(downloadApiUrl)).data.result.download;
 
                 await ctx.reply({
                     audio: {
@@ -59,7 +59,7 @@ module.exports = {
                     mimetype: tools.mime.lookup("mp3")
                 });
             } else {
-                const searchApiUrl = tools.api.createUrl("bagus", "/api/search/yts", {
+                const searchApiUrl = tools.api.createUrl("deline", "/search/youtube", {
                     q: input
                 });
                 const searchResult = (await axios.get(searchApiUrl)).data.result[searchIndex];
