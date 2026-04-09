@@ -1,60 +1,6 @@
-// Impor modul dan dependensi yang diperlukan
 const { Baileys, Events, Gktw } = require("@itsreimau/gktw");
 const moment = require("moment-timezone");
 
-// Fungsi untuk menangani event pengguna bergabung/keluar grup
-async function handleWelcome(bot, welcome, type, isSimulate = false) {
-    const groupJid = welcome.id;
-    const groupDb = bot.getDb("groups", groupJid);
-    const botDb = bot.getDb("bot");
-    const participantJid = welcome.participant;
-
-    if (!isSimulate && groupDb?.mutebot) return;
-    if (!isSimulate && !groupDb?.option?.welcome) return;
-    if (!isSimulate && !["group", "public"].includes(botDb?.mode || "public")) return;
-
-    const now = moment().tz(config.system.timeZone);
-    const hour = now.hour();
-    if (!isSimulate && config.system.unavailableAtNight && hour >= 0 && hour < 6) return;
-
-    const isWelcome = type === Events.UserJoin;
-    const tag = `@${bot.getId(participantJid)}`;
-    const customText = isWelcome ? groupDb?.text?.welcome : groupDb?.text?.goodbye;
-    const metadata = await bot.core.groupMetadata(groupJid);
-    const text = customText ? customText.replace(/%tag%/g, tag).replace(/%subject%/g, metadata.subject).replace(/%description%/g, metadata.description) : (isWelcome ? `>ᴗ< ${formatter.italic(`Selamat datang ${tag} di grup ${metadata.subject}!`)}` : `•︵• ${formatter.italic(`Selamat tinggal, ${tag}!`)}`);
-    const profilePictureUrl = await bot.core.profilePictureUrl(participantJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
-    const canvasUrl = tools.api.createUrl("siputzx", `/api/canvas/${isWelcome ? "welcomev5" : "goodbyev5"}`, {
-        username: bot.getPushName(participantJid),
-        guildName: metadata.subject,
-        memberCount: metadata.participants.length,
-        avatar: profilePictureUrl,
-        background: "https://picsum.photos/1024/450"
-    });
-
-    await bot.sendMessage(groupJid, {
-        image: {
-            url: canvasUrl
-        },
-        mimetype: tools.mime.lookup("png"),
-        caption: text,
-        mentions: [participantJid]
-    });
-
-    if (isWelcome && groupDb?.text?.intro)
-        await bot.sendMessage(groupJid, {
-            text: groupDb.text.intro,
-            mentions: [participantJid],
-            interactiveButtons: [{
-                name: "cta_copy",
-                buttonParamsJson: JSON.stringify({
-                    display_text: "Salin Teks",
-                    copy_code: groupDb.text.intro
-                })
-            }]
-        });
-}
-
-// Fungsi untuk menambahkan warning
 async function handleWarning(ctx, senderJid, senderId, senderLid, groupJid, groupDb) {
     const maxWarnings = groupDb?.maxwarnings || 3;
     const warnings = groupDb?.warnings || [];
@@ -91,46 +37,15 @@ async function handleWarning(ctx, senderJid, senderId, senderLid, groupJid, grou
     groupDb.save();
 }
 
-// Events utama bot
 module.exports = (bot) => {
-    bot.ev.setMaxListeners(config.system.maxListeners); // Tetapkan max listeners untuk events
-
-    // Event saat bot siap
-    bot.ev.once(Events.ClientReady, async (b) => {
-        consolefy.success(`${config.bot.name} by ${config.owner.name}, ready at ${b.user?.id || b.user?.lid}`);
-
-        // Mulai ulang bot
-        const botDb = bot.getDb("bot");
-        const botRestart = botDb?.restart || {};
-        if (botRestart?.jid && botRestart?.timestamp) {
-            const timeago = tools.msg.convertMsToDuration(Date.now() - botRestart.timestamp);
-            await bot.sendMessage(botRestart.jid, {
-                text: `ⓘ ${formatter.italic(`Berhasil dimulai ulang! Membutuhkan waktu ${timeago}.`)}`,
-                edit: botRestart.key
-            });
-            delete botDb.restart;
-            botDb.save();
-        }
-
-        // Tetapkan config pada bot
-        const groupLink = `https://chat.whatsapp.com/${config.bot?.groupJid ? await b.groupInviteCode(config.bot.groupJid).catch(() => "FxEYZl2UyzAEI2yhaH34Ye") : "FxEYZl2UyzAEI2yhaH34Ye"}`;
-        if (!config.bot.groupLink || config.bot.groupLink !== groupLink) config.core.set("bot.groupLink", groupLink);
-    });
-
-    // Event saat bot menerima pesan
     bot.ev.on(Events.MessagesUpsert, async (ctx) => {
-        const {
-            msg
-        } = ctx;
+        const { msg } = ctx;
         if (msg.key.fromMe) return;
 
-        // Variabel umum
         const isGroup = ctx.isGroup();
         const isPrivate = ctx.isPrivate();
 
-        // Grup atau obrolan pribadi
         if (isGroup || isPrivate) {
-            // Variabel umum
             const senderJid = ctx.sender.jid;
             const senderId = ctx.getId(senderJid);
             const senderLid = ctx.sender.lid;
@@ -140,12 +55,10 @@ module.exports = (bot) => {
             const isCmd = ctx.isCmd();
             const isAdmin = isGroup ? await ctx.group().isSenderAdmin() : false;
 
-            // Mengambil database
             const botDb = ctx.db.bot;
             const senderDb = ctx.db.user;
             const groupDb = ctx.db.group;
 
-            // Penanganan database pengguna
             if (senderDb) {
                 const senderUid = [tools.cmd.generateUID(senderId), tools.cmd.generateUID(senderId, false)];
                 if (!senderDb?.uid || senderDb?.uid !== senderUid[0]) senderDb.uid = senderUid[0];
@@ -159,24 +72,20 @@ module.exports = (bot) => {
                 senderDb.save();
             }
 
-            // Pengecekan mode bot (premium, group, private, self)
             if (botDb?.mode === "premium" && !isOwner && !senderDb?.premium) return;
             if (botDb?.mode === "group" && isPrivate && !isOwner && !senderDb?.premium) return;
             if (botDb?.mode === "private" && isGroup && !isOwner && !senderDb?.premium) return;
             if (botDb?.mode === "self" && !isOwner) return;
 
-            // Pengecekan mute pada grup
             if (groupDb?.mutebot === "owner" && !isOwner) return;
             if (groupDb?.mutebot && !isOwner && !isAdmin) return;
             const muteList = groupDb?.mute || [];
             if (muteList.includes(senderLid)) await ctx.deleteMessage(ctx.id, msg.key);
 
-            // Pengecekan untuk tidak tersedia pada malam hari
             const now = moment().tz(config.system.timeZone);
             const hour = now.hour();
             if (config.system.unavailableAtNight && !isOwner && !senderDb?.premium && hour >= 0 && hour < 6) return;
 
-            // Penanganan bug hama!
             const analyze = Gktw.analyzeBug(msg.message, {
                 maxTextLength: 10000,
                 maxMentions: 1000,
@@ -202,7 +111,6 @@ module.exports = (bot) => {
                 }
             }
 
-            // Did you mean?
             if (isCmd?.didyoumean)
                 await ctx.reply({
                     text: `ⓘ ${formatter.italic(`Apakah maksudmu ${formatter.inlineCode(isCmd.prefix + isCmd.didyoumean)}?`)}`,
@@ -214,7 +122,6 @@ module.exports = (bot) => {
                     }]
                 });
 
-            // Penanganan AFK (Menghapus status AFK pengguna yang mengirim pesan)
             const senderAfk = senderDb?.afk || {};
             if (senderAfk.reason || senderAfk.timestamp) {
                 const timeElapsed = Date.now() - senderAfk.timestamp;
@@ -226,22 +133,18 @@ module.exports = (bot) => {
                 }
             }
 
-            // Penanganan obrolan grup
             if (isGroup) {
-                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from group: ${groupId}, by: ${senderId}`); // Log pesan masuk
+                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from group: ${groupId}, by: ${senderId}`);
 
-                // Variabel umum
                 const messageType = ctx.getMessageType();
                 const groupAutokick = groupDb?.option?.autokick;
 
-                // Penanganan database grup
                 if (groupDb?.sewa && Date.now() > senderDb?.sewaExpiration) {
                     delete groupDb.sewa;
                     delete groupDb.sewaExpiration;
                     groupDb.save();
                 }
 
-                // Penanganan AFK (Pengguna yang disebutkan atau di-balas/quote)
                 const afkMentions = ctx.quoted ? [ctx.quoted.sender] : ctx.getMentioned();
                 if (afkMentions.length > 0) {
                     for (const afkMention of afkMentions) {
@@ -257,7 +160,6 @@ module.exports = (bot) => {
                 }
 
                 if (!isCmd && !isOwner && !isAdmin) {
-                    // Penanganan antimedia
                     for (const type of ["audio", "document", "image", "sticker", "video"]) {
                         if (groupDb?.option?.[`anti${type}`]) {
                             const checkMedia = tools.cmd.checkMedia(messageType, type);
@@ -273,7 +175,6 @@ module.exports = (bot) => {
                         }
                     }
 
-                    // Penanganan antilink
                     if (groupDb?.option?.antilink) {
                         if (msg.body && tools.cmd.isUrl(msg.body)) {
                             await ctx.reply(`ⓘ ${formatter.italic("Jangan kirim link!")}`);
@@ -286,9 +187,8 @@ module.exports = (bot) => {
                         }
                     }
 
-                    // Penanganan antispam
                     if (groupDb?.option?.antispam) {
-                        const now = Date.now();
+                        const nowTs = Date.now();
                         const spamData = groupDb?.spam || [];
                         const senderSpam = spamData.find(spam => tools.cmd.areJidsSameUser(spam.jid, senderLid)) || {
                             jid: senderLid,
@@ -296,11 +196,11 @@ module.exports = (bot) => {
                             lastMessageTime: 0
                         };
 
-                        const timeDiff = now - senderSpam.lastMessageTime;
+                        const timeDiff = nowTs - senderSpam.lastMessageTime;
                         const newCount = timeDiff < 5000 ? senderSpam.count + 1 : 1;
 
                         senderSpam.count = newCount;
-                        senderSpam.lastMessageTime = now;
+                        senderSpam.lastMessageTime = nowTs;
                         if (!spamData.some(spam => tools.cmd.areJidsSameUser(spam.jid, senderLid))) spamData.push(senderSpam);
                         groupDb.spam = spamData;
 
@@ -318,7 +218,6 @@ module.exports = (bot) => {
                         groupDb.save();
                     }
 
-                    // Penanganan antitagsw
                     if (groupDb?.option?.antitagsw) {
                         const checkMedia = msg.message?.protocolMessage?.type === 25;
                         if (!!checkMedia) {
@@ -332,7 +231,6 @@ module.exports = (bot) => {
                         }
                     }
 
-                    // Penanganan antitoxic
                     if (groupDb?.option?.antitoxic) {
                         const toxicRegex = /anj(k|g)|ajn?(g|k)|a?njin(g|k)|bajingan|b(a?n)?gsa?t|ko?nto?l|me?me?(k|q)|pe?pe?(k|q)|meki|titi(t|d)|pe?ler|tetek|toket|ngewe|go?blo?k|to?lo?l|idiot|(k|ng)e?nto?(t|d)|jembut|bego|dajj?al|janc(u|o)k|pantek|puki ?(mak)?|kimak|kampang|lonte|col(i|mek?)|pelacur|henceu?t|nigga|fuck|dick|bitch|tits|bastard|asshole|dontol|kontoi|ontol/i;
                         if (msg.body && toxicRegex.test(msg.body)) {
@@ -348,56 +246,11 @@ module.exports = (bot) => {
                 }
             }
 
-            // Penanganan obrolan pribadi
             if (isPrivate) {
-                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from: ${senderId}`); // Log pesan masuk
-
-                // Apa yaa...
+                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from: ${senderId}`);
             }
         }
-    });
-
-    // Event saat pengguna bergabung atau keluar dari grup
-    bot.ev.on(Events.UserJoin, async (welcome) => handleWelcome(bot, welcome, Events.UserJoin));
-    bot.ev.on(Events.UserLeave, async (welcome) => handleWelcome(bot, welcome, Events.UserLeave));
-
-    // Event saat bot menerima panggilan
-    bot.ev.on(Events.Call, async (call) => {
-        if (!config.system.antiCall || call.status !== "offer") return;
-
-        const fromJid = call.from;
-        const fromId = bot.getId(fromJid);
-        const isOwner = bot.checkOwner(fromJid);
-        const fromDb = bot.getDb("users", fromJid);
-
-        if (call?.isGroup || isOwner || fromDb?.banned) return;
-
-        consolefy.info(`Incoming call from: ${bot.getId(call.callerPn)}`); // Log panggilan masuk
-
-        await bot.core.rejectCall(call.id, fromJid);
-
-        fromDb.banned = true;
-        fromDb.save();
-
-        const reportOwner = tools.cmd.getReportOwner();
-        if (reportOwner && reportOwner.length > 0) {
-            for (const ownerId of reportOwner) {
-                await bot.sendMessage(ownerId + Baileys.S_WHATSAPP_NET, {
-                    text: `ⓘ ${formatter.italic(`Akun @${fromId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`)}`,
-                    mentions: [fromJid]
-                });
-                await tools.cmd.delay(500);
-            }
-        }
-        await bot.sendMessage(fromJid, {
-            text: `ⓘ ${formatter.italic("Anda telah dibanned secara otomatis karena melanggar aturan!")}`,
-            buttons: [{
-                buttonId: "/owner",
-                buttonText: {
-                    displayText: "Hubungi Owner"
-                }
-            }]
-        });
     });
 };
-module.exports.handleWelcome = handleWelcome; // Penanganan event pengguna bergabung/keluar grup
+
+module.exports.handleWarning = handleWarning;
