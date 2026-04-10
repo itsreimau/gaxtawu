@@ -1,9 +1,8 @@
 module.exports = (bot) => {
-    bot.ev.setMaxListeners(config.system.maxListeners);
+    bot.ev.setMaxListeners(config.system.maxListeners); // Tetapkan max listeners untuk events
 
-    require("./ready")(bot);
-    require("./messages")(bot);
-    require("./welcome")(bot);
-    require("./call")(bot);
+    require("./ready.js")(bot);
+    require("./messages.js")(bot);
+    require("./welcome.js")(bot);
+    require("./call.js")(bot);
 };
-

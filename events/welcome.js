@@ -1,6 +1,8 @@
+// Impor modul dan dependensi yang diperlukan
 const { Events } = require("@itsreimau/gktw");
 const moment = require("moment-timezone");
 
+// Fungsi untuk menangani event pengguna bergabung/keluar grup
 async function handleWelcome(bot, welcome, type, isSimulate = false) {
     const groupJid = welcome.id;
     const groupDb = bot.getDb("groups", groupJid);
@@ -19,7 +21,9 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
     const tag = `@${bot.getId(participantJid)}`;
     const customText = isWelcome ? groupDb?.text?.welcome : groupDb?.text?.goodbye;
     const metadata = await bot.core.groupMetadata(groupJid);
-    const text = customText ? customText.replace(/%tag%/g, tag).replace(/%subject%/g, metadata.subject).replace(/%description%/g, metadata.description) : (isWelcome ? `>ᴗ< ${formatter.italic(`Selamat datang ${tag} di grup ${metadata.subject}!`)}` : `•︵• ${formatter.italic(`Selamat tinggal, ${tag}!`)}`);
+    const text = customText ? customText.replace(/%tag%/g, tag).replace(/%subject%/g, metadata.subject).replace(/%description%/g, metadata.description) : (isWelcome ?
+        `>ᴗ< ${formatter.italic(`Selamat datang ${tag} di grup ${metadata.subject}!`)}` :
+        `•︵• ${formatter.italic(`Selamat tinggal, ${tag}!`)}`);
     const profilePictureUrl = await bot.core.profilePictureUrl(participantJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
     const canvasUrl = tools.api.createUrl("siputzx", `/api/canvas/${isWelcome ? "welcomev5" : "goodbyev5"}`, {
         username: bot.getPushName(participantJid),
@@ -53,8 +57,9 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
 }
 
 module.exports = (bot) => {
+    // Event saat pengguna bergabung atau keluar dari grup
     bot.ev.on(Events.UserJoin, async (welcome) => handleWelcome(bot, welcome, Events.UserJoin));
     bot.ev.on(Events.UserLeave, async (welcome) => handleWelcome(bot, welcome, Events.UserLeave));
 };
 
-module.exports.handleWelcome = handleWelcome;
+module.exports.handleWelcome = handleWelcome; // Penanganan event pengguna bergabung/keluar grup

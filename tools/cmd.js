@@ -1,5 +1,6 @@
 // Impor modul dan dependensi yang diperlukan
 const { Baileys, Gktw, MessageType } = require("@itsreimau/gktw");
+const crypto = require("node:crypto");
 const util = require("node:util");
 
 const formatBotName = (botName) => {
@@ -59,14 +60,10 @@ function checkQuotedMedia(type, required) {
 function generateUID(id, withBotName = true) {
     if (!id) return null;
 
-    let hash = 0;
-    for (let i = 0; i < id.length; i++) {
-        const charCode = id.charCodeAt(i);
-        hash = (hash * 31 + charCode) % 1000000007;
-    }
-
-    const uniquePart = id.split("").reverse().join("").charCodeAt(0).toString(16);
-    let uid = `${Math.abs(hash).toString(16).toLowerCase()}-${uniquePart}`;
+    const hash = crypto.createHash("md5").update(id).digest("hex");
+    const hashPart = hash.substring(0, 8);
+    const uniquePart = hash.substring(24, 28);
+    let uid = `${hashPart}-${uniquePart}`;
     if (withBotName) uid += `_${formatBotName(config.bot.name)}-wabot`;
 
     return uid;

@@ -1,6 +1,8 @@
+// Impor modul dan dependensi yang diperlukan
 const { Baileys, Events } = require("@itsreimau/gktw");
 
 module.exports = (bot) => {
+    // Event saat bot menerima panggilan
     bot.ev.on(Events.Call, async (call) => {
         if (!config.system.antiCall || call.status !== "offer") return;
 
@@ -11,7 +13,7 @@ module.exports = (bot) => {
 
         if (call?.isGroup || isOwner || fromDb?.banned) return;
 
-        consolefy.info(`Incoming call from: ${bot.getId(call.callerPn)}`);
+        consolefy.info(`Incoming call from: ${bot.getId(call.callerPn)}`); // Log panggilan masuk
 
         await bot.core.rejectCall(call.id, fromJid);
 
@@ -28,7 +30,6 @@ module.exports = (bot) => {
                 await tools.cmd.delay(500);
             }
         }
-
         await bot.sendMessage(fromJid, {
             text: `ⓘ ${formatter.italic("Anda telah dibanned secara otomatis karena melanggar aturan!")}`,
             buttons: [{

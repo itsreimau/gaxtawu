@@ -34,10 +34,10 @@ module.exports = {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result.download;
-            const fileName = new URLSearchParams(result.split('?')[1]).get("n");
 
             const document = flag.document;
             if (document) {
+                const fileName = new URLSearchParams(result.split("?")[1]).get("n");
                 await ctx.reply({
                     document: {
                         url: result

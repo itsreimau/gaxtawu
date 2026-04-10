@@ -2,7 +2,6 @@ const axios = require("axios");
 
 module.exports = {
     name: "ocr",
-    aliases: ["image2text", "imagetotext", "img2text", "imgtotext", "read", "readtext", "totext"],
     category: "tool",
     permissions: {
         coin: 5

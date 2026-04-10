@@ -32,7 +32,7 @@ module.exports = {
                 }
             });
             const silent = flag?.silent;
-            if (!silent) await ctx.sendMessage(target, `ⓘ ${formatter.italic("Anda telah diunbanned oleh owner!")}`);
+            if (!silent || !config.system.restrict) await ctx.sendMessage(target, `ⓘ ${formatter.italic("Anda telah diunbanned oleh owner!")}`);
 
             await ctx.reply(` ⓘ ${formatter.italic("Berhasil diunbanned!")}`);
         } catch (error) {

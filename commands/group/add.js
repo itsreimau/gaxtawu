@@ -17,7 +17,7 @@ module.exports = {
             );
 
         const isOnWhatsApp = await ctx.core.onWhatsApp(target);
-        if (isOnWhatsApp.length === 0) return await ctx.reply(`ⓘ ${formatter.italic("Akun tidak ada di WhatsApp!")}`);
+        if (!isOnWhatsApp?.[0]?.exists) return await ctx.reply(`ⓘ ${formatter.italic("Akun tidak ada di WhatsApp!")}`);
 
         try {
             await ctx.group().add(target);

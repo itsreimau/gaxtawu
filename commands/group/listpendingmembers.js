@@ -9,8 +9,8 @@ module.exports = {
     },
     code: async (ctx) => {
         try {
-            const pending = await ctx.group().pendingMembers();
-            const resultText = pending.map(member => `➛ ${ctx.getId(member.id)}`).join("\n");
+            const pendings = await ctx.group().pendingMembers();
+            const resultText = pendings.map(pending => `➛ ${ctx.getId(pending.id)}`).join("\n");
 
             await ctx.reply(resultText.trim() || `ⓘ ${formatter.italic(config.msg.notFound)}`);
         } catch (error) {

@@ -33,7 +33,7 @@ module.exports = {
                 }
             });
             const silent = flag?.silent;
-            if (!silent) await ctx.sendMessage(target, `ⓘ ${formatter.italic(`Anda telah menerima ${coinAmount} koin dari owner!`)}`);
+            if (!silent || !config.system.restrict) await ctx.sendMessage(target, `ⓘ ${formatter.italic(`Anda telah menerima ${coinAmount} koin dari owner!`)}`);
 
             await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menambahkan ${coinAmount} koin kepada pengguna itu!`)}`);
         } catch (error) {

@@ -31,16 +31,16 @@ module.exports = {
                 coin: 10,
                 timeout: 60000,
                 answerKey: result.jawaban_benar,
-                answer: result.semua_jawaban.find(obj => Object.keys(obj)[0] === result.jawaban_benar)[result.jawaban_benar].toLowerCase()
+                answer: result.semua_jawaban.find(ans => Object.keys(ans)[0] === result.jawaban_benar)[result.jawaban_benar].toLowerCase()
             };
 
             session.set(ctx.id, true);
 
             await ctx.reply({
                 text: `— ${result.pertanyaan}\n` +
-                    `${result.semua_jawaban.map(obj => {
-                        const key = Object.keys(obj)[0];
-                        return `${key.toUpperCase()}. ${obj[key]}`;
+                    `${result.semua_jawaban.map(answers => {
+                        const answer = Object.keys(answers)[0];
+                        return `${answer.toUpperCase()}. ${answers[answer]}`;
                     }).join("\n")}\n` +
                     "\n" +
                     `➛ ${formatter.bold("Mata Pelajaran")}: ${mapel[input]}\n` +
@@ -72,10 +72,10 @@ module.exports = {
                     sections: [{
                         title: "Pilih Mata Pelajaran",
                         highlight_label: "🌕",
-                        rows: Object.keys(mapel).map(key => ({
-                            title: key.toUpperCase(),
-                            description: `Klik untuk memainkan mata pelajaran ${mapel[key]}`,
-                            id: `${ctx.used.prefix + ctx.used.command} ${key}`
+                        rows: Object.keys(mapel).map(pel => ({
+                            title: pel.toUpperCase(),
+                            description: `Klik untuk memainkan mata pelajaran ${mapel[pel]}`,
+                            id: `${ctx.used.prefix + ctx.used.command} ${pel}`
                         }))
                     }]
                 })
@@ -92,7 +92,7 @@ module.exports = {
                     participantDb.winGame += 1;
                     await participantDb.save();
                     await collCtx.reply({
-                        text: `✅ ${formatter.italic(`Benar! +${game.coin} Koin`)}`,
+                        text: `ⓘ ${formatter.italic(`Benar! +${game.coin} Koin`)}`,
                         buttons: playAgain
                     });
                 } else if (participantAnswer === `surrender_${ctx.used.command}`) {

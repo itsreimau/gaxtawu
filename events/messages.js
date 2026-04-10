@@ -1,6 +1,8 @@
+// Impor modul dan dependensi yang diperlukan
 const { Baileys, Events, Gktw } = require("@itsreimau/gktw");
 const moment = require("moment-timezone");
 
+// Fungsi untuk menambahkan warning
 async function handleWarning(ctx, senderJid, senderId, senderLid, groupJid, groupDb) {
     const maxWarnings = groupDb?.maxwarnings || 3;
     const warnings = groupDb?.warnings || [];
@@ -38,14 +40,20 @@ async function handleWarning(ctx, senderJid, senderId, senderLid, groupJid, grou
 }
 
 module.exports = (bot) => {
+    // Event saat bot menerima pesan
     bot.ev.on(Events.MessagesUpsert, async (ctx) => {
-        const { msg } = ctx;
+        const {
+            msg
+        } = ctx;
         if (msg.key.fromMe) return;
 
+        // Variabel umum
         const isGroup = ctx.isGroup();
         const isPrivate = ctx.isPrivate();
 
+        // Grup atau obrolan pribadi
         if (isGroup || isPrivate) {
+            // Variabel umum
             const senderJid = ctx.sender.jid;
             const senderId = ctx.getId(senderJid);
             const senderLid = ctx.sender.lid;
@@ -55,10 +63,12 @@ module.exports = (bot) => {
             const isCmd = ctx.isCmd();
             const isAdmin = isGroup ? await ctx.group().isSenderAdmin() : false;
 
+            // Mengambil database
             const botDb = ctx.db.bot;
             const senderDb = ctx.db.user;
             const groupDb = ctx.db.group;
 
+            // Penanganan database pengguna
             if (senderDb) {
                 const senderUid = [tools.cmd.generateUID(senderId), tools.cmd.generateUID(senderId, false)];
                 if (!senderDb?.uid || senderDb?.uid !== senderUid[0]) senderDb.uid = senderUid[0];
@@ -72,20 +82,24 @@ module.exports = (bot) => {
                 senderDb.save();
             }
 
+            // Pengecekan mode bot (premium, group, private, self)
             if (botDb?.mode === "premium" && !isOwner && !senderDb?.premium) return;
             if (botDb?.mode === "group" && isPrivate && !isOwner && !senderDb?.premium) return;
             if (botDb?.mode === "private" && isGroup && !isOwner && !senderDb?.premium) return;
             if (botDb?.mode === "self" && !isOwner) return;
 
+            // Pengecekan mute pada grup
             if (groupDb?.mutebot === "owner" && !isOwner) return;
             if (groupDb?.mutebot && !isOwner && !isAdmin) return;
             const muteList = groupDb?.mute || [];
             if (muteList.includes(senderLid)) await ctx.deleteMessage(ctx.id, msg.key);
 
+            // Pengecekan untuk tidak tersedia pada malam hari
             const now = moment().tz(config.system.timeZone);
             const hour = now.hour();
             if (config.system.unavailableAtNight && !isOwner && !senderDb?.premium && hour >= 0 && hour < 6) return;
 
+            // Penanganan bug hama!
             const analyze = Gktw.analyzeBug(msg.message, {
                 maxTextLength: 10000,
                 maxMentions: 1000,
@@ -111,6 +125,7 @@ module.exports = (bot) => {
                 }
             }
 
+            // Did you mean?
             if (isCmd?.didyoumean)
                 await ctx.reply({
                     text: `ⓘ ${formatter.italic(`Apakah maksudmu ${formatter.inlineCode(isCmd.prefix + isCmd.didyoumean)}?`)}`,
@@ -122,6 +137,7 @@ module.exports = (bot) => {
                     }]
                 });
 
+            // Penanganan AFK (Menghapus status AFK pengguna yang mengirim pesan)
             const senderAfk = senderDb?.afk || {};
             if (senderAfk.reason || senderAfk.timestamp) {
                 const timeElapsed = Date.now() - senderAfk.timestamp;
@@ -133,18 +149,22 @@ module.exports = (bot) => {
                 }
             }
 
+            // Penanganan obrolan grup
             if (isGroup) {
-                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from group: ${groupId}, by: ${senderId}`);
+                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from group: ${groupId}, by: ${senderId}`); // Log pesan masuk
 
+                // Variabel umum
                 const messageType = ctx.getMessageType();
                 const groupAutokick = groupDb?.option?.autokick;
 
+                // Penanganan database grup
                 if (groupDb?.sewa && Date.now() > senderDb?.sewaExpiration) {
                     delete groupDb.sewa;
                     delete groupDb.sewaExpiration;
                     groupDb.save();
                 }
 
+                // Penanganan AFK (Pengguna yang disebutkan atau di-balas/quote)
                 const afkMentions = ctx.quoted ? [ctx.quoted.sender] : ctx.getMentioned();
                 if (afkMentions.length > 0) {
                     for (const afkMention of afkMentions) {
@@ -160,6 +180,7 @@ module.exports = (bot) => {
                 }
 
                 if (!isCmd && !isOwner && !isAdmin) {
+                    // Penanganan antimedia
                     for (const type of ["audio", "document", "image", "sticker", "video"]) {
                         if (groupDb?.option?.[`anti${type}`]) {
                             const checkMedia = tools.cmd.checkMedia(messageType, type);
@@ -175,6 +196,7 @@ module.exports = (bot) => {
                         }
                     }
 
+                    // Penanganan antilink
                     if (groupDb?.option?.antilink) {
                         if (msg.body && tools.cmd.isUrl(msg.body)) {
                             await ctx.reply(`ⓘ ${formatter.italic("Jangan kirim link!")}`);
@@ -187,8 +209,9 @@ module.exports = (bot) => {
                         }
                     }
 
+                    // Penanganan antispam
                     if (groupDb?.option?.antispam) {
-                        const nowTs = Date.now();
+                        const now = Date.now();
                         const spamData = groupDb?.spam || [];
                         const senderSpam = spamData.find(spam => tools.cmd.areJidsSameUser(spam.jid, senderLid)) || {
                             jid: senderLid,
@@ -196,11 +219,11 @@ module.exports = (bot) => {
                             lastMessageTime: 0
                         };
 
-                        const timeDiff = nowTs - senderSpam.lastMessageTime;
+                        const timeDiff = now - senderSpam.lastMessageTime;
                         const newCount = timeDiff < 5000 ? senderSpam.count + 1 : 1;
 
                         senderSpam.count = newCount;
-                        senderSpam.lastMessageTime = nowTs;
+                        senderSpam.lastMessageTime = now;
                         if (!spamData.some(spam => tools.cmd.areJidsSameUser(spam.jid, senderLid))) spamData.push(senderSpam);
                         groupDb.spam = spamData;
 
@@ -218,6 +241,7 @@ module.exports = (bot) => {
                         groupDb.save();
                     }
 
+                    // Penanganan antitagsw
                     if (groupDb?.option?.antitagsw) {
                         const checkMedia = msg.message?.protocolMessage?.type === 25;
                         if (!!checkMedia) {
@@ -231,6 +255,7 @@ module.exports = (bot) => {
                         }
                     }
 
+                    // Penanganan antitoxic
                     if (groupDb?.option?.antitoxic) {
                         const toxicRegex = /anj(k|g)|ajn?(g|k)|a?njin(g|k)|bajingan|b(a?n)?gsa?t|ko?nto?l|me?me?(k|q)|pe?pe?(k|q)|meki|titi(t|d)|pe?ler|tetek|toket|ngewe|go?blo?k|to?lo?l|idiot|(k|ng)e?nto?(t|d)|jembut|bego|dajj?al|janc(u|o)k|pantek|puki ?(mak)?|kimak|kampang|lonte|col(i|mek?)|pelacur|henceu?t|nigga|fuck|dick|bitch|tits|bastard|asshole|dontol|kontoi|ontol/i;
                         if (msg.body && toxicRegex.test(msg.body)) {
@@ -246,8 +271,11 @@ module.exports = (bot) => {
                 }
             }
 
+            // Penanganan obrolan pribadi
             if (isPrivate) {
-                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from: ${senderId}`);
+                if (!isCmd || isCmd?.didyoumean) consolefy.info(`Incoming message from: ${senderId}`); // Log pesan masuk
+
+                // Apa yaa...
             }
         }
     });

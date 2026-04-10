@@ -2,17 +2,6 @@
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 const axios = require("axios");
 
-const createSticker = async (stickerUrl, emoji, id) => {
-    return await new Sticker(stickerUrl)
-        .setPack(config.sticker.packname)
-        .setAuthor(config.sticker.author)
-        .setType(StickerTypes.FULL)
-        .setCategories([emoji])
-        .setID(id)
-        .setQuality(50)
-        .build();
-};
-
 module.exports = {
     name: "telegramstickerdl",
     aliases: ["telesticker", "telegramsticker"],
@@ -37,37 +26,67 @@ module.exports = {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;
+            const stickerPacks = await prepareStickerPack(result.stickers, result.title, `t.me/${result.name}`, ctx.msg.key.id);
 
-            const chunkSize = Math.ceil(result.stickers.length / Math.ceil(result.stickers.length / 30));
-            const stickerChunks = [];
-
-            for (let i = 0; i < result.stickers.length; i += chunkSize) {
-                stickerChunks.push(result.stickers.slice(i, i + chunkSize));
-            }
-
-            for (let packIndex = 0; packIndex < stickerChunks.length; packIndex++) {
-                const chunk = stickerChunks[packIndex];
-
-                const stickersPack = await Promise.all(chunk.map(async (sticker, i) => ({
-                    sticker: await createSticker(sticker.image_url, sticker.emoji, `${ctx.msg.key.id}_${packIndex}_${i}`),
-                    emojis: [sticker.emoji],
-                    accessibilityLabel: `Sticker ${i + 1}`,
-                    isLottie: false,
-                    isAnimated: sticker.image_url.endsWith(".webm")
-                })));
-
+            for (const pack of stickerPacks) {
                 await ctx.reply({
-                    stickerPack: {
-                        name: `${result.title}${stickerChunks.length > 1 ? ` (${packIndex + 1}/${stickerChunks.length})` : ""}`,
-                        publisher: `t.me/${result.name}`,
-                        description: `Sticker Pack by ${config.bot.name}`,
-                        cover: await createSticker(result.stickers[0].image_url, result.stickers[0].emoji, ctx.msg.key.id),
-                        stickers: stickersPack
-                    }
+                    stickerPack: pack
                 });
             }
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }
     }
+};
+
+async function createSticker(stickerUrl, emoji, id) {
+    return await new Sticker(stickerUrl)
+        .setPack(config.sticker.packname)
+        .setAuthor(config.sticker.author)
+        .setType(StickerTypes.FULL)
+        .setCategories([emoji])
+        .setID(id)
+        .setQuality(50)
+        .build();
+}
+
+async function chunkArray(array, chunkSize) {
+    const chunks = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+        chunks.push(array.slice(i, i + chunkSize));
+    }
+    return chunks;
+}
+
+async function prepareStickerPack(stickers, title, publisher, packId, maxPerPack = 30) {
+    const stickerChunks = chunkArray(stickers, maxPerPack);
+    const packs = [];
+
+    for (let packIndex = 0; packIndex < stickerChunks.length; packIndex++) {
+        const chunk = stickerChunks[packIndex];
+
+        const stickersPack = await Promise.all(
+            chunk.map(async (sticker, i) => ({
+                sticker: await createSticker(
+                    sticker.image_url,
+                    sticker.emoji,
+                    `${packId}_${packIndex}_${i}`
+                ),
+                emojis: [sticker.emoji],
+                accessibilityLabel: `Sticker ${i + 1}`,
+                isLottie: false,
+                isAnimated: sticker.image_url.endsWith(".webm")
+            }))
+        );
+
+        packs.push({
+            name: `${title}${stickerChunks.length > 1 ? ` (${packIndex + 1}/${stickerChunks.length})` : ""}`,
+            publisher: publisher,
+            description: `Sticker Pack by ${config.bot.name}`,
+            cover: await createSticker(stickers[0].image_url, stickers[0].emoji, packId),
+            stickers: stickersPack
+        });
+    }
+
+    return packs;
 };
