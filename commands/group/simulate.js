@@ -1,5 +1,5 @@
 const { Events } = require("@itsreimau/gktw");
-const { handleWelcome } = require("../../events/handler.js");
+const { handleWelcome } = require("../../events/welcome.js");
 
 module.exports = {
     name: "simulate",
