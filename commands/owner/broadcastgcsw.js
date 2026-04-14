@@ -1,6 +1,6 @@
 module.exports = {
     name: "broadcastgcsw",
-    aliases: ["bcgcsw"],
+    aliases: ["bcgcsw", "bcswgc"],
     category: "owner",
     permissions: {
         owner: true

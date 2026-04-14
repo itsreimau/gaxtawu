@@ -17,19 +17,21 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("zflorynz", "/api/search/cuaca", {
-                text: input
+            const apiUrl = tools.api.createUrl("nexray", "/information/cuaca", {
+                kota: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.forecasts;
 
-            await ctx.reply(
-                `➛ ${formatter.bold("Lokasi")}: ${result.lokasi}\n` +
-                `➛ ${formatter.bold("Cuaca")}: ${tools.msg.ucwords(result.cuaca)}\n` +
-                `➛ ${formatter.bold("Suhu")}: ${result.suhu}\n` +
-                `➛ ${formatter.bold("Kelembaban")}: ${result.kelembapan}\n` +
-                `➛ ${formatter.bold("Angin")}: ${result.angin}\n` +
-                `➛ ${formatter.bold("Tekanan Udara")}: ${result.cuaca.tekanan_udara}`
-            );
+            const resultText = result.map(res =>
+                `➛ ${formatter.bold("Waktu")}: ${res.waktu}\n` +
+                `➛ ${formatter.bold("Cuaca")}: ${res.cuaca}\n` +
+                `➛ ${formatter.bold("Suhu")}: ${res.suhu}\n` +
+                `➛ ${formatter.bold("Kelembaban")}: ${res.kelembaban}\n` +
+                `➛ ${formatter.bold("Kecepatan Angin")}: ${res.kecepatan_angin}\n` +
+                `➛ ${formatter.bold("Arah Angin")}: ${res.arah_angin}\n` +
+                `➛ ${formatter.bold("Visibilitas")}: ${res.visibilitas}`
+            ).join("\n\n");
+            await ctx.reply(resultText.trim());
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

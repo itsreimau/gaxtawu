@@ -36,21 +36,21 @@ module.exports = {
             const source = flag.source;
 
             if (source === "spotify") {
-                const searchApiUrl = tools.api.createUrl("kuroneko", "/api/search/spotify", {
+                const searchApiUrl = tools.api.createUrl("nexray", "/search/spotify", {
                     q: input
                 });
                 const searchResult = (await axios.get(searchApiUrl)).data.result[searchIndex];
 
                 await ctx.reply(
-                    `➛ ${formatter.bold("Judul")}: ${searchResult.title}\n` +
+                    `➛ ${formatter.bold("Judul")}: ${searchResult.name}\n` +
                     `➛ ${formatter.bold("Artis")}: ${searchResult.artist}\n` +
-                    `➛ ${formatter.bold("URL")}: ${searchResult.track_url}`
+                    `➛ ${formatter.bold("URL")}: ${searchResult.url}`
                 );
 
-                const downloadApiUrl = tools.api.createUrl("izukumii", "/downloader/spotify", {
-                    url: searchResult.url
+                const downloadApiUrl = tools.api.createUrl("chocomilk", "/v1/download/spotify", {
+                    url: searchResult.song_link
                 });
-                const downloadResult = (await axios.get(downloadApiUrl)).data.result.download;
+                const downloadResult = (await axios.get(downloadApiUrl)).data.data.media.url;
 
                 await ctx.reply({
                     audio: {
@@ -59,10 +59,10 @@ module.exports = {
                     mimetype: tools.mime.lookup("mp3")
                 });
             } else {
-                const searchApiUrl = tools.api.createUrl("deline", "/search/youtube", {
-                    q: input
+                const searchApiUrl = tools.api.createUrl("chocomilk", "/v1/youtube/search", {
+                    query: input
                 });
-                const searchResult = (await axios.get(searchApiUrl)).data.result[searchIndex];
+                const searchResult = (await axios.get(searchApiUrl)).data.data.all.filter(res => res.type === "video")[searchIndex];
 
                 await ctx.reply(
                     `➛ ${formatter.bold("Judul")}: ${searchResult.title}\n` +
@@ -70,10 +70,11 @@ module.exports = {
                     `➛ ${formatter.bold("URL")}: ${searchResult.link}`
                 );
 
-                const downloadApiUrl = tools.api.createUrl("nexray", "/downloader/ytmp3", {
-                    url: searchResult.link
+                const downloadApiUrl = tools.api.createUrl("chocomilk", "/v1/youtube/download", {
+                    url: searchResult.link,
+                    mode: "audio"
                 });
-                const downloadResult = (await axios.get(downloadApiUrl)).data.result.url;
+                const downloadResult = (await axios.get(downloadApiUrl)).data.data.download;
 
                 await ctx.reply({
                     audio: {

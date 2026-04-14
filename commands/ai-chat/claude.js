@@ -15,13 +15,26 @@ module.exports = {
                 tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")
             );
 
-        try {
-            const apiUrl = tools.api.createUrl("nexray", "/ai/claude", {
-                text: input
-            });
-            const result = (await axios.get(apiUrl)).data.result;
+        if (input === "reset") {
+            const senderDb = ctx.db.user;
+            delete senderDb.claudeSessionId;
+            return await ctx.reply(`ⓘ ${formatter.italic("Riwayat percakapan berhasil direset!")}`)
+        }
 
-            await ctx.reply(result);
+        try {
+            const senderDb = ctx.db.user;
+            const sessionId = senderDb.claudeSessionId || "";
+            const apiUrl = tools.api.createUrl("omegatech", "/api/ai/claude-pro", {
+                prompt: input,
+                sessionId
+            });
+            const result = (await axios.get(apiUrl)).data;
+            if (!sessionId) {
+                senderDb.claudeSessionId = result.sessionId;
+                senderDb.save();
+            }
+
+            await ctx.reply(result.response);
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

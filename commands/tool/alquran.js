@@ -24,8 +24,10 @@ module.exports = {
         if (isNaN(surat) || surat < 1 || surat > 114) return await ctx.reply(`ⓘ ${formatter.italic("Surah harus berupa nomor antara 1 sampai 114!")}`);
 
         try {
-            const apiUrl = tools.api.createUrl("https://raw.githubusercontent.com", `/penggguna/QuranJSON/master/surah/${surat}.json`);
-            const result = (await axios.get(apiUrl)).data;
+            const apiUrl = tools.api.createUrl("https://islami.api.akuari.my.id", "alquran", {
+                query: surat
+            });
+            const result = (await axios.get(apiUrl)).data.result;
             const verses = result.verses;
 
             if (ayat) {

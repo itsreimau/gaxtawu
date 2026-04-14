@@ -17,10 +17,10 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/search/tiktok", {
+            const apiUrl = tools.api.createUrl("chocomilk", "/v1/search/tiktok/video", {
                 query: input
             });
-            const result = (await axios.get(apiUrl)).data.result.play;
+            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.data).video.noWm;
 
             await ctx.reply({
                 video: {

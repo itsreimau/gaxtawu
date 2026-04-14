@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["editimg4"],
     category: "ai-misc",
     permissions: {
-        coin: 5
+        premium: true
     },
     code: async (ctx) => {
         const input = ctx.text;
@@ -25,11 +25,11 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("snowping", "/api/imageai/nanobanana", {
-                url: uploadUrl,
-                prompt: input
+            const apiUrl = tools.api.createUrl("kuroneko", "/api/tools/nanobanana", {
+                prompt: input,
+                media: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result.image;
+            const result = (await axios.get(apiUrl)).data.data.image;
 
             await ctx.reply({
                 image: {

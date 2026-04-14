@@ -3,6 +3,9 @@ const util = require("node:util");
 
 // Daftar API gratis
 const APIs = {
+    chocomilk: {
+        baseURL: "https://chocomilk.amira.us.kg"
+    },
     deline: {
         baseURL: "https://api.deline.web.id"
     },
@@ -24,6 +27,12 @@ const APIs = {
     nexray: {
         baseURL: "https://api.nexray.web.id"
     },
+    omegatech: {
+        baseURL: "https://omegatech-api.dixonomega.tech"
+    },
+    otinxsandip: {
+        baseURL: "https://sandipbaruwal.onrender.com"
+    },
     sanka: {
         baseURL: "https://www.sankavolereii.my.id",
         APIKey: "planaai"
@@ -31,20 +40,14 @@ const APIs = {
     siputzx: {
         baseURL: "https://api.siputzx.my.id"
     },
-    snowping: {
-        baseURL: "https://api.snowping.my.id"
+    vreden: {
+        baseURL: "https://api.vreden.my.id"
     },
     yp: {
         baseURL: "https://api.yupra.my.id"
     },
-    zell: {
-        baseURL: "https://zellapi.autos"
-    },
     zenzxz: {
         baseURL: "https://api.zenzxz.my.id"
-    },
-    zflorynz: {
-        baseURL: "https://kazztzyy.my.id"
     }
 };
 

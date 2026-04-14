@@ -25,7 +25,7 @@ module.exports = {
         }
 
         try {
-            const apiUrl = tools.api.createUrl("https://api-alkitab.vercel.app", `/api/passage`, {
+            const apiUrl = tools.api.createUrl("https://api-alkitab.vercel.app", "/api/passage", {
                 passage,
                 num: number
             });

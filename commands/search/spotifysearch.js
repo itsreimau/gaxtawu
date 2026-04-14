@@ -29,15 +29,15 @@ module.exports = {
             });
 
         try {
-            const apiUrl = tools.api.createUrl("kuroneko", "/api/search/spotify", {
+            const apiUrl = tools.api.createUrl("nexray", "/search/spotify", {
                 q: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.search_data;
 
             const resultText = result.map(res =>
-                `➛ ${formatter.bold("Judul")}: ${res.title}\n` +
+                `➛ ${formatter.bold("Judul")}: ${res.name}\n` +
                 `➛ ${formatter.bold("Artis")}: ${res.artist}\n` +
-                `➛ ${formatter.bold("URL")}: ${res.track_url}`
+                `➛ ${formatter.bold("URL")}: ${res.url}`
             ).join("\n\n");
             await ctx.reply(resultText.trim() || `ⓘ ${formatter.italic(config.msg.notFound)}`);
         } catch (error) {

@@ -1,10 +1,10 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "petgen",
+    name: "nsfwgen",
     category: "ai-generate",
     permissions: {
-        coin: 5
+        premium: true
     },
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.text;
@@ -16,7 +16,7 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("zflorynz", "/api/ai/petimg", {
+            const apiUrl = tools.api.createUrl("otinxsandip", "/pussy", {
                 prompt: input
             });
             const result = (await axios.get(apiUrl)).data.url;

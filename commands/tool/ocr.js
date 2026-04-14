@@ -16,10 +16,10 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("izukumii", "/tools/ocr", {
-                imageUrl: uploadUrl
+            const apiUrl = tools.api.createUrl("chocomilk", "/v1/tools/ocr", {
+                image: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.data.text;
 
             await ctx.reply(result);
         } catch (error) {

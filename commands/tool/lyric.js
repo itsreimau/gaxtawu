@@ -17,16 +17,16 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/tools/lyrics", {
-                q: input
+            const apiUrl = tools.api.createUrl("chocomilk", "/v1/search/lyrics", {
+                query: input
             });
-            const result = (await axios.get(apiUrl)).data.result[0];
+            const result = (await axios.get(apiUrl)).data.data;
 
             await ctx.reply(
-                `— ${result.plainLyrics}\n` +
+                `— ${result.lyrics.join("\n")}\n` +
                 "\n" +
-                `➛ ${formatter.bold("Judul")}: ${result.trackName}\n` +
-                `➛ ${formatter.bold("Artis")}: ${result.artistName}`
+                `➛ ${formatter.bold("Judul")}: ${result.title}\n` +
+                `➛ ${formatter.bold("Artis")}: ${result.artist}`
             );
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

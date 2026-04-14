@@ -15,7 +15,7 @@ module.exports = {
             await ctx.forwardMessage(ctx.id, {
                 message: quotedMessage
             }, true);
-            await ctx.reply(`ⓘ Media sekali lihat berhasil dikirim!`);
+            await ctx.reply(`ⓘ ${format.italic("Media sekali lihat berhasil dikirim!")}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

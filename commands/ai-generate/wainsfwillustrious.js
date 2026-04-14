@@ -2,7 +2,7 @@ const axios = require("axios");
 
 module.exports = {
     name: "wainsfwillustrious",
-    aliases: ["nsfwgen", "wai"],
+    aliases: ["wai"],
     category: "ai-generate",
     permissions: {
         premium: true

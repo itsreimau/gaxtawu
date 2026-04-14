@@ -35,11 +35,12 @@ module.exports = {
             const group = await ctx.group(target);
             const groupOwner = await group.owner();
 
-            if ((!silent && groupOwner) || !config.system.restrict)
+            if ((!silent && groupOwner) || !config.system.restrict) {
                 const groupMentions = [{
                     groupJid: `${group.id}@g.us`,
                     groupSubject: await group.name()
                 }];
+            }
 
             const targetDb = ctx.getDb("groups", target);
             if (daysAmount && daysAmount > 0) {

@@ -30,26 +30,25 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("izukumii", "/downloader/spotify", {
+            const apiUrl = tools.api.createUrl("chocomilk", "/v1/download/spotify", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result.download;
+            const result = (await axios.get(apiUrl)).data.data.media;
 
             const document = flag.document;
             if (document) {
-                const fileName = new URLSearchParams(result.split("?")[1]).get("n");
                 await ctx.reply({
                     document: {
-                        url: result
+                        url: result.url
                     },
-                    fileName: `${fileName}.mp3`,
+                    fileName: result.filename,
                     mimetype: tools.mime.lookup("mp3"),
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
                 await ctx.reply({
                     audio: {
-                        url: result
+                        url: result.url
                     },
                     mimetype: tools.mime.lookup("mp3")
                 });

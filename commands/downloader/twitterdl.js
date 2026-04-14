@@ -13,43 +13,38 @@ module.exports = {
         if (!url)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "https://x.com/kaotaro12/status/1459493783964250118")
+                tools.msg.generateCmdExample(ctx.used, "https://x.com/evangelion_co/status/1371234691504861186")
             );
 
         if (!tools.cmd.isUrl(url)) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("izukumii", "/downloader/twitter", {
+            const apiUrl = tools.api.createUrl("chocomilk", "/v1/download/twitter", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result;
-            const album = [];
-            let currentVideo;
-            for (const item of result) {
-                if (item.type === "video") {
-                    if (!currentVideo || item.resolution !== currentVideo.resolution) {
-                        currentVideo = item;
-                        album.push({
-                            video: {
-                                url: item.link
-                            },
-                            mimetype: tools.mime.lookup("mp4")
-                        });
-                    }
-                } else {
-                    album.push({
-                        image: {
-                            url: item.link
-                        },
-                        mimetype: tools.mime.lookup("png")
-                    });
-                }
-            }
+            const result = (await axios.get(apiUrl)).data.data.media;
 
-            await ctx.reply({
-                album,
-                caption: `➛ ${formatter.bold("URL")}: ${url}`
-            });
+            if (result.videos) {
+                await ctx.reply({
+                    video: {
+                        url: result.videos[0].url
+                    },
+                    mimetype: tools.mime.lookup("mp4"),
+                    caption: `➛ ${formatter.bold("URL")}: ${url}`
+                });
+            } else {
+                const album = result.images.map(res => ({
+                    image: {
+                        url: res.url
+                    },
+                    mimetype: tools.mime.lookup("png")
+                }));
+
+                await ctx.reply({
+                    album,
+                    caption: `➛ ${formatter.bold("URL")}: ${url}`
+                });
+            }
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

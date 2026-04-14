@@ -3,7 +3,8 @@ const axios = require("axios");
 const session = new Map();
 
 module.exports = {
-    name: "maths",
+    name: "mtk",
+    aliases: ["matematika", "maths"],
     category: "game",
     code: async (ctx) => {
         if (session.has(ctx.id)) return await ctx.reply(`ⓘ ${formatter.italic("Sesi permainan sedang berjalan!")}`);
@@ -30,7 +31,7 @@ module.exports = {
             const game = {
                 coin: result.bonus,
                 timeout: result.time,
-                answer: result.result.toLowerCase()
+                answer: result.toLowerCase()
             };
 
             session.set(ctx.id, true);

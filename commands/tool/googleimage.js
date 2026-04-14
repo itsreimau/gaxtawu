@@ -18,7 +18,7 @@ module.exports = {
 
         try {
             const apiUrl = tools.api.createUrl("kuroneko", "/api/search/gimage", {
-                q: input
+                query: input
             });
             const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result).url;
 

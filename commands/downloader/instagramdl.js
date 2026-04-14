@@ -20,16 +20,17 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("nexray", "/downloader/instagram", {
+            const apiUrl = tools.api.createUrl("chocomilk", "/v1/download/instagram", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.data.media.all;
             const album = result.map(res => ({
                 [res.type]: {
                     url: res.url
                 },
                 mimetype: tools.mime.lookup(res.type === "video" ? "mp4" : "png")
             }));
+
 
             await ctx.reply({
                 album,

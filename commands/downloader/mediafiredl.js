@@ -20,17 +20,17 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("kuroneko", "/api/download/mediafire", {
+            const apiUrl = tools.api.createUrl("izukumii", "/downloader/mediafire", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 document: {
-                    url: result.link
+                    url: result.url
                 },
-                fileName: result.fileName,
-                mimetype: tools.mime.lookup(result.filetype),
+                fileName: result.name,
+                mimetype: tools.mime.lookup(result.name),
                 caption: `➛ ${formatter.bold("URL")}: ${url}`
             });
         } catch (error) {

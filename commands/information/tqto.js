@@ -11,6 +11,7 @@ module.exports = {
             "➛ Kyluxx (github.com/Kyluxx)\n" +
             "➛ Fan (github.com/fandyahmd)\n" +
             "➛ Luki Zainur (github.com/lzif)\n" +
+            "➛ Lorenzo (github.com/LorenzoSchwz)\n" +
             "➛ Arsani Ariadeni (Donatur)\n" +
             "➛ Mahesa (Donatur)\n" +
             "➛ Dan kepada semua pihak yang telah membantu dalam pengembangan bot ini. (Banyak kalo diketik satu-satu)"

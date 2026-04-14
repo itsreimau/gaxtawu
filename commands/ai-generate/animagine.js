@@ -1,5 +1,7 @@
+const axios = require("axios");
+
 module.exports = {
-    name: "dalle",
+    name: "animagine",
     category: "ai-generate",
     permissions: {
         premium: true
@@ -14,9 +16,10 @@ module.exports = {
             );
 
         try {
-            const result = tools.api.createUrl("zell", "/ai/dalle", {
+            const result = tools.api.createUrl("vreden", "/api/v1/artificial/animagine", {
                 prompt: input
             });
+            const result = (await axios.get(apiUrl)).data.result.image.results;
 
             await ctx.reply({
                 image: {

@@ -13,28 +13,28 @@ module.exports = {
         if (!url)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "https://www.tiktok.com/@clero0_zi/video/7595185035498622216")
+                tools.msg.generateCmdExample(ctx.used, "https://www.tiktok.com/@netflixanime/video/7596931111805078805")
             );
 
         const isUrl = tools.cmd.isUrl(url);
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/downloader/tiktok", {
+            const apiUrl = tools.api.createUrl("chocomilk", "/v1/download/tiktok", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.data.media.video;
 
-            if (result.type === "video") {
+            if (result.video) {
                 await ctx.reply({
                     video: {
-                        url: result.download
+                        url: result.video
                     },
                     mimetype: tools.mime.lookup("mp4"),
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
-                const album = result.download.map(res => ({
+                const album = result.images.map(res => ({
                     image: {
                         url: res
                     },

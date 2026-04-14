@@ -17,11 +17,10 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("snowping", "/api/imageai/nanobanana", {
+            const result = tools.api.createUrl("faaa", "/faa/editfoto", {
                 url: uploadUrl,
                 prompt: "black skin color"
             });
-            const result = (await axios.get(apiUrl)).data.result.image;
 
             await ctx.reply({
                 image: {

@@ -13,7 +13,7 @@ module.exports = {
         if (!url)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "https://drive.google.com/file/d/1LunbMSJNMtGnUpy9fJGx7bougiwAo23j/view?usp=drive_link")
+                tools.msg.generateCmdExample(ctx.used, "https://drive.google.com/file/d/1-jkLy92U-uwB36GzGJj04fjRFRz0ZzO3/view")
             );
 
         const isUrl = tools.cmd.isUrl(url);
@@ -23,7 +23,7 @@ module.exports = {
             const apiUrl = tools.api.createUrl("deline", "/downloader/gdrive", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.data;
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 document: {
