@@ -16,7 +16,7 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("chocomilk", "/v1/i2i/enhance", {
+            const apiUrl = tools.api.createUrl("chocomilk", "/v1/i2i/enhance", {
                 url: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.data.image;

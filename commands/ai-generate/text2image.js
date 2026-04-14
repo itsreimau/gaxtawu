@@ -17,7 +17,7 @@ module.exports = {
             );
 
         try {
-            const result = tools.api.createUrl("vreden", "/api/v1/artificial/aiease/text2img", {
+            const apiUrl = tools.api.createUrl("vreden", "/api/v1/artificial/aiease/text2img", {
                 prompt: input,
                 style: 4
             });

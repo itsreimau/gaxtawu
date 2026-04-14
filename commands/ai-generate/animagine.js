@@ -16,7 +16,7 @@ module.exports = {
             );
 
         try {
-            const result = tools.api.createUrl("vreden", "/api/v1/artificial/animagine", {
+            const apiUrl = tools.api.createUrl("vreden", "/api/v1/artificial/animagine", {
                 prompt: input
             });
             const result = (await axios.get(apiUrl)).data.result.image.results;
