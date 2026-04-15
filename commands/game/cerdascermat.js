@@ -48,10 +48,8 @@ module.exports = {
                     `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}\n` +
                     `➛ ${formatter.bold("Cara menjawab")}: Ketik A, B, C, atau D`,
                 buttons: [{
-                    buttonId: `surrender_${ctx.used.command}`,
-                    buttonText: {
-                        displayText: "Menyerah"
-                    }
+                    text: "Menyerah",
+                    id: `surrender_${ctx.used.command}`
                 }]
             });
 
@@ -60,25 +58,19 @@ module.exports = {
             });
 
             const playAgain = [{
-                name: "quick_reply",
-                buttonParamsJson: JSON.stringify({
-                    display_text: "Main Lagi",
-                    id: `${ctx.used.prefix + ctx.used.command} ${input}`
-                })
+                text: "Main Lagi",
+                id: `${ctx.used.prefix + ctx.used.command} ${input}`
             }, {
-                name: "single_select",
-                buttonParamsJson: JSON.stringify({
-                    title: "Daftar Mata Pelajaran",
-                    sections: [{
-                        title: "Pilih Mata Pelajaran",
-                        highlight_label: "🌕",
-                        rows: Object.keys(mapel).map(pel => ({
-                            title: pel.toUpperCase(),
-                            description: `Klik untuk memainkan mata pelajaran ${mapel[pel]}`,
-                            id: `${ctx.used.prefix + ctx.used.command} ${pel}`
-                        }))
-                    }]
-                })
+                text: "Daftar Mata Pelajaran",
+                sections: [{
+                    title: "Pilih Mata Pelajaran",
+                    highlight_label: "🌕",
+                    rows: Object.keys(mapel).map(key => ({
+                        title: key.toUpperCase(),
+                        description: `Klik untuk memainkan mata pelajaran ${mapel[key]}`,
+                        id: `${ctx.used.prefix + ctx.used.command} ${key}`
+                    }))
+                }]
             }];
 
             collector.on("collect", async (collCtx) => {
@@ -102,7 +94,6 @@ module.exports = {
                         text: `ⓘ ${formatter.italic(`Anda menyerah! Jawabannya adalah ${game.answer} (${game.answerKey.toUpperCase()}).`)}`,
                         buttons: playAgain
                     });
-                    return;
                 }
             });
 

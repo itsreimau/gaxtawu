@@ -72,15 +72,11 @@ module.exports = {
                     text: text.trim(),
                     footer: config.msg.footer,
                     buttons: [{
-                        buttonId: `${ctx.used.prefix}owner`,
-                        buttonText: {
-                            displayText: "Hubungi Owner"
-                        }
+                        text: "Hubungi Owner",
+                        id: `${ctx.used.prefix}owner`
                     }, {
-                        buttonId: `${ctx.used.prefix}donate`,
-                        buttonText: {
-                            displayText: "Donasi"
-                        }
+                        text: "Donasi",
+                        id: `${ctx.used.prefix}donate`
                     }]
                 });
             } else {
@@ -118,16 +114,13 @@ module.exports = {
                     caption: text.trim(),
                     mentions: [ctx.sender.jid],
                     footer: config.msg.footer,
-                    interactiveButtons: [{
-                        name: "single_select",
-                        buttonParamsJson: JSON.stringify({
-                            title: "Daftar Menu",
-                            sections: [{
-                                title: "Pilih Kategori Menu",
-                                highlight_label: "🌕",
-                                rows
-                            }]
-                        })
+                    buttons: [{
+                        text: "Daftar Menu",
+                        sections: [{
+                            title: "Pilih Kategori Menu",
+                            highlight_label: "🌕",
+                            rows
+                        }]
                     }]
                 });
             }

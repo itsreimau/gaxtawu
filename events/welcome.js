@@ -46,12 +46,9 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
         await bot.sendMessage(groupJid, {
             text: groupDb.text.intro,
             mentions: [participantJid],
-            interactiveButtons: [{
-                name: "cta_copy",
-                buttonParamsJson: JSON.stringify({
-                    display_text: "Salin Teks",
-                    copy_code: groupDb.text.intro
-                })
+            nativeFlow: [{
+                text: "Salin Teks",
+                copy: groupDb.text.intro
             }]
         });
 }

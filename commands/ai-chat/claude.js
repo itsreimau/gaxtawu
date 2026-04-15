@@ -34,7 +34,11 @@ module.exports = {
                 senderDb.save();
             }
 
-            await ctx.reply(result.response);
+            await ctx.reply({
+                richResponse: [{
+                    text: result.response
+                }]
+            });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

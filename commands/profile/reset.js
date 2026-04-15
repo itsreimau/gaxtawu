@@ -19,15 +19,11 @@ module.exports = {
             await ctx.reply({
                 text: `ⓘ ${formatter.italic("Yakin ingin mereset database Anda? Tindakan ini akan menghapus semua data yang tersimpan dan tidak dapat dipulihkan.")}`,
                 buttons: [{
-                    buttonId: `${ctx.used.prefix + ctx.used.command} yes`,
-                    buttonText: {
-                        displayText: "Ya"
-                    }
+                    text: "Ya",
+                    id: `${ctx.used.prefix + ctx.used.command} yes`
                 }, {
-                    buttonId: `${ctx.used.prefix + ctx.used.command} no`,
-                    buttonText: {
-                        displayText: "Tidak"
-                    }
+                    text: "Tidak",
+                    id: `${ctx.used.prefix + ctx.used.command} no`
                 }]
             });
         } catch (error) {

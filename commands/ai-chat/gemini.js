@@ -33,7 +33,11 @@ module.exports = {
                 });
                 const result = (await axios.get(apiUrl)).data.result;
 
-                await ctx.reply(result);
+                await ctx.reply({
+                    richResponse: [{
+                        text: result
+                    }]
+                });
             } else {
                 const apiUrl = tools.api.createUrl("zenzxz", "/ai/gemini", {
                     q: input,
@@ -41,7 +45,11 @@ module.exports = {
                 });
                 const result = (await axios.get(apiUrl)).data.result;
 
-                await ctx.reply(result);
+                await ctx.reply({
+                    richResponse: [{
+                        text: result
+                    }]
+                });
             }
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

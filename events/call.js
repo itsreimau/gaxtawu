@@ -33,10 +33,8 @@ module.exports = (bot) => {
         await bot.sendMessage(fromJid, {
             text: `ⓘ ${formatter.italic("Anda telah dibanned secara otomatis karena melanggar aturan!")}`,
             buttons: [{
-                buttonId: "/owner",
-                buttonText: {
-                    displayText: "Hubungi Owner"
-                }
+                text: "Hubungi Owner",
+                id: "/owner"
             }]
         });
     });

@@ -15,7 +15,7 @@ module.exports = {
             );
 
         try {
-            const result = tools.api.createUrl("nexray", "/maker/codesnap", {
+            const result = tools.api.createUrl("nekolabs", "/canvas/carbonify", {
                 code: input
             });
 

@@ -27,15 +27,11 @@ module.exports = {
                     `➛ ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +
                     `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
                 buttons: [{
-                    buttonId: `hint_${ctx.used.command}`,
-                    buttonText: {
-                        displayText: "Petunjuk"
-                    }
+                    text: "Petunjuk",
+                    id: `hint_${ctx.used.command}`
                 }, {
-                    buttonId: `surrender_${ctx.used.command}`,
-                    buttonText: {
-                        displayText: "Menyerah"
-                    }
+                    text: "Menyerah",
+                    id: `surrender_${ctx.used.command}`
                 }]
             });
 
@@ -44,10 +40,8 @@ module.exports = {
             });
 
             const playAgain = [{
-                buttonId: ctx.used.prefix + ctx.used.command,
-                buttonText: {
-                    displayText: "Main Lagi"
-                }
+                text: "Main Lagi",
+                id: ctx.used.prefix + ctx.used.command
             }];
 
             collector.on("collect", async (collCtx) => {
@@ -62,7 +56,7 @@ module.exports = {
                     participantDb.save();
                     await collCtx.reply({
                         text: `ⓘ ${formatter.italic(`Benar! +${game.coin} Koin`)}`,
-                        buttons: playAgain
+                        nativeFlow: playAgain
                     });
                 } else if (participantAnswer === `hint_${ctx.used.command}`) {
                     const clue = game.answer.replace(/[aiueo]/g, "_");
@@ -72,7 +66,7 @@ module.exports = {
                     collector.stop();
                     await collCtx.reply({
                         text: `ⓘ ${formatter.italic(`Anda menyerah! Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`)}`,
-                        buttons: playAgain
+                        nativeFlow: playAgain
                     });
                 } else if (tools.cmd.didYouMean(participantAnswer, [game.answer]) === game.answer) {
                     await collCtx.reply(`ⓘ ${formatter.italic("Sedikit lagi!")}`);
@@ -84,7 +78,7 @@ module.exports = {
                     session.delete(ctx.id);
                     await ctx.reply({
                         text: `ⓘ ${formatter.italic(`Waktu habis! Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`)}`,
-                        buttons: playAgain
+                        nativeFlow: playAgain
                     });
                 }
             });

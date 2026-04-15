@@ -109,7 +109,7 @@ module.exports = (bot) => {
             });
             if (config.system.antiBug && analyze.isMalicious && !senderDb?.banned && !isOwner) {
                 await ctx.deleteMessage(ctx.id, msg.key);
-                await ctx.block(senderLid);
+                await ctx.block(senderJid);
                 senderDb.banned = true;
                 senderDb.save();
 
@@ -130,10 +130,8 @@ module.exports = (bot) => {
                 await ctx.reply({
                     text: `ⓘ ${formatter.italic(`Apakah maksudmu ${formatter.inlineCode(isCmd.prefix + isCmd.didyoumean)}?`)}`,
                     buttons: [{
-                        buttonId: `${isCmd.prefix + isCmd.didyoumean} ${isCmd.input}`,
-                        buttonText: {
-                            displayText: "Ya, benar!"
-                        }
+                        text: "Ya, benar!",
+                        id: `${isCmd.prefix + isCmd.didyoumean} ${isCmd.input}`
                     }]
                 });
 
@@ -165,7 +163,7 @@ module.exports = (bot) => {
                 }
 
                 // Penanganan AFK (Pengguna yang disebutkan atau di-balas/quote)
-                const afkMentions = ctx.quoted ? [ctx.quoted.sender] : ctx.getMentioned();
+                const afkMentions = ctx.quoted ? [ctx.quoted.sender] : await ctx.getMentioned();
                 if (afkMentions.length > 0) {
                     for (const afkMention of afkMentions) {
                         const mentionAfk = ctx.getDb("users", afkMention)?.afk || {};

@@ -22,7 +22,11 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result;
 
-            await ctx.reply(result);
+            await ctx.reply({
+                richResponse: [{
+                    text: result
+                }]
+            });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

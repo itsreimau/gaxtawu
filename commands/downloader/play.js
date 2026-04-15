@@ -48,7 +48,7 @@ module.exports = {
                 );
 
                 const downloadApiUrl = tools.api.createUrl("chocomilk", "/v1/download/spotify", {
-                    url: searchResult.song_link
+                    url: searchResult.url
                 });
                 const downloadResult = (await axios.get(downloadApiUrl)).data.data.media.url;
 
@@ -66,12 +66,12 @@ module.exports = {
 
                 await ctx.reply(
                     `➛ ${formatter.bold("Judul")}: ${searchResult.title}\n` +
-                    `➛ ${formatter.bold("Artis")}: ${searchResult.channel}\n` +
-                    `➛ ${formatter.bold("URL")}: ${searchResult.link}`
+                    `➛ ${formatter.bold("Artis")}: ${searchResult.author.name}\n` +
+                    `➛ ${formatter.bold("URL")}: ${searchResult.url}`
                 );
 
                 const downloadApiUrl = tools.api.createUrl("chocomilk", "/v1/youtube/download", {
-                    url: searchResult.link,
+                    url: searchResult.url,
                     mode: "audio"
                 });
                 const downloadResult = (await axios.get(downloadApiUrl)).data.data.download;

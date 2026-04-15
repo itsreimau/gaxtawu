@@ -25,7 +25,7 @@ module.exports = {
         if (!url)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d")}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d -q 720")}\n` +
                 tools.msg.generatesFlagInfo({
                     "-d": "Kirim sebagai dokumen",
                     "-q": "Kualitas video (tersedia: 144, 240, 360, 480, 720, 1080, 1440 | default: 360)"

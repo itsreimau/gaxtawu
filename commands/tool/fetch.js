@@ -77,7 +77,10 @@ module.exports = {
                     json = JSON.parse(text);
                 } catch {}
 
-                await ctx.reply(json ? walkJSON(json) : text);
+                await ctx.reply({
+                    code: json ? walkJSON(json) : text
+                    language: json ? "json" : "html"
+                });
             }
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

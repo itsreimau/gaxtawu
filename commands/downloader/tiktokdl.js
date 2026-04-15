@@ -23,7 +23,7 @@ module.exports = {
             const apiUrl = tools.api.createUrl("chocomilk", "/v1/download/tiktok", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.data.media.video;
+            const result = (await axios.get(apiUrl)).data.data.media;
 
             if (result.video) {
                 await ctx.reply({

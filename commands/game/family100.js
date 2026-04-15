@@ -34,10 +34,8 @@ module.exports = {
                     `➛ ${formatter.bold("Jumlah jawaban")}: ${game.answers.size}\n` +
                     `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
                 buttons: [{
-                    buttonId: `surrender_${ctx.used.command}`,
-                    buttonText: {
-                        displayText: "Menyerah"
-                    }
+                    text: "Menyerah",
+                    id: `surrender_${ctx.used.command}`
                 }]
             });
 
@@ -46,10 +44,8 @@ module.exports = {
             });
 
             const playAgain = [{
-                buttonId: ctx.used.prefix + ctx.used.command,
-                buttonText: {
-                    displayText: "Main Lagi"
-                }
+                text: "Main Lagi",
+                id: ctx.used.prefix + ctx.used.command
             }];
 
             collector.on("collect", async (collCtx) => {

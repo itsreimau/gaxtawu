@@ -33,8 +33,7 @@ module.exports = {
                 audio: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("mp3"),
-                ptt: true
+                mimetype: tools.mime.lookup("mp3")
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
