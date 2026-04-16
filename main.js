@@ -11,7 +11,7 @@ const {
     system
 } = config;
 const diretory = {
-    auth: path.resolve(__dirname, system?.authState === "multi" ? "state" : "state.json"),
+    auth: path.resolve(__dirname, system?.authState === "single" ? "state.json" : "state"),
     database: path.resolve(__dirname, "database"),
     command: path.resolve(__dirname, "commands")
 };
