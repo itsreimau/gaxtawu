@@ -78,7 +78,7 @@ module.exports = {
                 } catch {}
 
                 await ctx.reply({
-                    code: json ? walkJSON(json) : text
+                    code: json ? walkJSON(json) : text,
                     language: json ? "json" : "html"
                 });
             }

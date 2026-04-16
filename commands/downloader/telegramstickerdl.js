@@ -28,9 +28,13 @@ module.exports = {
             const result = (await axios.get(apiUrl)).data.result;
             const stickerPacks = await prepareStickerPack(result.stickers, result.title, `t.me/${result.name}`, ctx.msg.key.id);
 
-            for (const pack of stickerPacks) {
+            for (const stickerPack of stickerPacks) {
                 await ctx.reply({
-                    stickerPack: pack
+                    cover: stickerPack.cover,
+                    stickers: stickerPack.stickers,
+                    name: stickerPack.name,
+                    publisher: stickerPack.publisher,
+                    description: stickerPack.description
                 });
             }
         } catch (error) {
@@ -65,19 +69,10 @@ async function prepareStickerPack(stickers, title, publisher, packId, maxPerPack
     for (let packIndex = 0; packIndex < stickerChunks.length; packIndex++) {
         const chunk = stickerChunks[packIndex];
 
-        const stickersPack = await Promise.all(
-            chunk.map(async (sticker, i) => ({
-                sticker: await createSticker(
-                    sticker.image_url,
-                    sticker.emoji,
-                    `${packId}_${packIndex}_${i}`
-                ),
-                emojis: [sticker.emoji],
-                accessibilityLabel: `Sticker ${i + 1}`,
-                isLottie: false,
-                isAnimated: sticker.image_url.endsWith(".webm")
-            }))
-        );
+        const stickersPack = await Promise.all(chunk.map(async (sticker) => ({
+            data: await createSticker(sticker.image_url, sticker.emoji, `${packId}_${packIndex}_${i}`),
+            emojis: [sticker.emoji]
+        })));
 
         packs.push({
             name: `${title}${stickerChunks.length > 1 ? ` (${packIndex + 1}/${stickerChunks.length})` : ""}`,

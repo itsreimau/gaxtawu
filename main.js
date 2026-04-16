@@ -11,7 +11,7 @@ const {
     system
 } = config;
 const diretory = {
-    auth: path.resolve(__dirname, "state"),
+    auth: path.resolve(__dirname, system?.authState === "multi" ? "state" : "state.json"),
     database: path.resolve(__dirname, "database"),
     command: path.resolve(__dirname, "commands")
 };
@@ -36,6 +36,7 @@ const parsePrefix = function(prefix) {
 // Buat instance bot
 const bot = new Client({
     auth: {
+        state: system?.authState,
         dir: diretory.auth,
         phoneNumber: botConfig.phoneNumber,
         usePairingCode: system.usePairingCode,
