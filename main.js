@@ -44,9 +44,11 @@ const bot = new Client({
         useStore: system.useStore
     },
     connection: {
+        suppressBaileys: system?.suppressBaileys,
         version: system?.WAVersion,
         alwaysOnline: system.alwaysOnline,
-        selfReply: system.selfReply
+        selfReply: system.selfReply,
+        loggerLevel: system?.loggerLevel
     },
     messaging: {
         autoRead: system.autoRead,

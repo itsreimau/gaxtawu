@@ -1,4 +1,5 @@
 // Impor modul dan dependensi yang diperlukan
+require("dotenv").config();
 const { Config, Consolefy, Formatter } = require("@itsreimau/gktw");
 const path = require("node:path");
 const pkg = require("./package.json");

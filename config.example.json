@@ -61,7 +61,6 @@
     "timeZone": "Asia/Jakarta",
     "unavailableAtNight": false,
     "useCoin": true,
-    "authState": "multi",
     "usePairingCode": false,
     "customPairingCode": "1L0V3Y0U",
     "useStore": false,

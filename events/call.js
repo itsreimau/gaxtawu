@@ -13,7 +13,10 @@ module.exports = (bot) => {
 
         if (call?.isGroup || isOwner || fromDb?.banned) return;
 
-        consolefy.info(`Incoming call from: ${bot.getId(call.callerPn)}`); // Log panggilan masuk
+        const fromPnJid = call.callerPn;
+        const fromPnId = bot.getId(fromPnJid);
+
+        consolefy.info(`Incoming call from: ${fromPnJid)}`); // Log panggilan masuk
 
         await bot.core.rejectCall(call.id, fromJid);
 
@@ -24,8 +27,8 @@ module.exports = (bot) => {
         if (reportOwner && reportOwner.length > 0) {
             for (const ownerId of reportOwner) {
                 await bot.sendMessage(ownerId + Baileys.S_WHATSAPP_NET, {
-                    text: `ⓘ ${formatter.italic(`Akun @${fromId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`)}`,
-                    mentions: [fromJid]
+                    text: `ⓘ ${formatter.italic(`Akun @${fromPnId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`)}`,
+                    mentions: [fromPnJid]
                 });
                 await tools.cmd.delay(500);
             }
