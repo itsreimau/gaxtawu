@@ -30,9 +30,6 @@ const APIs = {
     omegatech: {
         baseURL: "https://omegatech-api.dixonomega.tech"
     },
-    otinxsandip: {
-        baseURL: "https://sandipbaruwal.onrender.com"
-    },
     sanka: {
         baseURL: "https://www.sankavolereii.my.id",
         APIKey: "planaai"

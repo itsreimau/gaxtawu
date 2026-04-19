@@ -68,16 +68,30 @@ module.exports = {
                     text += "╰┈┈┈┈┈┈\n\n";
                 }
 
+                const profilePictureUrl = await ctx.core.profilePictureUrl(ctx.sender.jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
+                const faviconMMSMetadata = await Baileys.prepareWAMessageMedia({
+                    image: {
+                        url: profilePictureUrl
+                    }
+                }, {
+                    upload: ctx.core.waUploadToServer
+                });
                 await ctx.reply({
-                    text: text.trim(),
-                    footer: config.msg.footer,
-                    buttons: [{
-                        text: "Hubungi Owner",
-                        id: `${ctx.used.prefix}owner`
-                    }, {
-                        text: "Donasi",
-                        id: `${ctx.used.prefix}donate`
-                    }]
+                    extendedTextMessage: {
+                        text: text.trim(),
+                        contextInfo: {
+                            externalAdReply: {
+                                title: config.bot.name,
+                                body: config.msg.footer,
+                                mediaType: 1,
+                                thumbnailUrl: config.bot.thumbnail,
+                                renderLargerThumbnail: true,
+                                showAdAttribution: true
+                            }
+                        },
+                        faviconMMSMetadata
+                    },
+                    raw: true
                 });
             } else {
                 const userDb = ctx.db.user;
@@ -114,13 +128,25 @@ module.exports = {
                     caption: text.trim(),
                     mentions: [ctx.sender.jid],
                     footer: config.msg.footer,
-                    buttons: [{
+                    optionText: "Opsi",
+                    optionTitle: "Pilih Opsi",
+                    offerText: config.bot.name,
+                    offerCode: config.system.customPairingCode,
+                    offerUrl: config.bot.groupLink,
+                    offerExpiration: Date.now() + 3_600_000,
+                    nativeFlow: [{
                         text: "Daftar Menu",
                         sections: [{
                             title: "Pilih Kategori Menu",
                             highlight_label: "🌕",
                             rows
                         }]
+                    }, {
+                        text: "Hubungi Owner",
+                        id: `${ctx.used.prefix}owner`
+                    }, {
+                        text: "Donasi",
+                        id: `${ctx.used.prefix}donate`
                     }]
                 });
             }

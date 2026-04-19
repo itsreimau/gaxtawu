@@ -13,7 +13,8 @@ module.exports = {
         if (!input)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")
+                `${tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
+                tools.msg.generateNotes(["AI ini dapat melihat gambar."])
             );
 
         const [checkMedia, checkQuotedMedia] = [
@@ -22,17 +23,39 @@ module.exports = {
         ];
 
         try {
-            const apiUrl = tools.api.createUrl("otinxsandip", "/gpt2", {
-                prompt: input,
-                uid: ctx.db.user.uid || "guest"
-            });
-            const result = (await axios.get(apiUrl)).data;
+            const instruction = `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.`; // Dapat diubah sesuai keinginan
+            const uid = ctx.db.user.uid || "guest";
 
-            await ctx.reply({
-                richResponse: [{
-                    text: result
-                }]
-            });
+            if (!!checkMedia || !!checkQuotedMedia) {
+                const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
+                const apiUrl = tools.api.createUrl("nekolabs", "/text.gen/gpt/5-nano", {
+                    text: input,
+                    systemPrompt: instruction,
+                    imageUrl: uploadUrl,
+                    sessionId: uid
+                });
+                const result = (await axios.get(apiUrl)).data.result;
+
+                await ctx.reply({
+                    richResponse: [{
+                        text: result
+                    }]
+                });
+            } else {
+                const apiUrl = tools.api.createUrl("nekolabs", "/text.gen/gpt/5-nano", {
+                    text: input,
+                    systemPrompt: instruction,
+                    sessionId: uid
+                });
+                const result = (await axios.get(apiUrl)).data.result;
+
+
+                await ctx.reply({
+                    richResponse: [{
+                        text: result
+                    }]
+                });
+            }
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }
