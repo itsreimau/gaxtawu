@@ -25,7 +25,6 @@ module.exports = {
                 video: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("mp4"),
                 caption: `➛ ${formatter.bold("URL")}: ${url}`
             });
         } catch (error) {

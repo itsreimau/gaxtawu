@@ -22,7 +22,6 @@ module.exports = {
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("png"),
                 caption: `➛ ${formatter.bold("Akun")}: @${ctx.getId(target)}`,
                 mentions: [target]
             });

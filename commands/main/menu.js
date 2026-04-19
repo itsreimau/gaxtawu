@@ -1,3 +1,4 @@
+const { Baileys } = require("@itsreimau/gktw");
 const fs = require("node:fs");
 const path = require("node:path");
 
@@ -74,8 +75,10 @@ module.exports = {
                         url: profilePictureUrl
                     }
                 }, {
-                    upload: ctx.core.waUploadToServer
+                    upload: ctx.core.waUploadToServer,
+                    mediaTypeOverride: "thumbnail-link"
                 })).imageMessage;
+
                 await ctx.reply({
                     extendedTextMessage: {
                         text: text.trim(),
@@ -85,11 +88,19 @@ module.exports = {
                                 body: config.msg.footer,
                                 mediaType: 1,
                                 thumbnailUrl: config.bot.thumbnail,
-                                renderLargerThumbnail: true,
-                                showAdAttribution: true
+                                sourceUrl: config.bot.groupLink,
+                                renderLargerThumbnail: true
                             }
                         },
-                        faviconMMSMetadata
+                        faviconMMSMetadata: {
+                            thumbnailDirectPath: faviconMMSMetadata.directPath,
+                            thumbnailSha256: faviconMMSMetadata.fileSha256,
+                            thumbnailEncSha256: faviconMMSMetadata.fileEncSha256,
+                            mediaKey: faviconMMSMetadata.mediaKey,
+                            mediaKeyTimestamp: faviconMMSMetadata.mediaKeyTimestamp,
+                            thumbnailHeight: 72,
+                            thumbnailWidth: 72
+                        }
                     },
                     raw: true
                 });
@@ -124,7 +135,6 @@ module.exports = {
                     image: {
                         url: config.bot.thumbnail
                     },
-                    mimetype: tools.mime.lookup("png"),
                     caption: text.trim(),
                     mentions: [ctx.sender.jid],
                     footer: config.msg.footer,

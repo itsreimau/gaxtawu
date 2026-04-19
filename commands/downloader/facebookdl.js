@@ -23,13 +23,15 @@ module.exports = {
             const apiUrl = tools.api.createUrl("chocomilk", "/v1/download/facebook", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.data.media.videos[0].url;
+            const result = (await axios.get(apiUrl)).data.data.media.all;
+            const album = result.map(res => ({
+                [res.type]: {
+                    url: res.url
+                }
+            }));
 
             await ctx.reply({
-                video: {
-                    url: result
-                },
-                mimetype: tools.mime.lookup("mp4"),
+                album,
                 caption: `➛ ${formatter.bold("URL")}: ${url}`
             });
         } catch (error) {

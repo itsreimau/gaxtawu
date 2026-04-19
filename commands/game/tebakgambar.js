@@ -24,7 +24,6 @@ module.exports = {
                 image: {
                     url: result.img
                 },
-                mimetype: tools.mime.lookup("png"),
                 caption: `— ${result.deskripsi}\n` +
                     "\n" +
                     `➛ ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +

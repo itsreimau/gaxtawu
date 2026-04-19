@@ -2,7 +2,7 @@ const axios = require("axios");
 
 module.exports = {
     name: "web2zip",
-    aliases: ["webtozip"],
+    aliases: ["saveweb", "webtozip"],
     category: "tool",
     permissions: {
         coin: 5
@@ -20,7 +20,7 @@ module.exports = {
         if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("zenzxz", "/tools/saveweb2zip", {
+            const apiUrl = tools.api.createUrl("kuroneko", "/api/tools/saveweb", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;
@@ -30,7 +30,7 @@ module.exports = {
                     url: result.download_url
                 },
                 fileName: "web2zip.zip",
-                mimetype: tools.mime.lookup("zip"),
+                mimetype: "application/zip",
                 caption: `➛ ${formatter.bold("URL")}: ${url}`
             });
         } catch (error) {

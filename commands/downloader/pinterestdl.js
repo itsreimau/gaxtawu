@@ -27,9 +27,8 @@ module.exports = {
 
             await ctx.reply({
                 [result.is_video ? "video" : "image"]: {
-                    url: result.is_video ? result.media.videos[0].url : result.media.images?.original?.url
+                    url: result.is_video ? result.media.videos[0].url : result.media.images.original.url
                 },
-                mimetype: result.is_video ? tools.mime.lookup("mp4") : tools.mime.lookup("png"),
                 caption: `➛ ${formatter.bold("URL")}: ${url}`
             });
         } catch (error) {

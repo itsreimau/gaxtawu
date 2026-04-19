@@ -42,7 +42,7 @@ module.exports = {
                         url: result.url
                     },
                     fileName: result.filename,
-                    mimetype: tools.mime.lookup("mp3"),
+                    mimetype: "audio/mpeg",
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
@@ -50,7 +50,7 @@ module.exports = {
                     audio: {
                         url: result.url
                     },
-                    mimetype: tools.mime.lookup("mp3")
+                    mimetype: "audio/mpeg"
                 });
             }
         } catch (error) {

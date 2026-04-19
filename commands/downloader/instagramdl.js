@@ -27,10 +27,8 @@ module.exports = {
             const album = result.map(res => ({
                 [res.type]: {
                     url: res.url
-                },
-                mimetype: tools.mime.lookup(res.type === "video" ? "mp4" : "png")
+                }
             }));
-
 
             await ctx.reply({
                 album,

@@ -43,7 +43,6 @@ module.exports = {
                     image: {
                         url: config.bot.thumbnail
                     },
-                    mimetype: tools.mime.lookup("png"),
                     caption: input,
                     mentionAll: ctx.used.command === "bcht" ? true : false,
                     footer: config.msg.footer,

@@ -56,7 +56,7 @@ module.exports = {
                     audio: {
                         url: downloadResult
                     },
-                    mimetype: tools.mime.lookup("mp3")
+                    mimetype: "audio/mpeg"
                 });
             } else {
                 const searchApiUrl = tools.api.createUrl("chocomilk", "/v1/youtube/search", {
@@ -80,7 +80,7 @@ module.exports = {
                     audio: {
                         url: downloadResult
                     },
-                    mimetype: tools.mime.lookup("mp3")
+                    mimetype: "audio/mpeg"
                 });
             }
         } catch (error) {

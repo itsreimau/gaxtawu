@@ -21,7 +21,6 @@ module.exports = {
                 video: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("mp4"),
                 gifPlayback: true
             });
         } catch (error) {

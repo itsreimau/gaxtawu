@@ -44,17 +44,17 @@ module.exports = {
             } else if (/image/.test(contentType)) {
                 await ctx.reply({
                     image: data,
-                    mimetype: tools.mime.contentType(contentType)
+                    mimetype: contentType
                 });
             } else if (/video/.test(contentType)) {
                 await ctx.reply({
                     video: data,
-                    mimetype: tools.mime.contentType(contentType)
+                    mimetype: contentType
                 });
             } else if (/audio/.test(contentType)) {
                 await ctx.reply({
                     audio: data,
-                    mimetype: tools.mime.contentType(contentType)
+                    mimetype: contentType
                 });
             } else if (!/text|json|html|plain|utf-8/i.test(contentType)) {
                 let fileName = "";
@@ -67,7 +67,7 @@ module.exports = {
                 await ctx.reply({
                     document: data,
                     fileName,
-                    mimetype: tools.mime.contentType(contentType)
+                    mimetype: contentType
                 });
             } else {
                 let text = data.toString();

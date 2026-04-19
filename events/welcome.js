@@ -37,7 +37,6 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
         image: {
             url: canvasUrl
         },
-        mimetype: tools.mime.lookup("png"),
         caption: text,
         mentions: [participantJid]
     });

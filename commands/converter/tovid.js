@@ -21,8 +21,7 @@ module.exports = {
             await ctx.reply({
                 video: {
                     url: result
-                },
-                mimetype: tools.mime.lookup("mp4")
+                }
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

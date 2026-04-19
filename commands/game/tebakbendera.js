@@ -24,7 +24,6 @@ module.exports = {
                 image: {
                     url: result.img
                 },
-                mimetype: tools.mime.lookup("png"),
                 caption: `➛ ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +
                     `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
                 buttons: [{

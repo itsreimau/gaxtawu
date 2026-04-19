@@ -29,15 +29,13 @@ module.exports = {
                     video: {
                         url: result.videos[0].url
                     },
-                    mimetype: tools.mime.lookup("mp4"),
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
                 const album = result.images.map(res => ({
                     image: {
                         url: res.url
-                    },
-                    mimetype: tools.mime.lookup("png")
+                    }
                 }));
 
                 await ctx.reply({

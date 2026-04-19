@@ -194,6 +194,20 @@ module.exports = (bot) => {
                         }
                     }
 
+                    // Penanganan antigcsw
+                    if (groupDb?.option?.antigcsw) {
+                        const checkMedia = msg.message?.groupStatusMessageV2?.contextInfo?.isGroupStatus;
+                        if (checkMedia) {
+                            await ctx.reply(`ⓘ ${formatter.italic("Jangan bikin SW di grup, gak ada yg peduli!")}`);
+                            await ctx.deleteMessage(ctx.id, msg.key);
+                            if (groupAutokick) {
+                                await ctx.group().kick(senderJid);
+                            } else {
+                                await handleWarning(ctx, senderJid, senderId, senderLid, groupJid, groupDb);
+                            }
+                        }
+                    }
+
                     // Penanganan antilink
                     if (groupDb?.option?.antilink) {
                         if (msg.body && tools.cmd.isUrl(msg.body)) {

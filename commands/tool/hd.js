@@ -24,8 +24,7 @@ module.exports = {
             await ctx.reply({
                 image: {
                     url: result
-                },
-                mimetype: tools.mime.lookup("png")
+                }
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

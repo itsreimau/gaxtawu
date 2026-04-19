@@ -26,7 +26,6 @@ module.exports = {
                 image: {
                     url: result
                 },
-                mimetype: tools.mime.lookup("png"),
                 caption: `➛ ${formatter.bold("Prompt")}: ${input}`,
                 buttons: [{
                     text: "Ambil Lagi",

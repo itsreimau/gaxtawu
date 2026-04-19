@@ -49,7 +49,6 @@ module.exports = {
                 });
                 const result = (await axios.get(apiUrl)).data.result;
 
-
                 await ctx.reply({
                     richResponse: [{
                         text: result

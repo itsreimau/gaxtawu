@@ -50,7 +50,7 @@ module.exports = {
                         url: result.download
                     },
                     fileName: result.filename,
-                    mimetype: tools.mime.lookup("mp4"),
+                    mimetype: "video/mp4",
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
@@ -58,7 +58,6 @@ module.exports = {
                     video: {
                         url: result.download
                     },
-                    mimetype: tools.mime.lookup("mp4"),
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             }

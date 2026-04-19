@@ -73,12 +73,13 @@ async function get(type) {
                 const data = [
                     "antiaudio (Anti audio)",
                     "Antidocument (Anti dokumen)",
-                    "Antigif (Anti GIF)",
                     "Antiimage (Anti gambar)",
-                    "antilink (Anti link)",
-                    "antispam (Anti spam)",
                     "antisticker (Anti stiker)",
                     "antivideo (Anti video)",
+                    "Antigcsw (Anti GC SW)",
+                    "antilink (Anti link)",
+                    "antispam (Anti spam)",
+                    case "antitagsw":
                     "antitoxic (Anti toxic, seperti bahasa kasar)",
                     `autokick (Dikeluarkan secara otomatis, jika ada yang melanggar salah satu opsi ${formatter.inlineCode("anti...")})`,
                     "gamerestrict (Anggota dilarang bermain game)",

@@ -60,7 +60,6 @@ module.exports = (bot) => {
                     image: {
                         url: canvasUrl
                     },
-                    mimetype: tools.mime.lookup("png"),
                     caption: `ⓘ ${formatter.italic(`Selamat! Anda telah naik ke level ${newSenderLevel}.`)}`,
                     buttons: [{
                         text: "Nonaktifkan Autolevelup",
