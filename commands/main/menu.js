@@ -69,13 +69,13 @@ module.exports = {
                 }
 
                 const profilePictureUrl = await ctx.core.profilePictureUrl(ctx.sender.jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
-                const faviconMMSMetadata = await Baileys.prepareWAMessageMedia({
+                const faviconMMSMetadata = (await Baileys.prepareWAMessageMedia({
                     image: {
                         url: profilePictureUrl
                     }
                 }, {
                     upload: ctx.core.waUploadToServer
-                });
+                })).imageMessage;
                 await ctx.reply({
                     extendedTextMessage: {
                         text: text.trim(),
