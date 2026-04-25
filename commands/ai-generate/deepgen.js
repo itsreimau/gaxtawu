@@ -1,31 +1,28 @@
-const axios = require("axios");
-
 module.exports = {
-    name: "zerochan",
-    category: "tool",
+    name: "deepgen",
+    category: "ai-generate",
     permissions: {
         coin: 5
     },
     code: async (ctx) => {
-        const input = ctx.text;
+        const input = ctx.text || ctx.quoted?.text;
 
         if (!input)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "rei ayanami")
+                tools.msg.generateCmdExample(ctx.used, "anime girl with short blue hair")
             );
 
         try {
-            const apiUrl = tools.api.createUrl("izukumii", "/search/zerochan", {
-                query: input
+            const result = tools.api.createUrl("neo", "/api/ai-image/deepai", {
+                prompt: input
             });
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result).downloadLink;
 
             await ctx.reply({
                 image: {
                     url: result
                 },
-                caption: `➛ ${formatter.bold("Kueri")}: ${input}`,
+                caption: `➛ ${formatter.bold("Prompt")}: ${input}`,
                 buttons: [{
                     text: "Ambil Lagi",
                     id: `${ctx.used.prefix + ctx.used.command} ${input}`

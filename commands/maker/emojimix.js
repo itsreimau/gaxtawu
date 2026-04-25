@@ -18,11 +18,10 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/maker/emojimix", {
+            const result = tools.api.createUrl("nexray", "/tools/emojimix", {
                 emoji1,
                 emoji2
             });
-            const result = (await axios.get(apiUrl)).data.result.png;
             const sticker = await new Sticker(result)
                 .setPack(config.sticker.packname)
                 .setAuthor(config.sticker.author)

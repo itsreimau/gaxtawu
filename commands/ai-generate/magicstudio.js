@@ -1,7 +1,6 @@
 module.exports = {
-    name: "carbonify",
-    aliases: ["carbon", "codesnap"],
-    category: "maker",
+    name: "magicstudio",
+    category: "ai-generate",
     permissions: {
         coin: 5
     },
@@ -11,18 +10,23 @@ module.exports = {
         if (!input)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, 'console.log("halo, dunia!");')
+                tools.msg.generateCmdExample(ctx.used, "anime girl with short blue hair")
             );
 
         try {
-            const result = tools.api.createUrl("nekolabs", "/canvas/carbonify", {
-                code: input
+            const result = tools.api.createUrl("nexray", "/ai/magicstudio", {
+                prompt: input
             });
 
             await ctx.reply({
                 image: {
                     url: result
-                }
+                },
+                caption: `➛ ${formatter.bold("Prompt")}: ${input}`,
+                buttons: [{
+                    text: "Ambil Lagi",
+                    id: `${ctx.used.prefix + ctx.used.command} ${input}`
+                }]
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

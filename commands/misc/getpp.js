@@ -5,7 +5,7 @@ module.exports = {
     code: async (ctx) => {
         const target = await ctx.target();
 
-        if (!target)
+        if (!target.jid)
             return await ctx.reply({
                 text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                     `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
@@ -16,14 +16,14 @@ module.exports = {
             });
 
         try {
-            const result = await ctx.core.profilePictureUrl(target, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
+            const result = await ctx.core.profilePictureUrl(target.jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
 
             await ctx.reply({
                 image: {
                     url: result
                 },
-                caption: `➛ ${formatter.bold("Akun")}: @${ctx.getId(target)}`,
-                mentions: [target]
+                caption: `➛ ${formatter.bold("Akun")}: @${ctx.getId(target.jid)}`,
+                mentions: [target.jid]
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

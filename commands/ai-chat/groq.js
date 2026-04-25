@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "venice",
+    name: "groq",
     category: "ai-chat",
     permissions: {
         coin: 5
@@ -16,9 +16,10 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("kuroneko", "/api/ai/venice", {
-                message: input,
-                system: `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.` // Dapat diubah sesuai keinginan
+            const apiUrl = tools.api.createUrl("nekolabs", "/text.gen/groq/compound", {
+                text: input,
+                systemPrompt: `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.`, // Dapat diubah sesuai keinginan,
+                sessionId: ctx.db.user.uid || "guest"
             });
             const result = (await axios.get(apiUrl)).data.result;
 
@@ -27,8 +28,8 @@ module.exports = {
                     text: result
                 }]
             });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
         }
+    } catch (error) {
+        await tools.cmd.handleError(ctx, error, true);
     }
 };

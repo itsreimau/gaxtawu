@@ -17,9 +17,8 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("vreden", "/api/v1/artificial/aiease/text2img", {
-                prompt: input,
-                style: 4
+            const apiUrl = tools.api.createUrl("vreden", "/api/v1/artificial/deepai/text2img", {
+                prompt: input
             });
             const result = (await axios.get(apiUrl)).data.result.output_url;
 

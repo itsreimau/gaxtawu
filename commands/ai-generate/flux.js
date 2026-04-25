@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "flux",
     category: "ai-generate",
@@ -16,10 +14,9 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("kuroneko", "/api/ai/deepimg", {
-                prompt: input
+            const result = tools.api.createUrl("faaa", "/faa/fluxai", {
+                text: input
             });
-            const result = (await axios.get(apiUrl)).data.result.image;
 
             await ctx.reply({
                 image: {

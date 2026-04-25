@@ -4,7 +4,7 @@ module.exports = {
     category: "profile",
     code: async (ctx) => {
         const target = await ctx.target();
-        const coinAmount = parseInt(ctx.args[ctx.quoted ? 0 : 1], 10);
+        const coinAmount = parseInt(ctx.args[target.source === "quoted" ? 0 : 1], 10);
 
         if (!target || !coinAmount)
             return await ctx.reply({
@@ -23,7 +23,7 @@ module.exports = {
         if (senderDb?.coin < coinAmount) return await ctx.reply(`ⓘ ${formatter.italic("Koin Anda tidak mencukupi untuk transfer ini!")}`);
 
         try {
-            const targetDb = ctx.getDb("users", target);
+            const targetDb = ctx.getDb("users", target.jid);
             targetDb.coin += coinAmount;
             senderDb.coin -= coinAmount;
             targetDb.save();

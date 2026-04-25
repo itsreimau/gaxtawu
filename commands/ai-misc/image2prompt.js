@@ -17,10 +17,11 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("deline", "/ai/toprompt", {
-                url: uploadUrl
+            const apiUrl = tools.api.createUrl("lexcode", "/api/ai/img2prompt", {
+                url: uploadUrl,
+                language: "en"
             });
-            const result = (await axios.get(apiUrl)).data.result.original;
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply(result);
         } catch (error) {

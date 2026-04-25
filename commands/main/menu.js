@@ -88,7 +88,7 @@ module.exports = {
                                 body: config.msg.footer,
                                 mediaType: 1,
                                 thumbnailUrl: config.bot.thumbnail,
-                                sourceUrl: config.bot.groupLink,
+                                sourceUrl: config.bot.thumbnail,
                                 renderLargerThumbnail: true
                             }
                         },

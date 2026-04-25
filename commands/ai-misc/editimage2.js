@@ -31,7 +31,8 @@ module.exports = {
             await ctx.reply({
                 image: {
                     url: result
-                }
+                },
+                caption: `➛ ${formatter.bold("Prompt")}: ${input}`
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

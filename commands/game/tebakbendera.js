@@ -27,7 +27,7 @@ module.exports = {
                 caption: `➛ ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +
                     `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
                 buttons: [{
-                    text: "Petunjuk",
+                    text: "Petunjuk (3 Koin)",
                     id: `hint_${ctx.used.command}`
                 }, {
                     text: "Menyerah",
@@ -59,6 +59,9 @@ module.exports = {
                         buttons: playAgain
                     });
                 } else if (participantAnswer === `hint_${ctx.used.command}`) {
+                    if (participantDb.coin < 3) return await collCtx.reply(`ⓘ ${formatter.italic(config.msg.coin)}`);
+                    participantDb.coin -= 3;
+                    participantDb.save();
                     const clue = game.answer.replace(/[aiueo]/g, "_");
                     await collCtx.reply(formatter.monospace(clue.toUpperCase()));
                 } else if (participantAnswer === `surrender_${ctx.used.command}`) {

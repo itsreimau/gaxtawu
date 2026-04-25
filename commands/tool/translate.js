@@ -26,11 +26,12 @@ module.exports = {
         }
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/tools/translate", {
+            const apiUrl = tools.api.createUrl("cuki", "/api/tools/translate", {
                 text: input,
+                source: "auto",
                 target: langCode
-            });
-            const result = (await axios.get(apiUrl)).data.data.hasil_terjemahan;
+            }, "apikey");
+            const result = (await axios.get(apiUrl)).data.data.translatedText;
 
             await ctx.reply(result);
         } catch (error) {

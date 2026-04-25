@@ -9,7 +9,7 @@ module.exports = {
     code: async (ctx) => {
         const target = await ctx.target(["quoted", "mentioned"]);
 
-        if (!target)
+        if (!target.jid)
             return await ctx.reply({
                 text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                     `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
@@ -19,10 +19,10 @@ module.exports = {
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (!await ctx.group().isAdmin(target)) return await ctx.reply(`ⓘ ${formatter.italic("Dia adalah anggota!")}`);
+        if (!await ctx.group().isAdmin(target.jid)) return await ctx.reply(`ⓘ ${formatter.italic("Dia adalah anggota!")}`);
 
         try {
-            await ctx.group().demote(target);
+            await ctx.group().demote(target.jid);
 
             await ctx.reply(`ⓘ ${formatter.italic("Berhasil diturunkan dari admin menjadi anggota!")}`);
         } catch (error) {

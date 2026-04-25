@@ -15,28 +15,15 @@ module.exports = {
                 tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")
             );
 
-        if (input === "reset") {
-            const senderDb = ctx.db.user;
-            delete senderDb.claudeSessionId;
-            return await ctx.reply(`ⓘ ${formatter.italic("Riwayat percakapan berhasil direset!")}`)
-        }
-
         try {
-            const senderDb = ctx.db.user;
-            const sessionId = senderDb.claudeSessionId || "";
-            const apiUrl = tools.api.createUrl("omegatech", "/api/ai/claude-pro", {
-                prompt: input,
-                sessionId
+            const apiUrl = tools.api.createUrl("lexcode", "/api/ai/claude-3-haiku", {
+                prompt: input
             });
-            const result = (await axios.get(apiUrl)).data;
-            if (!sessionId) {
-                senderDb.claudeSessionId = result.sessionId;
-                senderDb.save();
-            }
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 richResponse: [{
-                    text: result.response
+                    text: result
                 }]
             });
         } catch (error) {

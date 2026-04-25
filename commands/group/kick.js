@@ -11,7 +11,7 @@ module.exports = {
     code: async (ctx) => {
         const target = await ctx.target(["quoted", "mentioned"]);
 
-        if (!target)
+        if (!target.jid)
             return await ctx.reply({
                 text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                     `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
@@ -21,10 +21,10 @@ module.exports = {
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (await ctx.group().isOwner(target)) return await ctx.reply(`ⓘ ${formatter.italic("Dia adalah owner grup!")}`);
+        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(`ⓘ ${formatter.italic("Dia adalah owner grup!")}`);
 
         try {
-            await ctx.group().kick(target);
+            await ctx.group().kick(target.jid);
 
             await ctx.reply(`ⓘ ${formatter.italic("Berhasil dikeluarkan!")}`);
         } catch (error) {

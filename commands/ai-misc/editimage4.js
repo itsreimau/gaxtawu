@@ -1,11 +1,9 @@
-const axios = require("axios");
-
 module.exports = {
     name: "editimage4",
     aliases: ["editimg4"],
     category: "ai-misc",
     permissions: {
-        premium: true
+        coin: 5
     },
     code: async (ctx) => {
         const input = ctx.text;
@@ -25,16 +23,16 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("kuroneko", "/api/tools/nanobanana", {
-                prompt: input,
-                media: uploadUrl
-            });
-            const result = (await axios.get(apiUrl)).data.data.image;
+            const result = tools.api.createUrl("sanka", "/ai/editimg", {
+                url: uploadUrl,
+                prompt: input
+            }, "apikey");
 
             await ctx.reply({
                 image: {
                     url: result
-                }
+                },
+                caption: `➛ ${formatter.bold("Prompt")}: ${input}`
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

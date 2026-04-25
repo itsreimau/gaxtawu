@@ -7,7 +7,7 @@ module.exports = {
     },
     code: async (ctx) => {
         const target = await ctx.target();
-        const coinAmount = parseInt(ctx.args[ctx.quoted ? 0 : 1], 10);
+        const coinAmount = parseInt(ctx.args[target.source === "quoted" ? 0 : 1], 10);
 
         if (!target || !coinAmount)
             return await ctx.reply({
@@ -21,7 +21,7 @@ module.exports = {
             });
 
         try {
-            const targetDb = ctx.getDb("users", target);
+            const targetDb = ctx.getDb("users", target.jid);
             targetDb.coin += coinAmount;
             targetDb.save();
 
@@ -33,7 +33,7 @@ module.exports = {
                 }
             });
             const silent = flag?.silent;
-            if (!silent || !config.system.restrict) await ctx.sendMessage(target, `ⓘ ${formatter.italic(`Anda telah menerima ${coinAmount} koin dari owner!`)}`);
+            if (!silent || !config.system.restrict) await ctx.sendMessage(target.jid, `ⓘ ${formatter.italic(`Anda telah menerima ${coinAmount} koin dari owner!`)}`);
 
             await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menambahkan ${coinAmount} koin kepada pengguna itu!`)}`);
         } catch (error) {

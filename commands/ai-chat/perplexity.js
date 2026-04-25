@@ -16,10 +16,10 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("nexray", "/ai/perplexity", {
-                text: input
+            const apiUrl = tools.api.createUrl("nekolabs", "/text.gen/perplexity", {
+                query: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.response;
 
             await ctx.reply({
                 richResponse: [{

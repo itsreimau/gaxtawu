@@ -16,10 +16,10 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("nexray", "/ai/felo", {
-                text: input
-            });
-            const result = (await axios.get(apiUrl)).data.result;
+            const apiUrl = tools.api.createUrl("cuki", "/api/ai/felo", {
+                query: input
+            }, "apikey");
+            const result = (await axios.get(apiUrl)).data.results.answer;
 
             await ctx.reply({
                 richResponse: [{

@@ -16,38 +16,56 @@ module.exports = {
                 tools.msg.generateNotes(["AI ini dapat melihat gambar."])
             );
 
+        if (input === "reset") {
+            const senderDb = ctx.db.user;
+            delete senderDb.geminiHistoryChat;
+            return await ctx.reply(`ⓘ ${formatter.italic("Riwayat percakapan berhasil direset!")}`);
+        }
+
         const [checkMedia, checkQuotedMedia] = [
             tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
             tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
         ];
 
         try {
-            const model = "gemini-2.0-flash";
+            const mode = "chat";
+            const senderDb = ctx.db.user;
+            const historyChat = senderDb.geminiHistoryChat || "";
 
             if (!!checkMedia || !!checkQuotedMedia) {
                 const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
                 const apiUrl = tools.api.createUrl("zenzxz", "/ai/gemini", {
-                    q: input,
-                    model,
-                    url: uploadUrl
+                    prompt: input,
+                    mode,
+                    media: uploadUrl,
+                    history: historyChat
                 });
                 const result = (await axios.get(apiUrl)).data.result;
+                if (!historyChat) {
+                    senderDb.geminiHistoryChat = JSON.stringify(result.history);
+                    senderDb.save();
+                }
 
                 await ctx.reply({
                     richResponse: [{
-                        text: result
+                        text: result.reply
                     }]
                 });
             } else {
                 const apiUrl = tools.api.createUrl("zenzxz", "/ai/gemini", {
-                    q: input,
-                    model
+                    prompt: input,
+                    mode: "chat",
+                    history: historyChat
                 });
                 const result = (await axios.get(apiUrl)).data.result;
+                if (!historyChat) {
+                    senderDb.geminiHistoryChat = JSON.stringify(result.history);
+                    senderDb.save();
+                }
 
                 await ctx.reply({
                     richResponse: [{
-                        text: result
+                        text: result.reply
                     }]
                 });
             }

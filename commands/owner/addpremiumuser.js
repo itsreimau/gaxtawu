@@ -7,9 +7,9 @@ module.exports = {
     },
     code: async (ctx) => {
         const target = await ctx.target();
-        const daysAmount = parseInt(ctx.args[ctx.quoted ? 0 : 1], 10);
+        const daysAmount = parseInt(ctx.args[target.source === "quoted" ? 0 : 1], 10);
 
-        if (!target)
+        if (!target.jid)
             return await ctx.reply({
                 text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                     `${tools.msg.generateCmdExample(ctx.used, "@6281234567891 8 -s")}\n` +
@@ -32,21 +32,21 @@ module.exports = {
             });
             const silent = flag?.silent;
 
-            const targetDb = ctx.getDb("users", target);
+            const targetDb = ctx.getDb("users", target.jid);
             targetDb.premium = true;
             if (daysAmount && daysAmount > 0) {
                 const expirationDate = Date.now() + (daysAmount * 24 * 60 * 60 * 1000);
                 targetDb.premiumExpiration = expirationDate;
                 targetDb.save();
 
-                if (!silent || !config.system.restrict) await ctx.sendMessage(target, `ⓘ ${formatter.italic(`Anda telah ditambahkan sebagai pengguna premium oleh owner selama ${daysAmount} hari!`)}`);
+                if (!silent || !config.system.restrict) await ctx.sendMessage(target.jid, `ⓘ ${formatter.italic(`Anda telah ditambahkan sebagai pengguna premium oleh owner selama ${daysAmount} hari!`)}`);
 
                 await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menambahkan premium selama ${daysAmount} hari kepada pengguna itu!`)}`);
             } else {
                 delete targetDb?.premiumExpiration;
                 targetDb.save();
 
-                if (!silent || !config.system.restrict) await ctx.sendMessage(target, `ⓘ ${formatter.italic("Anda telah ditambahkan sebagai pengguna premium selamanya oleh owner!")}`);
+                if (!silent || !config.system.restrict) await ctx.sendMessage(target.jid, `ⓘ ${formatter.italic("Anda telah ditambahkan sebagai pengguna premium selamanya oleh owner!")}`);
 
                 await ctx.reply(`ⓘ ${formatter.italic("Berhasil menambahkan premium selamanya kepada pengguna itu!")}`);
             }

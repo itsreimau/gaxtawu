@@ -23,7 +23,7 @@ module.exports = {
 
         const target = await ctx.target(["text"]);
 
-        if (!target)
+        if (!target.jid)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "6281234567891")}\n` +
@@ -33,11 +33,11 @@ module.exports = {
             );
 
         const pendings = await ctx.group().pendingMembers();
-        const isPending = pendings.some(pending => tools.cmd.areJidsSameUser(pending.jid, target));
+        const isPending = pendings.some(pending => tools.cmd.areJidsSameUser(pending.jid, target.jid));
         if (!isPending) return await ctx.reply(`ⓘ ${formatter.italic("Akun tidak ditemukan di daftar anggota yang menunggu persetujuan.")}`);
 
         try {
-            await ctx.group().rejectPendingMembers(target);
+            await ctx.group().rejectPendingMembers(target.jid);
 
             await ctx.reply(`ⓘ ${formatter.italic("Berhasil ditolak!")}`);
         } catch (error) {

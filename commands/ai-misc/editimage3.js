@@ -1,3 +1,5 @@
+const axios = require("axios");
+
 module.exports = {
     name: "editimage3",
     aliases: ["editimg3"],
@@ -23,15 +25,17 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("sanka", "/ai/editimg", {
+            const apiUrl = tools.api.createUrl("lexcode", "/api/ai/nano-banana", {
                 url: uploadUrl,
                 prompt: input
-            }, "apikey");
+            });
+            const result = (await axios.get(apiUrl)).data.result.image;
 
             await ctx.reply({
                 image: {
                     url: result
-                }
+                },
+                caption: `➛ ${formatter.bold("Prompt")}: ${input}`
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

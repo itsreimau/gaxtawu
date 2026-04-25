@@ -1,28 +1,31 @@
+const axios = require("axios");
+
 module.exports = {
-    name: "pixiv",
-    category: "tool",
+    name: "labsgen",
+    category: "ai-generate",
     permissions: {
-        coin: 5
+        premium: true
     },
     code: async (ctx) => {
-        const input = ctx.text;
+        const input = ctx.text || ctx.quoted?.text;
 
         if (!input)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "rei ayanami")
+                tools.msg.generateCmdExample(ctx.used, "anime girl with short blue hair")
             );
 
         try {
-            const result = tools.api.createUrl("zenzxz", "/search/pixif", {
-                q: input
+            const apiUrl = tools.api.createUrl("neo", "/api/ai-image/ailabs", {
+                prompt: input
             });
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 image: {
                     url: result
                 },
-                caption: `➛ ${formatter.bold("Kueri")}: ${input}`,
+                caption: `➛ ${formatter.bold("Prompt")}: ${input}`,
                 buttons: [{
                     text: "Ambil Lagi",
                     id: `${ctx.used.prefix + ctx.used.command} ${input}`

@@ -16,7 +16,7 @@ module.exports = {
 
         const target = await ctx.target(["quoted", "mentioned"]);
 
-        if (!target)
+        if (!target.jid)
             return await ctx.reply({
                 text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                     `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
@@ -27,17 +27,18 @@ module.exports = {
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (tools.cmd.areJidsSameUser(target, ctx.me.lid)) return await ctx.reply(`ⓘ ${formatter.italic(`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`)}`);
-        if (await ctx.group().isOwner(target)) return await ctx.reply(`ⓘ ${formatter.italic("Dia adalah owner grup!")}`);
+        if (tools.cmd.areJidsSameUser(target.jid, ctx.me.lid))
+            return await ctx.reply(`ⓘ ${formatter.italic(`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`)}`);
+        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(`ⓘ ${formatter.italic("Dia adalah owner grup!")}`);
 
         try {
             const groupDb = ctx.db.group;
             const muteList = groupDb?.mute || [];
 
-            const isAlreadyMuted = muteList.includes(target);
+            const isAlreadyMuted = muteList.includes(target.jid);
             if (isAlreadyMuted) return await ctx.reply(`ⓘ ${formatter.italic("Pengguna sudah di-mute sebelumnya!")}`);
 
-            muteList.push(target);
+            muteList.push(target.jid);
             groupDb.mute = muteList;
             groupDb.save();
 

@@ -6,17 +6,18 @@ const APIs = {
     chocomilk: {
         baseURL: "https://chocomilk.amira.us.kg"
     },
-    deline: {
-        baseURL: "https://api.deline.web.id"
+    cuki: {
+        baseURL: "https://api.cuki.biz.id",
+        APIKey: "cuki-x"
     },
     faaa: {
         baseURL: "https://api-faa.my.id"
     },
-    izukumii: {
-        baseURL: "https://api.ootaizumi.web.id"
-    },
     kuroneko: {
         baseURL: "https://api.danzy.web.id"
+    },
+    lexcode: {
+        baseURL: "https://api.lexcode.biz.id"
     },
     nekolabs: {
         baseURL: "https://rynekoo-api.hf.space"

@@ -27,11 +27,12 @@ module.exports = {
             let [top, bottom] = input.split("|").map(inp => inp);
             [top, bottom] = bottom ? [top || " ", bottom] : [" ", top || " "];
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("nexray", "/maker/smeme", {
-                text_atas: top,
-                text_bawah: bottom,
-                background: uploadUrl
-            });
+            const apiUrl = tools.api.createUrl("cuki", "/api/canvas/memegen", {
+                imageUrl: uploadUrl,
+                topText: top,
+                bottomText: bottom
+            }, "apikey");
+            const result = (await axios.get(apiUrl)).data.results.url;
             const sticker = await new Sticker(result)
                 .setPack(config.sticker.packname)
                 .setAuthor(config.sticker.author)

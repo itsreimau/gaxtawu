@@ -3,8 +3,7 @@ const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 const axios = require("axios");
 
 module.exports = {
-    name: "telegramstickerdl",
-    aliases: ["telesticker", "telegramsticker"],
+    name: "stickerlydl",
     category: "downloader",
     permissions: {
         premium: true
@@ -15,18 +14,19 @@ module.exports = {
         if (!url)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "https://t.me/addstickers/ReiAyanamiEvangelionCute")
+                tools.msg.generateCmdExample(ctx.used, "https://sticker.ly/s/SXYF2W")
             );
 
         const isUrl = tools.cmd.isUrl(url);
-        if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
+        if (!isUrl)
+            return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
 
         try {
-            const apiUrl = tools.api.createUrl("nexray", "/tools/telegram-sticker", {
+            const apiUrl = tools.api.createUrl("cuki", "/api/sticker/stickerly-detail", {
                 url
-            });
-            const result = (await axios.get(apiUrl)).data.result;
-            const stickerPacks = await prepareStickerPack(result.sticker, result.title, `t.me/${result.name}`, ctx.msg.key.id);
+            }, "apikey");
+            const result = (await axios.get(apiUrl)).data.data;
+            const stickerPacks = await prepareStickerPack(result.stickers, result.name, `t.me/${result.name}`, ctx.msg.key.id);
 
             for (const stickerPack of stickerPacks) {
                 await ctx.reply({
@@ -43,12 +43,12 @@ module.exports = {
     }
 };
 
-async function createSticker(stickerUrl, emoji, id) {
+async function createSticker(stickerUrl, id) {
     return await new Sticker(stickerUrl)
         .setPack(config.sticker.packname)
         .setAuthor(config.sticker.author)
         .setType(StickerTypes.FULL)
-        .setCategories([emoji])
+        .setCategories(["🌕"])
         .setID(id)
         .setQuality(50)
         .build();
@@ -71,15 +71,15 @@ async function prepareStickerPack(stickers, title, publisher, packId) {
         const chunk = stickerChunks[packIndex];
 
         const stickersPack = await Promise.all(chunk.map(async (sticker) => ({
-            data: await createSticker(sticker.url, sticker.emoji, packId),
-            emojis: [sticker.emoji]
+            data: await createSticker(sticker.imageUrl, packId),
+            emojis: ["🌕"]
         })));
 
         packs.push({
             name: `${title}${stickerChunks.length > 1 ? ` (${packIndex + 1}/${stickerChunks.length})` : ""}`,
             publisher: publisher,
             description: `Sticker Pack by ${config.bot.name}`,
-            cover: await createSticker(stickers[0].url, stickers[0].emoji, packId),
+            cover: await createSticker(stickers[0].url, packId),
             stickers: stickersPack
         });
     }
