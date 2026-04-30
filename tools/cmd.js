@@ -108,7 +108,6 @@ module.exports = {
     checkQuotedMedia,
     delay: Baileys.delay,
     didYouMean: Gktw.didYouMean,
-    generateUID,
     getRandomElement,
     getReportOwner,
     handleError,
