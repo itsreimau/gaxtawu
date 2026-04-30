@@ -27,14 +27,13 @@ module.exports = {
             );
 
         const isUrl = tools.cmd.isUrl(url);
-        if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
+        if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
 
         try {
-            const apiUrl = tools.api.createUrl("chocomilk", "/v1/youtube/download", {
-                url,
-                mode: "audio"
-            });
-            const result = (await axios.get(apiUrl)).data.data;
+            const apiUrl = tools.api.createUrl("cuki", "/api/downloader/ytmp3", {
+                url: searchResult.url
+            }, "apikey");
+            const result = (await axios.get(apiUrl)).data.data.audio.download.downloadUrl;
 
             const document = flag.document;
             if (document) {

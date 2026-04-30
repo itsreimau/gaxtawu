@@ -27,14 +27,14 @@ module.exports = (bot) => {
         if (reportOwner && reportOwner.length > 0) {
             for (const ownerId of reportOwner) {
                 await bot.sendMessage(ownerId + Baileys.S_WHATSAPP_NET, {
-                    text: `ⓘ ${formatter.italic(`Akun @${fromPnId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`)}`,
+                    text: tools.msg.info(`Akun @${fromPnId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`),
                     mentions: [fromPnJid]
                 });
                 await tools.cmd.delay(500);
             }
         }
         await bot.sendMessage(fromJid, {
-            text: `ⓘ ${formatter.italic("Anda telah dibanned secara otomatis karena melanggar aturan!")}`,
+            text: tools.msg.info("Anda telah dibanned secara otomatis karena melanggar aturan!"),
             buttons: [{
                 text: "Hubungi Owner",
                 id: "/owner"

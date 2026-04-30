@@ -32,9 +32,9 @@ module.exports = {
                 }
             });
             const silent = flag?.silent;
-            if (!silent || !config.system.restrict) await ctx.sendMessage(target.jid, `ⓘ ${formatter.italic("Anda telah dibanned oleh owner!")}`);
+            if (!silent && !config.system.restrict) await ctx.sendMessage(target.jid, tools.msg.info("Anda telah dibanned oleh owner!"));
 
-            await ctx.reply(`ⓘ ${formatter.italic("Berhasil dibanned!")}`);
+            await ctx.reply(tools.msg.info("Berhasil dibanned!"));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

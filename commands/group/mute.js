@@ -11,7 +11,7 @@ module.exports = {
             const groupDb = ctx.db.group;
             groupDb.mutebot = true;
             await groupDb.save();
-            return await ctx.reply(`ⓘ ${formatter.italic("Berhasil me-mute grup ini dari bot!")}`);
+            return await ctx.reply(tools.msg.info("Berhasil me-mute grup ini dari bot!"));
         }
 
         const target = await ctx.target(["quoted", "mentioned"]);
@@ -28,21 +28,21 @@ module.exports = {
             });
 
         if (tools.cmd.areJidsSameUser(target.jid, ctx.me.lid))
-            return await ctx.reply(`ⓘ ${formatter.italic(`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`)}`);
-        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(`ⓘ ${formatter.italic("Dia adalah owner grup!")}`);
+            return await ctx.reply(tools.msg.info(`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`));
+        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(tools.msg.info("Dia adalah owner grup!"));
 
         try {
             const groupDb = ctx.db.group;
             const muteList = groupDb?.mute || [];
 
             const isAlreadyMuted = muteList.includes(target.jid);
-            if (isAlreadyMuted) return await ctx.reply(`ⓘ ${formatter.italic("Pengguna sudah di-mute sebelumnya!")}`);
+            if (isAlreadyMuted) return await ctx.reply(tools.msg.info("Pengguna sudah di-mute sebelumnya!"));
 
             muteList.push(target.jid);
             groupDb.mute = muteList;
             groupDb.save();
 
-            await ctx.reply(`ⓘ ${formatter.italic("Berhasil me-mute pengguna itu dari grup ini!")}`);
+            await ctx.reply(tools.msg.info("Berhasil me-mute pengguna itu dari grup ini!"));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

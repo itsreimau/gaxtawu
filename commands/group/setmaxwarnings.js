@@ -20,7 +20,7 @@ module.exports = {
             groupDb.maxwarnings = input;
             groupDb.save();
 
-            await ctx.reply(`ⓘ ${formatter.italic("Berhasil mengubah max warnings!")}`);
+            await ctx.reply(tools.msg.info("Berhasil mengubah max warnings!"));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

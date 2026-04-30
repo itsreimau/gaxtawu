@@ -36,7 +36,7 @@ module.exports = {
                     setKey = key.toLowerCase();
                     break;
                 default:
-                    return await ctx.reply(`ⓘ ${formatter.italic(`Teks ${formatter.inlineCode(key)} tidak valid!`)}`);
+                    return await ctx.reply(tools.msg.info(`Teks ${formatter.inlineCode(key)} tidak valid!`));
             }
 
             const groupDb = ctx.db.group;
@@ -44,12 +44,12 @@ module.exports = {
             if (text.toLowerCase() === "delete") {
                 delete groupDb?.text?.[setKey];
                 groupDb.save();
-                return await ctx.reply(`ⓘ ${formatter.italic(`Pesan untuk teks ${formatter.inlineCode(key)} berhasil dihapus!`)}`);
+                return await ctx.reply(tools.msg.info(`Pesan untuk teks ${formatter.inlineCode(key)} berhasil dihapus!`));
             }
 
             (groupDb.text ||= {})[setKey] = text;
             groupDb.save();
-            await ctx.reply(`ⓘ ${formatter.italic(`Pesan untuk teks ${formatter.inlineCode(key)} berhasil disimpan!`)}`);
+            await ctx.reply(tools.msg.info(`Pesan untuk teks ${formatter.inlineCode(key)} berhasil disimpan!`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

@@ -42,7 +42,7 @@ module.exports = {
                 const searchResult = (await axios.get(searchApiUrl)).data.result[searchIndex];
 
                 await ctx.reply(
-                    `➛ ${formatter.bold("Judul")}: ${searchResult.name}\n` +
+                    `➛ ${formatter.bold("Judul")}: ${searchResult.title}\n` +
                     `➛ ${formatter.bold("Artis")}: ${searchResult.artist}\n` +
                     `➛ ${formatter.bold("URL")}: ${searchResult.url}`
                 );
@@ -70,11 +70,10 @@ module.exports = {
                     `➛ ${formatter.bold("URL")}: ${searchResult.url}`
                 );
 
-                const downloadApiUrl = tools.api.createUrl("chocomilk", "/v1/youtube/download", {
-                    url: searchResult.url,
-                    mode: "audio"
-                });
-                const downloadResult = (await axios.get(downloadApiUrl)).data.data.download;
+                const downloadApiUrl = tools.api.createUrl("cuki", "/api/downloader/ytmp3", {
+                    url: searchResult.url
+                }, "apikey");
+                const downloadResult = (await axios.get(downloadApiUrl)).data.data.audio.download.downloadUrl;
 
                 await ctx.reply({
                     audio: {

@@ -34,7 +34,7 @@ module.exports = {
                     setKey = key.toLowerCase();
                     break;
                 default:
-                    return await ctx.reply(`ⓘ ${formatter.italic(`Teks ${formatter.inlineCode(key)} tidak valid!`)}`);
+                    return await ctx.reply(tools.msg.info(`Teks ${formatter.inlineCode(key)} tidak valid!`));
             }
 
             const botDb = ctx.db.bot;
@@ -42,12 +42,12 @@ module.exports = {
             if (text.toLowerCase() === "delete") {
                 delete botDb?.text[setKey];
                 botDb.save();
-                return await ctx.reply(`ⓘ ${formatter.italic(`Pesan untuk teks ${formatter.inlineCode(key)} berhasil dihapus!`)}`);
+                return await ctx.reply(tools.msg.info(`Pesan untuk teks ${formatter.inlineCode(key)} berhasil dihapus!`));
             }
 
             (botDb.text ||= {})[setKey] = text;
             botDb.save();
-            await ctx.reply(`ⓘ ${formatter.italic(`Pesan untuk teks ${formatter.inlineCode(key)} berhasil disimpan!`)}`);
+            await ctx.reply(tools.msg.info(`Pesan untuk teks ${formatter.inlineCode(key)} berhasil disimpan!`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

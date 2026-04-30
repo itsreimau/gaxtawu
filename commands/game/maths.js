@@ -6,7 +6,7 @@ module.exports = {
     name: "maths",
     category: "game",
     code: async (ctx) => {
-        if (session.has(ctx.id)) return await ctx.reply(`ⓘ ${formatter.italic("Sesi permainan sedang berjalan!")}`);
+        if (session.has(ctx.id)) return await ctx.reply(tools.msg.info("Sesi permainan sedang berjalan!"));
 
         try {
             const levels = {
@@ -78,14 +78,14 @@ module.exports = {
                     participantDb.winGame += 1;
                     participantDb.save();
                     await collCtx.reply({
-                        text: `ⓘ ${formatter.italic(`Benar! +${game.coin} Koin`)}`,
+                        text: tools.msg.info(`Benar! +${game.coin} Koin`),
                         nativeFlow: playAgain
                     });
                 } else if (participantAnswer === `surrender_${ctx.used.command}`) {
                     session.delete(ctx.id);
                     collector.stop();
                     await collCtx.reply({
-                        text: `ⓘ ${formatter.italic(`Anda menyerah! Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`)}`,
+                        text: tools.msg.info(`Anda menyerah! Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`),
                         nativeFlow: playAgain
                     });
                 }
@@ -95,7 +95,7 @@ module.exports = {
                 if (session.has(ctx.id)) {
                     session.delete(ctx.id);
                     await ctx.reply({
-                        text: `ⓘ ${formatter.italic(`Waktu habis! Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`)}`,
+                        text: tools.msg.info(`Waktu habis! Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`),
                         nativeFlow: playAgain
                     });
                 }

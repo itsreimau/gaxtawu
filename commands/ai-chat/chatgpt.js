@@ -17,12 +17,11 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/text.gen/gpt/5-nano", {
-                text: input,
-                systemPrompt: `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.`, // Dapat diubah sesuai keinginan,
-                sessionId: ctx.db.user.uid || "guest"
+            const apiUrl = tools.api.createUrl("chocomilk", "/v1/llm/chatgpt/completions", {
+                ask: input,
+                prompt: `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.` // Dapat diubah sesuai keinginan
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.data.answer;
 
             await ctx.reply({
                 richResponse: [{

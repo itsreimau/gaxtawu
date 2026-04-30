@@ -91,7 +91,8 @@ async function get(type) {
             case "setprofile": {
                 const data = [
                     "autolevelup (Otomatis naik level)",
-                    "username (Nama pengguna)"
+                    "username (Nama pengguna)",
+                    "stickerwm (WatermarK stiker)"
                 ];
                 text = createList(data, (list) => `➛ ${list}`);
                 break;
@@ -114,7 +115,7 @@ async function get(type) {
                 break;
             }
             default: {
-                text = `ⓘ ${formatter.italic(`Tipe tidak diketahui: ${type}`)}`;
+                text = tools.msg.info(`Tipe tidak diketahui: ${type}`);
                 break;
             }
         }

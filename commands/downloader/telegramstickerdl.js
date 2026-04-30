@@ -19,14 +19,15 @@ module.exports = {
             );
 
         const isUrl = tools.cmd.isUrl(url);
-        if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
+        if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
 
         try {
             const apiUrl = tools.api.createUrl("nexray", "/tools/telegram-sticker", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;
-            const stickerPacks = await prepareStickerPack(result.sticker, result.title, `t.me/${result.name}`, ctx.msg.key.id);
+            const userStickerwm = ctx.db.user?.stickerwm;
+            const stickerPacks = await prepareStickerPack(result.sticker, result.title, `t.me/${result.name}`, ctx.msg.key.id, userStickerwm);
 
             for (const stickerPack of stickerPacks) {
                 await ctx.reply({
@@ -43,10 +44,10 @@ module.exports = {
     }
 };
 
-async function createSticker(stickerUrl, emoji, id) {
+async function createSticker(stickerUrl, emoji, id, userStickerwm) {
     return await new Sticker(stickerUrl)
-        .setPack(config.sticker.packname)
-        .setAuthor(config.sticker.author)
+        .setPack(userStickerwm?.packname || config.sticker.packname)
+        .setAuthor(userStickerwm?.author || config.sticker.author)
         .setType(StickerTypes.FULL)
         .setCategories([emoji])
         .setID(id)
@@ -62,7 +63,7 @@ async function chunkArray(array, chunkSize) {
     return chunks;
 }
 
-async function prepareStickerPack(stickers, title, publisher, packId) {
+async function prepareStickerPack(stickers, title, publisher, packId, userStickerwm) {
     const maxPerPack = 30;
     const stickerChunks = chunkArray(stickers, maxPerPack);
     const packs = [];
@@ -71,7 +72,7 @@ async function prepareStickerPack(stickers, title, publisher, packId) {
         const chunk = stickerChunks[packIndex];
 
         const stickersPack = await Promise.all(chunk.map(async (sticker) => ({
-            data: await createSticker(sticker.url, sticker.emoji, packId),
+            data: await createSticker(sticker.url, sticker.emoji, packId, userStickerwm),
             emojis: [sticker.emoji]
         })));
 
@@ -79,7 +80,7 @@ async function prepareStickerPack(stickers, title, publisher, packId) {
             name: `${title}${stickerChunks.length > 1 ? ` (${packIndex + 1}/${stickerChunks.length})` : ""}`,
             publisher: publisher,
             description: `Sticker Pack by ${config.bot.name}`,
-            cover: await createSticker(stickers[0].url, stickers[0].emoji, packId),
+            cover: await createSticker(stickers[0].url, stickers[0].emoji, packId, userStickerwm),
             stickers: stickersPack
         });
     }

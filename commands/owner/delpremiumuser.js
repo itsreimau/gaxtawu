@@ -33,9 +33,9 @@ module.exports = {
                 }
             });
             const silent = flag?.silent;
-            if (!silent || !config.system.restrict) await ctx.sendMessage(target.jid, `ⓘ ${formatter.italic("Anda telah dihapus sebagai pengguna premium oleh owner!")}`);
+            if (!silent && !config.system.restrict) await ctx.sendMessage(target.jid, tools.msg.info("Anda telah dihapus sebagai pengguna premium oleh owner!"));
 
-            await ctx.reply(`ⓘ ${formatter.italic("Berhasil menghapuskan premium kepada pengguna itu!")}`);
+            await ctx.reply(tools.msg.info("Berhasil menghapuskan premium kepada pengguna itu!"));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

@@ -33,12 +33,12 @@ module.exports = {
                 blacklist.splice(groupIndex, 1);
                 botDb.blacklistBroadcast = blacklist;
                 botDb.save();
-                return await ctx.reply(`ⓘ ${formatter.italic("Grup ini telah dihapus dari blacklist broadcast")}`);
+                return await ctx.reply(tools.msg.info("Grup ini telah dihapus dari blacklist broadcast"));
             } else {
                 blacklist.push(ctx.id);
                 botDb.blacklistBroadcast = blacklist;
                 botDb.save();
-                return await ctx.reply(`ⓘ ${formatter.italic("Grup ini telah ditambahkan ke blacklist broadcast")}`);
+                return await ctx.reply(tools.msg.info("Grup ini telah ditambahkan ke blacklist broadcast"));
             }
         }
 
@@ -56,7 +56,7 @@ module.exports = {
                     text: input
                 };
             }
-            const waitMsg = await ctx.reply(`ⓘ ${formatter.italic(`Mengirim siaran ke ${groupJids.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(groupJids.length * 1.5 * 1000)}`)}`);
+            const waitMsg = await ctx.reply(tools.msg.info(`Mengirim siaran ke ${groupJids.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(groupJids.length * 1.5 * 1000)}`));
             for (const groupJid of groupJids) {
                 await ctx.sendMessage(groupJid, {
                     ...content,
@@ -65,7 +65,7 @@ module.exports = {
                 await tools.cmd.delay(1000);
             }
 
-            await ctx.editMessage(ctx.id, waitMsg.key, `ⓘ ${formatter.italic(`Berhasil mengirim ke ${groupJids.length} grup.`)}`);
+            await ctx.editMessage(ctx.id, waitMsg.key, tools.msg.info(`Berhasil mengirim ke ${groupJids.length} grup.`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

@@ -12,7 +12,7 @@ module.exports = {
             const pendings = await ctx.group().pendingMembers();
             const resultText = pendings.map(pending => `➛ ${ctx.getId(pending.id)}`).join("\n");
 
-            await ctx.reply(resultText.trim() || `ⓘ ${formatter.italic(config.msg.notFound)}`);
+            await ctx.reply(resultText.trim() || tools.msg.info(config.msg.notFound));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

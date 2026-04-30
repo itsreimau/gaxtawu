@@ -17,12 +17,12 @@ module.exports = {
             );
 
         const isOnWhatsApp = await ctx.core.onWhatsApp(target.jid);
-        if (!isOnWhatsApp?.[0]?.exists) return await ctx.reply(`ⓘ ${formatter.italic("Akun tidak ada di WhatsApp!")}`);
+        if (!isOnWhatsApp?.[0]?.exists) return await ctx.reply(tools.msg.info("Akun tidak ada di WhatsApp!"));
 
         try {
             await ctx.group().add(target.jid);
 
-            await ctx.reply(`ⓘ ${formatter.italic("Berhasil ditambahkan!")}`);
+            await ctx.reply(tools.msg.info("Berhasil ditambahkan!"));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

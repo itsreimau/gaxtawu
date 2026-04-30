@@ -19,8 +19,8 @@ module.exports = {
                 })
             );
 
-        if (!await ctx.group(target.jid)) return await ctx.reply(`ⓘ ${formatter.italic("Grup tidak valid atau bot tidak ada di grup tersebut!")}`);
-        if (daysAmount && daysAmount <= 0) return await ctx.reply(`ⓘ ${formatter.italic("Durasi sewa (dalam hari) harus diisi dan lebih dari 0!")}`);
+        if (!await ctx.group(target.jid)) return await ctx.reply(tools.msg.info("Grup tidak valid atau bot tidak ada di grup tersebut!"));
+        if (daysAmount && daysAmount <= 0) return await ctx.reply(tools.msg.info("Durasi sewa (dalam hari) harus diisi dan lebih dari 0!"));
 
         try {
             const flag = ctx.flag({
@@ -35,7 +35,7 @@ module.exports = {
             const group = await ctx.group(target.jid);
             const groupOwner = await group.owner();
 
-            if ((!silent && groupOwner) || !config.system.restrict) {
+            if ((!silent && groupOwner) && !config.system.restrict) {
                 const groupMentions = [{
                     groupJid: `${group.id}@g.us`,
                     groupSubject: await group.name()
@@ -48,28 +48,28 @@ module.exports = {
                 targetDb.sewaExpiration = expirationDate;
                 targetDb.save();
 
-                if ((!silent && groupOwner) || !config.system.restrict)
+                if (!silent && groupOwner && !config.system.restrict)
                     await ctx.sendMessage(groupOwner, {
-                        text: `ⓘ ${formatter.italic(`Bot berhasil disewakan ke grup @${groupMentions.groupJid} selama ${daysAmount} hari!`)}`,
+                        text: tools.msg.info(`Bot berhasil disewakan ke grup @${groupMentions.groupJid} selama ${daysAmount} hari!`),
                         contextInfo: {
                             groupMentions
                         }
                     });
 
-                await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menyewakan bot ke grup ${ctx.isGroup() ? "ini" : "itu"} selama ${daysAmount} hari!`)}`);
+                await ctx.reply(tools.msg.info(`Berhasil menyewakan bot ke grup ${ctx.isGroup() ? "ini" : "itu"} selama ${daysAmount} hari!`));
             } else {
                 delete targetDb?.sewaExpiration;
                 targetDb.save();
 
-                if ((!silent && groupOwner) || !config.system.restrict)
+                if (!silent && groupOwner && !config.system.restrict)
                     await ctx.sendMessage(groupOwner, {
-                        text: `ⓘ ${formatter.italic(`Bot berhasil disewakan ke grup @${groupMentions.groupJid} selamanya!`)}`,
+                        text: tools.msg.info(`Bot berhasil disewakan ke grup @${groupMentions.groupJid} selamanya!`),
                         contextInfo: {
                             groupMentions
                         }
                     });
 
-                await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menyewakan bot ke grup ${ctx.isGroup() ? "ini" : "itu"} selamanya!`)}`);
+                await ctx.reply(tools.msg.info(`Berhasil menyewakan bot ke grup ${ctx.isGroup() ? "ini" : "itu"} selamanya!`));
             }
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

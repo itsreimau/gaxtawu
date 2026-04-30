@@ -12,7 +12,7 @@ module.exports = {
             };
             senderDb.save();
 
-            await ctx.reply(`ⓘ ${formatter.italic(`Anda akan AFK, ${input ? `dengan alasan ${formatter.inlineCode(input)}` : "tanpa alasan apapun"}.`)}`);
+            await ctx.reply(tools.msg.info(`Anda akan AFK, ${input ? `dengan alasan ${formatter.inlineCode(input) : "tanpa alasan apapun"}.`}`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

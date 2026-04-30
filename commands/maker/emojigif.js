@@ -22,9 +22,10 @@ module.exports = {
                 emoji
             });
             const result = (await axios.get(apiUrl)).data.result.url;
+            const userStickerwm = ctx.db.user?.stickerwm;
             const sticker = await new Sticker(result)
-                .setPack(config.sticker.packname)
-                .setAuthor(config.sticker.author)
+                .setPack(userStickerwm?.packname || config.sticker.packname)
+                .setAuthor(userStickerwm?.author || config.sticker.author)
                 .setType(StickerTypes.FULL)
                 .setCategories(["🌕"])
                 .setID(ctx.msg.key.id)

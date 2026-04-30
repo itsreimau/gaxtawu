@@ -64,7 +64,7 @@ module.exports = {
                     setKey = input.toLowerCase();
                     break;
                 default:
-                    return await ctx.reply(`ⓘ ${formatter.italic(`Opsi ${formatter.inlineCode(input)} tidak valid!`)}`);
+                    return await ctx.reply(tools.msg.info(`Opsi ${formatter.inlineCode(input)} tidak valid!`));
             }
 
             const groupDb = ctx.db.group;
@@ -75,7 +75,7 @@ module.exports = {
             (groupDb.option ||= {})[setKey] = newStatus;
             groupDb.save();
             const statusText = newStatus ? "diaktifkan" : "dinonaktifkan";
-            await ctx.reply(`ⓘ ${formatter.italic(`Opsi ${formatter.inlineCode(input)} berhasil ${statusText}!`)}`);
+            await ctx.reply(tools.msg.info(`Opsi ${formatter.inlineCode(input)} berhasil ${statusText}!`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

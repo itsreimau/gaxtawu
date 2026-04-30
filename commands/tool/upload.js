@@ -18,7 +18,7 @@ module.exports = {
 
             await ctx.reply({
                 text: `➛ ${formatter.bold("URL")}: ${result}`,
-                footer: `ⓘ ${formatter.italic("File akan kedaluwarsa setelah 3 jam.")}`,
+                footer: tools.msg.info("File akan kedaluwarsa setelah 3 jam."),
                 nativeFlow: [{
                     text: "Salin URL",
                     copy: result

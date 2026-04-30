@@ -1,13 +1,6 @@
 // Impor modul dan dependensi yang diperlukan
 const { Baileys, Gktw, MessageType } = require("@itsreimau/gktw");
-const crypto = require("node:crypto");
 const util = require("node:util");
-
-const formatBotName = (botName) => {
-    if (!botName) return null;
-    botName = botName.toLowerCase();
-    return botName.replace(/[aiueo0-9\W_]/g, "");
-};
 
 function checkMedia(type, required) {
     if (!type || !required || !Array.isArray(required)) return false;
@@ -57,18 +50,6 @@ function checkQuotedMedia(type, required) {
     return false;
 }
 
-function generateUID(id, withBotName = true) {
-    if (!id) return null;
-
-    const hash = crypto.createHash("md5").update(id).digest("hex");
-    const hashPart = hash.substring(0, 8);
-    const uniquePart = hash.substring(24, 28);
-    let uid = `${hashPart}-${uniquePart}`;
-    if (withBotName) uid += `_${formatBotName(config.bot.name)}-wabot`;
-
-    return uid;
-}
-
 function getRandomElement(array) {
     if (!array || !Array.isArray(array) || array.length === 0) return null;
     return array[Math.floor(Math.random() * array.length)];
@@ -98,7 +79,7 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
         if (reportOwner && reportOwner.length > 0) {
             for (const ownerId of reportOwner) {
                 await ctx.replyWithJid(ownerId + Baileys.S_WHATSAPP_NET, {
-                    text: `ⓘ ${formatter.italic(isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${senderId}` : `Terjadi kesalahan dari: @${senderId}`)}\n` +
+                    text: `${tools.msg.info(isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${senderId}` : `Terjadi kesalahan dari: @${senderId}`)}\n` +
                         formatter.monospace(errorText),
                     contextInfo: {
                         mentionedJid: [senderJid],
@@ -111,9 +92,9 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
                 await Baileys.delay(500);
             }
         }
-        if (useAxios && error.status !== 200) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.notFound)}`);
+        if (useAxios && error.status !== 200) return await ctx.reply(tools.msg.info(config.msg.notFound));
     }
-    await ctx.reply(`ⓘ ${formatter.italic(`Terjadi kesalahan: ${error.message}`)}`);
+    await ctx.reply(tools.msg.info(`Terjadi kesalahan: ${error.message}`));
 }
 
 function isUrl(url) {

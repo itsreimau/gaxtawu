@@ -17,7 +17,7 @@ module.exports = {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
             await ctx.core.updateProfilePicture(ctx.me.id, buffer);
 
-            await ctx.reply(`ⓘ ${formatter.italic("Berhasil mengubah gambar profil bot!")}`);
+            await ctx.reply(tools.msg.info("Berhasil mengubah gambar profil bot!"));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

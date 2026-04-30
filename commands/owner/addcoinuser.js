@@ -33,9 +33,9 @@ module.exports = {
                 }
             });
             const silent = flag?.silent;
-            if (!silent || !config.system.restrict) await ctx.sendMessage(target.jid, `ⓘ ${formatter.italic(`Anda telah menerima ${coinAmount} koin dari owner!`)}`);
+            if (!silent && !config.system.restrict) await ctx.sendMessage(target.jid, tools.msg.info(`Anda telah menerima ${coinAmount} koin dari owner!`));
 
-            await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menambahkan ${coinAmount} koin kepada pengguna itu!`)}`);
+            await ctx.reply(tools.msg.info(`Berhasil menambahkan ${coinAmount} koin kepada pengguna itu!`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

@@ -110,7 +110,7 @@ function generateInstruction(actions, mediaTypes) {
     const instructions = actions.map(action => `${actionTranslations[action]}`);
     const actionList = instructions.join(actions.length > 1 ? " atau " : "");
 
-    return `ⓘ ${formatter.italic(`${actionList} ${mediaTypesList}!`)}`;
+    return info(`${actionList} ${mediaTypesList}!`);
 }
 
 function generatesFlagInfo(flags) {
@@ -125,6 +125,10 @@ function generateNotes(notes) {
         notes.map(note => `- ${note}`).join("\n");
 }
 
+function info(text) {
+    return `ⓘ ${formatter.italic(text)}`;
+}
+
 function ucwords(text) {
     if (!text) return null;
     return text.toLowerCase().replace(/\b\w/g, (txt) => txt.toUpperCase());
@@ -137,5 +141,6 @@ module.exports = {
     generateInstruction,
     generatesFlagInfo,
     generateNotes,
+    info,
     ucwords
 };

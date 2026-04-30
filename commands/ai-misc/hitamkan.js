@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "hitamkan",
     aliases: ["hitam", "penghitaman"],

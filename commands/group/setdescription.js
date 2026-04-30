@@ -19,7 +19,7 @@ module.exports = {
         try {
             await ctx.group().updateDescription(input);
 
-            await ctx.reply(`ⓘ ${formatter.italic("Berhasil mengubah deskripsi grup!")}`);
+            await ctx.reply(tools.msg.info("Berhasil mengubah deskripsi grup!"));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

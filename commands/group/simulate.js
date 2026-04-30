@@ -38,7 +38,7 @@ module.exports = {
                     await handleWelcome(ctx, welcome, Events.UserLeave, true);
                     break;
                 default:
-                    await ctx.reply(`ⓘ ${formatter.italic(`Simulasi ${formatter.inlineCode(input)} tidak valid!`)}`);
+                    await ctx.reply(tools.msg.info(`Simulasi ${formatter.inlineCode(input)} tidak valid!`));
             }
 
             await ctx.reply(`ⓘ Simulasi berhasil!`);

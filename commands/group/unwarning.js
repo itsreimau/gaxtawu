@@ -21,8 +21,8 @@ module.exports = {
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (tools.cmd.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(`ⓘ ${formatter.italic(`Tidak bisa mengubah warning bot!`)}`);
-        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(`ⓘ ${formatter.italic("Tidak bisa memberikan warning ke owner grup!")}`);
+        if (tools.cmd.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(tools.msg.info(`Tidak bisa mengubah warning bot!`));
+        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(tools.msg.info("Tidak bisa memberikan warning ke owner grup!"));
 
         try {
             const groupDb = ctx.db.group;
@@ -31,7 +31,7 @@ module.exports = {
 
             const targetIndex = warnings.findIndex(warning => tools.cmd.areJidsSameUser(warning.jid, target.jid));
 
-            if (targetIndex === -1) return await ctx.reply(`ⓘ ${formatter.italic("Pengguna tidak memiliki warning.")}`);
+            if (targetIndex === -1) return await ctx.reply(tools.msg.info("Pengguna tidak memiliki warning."));
 
             const currentCount = warnings[targetIndex].count || 0;
 
@@ -39,7 +39,7 @@ module.exports = {
                 warnings.splice(targetIndex, 1);
                 groupDb.warnings = warnings;
                 groupDb.save();
-                return await ctx.reply(`ⓘ ${formatter.italic("Pengguna tidak memiliki warning.")}`);
+                return await ctx.reply(tools.msg.info("Pengguna tidak memiliki warning."));
             }
 
             const newWarningCount = currentCount - 1;
@@ -53,7 +53,7 @@ module.exports = {
             groupDb.warnings = warnings;
             groupDb.save();
 
-            await ctx.reply(`ⓘ ${formatter.italic(`Berhasil mengurangi warning menjadi ${newWarningCount}/${maxWarnings}.`)}`);
+            await ctx.reply(tools.msg.info(`Berhasil mengurangi warning menjadi ${newWarningCount}/${maxWarnings}.`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

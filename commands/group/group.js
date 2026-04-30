@@ -44,10 +44,10 @@ module.exports = {
                     await ctx.group().membersCanAddMemberMode("off");
                     break;
                 default:
-                    return await ctx.reply(`ⓘ ${formatter.italic(`Setelan "${input}" tidak valid!`)}`);
+                    return await ctx.reply(tools.msg.info(`Setelan "${input}" tidak valid!`));
             }
 
-            await ctx.reply(`ⓘ ${formatter.italic("Berhasil mengubah setelan grup!")}`);
+            await ctx.reply(tools.msg.info("Berhasil mengubah setelan grup!"));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

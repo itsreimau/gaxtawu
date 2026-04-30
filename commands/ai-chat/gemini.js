@@ -13,13 +13,16 @@ module.exports = {
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
-                tools.msg.generateNotes(["AI ini dapat melihat gambar."])
+                tools.msg.generateNotes([
+                    "AI ini dapat melihat gambar.",
+                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} reset`)} untuk mereset riwayat percakapan.`
+                ])
             );
 
         if (input === "reset") {
             const senderDb = ctx.db.user;
             delete senderDb.geminiHistoryChat;
-            return await ctx.reply(`ⓘ ${formatter.italic("Riwayat percakapan berhasil direset!")}`);
+            return await ctx.reply(tools.msg.info("Riwayat percakapan berhasil direset!"));
         }
 
         const [checkMedia, checkQuotedMedia] = [

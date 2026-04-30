@@ -60,7 +60,7 @@ module.exports = (bot) => {
                     image: {
                         url: canvasUrl
                     },
-                    caption: `ⓘ ${formatter.italic(`Selamat! Anda telah naik ke level ${newSenderLevel}.`)}`,
+                    caption: tools.msg.info(`Selamat! Anda telah naik ke level ${newSenderLevel}.`),
                     buttons: [{
                         text: "Nonaktifkan Autolevelup",
                         id: `${ctx.used.prefix}setprofile autolevelup`
@@ -174,7 +174,7 @@ module.exports = (bot) => {
                     (senderDb.lastSentMsg ||= {})[key] = now;
                     senderDb.save();
                     return await ctx.reply({
-                        text: `ⓘ ${formatter.italic(`${msg} Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`)}`,
+                        text: tools.msg.info(`${msg} Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`),
                         buttons: buttons || null
                     });
                 } else {
@@ -267,7 +267,7 @@ module.exports = (bot) => {
                     (senderDb.lastSentMsg ||= {})[key] = now;
                     senderDb.save();
                     return await ctx.reply({
-                        text: `ⓘ ${formatter.italic(`${msg} Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`)}`,
+                        text: tools.msg.info(`${msg} Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`),
                         buttons: buttons || null
                     });
                 } else {

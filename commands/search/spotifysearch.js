@@ -19,7 +19,7 @@ module.exports = {
         const isUrl = tools.cmd.isUrl(input);
         if (isUrl)
             return await ctx.reply({
-                text: `ⓘ ${formatter.italic("Input berupa URL, gunakan tombol download di bawah:")}`,
+                text: tools.msg.info("Input berupa URL, gunakan tombol download di bawah:"),
                 buttons: [{
                     text: "Download",
                     id: `${ctx.used.prefix}spotifydl ${input}`
@@ -33,11 +33,11 @@ module.exports = {
             const result = (await axios.get(apiUrl)).data.result.search_data;
 
             const resultText = result.map(res =>
-                `➛ ${formatter.bold("Judul")}: ${res.name}\n` +
+                `➛ ${formatter.bold("Judul")}: ${res.title}\n` +
                 `➛ ${formatter.bold("Artis")}: ${res.artist}\n` +
                 `➛ ${formatter.bold("URL")}: ${res.url}`
             ).join("\n\n");
-            await ctx.reply(resultText.trim() || `ⓘ ${formatter.italic(config.msg.notFound)}`);
+            await ctx.reply(resultText.trim() || tools.msg.info(config.msg.notFound));
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

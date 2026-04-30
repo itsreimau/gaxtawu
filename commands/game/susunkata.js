@@ -6,7 +6,7 @@ module.exports = {
     name: "susunkata",
     category: "game",
     code: async (ctx) => {
-        if (session.has(ctx.id)) return await ctx.reply(`ⓘ ${formatter.italic("Sesi permainan sedang berjalan!")}`);
+        if (session.has(ctx.id)) return await ctx.reply(tools.msg.info("Sesi permainan sedang berjalan!"));
 
         try {
             const apiUrl = tools.api.createUrl("siputzx", "/api/games/susunkata");
@@ -55,11 +55,11 @@ module.exports = {
                     participantDb.winGame += 1;
                     participantDb.save();
                     await collCtx.reply({
-                        text: `ⓘ ${formatter.italic(`Benar! +${game.coin} Koin`)}`,
+                        text: tools.msg.info(`Benar! +${game.coin} Koin`),
                         nativeFlow: playAgain
                     });
                 } else if (participantAnswer === `hint_${ctx.used.command}`) {
-                    if (participantDb.coin < 3) return await collCtx.reply(`ⓘ ${formatter.italic(config.msg.coin)}`);
+                    if (participantDb.coin < 3) return await collCtx.reply(tools.msg.info(config.msg.coin));
                     participantDb.coin -= 3;
                     participantDb.save();
                     const clue = game.answer.replace(/[aiueo]/g, "_");
@@ -68,11 +68,11 @@ module.exports = {
                     session.delete(ctx.id);
                     collector.stop();
                     await collCtx.reply({
-                        text: `ⓘ ${formatter.italic(`Anda menyerah! Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`)}`,
+                        text: tools.msg.info(`Anda menyerah! Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`),
                         nativeFlow: playAgain
                     });
                 } else if (tools.cmd.didYouMean(participantAnswer, [game.answer]) === game.answer) {
-                    await collCtx.reply(`ⓘ ${formatter.italic("Sedikit lagi!")}`);
+                    await collCtx.reply(tools.msg.info("Sedikit lagi!"));
                 }
             });
 
@@ -80,7 +80,7 @@ module.exports = {
                 if (session.has(ctx.id)) {
                     session.delete(ctx.id);
                     await ctx.reply({
-                        text: `ⓘ ${formatter.italic(`Waktu habis! Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`)}`,
+                        text: tools.msg.info(`Waktu habis! Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`),
                         nativeFlow: playAgain
                     });
                 }

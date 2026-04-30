@@ -10,6 +10,9 @@ const APIs = {
         baseURL: "https://api.cuki.biz.id",
         APIKey: "cuki-x"
     },
+    deline: {
+        baseURL: "https://api.deline.web.id"
+    },
     faaa: {
         baseURL: "https://api-faa.my.id"
     },
@@ -26,7 +29,7 @@ const APIs = {
         baseURL: "https://www.neoapis.xyz"
     },
     nexray: {
-        baseURL: "https://api.nexray.web.id"
+        baseURL: "https://api.nexray.eu.cc"
     },
     omegatech: {
         baseURL: "https://omegatech-api.dixonomega.tech"

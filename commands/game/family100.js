@@ -9,7 +9,7 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        if (session.has(ctx.id)) return await ctx.reply(`ⓘ ${formatter.italic("Sesi permainan sedang berjalan!")}`);
+        if (session.has(ctx.id)) return await ctx.reply(tools.msg.info("Sesi permainan sedang berjalan!"));
 
         try {
             const apiUrl = tools.api.createUrl("siputzx", "/api/games/family100");
@@ -49,17 +49,19 @@ module.exports = {
             }];
 
             collector.on("collect", async (collCtx) => {
-                const participantAnswer = collCtx.msg.body?.toLowerCase();
-                const participantDb = collCtx.db.user;
+                    const participantAnswer = collCtx.msg.body?.toLowerCase();
+                    const participantDb = collCtx.db.user;
 
-                if (game.answers.has(participantAnswer)) {
-                    game.answers.delete(participantAnswer);
-                    game.participants.add(collCtx.sender.lid);
+                    if (game.answers.has(participantAnswer)) {
+                        game.answers.delete(participantAnswer);
+                        game.participants.add(collCtx.sender.lid);
 
-                    participantDb.coin += game.coin.answered;
-                    participantDb.save();
-                    await collCtx.reply({
-                        text: `ⓘ ${formatter.italic(`${tools.msg.ucwords(participantAnswer)} benar! Jawaban tersisa: ${game.answers.size}`)}`
+                        participantDb.coin += game.coin.answered;
+                        participantDb.save();
+                        await collCtx.reply({
+                                text: tools.msg.info(`${tools.msg.ucwords(participantAnswer)} benar! Jawaban tersisa: ${game.answers.size}`)
+                            }
+                            `
                     });
 
                     if (game.answers.size === 0) {
@@ -72,20 +74,25 @@ module.exports = {
                             allParticipantDb.save();
                         }
                         await collCtx.reply({
-                            text: `ⓘ ${formatter.italic(`Selamat! Semua jawaban telah terjawab! Setiap anggota yang menjawab mendapat ${game.coin.allAnswered} koin.`)}`,
+                            text: tools.msg.info(`
+                            Selamat!Semua jawaban telah terjawab!Setiap anggota yang menjawab mendapat $ { game.coin.allAnswered } koin.
+                            `)}`,
                             buttons: playAgain
                         });
+                }
+            }
+            else if (participantAnswer === `surrender_${ctx.used.command}`) {
+                const remaining = [...game.answers].map(tools.msg.ucwords).join(", ").replace(/, ([^,]*)$/, ", dan $1");
+                session.delete(ctx.id);
+                collector.stop();
+                await collCtx.reply({
+                        text: tools.msg.info(`Anda menyerah! Jawaban yang belum terjawab adalah ${remaining}.`)
                     }
-                } else if (participantAnswer === `surrender_${ctx.used.command}`) {
-                    const remaining = [...game.answers].map(tools.msg.ucwords).join(", ").replace(/, ([^,]*)$/, ", dan $1");
-                    session.delete(ctx.id);
-                    collector.stop();
-                    await collCtx.reply({
-                        text: `ⓘ ${formatter.italic(`Anda menyerah! Jawaban yang belum terjawab adalah ${remaining}.`)}`,
+                    `,
                         buttons: playAgain
                     });
                 } else if (tools.cmd.didYouMean(participantAnswer, [game.answer]) === game.answer) {
-                    await collCtx.reply(`ⓘ ${formatter.italic("Sedikit lagi!")}`);
+                    await collCtx.reply(tools.msg.info("Sedikit lagi!"));
                 }
             });
 
@@ -95,13 +102,16 @@ module.exports = {
                 if (session.has(ctx.id)) {
                     session.delete(ctx.id);
                     await ctx.reply({
-                        text: `ⓘ ${formatter.italic(`Waktu habis! Jawaban yang belum terjawab adalah ${remaining}.`)}`,
-                        buttons: playAgain
-                    });
-                }
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+                        text: tools.msg.info(`
+                    Waktu habis!Jawaban yang belum terjawab adalah $ { remaining }.
+                    `)}`,
+                    buttons: playAgain
+                });
         }
-    }
+    });
+}
+catch (error) {
+    await tools.cmd.handleError(ctx, error, true);
+}
+}
 };

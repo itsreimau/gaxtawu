@@ -18,7 +18,7 @@ module.exports = {
                 })
             );
 
-        if (!await ctx.group(target.jid)) return await ctx.reply(`ⓘ ${formatter.italic("Grup tidak valid atau bot tidak ada di grup tersebut!")}`);
+        if (!await ctx.group(target.jid)) return await ctx.reply(tools.msg.info("Grup tidak valid atau bot tidak ada di grup tersebut!"));
 
         try {
             const targetDb = ctx.getDb("users", target.jid);
@@ -36,20 +36,20 @@ module.exports = {
             const silent = flag?.silent;
             const group = await ctx.group(target.jid);
             const groupOwner = await group.owner();
-            if ((!silent && groupOwner) || !config.system.restrict) {
+            if (!silent && groupOwner && !config.system.restrict) {
                 const groupMentions = [{
                     groupJid: `${group.id}@g.us`,
                     groupSubject: await group.name()
                 }];
                 await ctx.sendMessage(groupOwner, {
-                    text: `ⓘ ${formatter.italic(`Sewa bot untuk grup @${groupMentions.groupJid} telah dihentikan oleh owner!`)}`,
+                    text: tools.msg.info(`Sewa bot untuk grup @${groupMentions.groupJid} telah dihentikan oleh owner!`),
                     contextInfo: {
                         groupMentions
                     }
                 });
             }
 
-            await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menghapus sewa bot untuk grup ${ctx.isGroup() ? "ini" : "itu"}!`)}`);
+            await ctx.reply(tools.msg.info(`Berhasil menghapus sewa bot untuk grup ${ctx.isGroup() ? "ini" : "itu"}!`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

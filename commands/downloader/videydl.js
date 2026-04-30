@@ -15,7 +15,7 @@ module.exports = {
             );
 
         const isUrl = tools.cmd.isUrl(url);
-        if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
+        if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
 
         try {
             const id = new URL(url).searchParams.get("id");

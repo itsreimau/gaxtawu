@@ -1,3 +1,4 @@
+const axios = require("axios");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
 module.exports = {
@@ -33,9 +34,10 @@ module.exports = {
                 bottomText: bottom
             }, "apikey");
             const result = (await axios.get(apiUrl)).data.results.url;
+            const userStickerwm = ctx.db.user?.stickerwm;
             const sticker = await new Sticker(result)
-                .setPack(config.sticker.packname)
-                .setAuthor(config.sticker.author)
+                .setPack(userStickerwm?.packname || config.sticker.packname)
+                .setAuthor(userStickerwm?.author || config.sticker.author)
                 .setType(StickerTypes.FULL)
                 .setCategories(["🌕"])
                 .setID(ctx.msg.key.id)

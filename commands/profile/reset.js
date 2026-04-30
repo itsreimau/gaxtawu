@@ -11,13 +11,13 @@ module.exports = {
             if (input === "y") {
                 const usersDb = ctx.db.users;
                 usersDb.remove(user => user.jid === ctx.sender.lid);
-                return await collCtx.reply(`ⓘ ${formatter.italic("Database Anda telah berhasil direset!")}`);
+                return await collCtx.reply(tools.msg.info("Database Anda telah berhasil direset!"));
             } else if (input === "n") {
-                return await collCtx.reply(`ⓘ ${formatter.italic("Proses reset database telah dibatalkan.")}`);
+                return await collCtx.reply(tools.msg.info("Proses reset database telah dibatalkan."));
             }
 
             await ctx.reply({
-                text: `ⓘ ${formatter.italic("Yakin ingin mereset database Anda? Tindakan ini akan menghapus semua data yang tersimpan dan tidak dapat dipulihkan.")}`,
+                text: tools.msg.info("Yakin ingin mereset database Anda? Tindakan ini akan menghapus semua data yang tersimpan dan tidak dapat dipulihkan."),
                 buttons: [{
                     text: "Ya",
                     id: `${ctx.used.prefix + ctx.used.command} yes`

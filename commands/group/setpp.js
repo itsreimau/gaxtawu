@@ -19,7 +19,7 @@ module.exports = {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
             await ctx.group().updateProfilePicture(buffer);
 
-            await ctx.reply(`ⓘ ${formatter.italic("Berhasil mengubah gambar profil grup!")}`);
+            await ctx.reply(tools.msg.info("Berhasil mengubah gambar profil grup!"));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

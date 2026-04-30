@@ -18,7 +18,7 @@ module.exports = {
             );
 
         const isUrl = tools.cmd.isUrl(url);
-        if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
+        if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
 
         try {
             const response = await axios.get(url, {
@@ -29,9 +29,10 @@ module.exports = {
             const data = response?.data;
 
             if (/webp/.test(contentType)) {
+                const userStickerwm = ctx.db.user?.stickerwm;
                 const sticker = await new Sticker(data)
-                    .setPack(config.sticker.packname)
-                    .setAuthor(config.sticker.author)
+                    .setPack(userStickerwm?.packname || config.sticker.packname)
+                    .setAuthor(userStickerwm?.author || config.sticker.author)
                     .setType(StickerTypes.FULL)
                     .setCategories(["🌕"])
                     .setID(ctx.msg.key.id)

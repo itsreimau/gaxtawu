@@ -1,4 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
 const fs = require("node:fs");
 const path = require("node:path");
 
@@ -57,7 +56,7 @@ module.exports = {
                 const selectedCats = input === "all" || ctx.used.command === "allmenu" ? Object.keys(tag) : (tag[input] ? [input] : []);
                 const commandsData = getCommands(selectedCats);
 
-                if (Object.keys(commandsData).length === 0) return await ctx.reply(`ⓘ ${formatter.italic("Menu tidak ditemukan!")}`);
+                if (Object.keys(commandsData).length === 0) return await ctx.reply(tools.msg.info("Menu tidak ditemukan!"));
 
                 let text = "";
                 for (const [key, list] of Object.entries(commandsData)) {
@@ -70,39 +69,20 @@ module.exports = {
                 }
 
                 const profilePictureUrl = await ctx.core.profilePictureUrl(ctx.sender.jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
-                const faviconMMSMetadata = (await Baileys.prepareWAMessageMedia({
-                    image: {
-                        url: profilePictureUrl
-                    }
-                }, {
-                    upload: ctx.core.waUploadToServer,
-                    mediaTypeOverride: "thumbnail-link"
-                })).imageMessage;
 
                 await ctx.reply({
-                    extendedTextMessage: {
-                        text: text.trim(),
-                        contextInfo: {
-                            externalAdReply: {
-                                title: config.bot.name,
-                                body: config.msg.footer,
-                                mediaType: 1,
-                                thumbnailUrl: config.bot.thumbnail,
-                                sourceUrl: config.bot.thumbnail,
-                                renderLargerThumbnail: true
-                            }
-                        },
-                        faviconMMSMetadata: {
-                            thumbnailDirectPath: faviconMMSMetadata.directPath,
-                            thumbnailSha256: faviconMMSMetadata.fileSha256,
-                            thumbnailEncSha256: faviconMMSMetadata.fileEncSha256,
-                            mediaKey: faviconMMSMetadata.mediaKey,
-                            mediaKeyTimestamp: faviconMMSMetadata.mediaKeyTimestamp,
-                            thumbnailHeight: 72,
-                            thumbnailWidth: 72
-                        }
+                    text: text.trim(),
+                    externalAdReply: {
+                        title: config.bot.name,
+                        body: config.msg.footer,
+                        mediaType: 1,
+                        thumbnailUrl: config.bot.thumbnail,
+                        sourceUrl: config.bot.thumbnail,
+                        renderLargerThumbnail: true
                     },
-                    raw: true
+                    favicon: {
+                        url: profilePictureUrl
+                    }
                 });
             } else {
                 const userDb = ctx.db.user;

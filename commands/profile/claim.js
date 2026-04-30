@@ -23,16 +23,16 @@ module.exports = {
         const claim = claimRewards[input];
         const level = senderDb?.level || 0;
 
-        if (!claim) return await ctx.reply(`ⓘ ${formatter.italic("Hadiah tidak valid!")}`);
-        if (ctx.sender.isOwner()) return await ctx.reply(`ⓘ ${formatter.italic("Anda sudah memiliki koin tak terbatas!")}`);
-        if (level < claim.level) return await ctx.reply(`ⓘ ${formatter.italic(`Anda perlu mencapai level ${claim.level} untuk mengklaim hadiah ini. Levelmu saat ini adalah ${level}.`)}`);
+        if (!claim) return await ctx.reply(tools.msg.info("Hadiah tidak valid!"));
+        if (ctx.sender.isOwner()) return await ctx.reply(tools.msg.info("Anda sudah memiliki koin tak terbatas!"));
+        if (level < claim.level) return await ctx.reply(tools.msg.info(`Anda perlu mencapai level ${claim.level} untuk mengklaim hadiah ini. Levelmu saat ini adalah ${level}.`));
 
         const currentTime = Date.now();
 
         const lastClaim = (senderDb?.lastClaim ?? {})[input] || 0;
         const timePassed = currentTime - lastClaim;
         const remainingTime = claim.cooldown - timePassed;
-        if (remainingTime > 0) return await ctx.reply(`ⓘ ${formatter.italic(`Anda telah mengklaim hadiah ${input}. Tunggu ${tools.msg.convertMsToDuration(remainingTime)} untuk mengklaim lagi.`)}`);
+        if (remainingTime > 0) return await ctx.reply(tools.msg.info(`Anda telah mengklaim hadiah ${input}. Tunggu ${tools.msg.convertMsToDuration(remainingTime)} untuk mengklaim lagi.`));
 
         try {
             const rewardCoin = (senderDb?.coin || 0) + claim.reward;
@@ -40,7 +40,7 @@ module.exports = {
             (senderDb.lastClaim ||= {})[input] = currentTime;
             senderDb.save();
 
-            await ctx.reply(`ⓘ ${formatter.italic(`Anda berhasil mengklaim hadiah ${input} sebesar ${claim.reward} koin! Koin Anda saat ini adalah ${rewardCoin}.`)}`);
+            await ctx.reply(tools.msg.info(`Anda berhasil mengklaim hadiah ${input} sebesar ${claim.reward} koin! Koin Anda saat ini adalah ${rewardCoin}.`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

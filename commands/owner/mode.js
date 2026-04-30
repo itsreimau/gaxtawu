@@ -35,10 +35,10 @@ module.exports = {
                     botDb.save();
                     break;
                 default:
-                    return await ctx.reply(`ⓘ ${formatter.italic(`Mode "${input}" tidak valid!`)}`);
+                    return await ctx.reply(tools.msg.info(`Mode "${input}" tidak valid!`));
             }
 
-            await ctx.reply(`ⓘ ${formatter.italic(`Berhasil mengubah mode ke ${input}!`)}`);
+            await ctx.reply(tools.msg.info(`Berhasil mengubah mode ke ${input}!`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

@@ -38,7 +38,7 @@ module.exports = {
             }
 
             await ctx.reply({
-                text: resultText.trim() || `ⓘ ${formatter.italic(config.msg.notFound)}`,
+                text: resultText.trim() || tools.msg.info(config.msg.notFound),
                 contextInfo: {
                     groupMentions
                 }

@@ -16,7 +16,7 @@ module.exports = {
                 tools.msg.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")
             );
 
-        if (input.length > 1000) return await ctx.reply(`ⓘ ${formatter.italic("Maksimal 1000 karakter!")}`);
+        if (input.length > 1000) return await ctx.reply(tools.msg.info("Maksimal 1000 karakter!"));
 
         try {
             const isQuoted = !ctx.text && ctx.quoted;
@@ -26,10 +26,10 @@ module.exports = {
                 name: isQuoted ? ctx.quoted?.pushName : ctx.sender.pushName,
                 profile: profilePictureUrl
             });
-
+            const userStickerwm = ctx.db.user?.stickerwm;
             const sticker = await new Sticker(result)
-                .setPack(config.sticker.packname)
-                .setAuthor(config.sticker.author)
+                .setPack(userStickerwm?.packname || config.sticker.packname)
+                .setAuthor(userStickerwm?.author || config.sticker.author)
                 .setType(StickerTypes.FULL)
                 .setCategories(["🌕"])
                 .setID(ctx.msg.key.id)

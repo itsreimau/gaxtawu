@@ -14,9 +14,9 @@ module.exports = {
                 short: "d",
                 default: false
             },
-            quality: {
+            resolution: {
                 type: "string",
-                short: "q",
+                short: "r",
                 default: "360"
             }
         });
@@ -25,38 +25,37 @@ module.exports = {
         if (!url)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d -q 720")}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d -r 720")}\n` +
                 tools.msg.generatesFlagInfo({
                     "-d": "Kirim sebagai dokumen",
-                    "-q": "Kualitas video (tersedia: 144, 240, 360, 480, 720, 1080, 1440 | default: 360)"
+                    "-r": "Resolusi video (tersedia: 360, 480, 720, 1080, 1440, 2160 | default: 720)"
                 })
             );
 
         const isUrl = tools.cmd.isUrl(url);
-        if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
+        if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
 
         try {
-            const apiUrl = tools.api.createUrl("chocomilk", "/v1/youtube/download", {
+            const apiUrl = tools.api.createUrl("nexray", "/downloader/ytmp4", {
                 url,
-                quality: ["144", "240", "360", "480", "720", "1080", "1440"].includes(flag.quality) ? flag.quality : "360",
-                mode: "video"
+                resolusi: ["360", "480", "720", "1080", "1440", "2160"].includes(flag.resolution) ? flag.resolution : "720"
             });
-            const result = (await axios.get(apiUrl)).data.data;
+            const result = (await axios.get(apiUrl)).data.result;
 
             const document = flag.document;
             if (document) {
                 await ctx.reply({
                     document: {
-                        url: result.download
+                        url: result.url
                     },
-                    fileName: result.filename,
+                    fileName: `${result.title}.mp4`,
                     mimetype: "video/mp4",
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
                 await ctx.reply({
                     video: {
-                        url: result.download
+                        url: result.url
                     },
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });

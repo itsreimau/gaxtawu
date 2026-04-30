@@ -6,7 +6,7 @@ module.exports = {
     name: "cerdascermat",
     category: "game",
     code: async (ctx) => {
-        if (session.has(ctx.id)) return await ctx.reply(`ⓘ ${formatter.italic("Sesi permainan sedang berjalan!")}`);
+        if (session.has(ctx.id)) return await ctx.reply(tools.msg.info("Sesi permainan sedang berjalan!"));
 
         try {
             const mapel = {
@@ -74,24 +74,26 @@ module.exports = {
             }];
 
             collector.on("collect", async (collCtx) => {
-                const participantAnswer = collCtx.msg.body?.toLowerCase();
-                const participantDb = collCtx.db.user;
+                    const participantAnswer = collCtx.msg.body?.toLowerCase();
+                    const participantDb = collCtx.db.user;
 
-                if (participantAnswer === game.answerKey) {
-                    session.delete(ctx.id);
-                    collector.stop();
-                    participantDb.coin += game.coin;
-                    participantDb.winGame += 1;
-                    await participantDb.save();
-                    await collCtx.reply({
-                        text: `ⓘ ${formatter.italic(`Benar! +${game.coin} Koin`)}`,
-                        buttons: playAgain
-                    });
-                } else if (participantAnswer === `surrender_${ctx.used.command}`) {
-                    session.delete(ctx.id);
-                    collector.stop();
-                    await collCtx.reply({
-                        text: `ⓘ ${formatter.italic(`Anda menyerah! Jawabannya adalah ${game.answer} (${game.answerKey.toUpperCase()}).`)}`,
+                    if (participantAnswer === game.answerKey) {
+                        session.delete(ctx.id);
+                        collector.stop();
+                        participantDb.coin += game.coin;
+                        participantDb.winGame += 1;
+                        await participantDb.save();
+                        await collCtx.reply({
+                            text: tools.msg.info(`Benar! +${game.coin} Koin`),
+                            buttons: playAgain
+                        });
+                    } else if (participantAnswer === `surrender_${ctx.used.command}`) {
+                        session.delete(ctx.id);
+                        collector.stop();
+                        await collCtx.reply({
+                                text: tools.msg.info(`Anda menyerah! Jawabannya adalah ${game.answer} (${game.answerKey.toUpperCase()}).`)
+                            }
+                            `,
                         buttons: playAgain
                     });
                 }
@@ -101,13 +103,15 @@ module.exports = {
                 if (session.has(ctx.id)) {
                     session.delete(ctx.id);
                     await ctx.reply({
-                        text: `ⓘ ${formatter.italic(`Waktu habis! Jawabannya adalah ${game.answer} (${game.answerKey.toUpperCase()}).`)}`,
-                        buttons: playAgain
-                    });
+                        text: tools.msg.info(`
+                            Waktu habis!Jawabannya adalah $ { game.answer }($ { game.answerKey.toUpperCase() }).
+                            `)}`,
+                            buttons: playAgain
+                        });
                 }
             });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
+    } catch (error) {
+        await tools.cmd.handleError(ctx, error, true);
     }
+}
 };

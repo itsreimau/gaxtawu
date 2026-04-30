@@ -19,7 +19,7 @@ module.exports = {
         const isUrl = tools.cmd.isUrl(input);
         if (isUrl)
             return await ctx.reply({
-                text: `ⓘ ${formatter.italic("Input berupa URL, gunakan tombol download di bawah:")}`,
+                text: tools.msg.info("Input berupa URL, gunakan tombol download di bawah:"),
                 buttons: [{
                     text: "Download",
                     id: `${ctx.used.prefix}xnxxdl ${input}`
@@ -36,7 +36,7 @@ module.exports = {
                 `➛ ${formatter.bold("Judul")}: ${res.title}\n` +
                 `➛ ${formatter.bold("URL")}: ${res.link}`
             ).join("\n\n");
-            await ctx.reply(resultText.trim() || `ⓘ ${formatter.italic(config.msg.notFound)}`);
+            await ctx.reply(resultText.trim() || tools.msg.info(config.msg.notFound));
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

@@ -19,12 +19,12 @@ module.exports = {
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(`ⓘ ${formatter.italic("Dia adalah owner grup!")}`);
+        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(tools.msg.info("Dia adalah owner grup!"));
 
         try {
             await ctx.group().promote(target.jid);
 
-            await ctx.reply(`ⓘ ${formatter.italic("Berhasil ditingkatkan dari anggota menjadi admin!")}`);
+            await ctx.reply(tools.msg.info("Berhasil ditingkatkan dari anggota menjadi admin!"));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

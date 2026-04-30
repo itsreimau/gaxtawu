@@ -19,12 +19,12 @@ module.exports = {
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (!await ctx.group().isAdmin(target.jid)) return await ctx.reply(`ⓘ ${formatter.italic("Dia adalah anggota!")}`);
+        if (!await ctx.group().isAdmin(target.jid)) return await ctx.reply(tools.msg.info("Dia adalah anggota!"));
 
         try {
             await ctx.group().demote(target.jid);
 
-            await ctx.reply(`ⓘ ${formatter.italic("Berhasil diturunkan dari admin menjadi anggota!")}`);
+            await ctx.reply(tools.msg.info("Berhasil diturunkan dari admin menjadi anggota!"));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

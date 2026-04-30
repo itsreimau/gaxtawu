@@ -9,13 +9,13 @@ module.exports = {
     code: async (ctx) => {
         if (ctx.args[0]?.toLowerCase() === "all") {
             const pendings = await ctx.group().pendingMembers();
-            if (pendings.length === 0) return await ctx.reply(`ⓘ ${formatter.italic("Tidak ada anggota yang menunggu persetujuan.")}`);
+            if (pendings.length === 0) return await ctx.reply(tools.msg.info("Tidak ada anggota yang menunggu persetujuan."));
 
             try {
                 const allJids = pendings.map(pending => pending.jid);
                 await ctx.group().approvePendingMembers(allJids);
 
-                return await ctx.reply(`ⓘ ${formatter.italic(`Berhasil menyetujui semua anggota (${allJids.length}).`)}`);
+                return await ctx.reply(tools.msg.info(`Berhasil menyetujui semua anggota (${allJids.length}).`));
             } catch (error) {
                 return await tools.cmd.handleError(ctx, error);
             }
@@ -34,12 +34,12 @@ module.exports = {
 
         const pendings = await ctx.group().pendingMembers();
         const isPending = pendings.some(pending => tools.cmd.areJidsSameUser(pending.jid, target.jid));
-        if (!isPending) return await ctx.reply(`ⓘ ${formatter.italic("Akun tidak ditemukan di daftar anggota yang menunggu persetujuan.")}`);
+        if (!isPending) return await ctx.reply(tools.msg.info("Akun tidak ditemukan di daftar anggota yang menunggu persetujuan."));
 
         try {
             await ctx.group().approvePendingMembers(target.jid);
 
-            await ctx.reply(`ⓘ ${formatter.italic("Berhasil disetujui!")}`);
+            await ctx.reply(tools.msg.info("Berhasil disetujui!"));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

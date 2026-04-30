@@ -17,13 +17,13 @@ module.exports = {
             );
 
         const isUrl = tools.cmd.isUrl(url);
-        if (!isUrl) return await ctx.reply(`ⓘ ${formatter.italic(config.msg.urlInvalid)}`);
+        if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
 
         try {
             const apiUrl = tools.api.createUrl("chocomilk", "/v1/download/instagram", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.data.media.all;
+            const result = (await axios.get(apiUrl)).data.data.media.all.filter(res => ["image", "video"].includes(res.type));
             const album = result.map(res => ({
                 [res.type]: {
                     url: res.url
