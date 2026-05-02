@@ -79,14 +79,14 @@ module.exports = {
                     participantDb.save();
                     await collCtx.reply({
                         text: tools.msg.info(`Benar! +${game.coin} Koin`),
-                        nativeFlow: playAgain
+                        buttons: playAgain
                     });
                 } else if (participantAnswer === `surrender_${ctx.used.command}`) {
                     session.delete(ctx.id);
                     collector.stop();
                     await collCtx.reply({
                         text: tools.msg.info(`Anda menyerah! Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`),
-                        nativeFlow: playAgain
+                        buttons: playAgain
                     });
                 }
             });
@@ -96,7 +96,7 @@ module.exports = {
                     session.delete(ctx.id);
                     await ctx.reply({
                         text: tools.msg.info(`Waktu habis! Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`),
-                        nativeFlow: playAgain
+                        buttons: playAgain
                     });
                 }
             });

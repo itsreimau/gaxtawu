@@ -68,8 +68,6 @@ module.exports = {
                     text += "╰┈┈┈┈┈┈\n\n";
                 }
 
-                const profilePictureUrl = await ctx.core.profilePictureUrl(ctx.sender.jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
-
                 await ctx.reply({
                     text: text.trim(),
                     externalAdReply: {
@@ -79,9 +77,6 @@ module.exports = {
                         thumbnailUrl: config.bot.thumbnail,
                         sourceUrl: config.bot.thumbnail,
                         renderLargerThumbnail: true
-                    },
-                    favicon: {
-                        url: profilePictureUrl
                     }
                 });
             } else {

@@ -56,7 +56,7 @@ module.exports = {
                     participantDb.save();
                     await collCtx.reply({
                         text: tools.msg.info(`Benar! +${game.coin} Koin`),
-                        nativeFlow: playAgain
+                        buttons: playAgain
                     });
                 } else if (participantAnswer === `hint_${ctx.used.command}`) {
                     if (participantDb.coin < 3) return await collCtx.reply(tools.msg.info(config.msg.coin));
@@ -69,7 +69,7 @@ module.exports = {
                     collector.stop();
                     await collCtx.reply({
                         text: tools.msg.info(`Anda menyerah! Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`),
-                        nativeFlow: playAgain
+                        buttons: playAgain
                     });
                 } else if (tools.cmd.didYouMean(participantAnswer, [game.answer]) === game.answer) {
                     await collCtx.reply(tools.msg.info("Sedikit lagi!"));
@@ -81,7 +81,7 @@ module.exports = {
                     session.delete(ctx.id);
                     await ctx.reply({
                         text: tools.msg.info(`Waktu habis! Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`),
-                        nativeFlow: playAgain
+                        buttons: playAgain
                     });
                 }
             });

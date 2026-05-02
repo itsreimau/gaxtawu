@@ -31,7 +31,7 @@ module.exports = {
 
         try {
             const apiUrl = tools.api.createUrl("cuki", "/api/downloader/ytmp3", {
-                url: searchResult.url
+                url
             }, "apikey");
             const result = (await axios.get(apiUrl)).data.data.audio.download.downloadUrl;
 
