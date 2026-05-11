@@ -16,7 +16,7 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("delirius", "/ia/enhance", {
+            const apiUrl = tools.api.createUrl("delirius", "/ia/enhance", {
                 url: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.data.url;

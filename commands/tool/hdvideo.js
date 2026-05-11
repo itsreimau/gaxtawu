@@ -17,7 +17,7 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("nexray", "/tools/hdvideo", {
+            const apiUrl = tools.api.createUrl("nexray", "/tools/hdvideo", {
                 url: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.result;
