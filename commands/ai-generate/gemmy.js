@@ -2,7 +2,7 @@ module.exports = {
     name: "gemmy",
     category: "ai-generate",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.text;

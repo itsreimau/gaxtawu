@@ -28,7 +28,7 @@ module.exports = {
             const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.data.soal);
 
             const game = {
-                coin: 10,
+                coin: 5,
                 timeout: 60000,
                 answerKey: result.jawaban_benar,
                 answer: result.semua_jawaban.find(ans => Object.keys(ans)[0] === result.jawaban_benar)[result.jawaban_benar].toLowerCase()

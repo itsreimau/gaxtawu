@@ -1,28 +1,31 @@
+const axios = require("axios");
+
 module.exports = {
-    name: "magicstudio",
-    category: "ai-generate",
+    name: "pixiv",
+    category: "tool",
     permissions: {
         coin: 10
     },
     code: async (ctx) => {
-        const input = ctx.text || ctx.quoted?.text;
+        const input = ctx.text;
 
         if (!input)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "anime girl with short blue hair")
+                tools.msg.generateCmdExample(ctx.used, "rei ayanami")
             );
 
         try {
-            const result = tools.api.createUrl("nexray", "/ai/magicstudio", {
-                prompt: input
+            const apiUrl = tools.api.createUrl("delirius", "/anime/pixiv", {
+                query: input
             });
+            const result = Buffer.from((await axios.get(apiUrl)).data.data.download, "base64");
 
             await ctx.reply({
                 image: {
                     url: result
                 },
-                caption: `➛ ${formatter.bold("Prompt")}: ${input}`,
+                caption: `➛ ${formatter.bold("Kueri")}: ${input}`,
                 buttons: [{
                     text: "Ambil Lagi",
                     id: `${ctx.used.prefix + ctx.used.command} ${input}`

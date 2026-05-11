@@ -12,9 +12,10 @@ module.exports = {
         try {
             delete quotedMessage[ctx.quoted.messageType].viewOnce;
 
-            await ctx.forwardMessage(ctx.id, {
-                message: quotedMessage
-            }, true);
+            await ctx.sendMessage({
+                ...quotedMessage,
+                raw: true
+            });
             await ctx.reply(`ⓘ ${format.italic("Media sekali lihat berhasil dikirim!")}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

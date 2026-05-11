@@ -8,7 +8,7 @@ module.exports = {
         premium: true
     },
     code: async (ctx) => {
-        const url = ctx.args[0];
+        const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.text);
 
         if (!url)
             return await ctx.reply(
@@ -20,7 +20,7 @@ module.exports = {
         if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/downloader/gdrive", {
+            const apiUrl = tools.api.createUrl("lexcode", "/api/dwn/gdrive", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;
@@ -30,7 +30,7 @@ module.exports = {
                     url: result.downloadUrl
                 },
                 fileName: result.fileName,
-                mimetype: result.mimetype,
+                mimetype: result.mimeType,
                 caption: `➛ ${formatter.bold("URL")}: ${url}`
             });
         } catch (error) {

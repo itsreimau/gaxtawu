@@ -17,8 +17,8 @@ module.exports = {
 
             const game = {
                 coin: {
-                    answered: 10,
-                    allAnswered: 100
+                    answered: 5,
+                    allAnswered: 10
                 },
                 timeout: 90000,
                 answers: new Set(result.jawaban.map(ans => ans.toLowerCase())),

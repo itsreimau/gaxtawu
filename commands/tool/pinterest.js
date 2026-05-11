@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["pin"],
     category: "tool",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.text;

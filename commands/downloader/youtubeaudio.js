@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["yta", "ytaudio", "ytmp3"],
     category: "downloader",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const flag = ctx.flag({
@@ -15,7 +15,7 @@ module.exports = {
                 default: false
             }
         });
-        const url = flag.input;
+        const url = flag.input || tools.cmd.extractUrlFromText(ctx.quoted?.text);
 
         if (!url)
             return await ctx.reply(
@@ -30,10 +30,10 @@ module.exports = {
         if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
 
         try {
-            const apiUrl = tools.api.createUrl("cuki", "/api/downloader/ytmp3", {
+            const apiUrl = tools.api.createUrl("delirius", "/download/ytmp3", {
                 url
-            }, "apikey");
-            const result = (await axios.get(apiUrl)).data.data.audio.download.downloadUrl;
+            });
+            const result = (await axios.get(apiUrl)).data.data;
 
             const document = flag.document;
             if (document) {
@@ -41,7 +41,7 @@ module.exports = {
                     document: {
                         url: result.download
                     },
-                    fileName: result.filename,
+                    fileName: `${result.title}.mp3`,
                     mimetype: "audio/mpeg",
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });

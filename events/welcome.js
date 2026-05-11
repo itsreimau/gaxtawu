@@ -24,7 +24,7 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
     const text = customText ? customText.replace(/%tag%/g, tag).replace(/%subject%/g, metadata.subject).replace(/%description%/g, metadata.description) : (isWelcome ?
         `>ᴗ< ${formatter.italic(`Selamat datang ${tag} di grup ${metadata.subject}!`)}` :
         `•︵• ${formatter.italic(`Selamat tinggal, ${tag}!`)}`);
-    const profilePictureUrl = await bot.core.profilePictureUrl(participantJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
+    const profilePictureUrl = await bot.core.profilePictureUrl(participantJid, "image") || "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg";
     const canvasUrl = tools.api.createUrl("siputzx", `/api/canvas/${isWelcome ? "welcomev5" : "goodbyev5"}`, {
         username: bot.getPushName(participantJid),
         guildName: metadata.subject,

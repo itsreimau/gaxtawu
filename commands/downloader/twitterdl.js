@@ -8,7 +8,7 @@ module.exports = {
         premium: true
     },
     code: async (ctx) => {
-        const url = ctx.args[0];
+        const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.text);
 
         if (!url)
             return await ctx.reply(
@@ -19,20 +19,20 @@ module.exports = {
         if (!tools.cmd.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
 
         try {
-            const apiUrl = tools.api.createUrl("chocomilk", "/v1/download/twitter", {
+            const apiUrl = tools.api.createUrl("delirius", "/download/twitterdl", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.data.media;
+            const result = (await axios.get(apiUrl)).data;
 
-            if (result.videos) {
+            if (result.type === "video") {
                 await ctx.reply({
                     video: {
-                        url: result.videos[0].url
+                        url: result.media[0].url
                     },
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
-                const album = result.images.map(res => ({
+                const album = result.media.map(res => ({
                     image: {
                         url: res.url
                     }

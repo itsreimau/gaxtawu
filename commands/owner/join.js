@@ -7,7 +7,7 @@ module.exports = {
         restrict: true
     },
     code: async (ctx) => {
-        const url = ctx.args[0];
+        const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.text);
 
         if (!url)
             return await ctx.reply(

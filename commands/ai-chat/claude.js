@@ -4,7 +4,7 @@ module.exports = {
     name: "claude",
     category: "ai-chat",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.text;

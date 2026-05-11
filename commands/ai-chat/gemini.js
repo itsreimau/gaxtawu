@@ -4,7 +4,7 @@ module.exports = {
     name: "gemini",
     category: "ai-chat",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.text;
@@ -14,16 +14,9 @@ module.exports = {
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
                 tools.msg.generateNotes([
-                    "AI ini dapat melihat gambar.",
-                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} reset`)} untuk mereset riwayat percakapan.`
+                    "AI ini dapat melihat gambar."
                 ])
             );
-
-        if (input === "reset") {
-            const senderDb = ctx.db.user;
-            delete senderDb.geminiHistoryChat;
-            return await ctx.reply(tools.msg.info("Riwayat percakapan berhasil direset!"));
-        }
 
         const [checkMedia, checkQuotedMedia] = [
             tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
@@ -31,44 +24,28 @@ module.exports = {
         ];
 
         try {
-            const mode = "chat";
-            const senderDb = ctx.db.user;
-            const historyChat = senderDb.geminiHistoryChat || "";
-
             if (!!checkMedia || !!checkQuotedMedia) {
                 const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-                const apiUrl = tools.api.createUrl("zenzxz", "/ai/gemini", {
-                    prompt: input,
-                    mode,
-                    media: uploadUrl,
-                    history: historyChat
+                const apiUrl = tools.api.createUrl("lexcode", "/api/ai/gemini-2-5-flash", {
+                    text: input,
+                    imgUrl: uploadUrl
                 });
                 const result = (await axios.get(apiUrl)).data.result;
-                if (!historyChat) {
-                    senderDb.geminiHistoryChat = JSON.stringify(result.history);
-                    senderDb.save();
-                }
 
                 await ctx.reply({
                     richResponse: [{
-                        text: result.reply
+                        text: result
                     }]
                 });
             } else {
-                const apiUrl = tools.api.createUrl("zenzxz", "/ai/gemini", {
-                    prompt: input,
-                    mode: "chat",
-                    history: historyChat
+                const apiUrl = tools.api.createUrl("lexcode", "/api/ai/gemini-2-5-flash", {
+                    text: input
                 });
                 const result = (await axios.get(apiUrl)).data.result;
-                if (!historyChat) {
-                    senderDb.geminiHistoryChat = JSON.stringify(result.history);
-                    senderDb.save();
-                }
 
                 await ctx.reply({
                     richResponse: [{
-                        text: result.reply
+                        text: result
                     }]
                 });
             }

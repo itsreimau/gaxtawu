@@ -5,10 +5,10 @@ module.exports = {
     aliases: ["youtubesum", "ytsum", "ytsummary"],
     category: "tool",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
-        const url = ctx.args[0];
+        const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.text);
 
         if (!url)
             return await ctx.reply(

@@ -1,4 +1,3 @@
-const axios = require("axios");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
 module.exports = {
@@ -6,7 +5,7 @@ module.exports = {
     aliases: ["smeme", "stikermeme"],
     category: "maker",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.text;
@@ -28,12 +27,11 @@ module.exports = {
             let [top, bottom] = input.split("|").map(inp => inp);
             [top, bottom] = bottom ? [top || " ", bottom] : [" ", top || " "];
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("cuki", "/api/canvas/memegen", {
+            const result = tools.api.createUrl("nekolabs", "/canvas/meme", {
                 imageUrl: uploadUrl,
-                topText: top,
-                bottomText: bottom
-            }, "apikey");
-            const result = (await axios.get(apiUrl)).data.results.url;
+                textT: top,
+                textB: bottom
+            });
             const userStickerwm = ctx.db.user?.stickerwm;
             const sticker = await new Sticker(result)
                 .setPack(userStickerwm?.packname || config.sticker.packname)

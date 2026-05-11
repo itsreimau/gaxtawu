@@ -118,7 +118,7 @@ Untuk dokumentasi lengkap, silakan kunjungi:
 
 - [@mengkodingan/ckptw](https://www.npmjs.com/package/@mengkodingan/ckptw) - Referensi struktur perintah dasar
 - [itsreimau/gktw](https://github.com/itsreimau/gktw) - Dokumentasi fork kustom
-- [itsliaaa/baileys](https://github.com/itsliaaa/vaileys) - Panduan pengiriman pesan/media
+- [itsliaaa/baileys](https://github.com/itsliaaa/baileys) - Panduan pengiriman pesan/media
 
 ## 🤝 Contribution
 

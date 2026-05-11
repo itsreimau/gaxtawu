@@ -27,13 +27,14 @@ module.exports = {
             });
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/search/xnxx", {
-                q: input
+            const apiUrl = tools.api.createUrl("delirius", "/search/xnxxsearch", {
+                query: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.data;
 
             const resultText = result.map(res =>
                 `➛ ${formatter.bold("Judul")}: ${res.title}\n` +
+                `➛ ${formatter.bold("Durasi")}: ${res.duration}\n` +
                 `➛ ${formatter.bold("URL")}: ${res.link}`
             ).join("\n\n");
             await ctx.reply(resultText.trim() || tools.msg.info(config.msg.notFound));

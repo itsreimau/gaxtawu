@@ -106,6 +106,7 @@ module.exports = {
     areJidsSameUser: Baileys.areJidsSameUser,
     checkMedia,
     checkQuotedMedia,
+    extractUrlFromText: Baileys.extractUrlFromText,
     delay: Baileys.delay,
     didYouMean: Gktw.didYouMean,
     getRandomElement,

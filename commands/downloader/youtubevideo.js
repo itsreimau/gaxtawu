@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["ytmp4", "ytv", "ytvideo"],
     category: "downloader",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const flag = ctx.flag({
@@ -20,7 +20,7 @@ module.exports = {
                 default: "360"
             }
         });
-        const url = flag.input;
+        const url = flag.input || tools.cmd.extractUrlFromText(ctx.quoted?.text);
 
         if (!url)
             return await ctx.reply(

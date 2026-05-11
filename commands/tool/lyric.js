@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["lirik"],
     category: "tool",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.text;
@@ -17,13 +17,13 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("chocomilk", "/v1/search/lyrics", {
+            const apiUrl = tools.api.createUrl("delirius", "/search/lyrics", {
                 query: input
             });
             const result = (await axios.get(apiUrl)).data.data;
 
             await ctx.reply(
-                `— ${result.lyrics.join("\n")}\n` +
+                `— ${result.lyrics}\n` +
                 "\n" +
                 `➛ ${formatter.bold("Judul")}: ${result.title}\n` +
                 `➛ ${formatter.bold("Artis")}: ${result.artist}`

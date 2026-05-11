@@ -5,10 +5,10 @@ module.exports = {
     aliases: ["pindl"],
     category: "downloader",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
-        const url = ctx.args[0];
+        const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.text);
 
         if (!url)
             return await ctx.reply(
@@ -20,14 +20,14 @@ module.exports = {
         if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
 
         try {
-            const apiUrl = tools.api.createUrl("chocomilk", "/v1/download/pinterest", {
+            const apiUrl = tools.api.createUrl("delirius", "/download/pinterestdl", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.data;
+            const result = (await axios.get(apiUrl)).data.data.download;
 
             await ctx.reply({
-                [result.is_video ? "video" : "image"]: {
-                    url: result.is_video ? result.media.videos[0].url : result.media.images.original.url
+                [result.type]: {
+                    url: result.url
                 },
                 caption: `➛ ${formatter.bold("URL")}: ${url}`
             });

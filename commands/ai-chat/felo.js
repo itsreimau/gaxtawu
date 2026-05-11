@@ -4,7 +4,7 @@ module.exports = {
     name: "felo",
     category: "ai-chat",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.text;
@@ -16,9 +16,9 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("cuki", "/api/ai/felo", {
-                query: input
-            }, "apikey");
+            const apiUrl = tools.api.createUrl("nekolabs", "/text.gen/felo", {
+                text: input
+            });
             const result = (await axios.get(apiUrl)).data.results.answer;
 
             await ctx.reply({

@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["hitam", "penghitaman"],
     category: "ai-misc",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [

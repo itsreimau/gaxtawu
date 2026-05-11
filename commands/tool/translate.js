@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["tr"],
     category: "tool",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const langCode = ctx.args[0]?.length === 2 ? ctx.args[0] : "en";
@@ -16,22 +16,16 @@ module.exports = {
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "en halo, dunia!")}\n` +
                 tools.msg.generateNotes([
-                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
+                    "Gunakan kode bahasa 2 huruf, periksa daftar lengkapnya di Google. (contoh: en, id, ja, ar)"
                 ])
             );
 
-        if (input.toLowerCase() === "list") {
-            const listText = await tools.list.get("translate");
-            return await ctx.reply(listText);
-        }
-
         try {
-            const apiUrl = tools.api.createUrl("cuki", "/api/tools/translate", {
+            const apiUrl = tools.api.createUrl("delirius", "/tools/translate", {
                 text: input,
-                source: "auto",
-                target: langCode
-            }, "apikey");
-            const result = (await axios.get(apiUrl)).data.data.translatedText;
+                language: langCode
+            });
+            const result = (await axios.get(apiUrl)).data.data;
 
             await ctx.reply(result);
         } catch (error) {

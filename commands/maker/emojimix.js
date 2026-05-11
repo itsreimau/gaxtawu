@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["emix"],
     category: "maker",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const [emoji1, emoji2] = Array.from(ctx.text?.matchAll(/\p{Emoji}/gu), (match) => match[0]).slice(0, 2);

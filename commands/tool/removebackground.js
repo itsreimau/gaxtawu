@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["removebg"],
     category: "tool",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
@@ -15,14 +15,16 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("chocomilk", "/v1/i2i/removebg", {
-                image: uploadUrl
+            const result = tools.api.createUrl("nexray", "/tools/removebg", {
+                url: uploadUrl
             });
 
             await ctx.reply({
-                image: {
+                document: {
                     url: result
-                }
+                },
+                fileName: `${Math.random().toString(36).substring(2, 15)}.png`,
+                mimetype: "image/png"
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

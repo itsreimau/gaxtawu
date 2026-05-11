@@ -3,15 +3,8 @@ const util = require("node:util");
 
 // Daftar API gratis
 const APIs = {
-    chocomilk: {
-        baseURL: "https://chocomilk.amira.us.kg"
-    },
-    cuki: {
-        baseURL: "https://api.cuki.biz.id",
-        APIKey: "cuki-x"
-    },
-    deline: {
-        baseURL: "https://api.deline.web.id"
+    delirius: {
+        baseURL: "https://api.delirius.store"
     },
     faaa: {
         baseURL: "https://api-faa.my.id"
@@ -43,12 +36,6 @@ const APIs = {
     },
     vreden: {
         baseURL: "https://api.vreden.my.id"
-    },
-    yp: {
-        baseURL: "https://api.yupra.my.id"
-    },
-    zenzxz: {
-        baseURL: "https://api.zenzxz.my.id"
     }
 };
 

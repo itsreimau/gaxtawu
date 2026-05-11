@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["spotify", "spotifys"],
     category: "search",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.text;
@@ -27,10 +27,10 @@ module.exports = {
             });
 
         try {
-            const apiUrl = tools.api.createUrl("nexray", "/search/spotify", {
+            const apiUrl = tools.api.createUrl("delirius", "/search/spotify", {
                 q: input
             });
-            const result = (await axios.get(apiUrl)).data.result.search_data;
+            const result = (await axios.get(apiUrl)).data.data;
 
             const resultText = result.map(res =>
                 `➛ ${formatter.bold("Judul")}: ${res.title}\n` +

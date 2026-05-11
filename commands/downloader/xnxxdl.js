@@ -7,7 +7,7 @@ module.exports = {
         premium: true
     },
     code: async (ctx) => {
-        const url = ctx.args[0];
+        const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.text);
 
         if (!url)
             return await ctx.reply(
@@ -19,10 +19,10 @@ module.exports = {
         if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/downloader/xnxx", {
+            const apiUrl = tools.api.createUrl("delirius", "/download/xnxxdl", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result.files;
+            const result = (await axios.get(apiUrl)).data.data.download;
 
             await ctx.reply({
                 video: {

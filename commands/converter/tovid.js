@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["tomp4", "tovid"],
     category: "converter",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         if (!tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["sticker"])) return await ctx.reply(tools.msg.generateInstruction(["reply"], ["sticker"]));

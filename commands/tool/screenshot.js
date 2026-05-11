@@ -1,14 +1,12 @@
-const axios = require("axios");
-
 module.exports = {
     name: "screenshot",
-    aliases: ["ss", "sshp", "sspc", "sstab", "ssweb"],
+    aliases: ["ss", "sshp", "sspc", "ssweb"],
     category: "tool",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
-        const url = ctx.args[0];
+        const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.text);
 
         if (!url)
             return await ctx.reply(
@@ -20,12 +18,10 @@ module.exports = {
         if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
 
         try {
-            const apiUrl = tools.api.createUrl("zenzxz", "/tools/ssweb", {
+            const result = tools.api.createUrl("kuroneko", "/api/tools/ssweb", {
                 url,
-                device: ctx.used.command == "sstab" ? "tablet" : (ctx.used.command === "sshp" ? "mobile" : "desktop"),
-                full_page: true
+                device: ctx.used.command === "sshp" ? "mobile" : "desktop"
             });
-            const result = (await axios.get(apiUrl)).data.result.url;
 
             await ctx.reply({
                 image: {

@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["up", "tourl"],
     category: "tool",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [

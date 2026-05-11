@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["youtube", "youtubes", "yt", "yts", "ytsearch"],
     category: "search",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.text;
@@ -30,15 +30,15 @@ module.exports = {
             });
 
         try {
-            const apiUrl = tools.api.createUrl("chocomilk", "/v1/youtube/search", {
-                query: input
+            const apiUrl = tools.api.createUrl("delirius", "/search/ytsearch", {
+                q: input
             });
-            const result = (await axios.get(apiUrl)).data.data.all.filter(res => res.type === "video");
+            const result = (await axios.get(apiUrl)).data.data;
 
             const resultText = result.map(res =>
                 `➛ ${formatter.bold("Judul")}: ${res.title}\n` +
                 `➛ ${formatter.bold("Channel")}: ${res.author.name}\n` +
-                `➛ ${formatter.bold("Durasi")}: ${res.duration.timestamp}\n` +
+                `➛ ${formatter.bold("Durasi")}: ${res.duration}\n` +
                 `➛ ${formatter.bold("URL")}: ${res.url}`
             ).join("\n\n");
             await ctx.reply(resultText.trim() || tools.msg.info(config.msg.notFound));

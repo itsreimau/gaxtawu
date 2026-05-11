@@ -4,7 +4,7 @@ module.exports = {
     name: "hd",
     category: "tool",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
@@ -16,10 +16,10 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("chocomilk", "/v1/i2i/enhance", {
+            const result = tools.api.createUrl("delirius", "/ia/enhance", {
                 url: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.data.image;
+            const result = (await axios.get(apiUrl)).data.data.url;
 
             await ctx.reply({
                 image: {

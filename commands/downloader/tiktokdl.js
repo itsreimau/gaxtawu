@@ -5,10 +5,10 @@ module.exports = {
     aliases: ["tiktok", "tt", "ttdl", "vt", "vtdl"],
     category: "downloader",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
-        const url = ctx.args[0];
+        const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.text);
 
         if (!url)
             return await ctx.reply(
@@ -20,15 +20,15 @@ module.exports = {
         if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
 
         try {
-            const apiUrl = tools.api.createUrl("chocomilk", "/v1/download/tiktok", {
+            const apiUrl = tools.api.createUrl("delirius", "/download/tiktok", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.data.media;
+            const result = (await axios.get(apiUrl)).data.data.meta.media[0];
 
-            if (result.video) {
+            if (result.type === "video") {
                 await ctx.reply({
                     video: {
-                        url: result.video
+                        url: result.org
                     },
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });

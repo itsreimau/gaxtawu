@@ -1,9 +1,11 @@
+const axios = require("axios");
+
 module.exports = {
     name: "texttospeech",
     aliases: ["tts"],
     category: "tool",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const langCode = ctx.args[0]?.length === 2 ? ctx.args[0] : "id";
@@ -14,20 +16,16 @@ module.exports = {
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "id halo, dunia!")}\n` +
                 tools.msg.generateNotes([
-                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
+                    "Gunakan kode bahasa 2 huruf, periksa daftar lengkapnya di Google. (contoh: en, id, ja, ar, ko)"
                 ])
             );
 
-        if (input.toLowerCase() === "list") {
-            const listText = await tools.list.get("translate");
-            return await ctx.reply(listText);
-        }
-
         try {
-            const result = tools.api.createUrl("https://tts-api.netlify.app", "/", {
+            const apiUrl = tools.api.createUrl("delirius", "/tools/gtts", {
                 text: input,
-                lang: langCode
+                language: langCode
             });
+            const result = (await axios.get(apiUrl)).data.data.download;
 
             await ctx.reply({
                 audio: {

@@ -20,7 +20,9 @@ module.exports = {
             const waitMsg = await ctx.reply(tools.msg.info(config.msg.wait));
             const groupJids = Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id);
             for (const groupJid of groupJids) {
-                await ctx.core.updateMemberLabel(groupJid, input);
+                try {
+                    await ctx.core.updateMemberLabel(groupJid, input);
+                } catch {}
             }
 
             await ctx.editMessage(ctx.id, waitMsg.key, tools.msg.info(`Label bot berhasil diubah menjadi ${formatter.inlineCode(input)} di ${groupJids.length} grup!`));

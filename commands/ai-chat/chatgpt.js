@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["ai", "gpt"],
     category: "ai-chat",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.text;
@@ -17,11 +17,10 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("chocomilk", "/v1/llm/chatgpt/completions", {
-                ask: input,
-                prompt: `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.` // Dapat diubah sesuai keinginan
+            const apiUrl = tools.api.createUrl("lexcode", "/api/ai/gpt5-nano", {
+                text: input
             });
-            const result = (await axios.get(apiUrl)).data.data.answer;
+            const result = (await axios.get(apiUrl)).data.result.result;
 
             await ctx.reply({
                 richResponse: [{

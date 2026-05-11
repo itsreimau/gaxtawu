@@ -1,4 +1,3 @@
-const axios = require("axios");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
 module.exports = {
@@ -6,7 +5,7 @@ module.exports = {
     aliases: ["egif"],
     category: "maker",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const [emoji] = Array.from(ctx.text?.matchAll(/\p{Emoji}/gu), (match) => match[0]).slice(0, 1);
@@ -18,10 +17,9 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/maker/emojigif", {
+            const result = tools.api.createUrl("nexray", "/tools/emojigif", {
                 emoji
             });
-            const result = (await axios.get(apiUrl)).data.result.url;
             const userStickerwm = ctx.db.user?.stickerwm;
             const sticker = await new Sticker(result)
                 .setPack(userStickerwm?.packname || config.sticker.packname)

@@ -4,7 +4,7 @@ module.exports = {
     name: "ocr",
     category: "tool",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
@@ -16,10 +16,10 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("chocomilk", "/v1/tools/ocr", {
-                image: uploadUrl
+            const apiUrl = tools.api.createUrl("nexray", "/tools/ocr", {
+                url: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.data.text;
+            const result = (await axios.get(apiUrl)).data.result.text;
 
             await ctx.reply(result);
         } catch (error) {

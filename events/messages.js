@@ -90,7 +90,7 @@ module.exports = (bot) => {
             if (groupDb?.mutebot === "owner" && !isOwner) return;
             if (groupDb?.mutebot && !isOwner && !isAdmin) return;
             const muteList = groupDb?.mute || [];
-            if (muteList.includes(senderLid)) await ctx.deleteMessage(ctx.id, msg.key);
+            if (muteList.includes(senderLid)) await msg.delete();
 
             // Pengecekan untuk tidak tersedia pada malam hari
             const now = moment().tz(config.system.timeZone);
@@ -106,7 +106,7 @@ module.exports = (bot) => {
                 maxCharacterFlood: 20000
             });
             if (config.system.antiBug && analyze.isMalicious && !senderDb?.banned && !isOwner) {
-                await ctx.deleteMessage(ctx.id, msg.key);
+                await msg.delete();
                 await ctx.block(senderJid);
                 senderDb.banned = true;
                 senderDb.save();
@@ -182,7 +182,7 @@ module.exports = (bot) => {
                             const checkMedia = tools.cmd.checkMedia(messageType, type);
                             if (!!checkMedia) {
                                 await ctx.reply(tools.msg.info(`Jangan kirim ${type}!`));
-                                await ctx.deleteMessage(ctx.id, msg.key);
+                                await msg.delete();
                                 if (groupAutokick) {
                                     await ctx.group().kick(senderJid);
                                 } else {
@@ -197,7 +197,7 @@ module.exports = (bot) => {
                         const checkMedia = msg.message?.groupStatusMessageV2?.contextInfo?.isGroupStatus;
                         if (checkMedia) {
                             await ctx.reply(tools.msg.info("Jangan bikin SW di grup, gak ada yg peduli!"));
-                            await ctx.deleteMessage(ctx.id, msg.key);
+                            await msg.delete();
                             if (groupAutokick) {
                                 await ctx.group().kick(senderJid);
                             } else {
@@ -210,7 +210,7 @@ module.exports = (bot) => {
                     if (groupDb?.option?.antilink) {
                         if (msg.body && tools.cmd.isUrl(msg.body)) {
                             await ctx.reply(tools.msg.info("Jangan kirim link!"));
-                            await ctx.deleteMessage(ctx.id, msg.key);
+                            await msg.delete();
                             if (groupAutokick) {
                                 await ctx.group().kick(senderJid);
                             } else {
@@ -239,7 +239,7 @@ module.exports = (bot) => {
 
                         if (newCount > 5) {
                             await ctx.reply(tools.msg.info("Jangan spam, ngelag woy!"));
-                            await ctx.deleteMessage(ctx.id, msg.key);
+                            await msg.delete();
                             if (groupAutokick) {
                                 await ctx.group().kick(senderJid);
                             } else {
@@ -256,7 +256,7 @@ module.exports = (bot) => {
                         const checkMedia = msg.message?.protocolMessage?.type === 25;
                         if (!!checkMedia) {
                             await ctx.reply(tools.msg.info("Jangan tag grup di SW, gak ada yg peduli!"));
-                            await ctx.deleteMessage(ctx.id, msg.key);
+                            await msg.delete();
                             if (groupAutokick) {
                                 await ctx.group().kick(senderJid);
                             } else {
@@ -270,7 +270,7 @@ module.exports = (bot) => {
                         const toxicRegex = /anj(k|g)|ajn?(g|k)|a?njin(g|k)|bajingan|b(a?n)?gsa?t|ko?nto?l|me?me?(k|q)|pe?pe?(k|q)|meki|titi(t|d)|pe?ler|tetek|toket|ngewe|go?blo?k|to?lo?l|idiot|(k|ng)e?nto?(t|d)|jembut|bego|dajj?al|janc(u|o)k|pantek|puki ?(mak)?|kimak|kampang|lonte|col(i|mek?)|pelacur|henceu?t|nigga|fuck|dick|bitch|tits|bastard|asshole|dontol|kontoi|ontol/i;
                         if (msg.body && toxicRegex.test(msg.body)) {
                             await ctx.reply(tools.msg.info("Jangan toxic!"));
-                            await ctx.deleteMessage(ctx.id, msg.key);
+                            await msg.delete();
                             if (groupAutokick) {
                                 await ctx.group().kick(senderJid);
                             } else {

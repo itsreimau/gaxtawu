@@ -1,11 +1,11 @@
 const axios = require("axios");
 
 module.exports = {
-    name: "toaudio",
-    aliases: ["toaud", "tomp3"],
-    category: "converter",
+    name: "hdvideo",
+    aliases: ["hdvid"],
+    category: "tool",
     permissions: {
-        coin: 10
+        premium: true
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
@@ -16,18 +16,16 @@ module.exports = {
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["video"]));
 
         try {
-            const buffer = await ctx.msg.download() || await ctx.quoted.download();
-            const apiUrl = tools.api.createUrl("https://nekochii-converter.hf.space", "/mp4tomp3");
-            const result = (await axios.post(apiUrl, {
-                file: buffer.toString("base64"),
-                json: true
-            })).data.result;
+            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
+            const result = tools.api.createUrl("nexray", "/tools/hdvideo", {
+                url: uploadUrl
+            });
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
-                audio: {
+                video: {
                     url: result
-                },
-                mimetype: "audio/mpeg"
+                }
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

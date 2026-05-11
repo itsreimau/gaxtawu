@@ -70,13 +70,15 @@ module.exports = {
 
                 await ctx.reply({
                     text: text.trim(),
-                    externalAdReply: {
-                        title: config.bot.name,
-                        body: config.msg.footer,
-                        mediaType: 1,
-                        thumbnailUrl: config.bot.thumbnail,
-                        sourceUrl: config.bot.thumbnail,
-                        renderLargerThumbnail: true
+                    contextInfo: {
+                        externalAdReply: {
+                            title: config.bot.name,
+                            body: config.msg.footer,
+                            mediaType: 1,
+                            thumbnailUrl: config.bot.thumbnail,
+                            sourceUrl: config.bot.thumbnail,
+                            renderLargerThumbnail: true
+                        }
                     }
                 });
             } else {
@@ -85,7 +87,7 @@ module.exports = {
                     "\n" +
                     `➛ ${formatter.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${tools.msg.convertMsToDuration(Date.now() - userDb.premiumExpiration, ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
                     `➛ ${formatter.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
-                    `➛ ${formatter.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Tak terbatas" : userDb?.coin}\n` +
+                    `➛ ${formatter.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Tak terbatas" : (userDb?.coin || 0)}\n` +
                     "\n" +
                     `➛ ${formatter.bold("Mode")}: ${tools.msg.ucwords(ctx.db.bot?.mode || "public")}\n` +
                     `➛ ${formatter.bold("Uptime")}: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +

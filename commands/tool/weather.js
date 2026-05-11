@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["cuaca"],
     category: "tool",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.text;

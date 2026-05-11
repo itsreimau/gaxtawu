@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["spotidl"],
     category: "downloader",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const flag = ctx.flag({
@@ -15,7 +15,7 @@ module.exports = {
                 default: false
             }
         });
-        const url = flag.input;
+        const url = flag.input || tools.cmd.extractUrlFromText(ctx.quoted?.text);
 
         if (!url)
             return await ctx.reply(
@@ -30,25 +30,25 @@ module.exports = {
         if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
 
         try {
-            const apiUrl = tools.api.createUrl("chocomilk", "/v1/download/spotify", {
+            const apiUrl = tools.api.createUrl("delirius", "/download/spotify", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.data.media;
+            const result = (await axios.get(apiUrl)).data.data;
 
             const document = flag.document;
             if (document) {
                 await ctx.reply({
                     document: {
-                        url: result.url
+                        url: result.download
                     },
-                    fileName: result.filename,
+                    fileName: `${result.title}.mp3`,
                     mimetype: "audio/mpeg",
                     caption: `➛ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
                 await ctx.reply({
                     audio: {
-                        url: result.url
+                        url: result.download
                     },
                     mimetype: "audio/mpeg"
                 });

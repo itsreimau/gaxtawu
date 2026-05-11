@@ -30,7 +30,7 @@ module.exports = {
             const game = {
                 coin: result.bonus,
                 timeout: result.time,
-                answer: result.result.toLowerCase()
+                answer: String(result.result)
             };
 
             session.set(ctx.id, true);

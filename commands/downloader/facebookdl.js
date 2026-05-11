@@ -5,10 +5,10 @@ module.exports = {
     aliases: ["facebook", "fb", "fbdl"],
     category: "downloader",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
-        const url = ctx.args[0];
+        const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.text);
 
         if (!url)
             return await ctx.reply(
@@ -20,18 +20,15 @@ module.exports = {
         if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
 
         try {
-            const apiUrl = tools.api.createUrl("chocomilk", "/v1/download/facebook", {
+            const apiUrl = tools.api.createUrl("delirius", "/download/facebook", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.data.media.all;
-            const album = result.map(res => ({
-                [res.type]: {
-                    url: res.url
-                }
-            }));
+            const result = (await axios.get(apiUrl)).data.list[0].url;
 
             await ctx.reply({
-                album,
+                video: {
+                    url: result
+                },
                 caption: `➛ ${formatter.bold("URL")}: ${url}`
             });
         } catch (error) {

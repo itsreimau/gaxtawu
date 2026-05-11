@@ -4,7 +4,7 @@ module.exports = {
     name: "copilot",
     category: "ai-chat",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.text;
@@ -16,10 +16,10 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("deline", "/ai/copilot", {
-                text: input
+            const apiUrl = tools.api.createUrl("delirius", "/ia/copilot", {
+                query: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.text;
 
             await ctx.reply({
                 richResponse: [{

@@ -4,7 +4,7 @@ module.exports = {
     name: "brat",
     category: "maker",
     permissions: {
-        coin: 5
+        coin: 10
     },
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.text;
@@ -18,7 +18,7 @@ module.exports = {
         if (input.length > 1000) return await ctx.reply(tools.msg.info("Maksimal 1000 karakter!"));
 
         try {
-            const result = tools.api.createUrl("yp", "/api/image/brat", {
+            const result = tools.api.createUrl("delirius", "/canvas/brat", {
                 text: input
             });
             const userStickerwm = ctx.db.user?.stickerwm;
