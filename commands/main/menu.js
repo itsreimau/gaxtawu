@@ -69,16 +69,6 @@ module.exports = {
                     text += "╰┈┈┈┈┈┈\n\n";
                 }
 
-
-                const thumbnail = (await Baileys.prepareWAMessageMedia({
-                    image: {
-                        url: config.bot.thumbnail
-                    }
-                }, {
-                    upload: ctx.core.waUploadToServer,
-                    mediaTypeOverride: "thumbnail-link"
-                })).imageMessage;
-
                 await ctx.reply({
                     text: text.trim(),
                     linkPreview: {
@@ -86,8 +76,15 @@ module.exports = {
                         title: config.bot.name,
                         description: config.msg.footer,
                         previewType: 5,
-                        jpegThumbnail: (await Baileys.extractImageThumb(thumbnail)).buffer,
-                        highQualityThumbnail: thumbnail
+                        jpegThumbnail: (await Baileys.extractImageThumb(config.bot.thumbnail)).buffer,
+                        highQualityThumbnail: (await Baileys.prepareWAMessageMedia({
+                            image: {
+                                url: config.bot.thumbnail
+                            }
+                        }, {
+                            upload: ctx.core.waUploadToServer,
+                            mediaTypeOverride: "thumbnail-link"
+                        })).imageMessage
                     }
                 });
             } else {
