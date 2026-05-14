@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "hd",
     category: "tool",
@@ -16,10 +14,9 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("delirius", "/ia/enhance", {
+            const result = tools.api.createUrl("delirius", "/ia/upscale", {
                 url: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.data.url;
 
             await ctx.reply({
                 image: {

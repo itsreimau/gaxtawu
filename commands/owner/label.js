@@ -19,9 +19,13 @@ module.exports = {
         try {
             const waitMsg = await ctx.reply(tools.msg.info(config.msg.wait));
             const groupJids = Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id);
+            const {
+                delay
+            } = tools.cmd.calculateDelay(groupJids.length);
             for (const groupJid of groupJids) {
                 try {
                     await ctx.core.updateMemberLabel(groupJid, input);
+                    await tools.cmd.delay(delay);
                 } catch {}
             }
 

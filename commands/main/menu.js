@@ -1,3 +1,4 @@
+const { Baileys } = require("@itsreimau/gktw");
 const fs = require("node:fs");
 const path = require("node:path");
 
@@ -68,17 +69,25 @@ module.exports = {
                     text += "╰┈┈┈┈┈┈\n\n";
                 }
 
+
+                const thumbnail = (await Baileys.prepareWAMessageMedia({
+                    image: {
+                        url: config.bot.thumbnail
+                    }
+                }, {
+                    upload: ctx.core.waUploadToServer,
+                    mediaTypeOverride: "thumbnail-link"
+                })).imageMessage;
+
                 await ctx.reply({
                     text: text.trim(),
-                    contextInfo: {
-                        externalAdReply: {
-                            title: config.bot.name,
-                            body: config.msg.footer,
-                            mediaType: 1,
-                            thumbnailUrl: config.bot.thumbnail,
-                            sourceUrl: config.bot.thumbnail,
-                            renderLargerThumbnail: true
-                        }
+                    linkPreview: {
+                        "matched-text": config.bot.thumbnail,
+                        title: config.bot.name,
+                        description: config.msg.footer,
+                        previewType: 5,
+                        jpegThumbnail: (await Baileys.extractImageThumb(thumbnail)).buffer,
+                        highQualityThumbnail: thumbnail
                     }
                 });
             } else {

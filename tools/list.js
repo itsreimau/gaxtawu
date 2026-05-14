@@ -91,7 +91,6 @@ async function get(type) {
             case "setprofile": {
                 const data = [
                     "autolevelup (Otomatis naik level)",
-                    "username (Nama pengguna)",
                     "stickerwm (WatermarK stiker)"
                 ];
                 text = createList(data, (list) => `➛ ${list}`);

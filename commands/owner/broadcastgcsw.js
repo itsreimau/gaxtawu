@@ -56,18 +56,22 @@ module.exports = {
                     text: input
                 };
             }
-            const waitMsg = await ctx.reply(tools.msg.info(`Mengirim siaran ke ${groupJids.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(groupJids.length * 1.5 * 1000)}`));
+            const {
+                delay,
+                duration
+            } = tools.cmd.calculateDelay(groupJids.length);
+            const waitMsg = await ctx.reply(tools.msg.info(`Mengirim siaran ke ${groupJids.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(duration)}`));
             for (const groupJid of groupJids) {
                 try {
                     await ctx.sendMessage(groupJid, {
                         ...content,
                         groupStatus: true
                     });
-                    await tools.cmd.delay(1000);
+                    await tools.cmd.delay(delay);
                 } catch {}
             }
 
-            await waitMsg.edit(tools.msg.info(`Berhasil mengirim ke ${groupJids.length} grup.`));
+            await ctx.editMessage(ctx.id, waitMsg.key, tools.msg.info(`Berhasil mengirim ke ${groupJids.length} grup.`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

@@ -22,9 +22,7 @@ module.exports = {
             const result = Buffer.from((await axios.get(apiUrl)).data.data.download, "base64");
 
             await ctx.reply({
-                image: {
-                    url: result
-                },
+                image: result,
                 caption: `➛ ${formatter.bold("Kueri")}: ${input}`,
                 buttons: [{
                     text: "Ambil Lagi",

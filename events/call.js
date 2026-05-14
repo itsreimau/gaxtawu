@@ -25,12 +25,15 @@ module.exports = (bot) => {
 
         const reportOwner = tools.cmd.getReportOwner();
         if (reportOwner && reportOwner.length > 0) {
+            const {
+                delay
+            } = tools.cmd.calculateDelay(reportOwner.length);
             for (const ownerId of reportOwner) {
                 await bot.sendMessage(ownerId + Baileys.S_WHATSAPP_NET, {
                     text: tools.msg.info(`Akun @${fromPnId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`),
                     mentions: [fromPnJid]
                 });
-                await tools.cmd.delay(500);
+                await tools.cmd.delay(delay);
             }
         }
         await bot.sendMessage(fromJid, {

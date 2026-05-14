@@ -15,9 +15,8 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/editfoto", {
-                url: uploadUrl,
-                prompt: "black skin color"
+            const result = tools.api.createUrl("faaa", "/faa/tohitam", {
+                url: uploadUrl
             });
 
             await ctx.reply({

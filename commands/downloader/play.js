@@ -47,7 +47,7 @@ module.exports = {
                     `➛ ${formatter.bold("URL")}: ${searchResult.url}`
                 );
 
-                const downloadApiUrl = tools.api.createUrl("delirius", "/download/spotify", {
+                const downloadApiUrl = tools.api.createUrl("delirius", "/download/spotifydl", {
                     url: searchResult.url
                 });
                 const downloadResult = (await axios.get(downloadApiUrl)).data.data.download;

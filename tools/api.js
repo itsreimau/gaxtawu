@@ -33,9 +33,6 @@ const APIs = {
     },
     siputzx: {
         baseURL: "https://api.siputzx.my.id"
-    },
-    vreden: {
-        baseURL: "https://api.vreden.my.id"
     }
 };
 

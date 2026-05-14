@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "text2image",
     aliases: ["text2img", "texttoimage", "texttoimg"],
@@ -17,10 +15,9 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("vreden", "/api/v1/artificial/deepai/text2img", {
+            const result = tools.api.createUrl("faaa", "/faa/ai-text2img-pro", {
                 prompt: input
             });
-            const result = (await axios.get(apiUrl)).data.result.output_url;
 
             await ctx.reply({
                 image: {

@@ -2,6 +2,31 @@
 const { Baileys, Gktw, MessageType } = require("@itsreimau/gktw");
 const util = require("node:util");
 
+function calculateDelay(totalTargets) {
+    if (!totalTargets || totalTargets <= 0) return null;
+
+    const getBaseDelay = (total) => {
+        if (total <= 5) return 5000;
+        if (total <= 15) return 10000;
+        if (total <= 30) return 20000;
+        return 30000;
+    };
+    const delays = Array.from({
+        length: totalTargets
+    }, () => {
+        const baseDelay = getBaseDelay(totalTargets);
+        const randomRange = baseDelay;
+        let delay = baseDelay + Math.random() * randomRange;
+        delay *= 0.8 + Math.random() * 0.8;
+        return Math.floor(delay);
+    });
+    const totalDuration = delays.reduce((sum, d) => sum + d, 0);
+    return {
+        delay: delays,
+        duration: totalDuration
+    };
+}
+
 function checkMedia(type, required) {
     if (!type || !required || !Array.isArray(required)) return false;
 
@@ -77,6 +102,9 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
 
         consolefy.error(`Error: ${errorText}`);
         if (reportOwner && reportOwner.length > 0) {
+            const {
+                delay
+            } = calculateDelay(reportOwner.length);
             for (const ownerId of reportOwner) {
                 await ctx.replyWithJid(ownerId + Baileys.S_WHATSAPP_NET, {
                     text: `${tools.msg.info(isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${senderId}` : `Terjadi kesalahan dari: @${senderId}`)}\n` +
@@ -89,7 +117,7 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
                         }] : []
                     }
                 });
-                await Baileys.delay(500);
+                await Baileys.delay(delay);
             }
         }
         if (useAxios && error.status !== 200) return await ctx.reply(tools.msg.info(config.msg.notFound));
@@ -104,6 +132,7 @@ function isUrl(url) {
 
 module.exports = {
     areJidsSameUser: Baileys.areJidsSameUser,
+    calculateDelay,
     checkMedia,
     checkQuotedMedia,
     extractUrlFromText: Baileys.extractUrlFromText,

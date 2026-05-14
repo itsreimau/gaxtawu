@@ -15,9 +15,8 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/editfoto", {
-                url: uploadUrl,
-                prompt: "wear islamic hijab"
+            const result = tools.api.createUrl("faaa", "/faa/tohijab", {
+                url: uploadUrl
             });
 
             await ctx.reply({

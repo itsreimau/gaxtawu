@@ -9,7 +9,7 @@ module.exports = {
 
             const leaderboardData = users.map(user => ({
                 jid: user.jid,
-                username: user.username || "guest",
+                pushName: user.pushName,
                 level: user.level || 0,
                 winGame: user.winGame || 0
             })).sort((a, b) => b.winGame - a.winGame || b.level - a.level);
@@ -20,7 +20,7 @@ module.exports = {
 
             topUsers.forEach((user, i) => {
                 const isSelf = tools.cmd.areJidsSameUser(user.jid, senderLid);
-                const displayName = isSelf ? `@${user.jid}` : user.username ? user.username : user.jid;
+                const displayName = isSelf ? `@${user.jid}` : user.pushName ? user.pushName : user.jid;
                 resultText += `➛ ${displayName} - Menang: ${user.winGame}, Level: ${user.level}, Peringkat: ${i + 1}\n`;
             });
 

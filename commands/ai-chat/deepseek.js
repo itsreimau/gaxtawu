@@ -16,10 +16,10 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("lexcode", "/api/ai/deepseek-r1", {
+            const apiUrl = tools.api.createUrl("neo", "/api/ai/deepseek", {
                 text: input
             });
-            const result = (await axios.get(apiUrl)).data.result.result;
+            const result = (await axios.get(apiUrl)).data.data.reply;
 
             await ctx.reply({
                 richResponse: [{

@@ -17,10 +17,10 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("lexcode", "/api/ai/gpt5-nano", {
+            const apiUrl = tools.api.createUrl("nexray", "/ai/gpt-3.5-turbo", {
                 text: input
             });
-            const result = (await axios.get(apiUrl)).data.result.result;
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 richResponse: [{
