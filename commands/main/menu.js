@@ -1,4 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
 const fs = require("node:fs");
 const path = require("node:path");
 
@@ -69,24 +68,7 @@ module.exports = {
                     text += "╰┈┈┈┈┈┈\n\n";
                 }
 
-                await ctx.reply({
-                    text: text.trim(),
-                    linkPreview: {
-                        "matched-text": config.bot.thumbnail,
-                        title: config.bot.name,
-                        description: config.msg.footer,
-                        previewType: 5,
-                        jpegThumbnail: (await Baileys.extractImageThumb(config.bot.thumbnail)).buffer,
-                        highQualityThumbnail: (await Baileys.prepareWAMessageMedia({
-                            image: {
-                                url: config.bot.thumbnail
-                            }
-                        }, {
-                            upload: ctx.core.waUploadToServer,
-                            mediaTypeOverride: "thumbnail-link"
-                        })).imageMessage
-                    }
-                });
+                await ctx.reply(text.trim());
             } else {
                 const userDb = ctx.db.user;
                 const text = `— Halo, @${ctx.getId(ctx.sender.jid)}! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}.\n` +
