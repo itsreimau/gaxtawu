@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "image2prompt",
     aliases: ["imagetoprompt", "img2prompt", "imgtoprompt", "toprompt"],

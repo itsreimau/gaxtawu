@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "instagramdl",
     aliases: ["ig", "igdl", "instagram"],
@@ -8,7 +6,7 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.text);
+        const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.body);
 
         if (!url)
             return await ctx.reply(

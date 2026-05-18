@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "xvideossearch",
     aliases: ["xvideos", "xvideoss"],

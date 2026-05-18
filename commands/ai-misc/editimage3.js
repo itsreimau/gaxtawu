@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "editimage3",
     aliases: ["editimg3"],

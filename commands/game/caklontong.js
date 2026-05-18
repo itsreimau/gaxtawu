@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 const session = new Map();
 
 module.exports = {

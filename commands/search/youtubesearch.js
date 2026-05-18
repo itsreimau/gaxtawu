@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "youtubesearch",
     aliases: ["youtube", "youtubes", "yt", "yts", "ytsearch"],

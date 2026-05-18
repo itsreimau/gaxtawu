@@ -12,7 +12,7 @@ module.exports = {
         try {
             delete quotedMessage[ctx.quoted.messageType].viewOnce;
 
-            await ctx.sendMessage({
+            await ctx.sendMessage(ctx.id, {
                 ...quotedMessage,
                 raw: true
             });

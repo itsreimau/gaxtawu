@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "googleimage",
     aliases: ["gimage"],

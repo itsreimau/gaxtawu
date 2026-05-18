@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "toaudio",
     aliases: ["toaud", "tomp3"],

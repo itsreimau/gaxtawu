@@ -13,7 +13,7 @@ module.exports = {
         if (!input)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send", "reply"], ["text", "sticker"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "stiker saya|reimau von lilitz")
+                tools.msg.generateCmdExample(ctx.used, "stiker saya|itsreimau")
             );
 
         if (!tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["sticker"])) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["sticker"]));

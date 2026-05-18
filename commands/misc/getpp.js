@@ -16,7 +16,7 @@ module.exports = {
             });
 
         try {
-            const result = await ctx.core.profilePictureUrl(target.jid, "image") || "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg";
+            const result = await ctx.profilePictureUrl(target.jid);
 
             await ctx.reply({
                 image: {

@@ -1,4 +1,3 @@
-const axios = require("axios");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 
 module.exports = {
@@ -9,7 +8,7 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.text);
+        const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.body);
 
         if (!url)
             return await ctx.reply(

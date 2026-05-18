@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "gempa",
     aliases: ["gempabumi", "infogempa"],

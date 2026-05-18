@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "googledrivedl",
     aliases: ["gd", "gddl", "googledrive"],
@@ -8,7 +6,7 @@ module.exports = {
         premium: true
     },
     code: async (ctx) => {
-        const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.text);
+        const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.body);
 
         if (!url)
             return await ctx.reply(

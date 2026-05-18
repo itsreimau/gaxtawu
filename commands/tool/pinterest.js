@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "pinterest",
     aliases: ["pin"],
@@ -18,7 +16,7 @@ module.exports = {
 
         try {
             const apiUrl = tools.api.createUrl("delirius", "/search/pinterest", {
-                query: input
+                text: input
             });
             const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.results);
 

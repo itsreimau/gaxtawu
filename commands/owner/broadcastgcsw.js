@@ -6,7 +6,7 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const input = ctx.text || ctx.quoted?.text;
+        const input = ctx.text || ctx.quoted?.body;
 
         const [checkMedia, checkQuotedMedia] = [
             tools.cmd.checkMedia(ctx.msg.messageType, ["image", "video"]),

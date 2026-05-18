@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "spotifydl",
     aliases: ["spotidl"],
@@ -15,7 +13,7 @@ module.exports = {
                 default: false
             }
         });
-        const url = flag.input || tools.cmd.extractUrlFromText(ctx.quoted?.text);
+        const url = flag.input || tools.cmd.extractUrlFromText(ctx.quoted?.body);
 
         if (!url)
             return await ctx.reply(

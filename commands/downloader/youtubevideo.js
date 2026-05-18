@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "youtubevideo",
     aliases: ["ytmp4", "ytv", "ytvideo"],
@@ -20,7 +18,7 @@ module.exports = {
                 default: "360"
             }
         });
-        const url = flag.input || tools.cmd.extractUrlFromText(ctx.quoted?.text);
+        const url = flag.input || tools.cmd.extractUrlFromText(ctx.quoted?.body);
 
         if (!url)
             return await ctx.reply(

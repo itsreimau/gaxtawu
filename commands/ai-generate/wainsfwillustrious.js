@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "wainsfwillustrious",
     aliases: ["nsfwgen", "wai"],
@@ -8,7 +6,7 @@ module.exports = {
         premium: true
     },
     code: async (ctx) => {
-        const input = ctx.text || ctx.quoted?.text;
+        const input = ctx.text || ctx.quoted?.body;
 
         if (!input)
             return await ctx.reply(

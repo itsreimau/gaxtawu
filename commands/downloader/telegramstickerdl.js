@@ -1,6 +1,5 @@
 // Saya tidak tahu mengapa stiker-stiker tersebut tidak bisa diunduh
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
-const axios = require("axios");
 
 module.exports = {
     name: "telegramstickerdl",
@@ -10,7 +9,7 @@ module.exports = {
         premium: true
     },
     code: async (ctx) => {
-        const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.text);
+        const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.body);
 
         if (!url)
             return await ctx.reply(

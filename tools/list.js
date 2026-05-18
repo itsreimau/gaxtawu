@@ -1,5 +1,4 @@
 // Impor modul dan dependensi yang diperlukan
-const axios = require("axios");
 const api = require("./api.js");
 const util = require("node:util");
 

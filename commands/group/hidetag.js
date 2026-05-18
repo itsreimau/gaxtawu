@@ -7,7 +7,7 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const input = ctx.text || ctx.quoted?.text;
+        const input = ctx.text || ctx.quoted?.body;
 
         try {
             await ctx.reply({

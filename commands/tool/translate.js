@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "translate",
     aliases: ["tr"],
@@ -9,7 +7,7 @@ module.exports = {
     },
     code: async (ctx) => {
         const langCode = ctx.args[0]?.length === 2 ? ctx.args[0] : "en";
-        const input = ctx.text?.startsWith(`${langCode} `) ? ctx.text.slice(langCode.length + 1) : ctx.quoted?.text;
+        const input = ctx.text?.startsWith(`${langCode} `) ? ctx.text.slice(langCode.length + 1) : ctx.quoted?.body;
 
         if (!input)
             return await ctx.reply(

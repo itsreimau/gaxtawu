@@ -8,7 +8,7 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const input = ctx.text || ctx.quoted?.text;
+        const input = ctx.text || ctx.quoted?.body;
 
         if (!input)
             return await ctx.reply(
@@ -20,7 +20,7 @@ module.exports = {
 
         try {
             const isQuoted = !ctx.text && ctx.quoted;
-            const profilePictureUrl = await ctx.core.profilePictureUrl(isQuoted ? ctx.quoted?.sender : ctx.sender.jid, "image") || "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg";
+            const profilePictureUrl = await ctx.profilePictureUrl(isQuoted ? ctx.quoted?.sender : ctx.sender.jid);
             const result = tools.api.createUrl("nekolabs", "/canvas/quote-chat", {
                 text: input,
                 name: isQuoted ? ctx.quoted?.pushName : ctx.sender.pushName,

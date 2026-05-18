@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 module.exports = {
     name: "felo",
     category: "ai-chat",
@@ -7,7 +5,7 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const input = ctx.text || ctx.quoted?.text;
+        const input = ctx.text || ctx.quoted?.body;
 
         if (!input)
             return await ctx.reply(

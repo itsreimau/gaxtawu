@@ -1,13 +1,25 @@
 // Impor modul dan dependensi yang diperlukan
 require("node:process").loadEnvFile();
 const { Config, Consolefy, Formatter } = require("@itsreimau/gktw");
+const axios = require("axios");
+const axiosRetry = require("axios-retry").default;
 const path = require("node:path");
 const pkg = require("./package.json");
 const CFonts = require("cfonts");
 const http = require("node:http");
 
+/// Tetapkan axios retry
+axiosRetry(axios, {
+    retries: 3,
+    retryCondition: (error) => {
+        const status = error.response?.status;
+        return axiosRetry.isNetworkOrIdempotentRequestError(error) || status === 408 || status === 429;
+    }
+});
+
 // Tetapkan variabel global
 Object.assign(global, {
+    axios,
     config: new Config(path.resolve(__dirname, "config.json")),
     consolefy: new Consolefy({
         tag: pkg.name
