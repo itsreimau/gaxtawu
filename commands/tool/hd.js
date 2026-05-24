@@ -14,9 +14,10 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("delirius", "/ia/upscale", {
+            const apiUrl = tools.api.createUrl("lexcode", "/api/tools/upscale", {
                 url: uploadUrl
             });
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 image: {

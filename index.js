@@ -14,7 +14,8 @@ axiosRetry(axios, {
     retryCondition: (error) => {
         const status = error.response?.status;
         return axiosRetry.isNetworkOrIdempotentRequestError(error) || status === 408 || status === 429;
-    }
+    },
+    retryDelay: (retryCount) => Math.pow(2, retryCount - 1) * 1000 + Math.random() * 500
 });
 
 // Tetapkan variabel global

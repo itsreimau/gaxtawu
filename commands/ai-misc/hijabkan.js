@@ -15,9 +15,10 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/tohijab", {
+            const apiUrl = tools.api.createUrl("lexcode", "/api/ai/tohijab", {
                 url: uploadUrl
             });
+            const result = (await axios.get(apiUrl)).data.result.hijab;
 
             await ctx.reply({
                 image: {
