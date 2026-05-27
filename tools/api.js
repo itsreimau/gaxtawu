@@ -15,9 +15,6 @@ const APIs = {
     lexcode: {
         baseURL: "https://api.lexcode.biz.id"
     },
-    nekolabs: {
-        baseURL: "https://rynekoo-api.hf.space"
-    },
     neo: {
         baseURL: "https://www.neoapis.xyz"
     },

@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["editimg4"],
     category: "ai-misc",
     permissions: {
-        coin: 10
+        premium: true
     },
     code: async (ctx) => {
         const input = ctx.text;
@@ -23,10 +23,11 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("sanka", "/ai/editimg", {
-                url: uploadUrl,
+            const apiUrl = tools.api.createUrl("lexcode", "/api/ai/deepai-editor", {
+                imgUrl: uploadUrl,
                 prompt: input
-            }, "apikey");
+            });
+            const result = (await axios.get(apiUrl)).data.result.image;
 
             await ctx.reply({
                 image: {

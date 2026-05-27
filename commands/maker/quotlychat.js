@@ -21,10 +21,11 @@ module.exports = {
         try {
             const isQuoted = !ctx.text && ctx.quoted;
             const profilePictureUrl = await ctx.profilePictureUrl(isQuoted ? ctx.quoted?.sender : ctx.sender.jid);
-            const result = tools.api.createUrl("nekolabs", "/canvas/quote-chat", {
+            const result = tools.api.createUrl("nexray", "/maker/qc", {
                 text: input,
                 name: isQuoted ? ctx.quoted?.pushName : ctx.sender.pushName,
-                profile: profilePictureUrl
+                avatar: profilePictureUrl,
+                color: "abu"
             });
             const userStickerwm = ctx.db.user?.stickerwm;
             const sticker = await new Sticker(result)

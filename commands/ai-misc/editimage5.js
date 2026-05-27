@@ -23,11 +23,10 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("kuroneko", "/api/tools/nanobanana", {
-                prompt: input,
-                media: uploadUrl
-            });
-            const result = (await axios.get(apiUrl)).data.data.image;
+            const result = tools.api.createUrl("sanka", "/ai/editimg", {
+                url: uploadUrl,
+                prompt: input
+            }, "apikey");
 
             await ctx.reply({
                 image: {

@@ -10,8 +10,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.quoted.download();
-            const apiUrl = tools.api.createUrl("https://nekochii-converter.hf.space", "/webp2png");
-            const result = (await axios.post(apiUrl, {
+            const result = (await axios.post("https://nekochii-converter.hf.space/webp2png", {
                 file: buffer.toString("base64"),
                 json: true
             })).data.result;

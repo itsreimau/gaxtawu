@@ -8,12 +8,11 @@ module.exports = {
     code: async (ctx) => {
         try {
             const bmkgUrl = "https://data.bmkg.go.id";
-            const apiUrl = tools.api.createUrl(bmkgUrl, "/DataMKG/TEWS/autogempa.json");
-            const result = (await axios.get(apiUrl)).data.Infogempa.gempa;
+            const result = (await axios.get(`${bmkgUrl}/DataMKG/TEWS/autogempa.json`)).data.Infogempa.gempa;
 
             await ctx.reply({
                 image: {
-                    url: tools.api.createUrl(bmkgUrl, `/DataMKG/TEWS/${result.Shakemap}`)
+                    url: `${bmkgUrl}/DataMKG/TEWS/${result.Shakemap}`
                 },
                 caption: `➛ ${formatter.bold("Wilayah")}: ${result.Wilayah}\n` +
                     `➛ ${formatter.bold("Tanggal")}: ${result.Tanggal}\n` +

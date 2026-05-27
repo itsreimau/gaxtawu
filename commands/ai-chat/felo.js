@@ -14,10 +14,10 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/text.gen/felo", {
+            const apiUrl = tools.api.createUrl("nexray", "/ai/felo", {
                 text: input
             });
-            const result = (await axios.get(apiUrl)).data.results.answer;
+            const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 richResponse: [{

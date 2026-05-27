@@ -1,6 +1,6 @@
 module.exports = {
-    name: "editimage3",
-    aliases: ["editimg3"],
+    name: "editimage6",
+    aliases: ["editimg6"],
     category: "ai-misc",
     permissions: {
         premium: true
@@ -23,11 +23,11 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("lexcode", "/api/ai/nano-banana", {
-                url: uploadUrl,
-                prompt: input
+            const apiUrl = tools.api.createUrl("kuroneko", "/api/tools/nanobanana", {
+                prompt: input,
+                media: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result.image;
+            const result = (await axios.get(apiUrl)).data.data.image;
 
             await ctx.reply({
                 image: {

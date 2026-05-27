@@ -15,8 +15,7 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
-            const apiUrl = tools.api.createUrl("https://nekochii-converter.hf.space", "/mp4tomp3");
-            const result = (await axios.post(apiUrl, {
+            const result = (await axios.post("https://nekochii-converter.hf.space/mp4tomp3", {
                 file: buffer.toString("base64"),
                 json: true
             })).data.result;

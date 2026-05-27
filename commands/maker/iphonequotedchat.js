@@ -21,7 +21,7 @@ module.exports = {
         try {
             const result = tools.api.createUrl("nexray", "/maker/v1/iqc", {
                 text: input,
-                provider: checkBrandProvider(ctx.getId(ctx.sender.jid)),
+                provider: await checkBrandProvider(ctx.getId(ctx.sender.jid)),
                 jam: moment.tz(config.system.timeZone).format("HH:mm"),
                 baterai: Math.floor(Math.random() * 100) + 1
             });
@@ -39,7 +39,7 @@ module.exports = {
 
 async function checkBrandProvider(number) {
     const prefix = number.replace(/^62/, "0").substring(0, 4);
-    const providers = (await axios.get(tools.api.createUrl("https://raw.githubusercontent.com", "/zororaka00/id-mobile-detector/refs/heads/main/dist/providers.json"))).data;
+    const providers = (await axios.get("https://raw.githubusercontent.com/zororaka00/id-mobile-detector/refs/heads/main/dist/providers.json")).data;
     const found = providers.find(p => p.prefix === prefix);
     return found ? found.brand : "Telkomsel";
 }

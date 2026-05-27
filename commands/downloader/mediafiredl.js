@@ -18,7 +18,7 @@ module.exports = {
         if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
 
         try {
-            const apiUrl = tools.api.createUrl("nekolabs", "/downloader/mediafire", {
+            const apiUrl = tools.api.createUrl("nexray", "/downloader/mediafire", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;

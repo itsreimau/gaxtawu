@@ -19,7 +19,7 @@ module.exports = {
 
         try {
             const [width, height] = ctx.used.command === "sshp" ? [360, 800] : [1920, 1080];
-            const apiUrl = tools.api.createUrl("kuroneko", "/api/tools/ssweb", {
+            const apiUrl = tools.api.createUrl("lexcode", "/api/tools/ssweb", {
                 url,
                 width,
                 height,
