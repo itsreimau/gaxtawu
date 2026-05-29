@@ -18,7 +18,7 @@ module.exports = {
                 const userId = ctx.getId(mutedUser);
                 userMentions.push(mutedUser);
 
-                resultText += `➛ @${userId}\n`;
+                resultText += `◉ @${userId}\n`;
             }
 
             await ctx.reply({

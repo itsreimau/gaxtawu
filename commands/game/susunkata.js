@@ -21,9 +21,9 @@ module.exports = {
             await ctx.reply({
                 text: `— ${result.soal}\n` +
                     "\n" +
-                    `➛ ${formatter.bold("Tipe")}: ${result.tipe}\n` +
-                    `➛ ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +
-                    `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
+                    `◉ ${formatter.bold("Tipe")}: ${result.tipe}\n` +
+                    `◉ ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +
+                    `◉ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
                 buttons: [{
                     text: "Petunjuk (3 Koin)",
                     id: `hint_${ctx.used.command}`

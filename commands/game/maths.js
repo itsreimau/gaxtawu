@@ -36,9 +36,9 @@ module.exports = {
             await ctx.reply({
                 text: `— ${result.str}\n` +
                     "\n" +
-                    `➛ ${formatter.bold("Level")}: ${levels[result.mode]}\n` +
-                    `➛ ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +
-                    `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
+                    `◉ ${formatter.bold("Level")}: ${levels[result.mode]}\n` +
+                    `◉ ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +
+                    `◉ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
                 buttons: [{
                     text: "Menyerah",
                     id: `surrender_${ctx.used.command}`

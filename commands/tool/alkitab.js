@@ -30,14 +30,14 @@ module.exports = {
             const result = (await axios.get(apiUrl)).data.bible.book;
 
             const resultText = result.chapter.verses.map(res =>
-                `➛ ${formatter.bold("Ayat")}: ${res.number}\n` +
+                `◉ ${formatter.bold("Ayat")}: ${res.number}\n` +
                 res.text
             ).join("\n");
             await ctx.reply(
                 `${resultText}\n` +
                 "\n" +
-                `➛ ${formatter.bold("Nama")}: ${result.name}\n` +
-                `➛ ${formatter.bold("Bab")}: ${result.chapter.chap}`
+                `◉ ${formatter.bold("Nama")}: ${result.name}\n` +
+                `◉ ${formatter.bold("Bab")}: ${result.chapter.chap}`
             );
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

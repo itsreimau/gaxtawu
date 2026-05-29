@@ -31,7 +31,7 @@ module.exports = {
                 image: {
                     url: result
                 },
-                caption: `➛ ${formatter.bold("URL")}: ${url}`
+                caption: `◉ ${formatter.bold("URL")}: ${url}`
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

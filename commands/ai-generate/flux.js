@@ -22,7 +22,7 @@ module.exports = {
                 image: {
                     url: result
                 },
-                caption: `➛ ${formatter.bold("Prompt")}: ${input}`,
+                caption: `◉ ${formatter.bold("Prompt")}: ${input}`,
                 buttons: [{
                     text: "Ambil Lagi",
                     id: `${ctx.used.prefix + ctx.used.command} ${input}`

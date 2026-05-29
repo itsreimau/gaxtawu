@@ -115,14 +115,14 @@ function generateInstruction(actions, mediaTypes) {
 
 function generatesFlagInfo(flags) {
     if (!flags || typeof flags !== "object") return `${formatter.inlineCode("flags")} harus berupa objek!`;
-    return "Flag:\n" +
-        Object.entries(flags).map(([flag, description]) => `- ${formatter.inlineCode(flag)}: ${description}`).join("\n");
+    return "○ Flag:\n" +
+        Object.entries(flags).map(([flag, description]) => `◉ ${formatter.inlineCode(flag)}: ${description}`).join("\n");
 }
 
 function generateNotes(notes) {
     if (!notes || !Array.isArray(notes)) return `${formatter.inlineCode("notes")} harus berupa string!`;
-    return "Catatan:\n" +
-        notes.map(note => `- ${note}`).join("\n");
+    return "○ Catatan:\n" +
+        notes.map(note => `◉ ${note}`).join("\n");
 }
 
 function info(text) {

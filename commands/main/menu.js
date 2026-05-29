@@ -1,3 +1,4 @@
+const { Baileys } = require("@itsreimau/gktw");
 const fs = require("node:fs");
 const path = require("node:path");
 
@@ -51,6 +52,12 @@ module.exports = {
                 return format;
             };
 
+            const getJpegThumbnail = async (url) => {
+                const stream = await Baileys.getHttpStream(url);
+                const result = await Baileys.extractImageThumb(stream, 300);
+                return result.buffer;
+            };
+
             const input = ctx.args[0]?.toLowerCase();
             if (input || ctx.used.command === "allmenu") {
                 const selectedCats = input === "all" || ctx.used.command === "allmenu" ? Object.keys(tag) : (tag[input] ? [input] : []);
@@ -60,29 +67,47 @@ module.exports = {
 
                 let text = "";
                 for (const [key, list] of Object.entries(commandsData)) {
-                    text += "╭┈┈┈┈┈┈ ♡\n" +
-                        `┊ ✿ — ${formatter.bold(tag[key] || key)}\n`;
+                    text += `○ ${formatter.bold(tag[key] || key)}\n`;
                     list.forEach(c => {
-                        text += `┊ ➛ ${ctx.used.prefix + c.name} ${formatPerms(c.permissions)}\n`;
+                        text += `  ◉ ${ctx.used.prefix + c.name} ${formatPerms(c.permissions)}\n`;
                     });
-                    text += "╰┈┈┈┈┈┈\n\n";
+                    text += "\n";
                 }
 
-                await ctx.reply(text.trim());
+                text += `✧ ⓒ → koin | Ⓖ → group | Ⓞ → owner | Ⓟ → premium | ⓟ → private`;
+
+                await ctx.reply({
+                    caption: text,
+                    footer: config.msg.footer,
+                    location: {
+                        degreesLatitude: 0,
+                        degreesLongitude: 0,
+                        name: config.bot.name,
+                        address: "Jangan lupa berdonasi agar bot tetap online.",
+                        jpegThumbnail: await getJpegThumbnail(config.bot.thumbnail)
+                    },
+                    buttons: [{
+                        text: "Hubungi Owner",
+                        id: `${ctx.used.prefix}owner`
+                    }, {
+                        text: "Donasi",
+                        id: `${ctx.used.prefix}donate`
+                    }]
+                });
             } else {
                 const userDb = ctx.db.user;
                 const text = `— Halo, @${ctx.getId(ctx.sender.jid)}! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}.\n` +
                     "\n" +
-                    `➛ ${formatter.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${tools.msg.convertMsToDuration(Date.now() - userDb.premiumExpiration, ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
-                    `➛ ${formatter.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
-                    `➛ ${formatter.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Tak terbatas" : (userDb?.coin || 0)}\n` +
+                    `◉ ${formatter.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${tools.msg.convertMsToDuration(Date.now() - userDb.premiumExpiration, ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
+                    `◉ ${formatter.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
+                    `◉ ${formatter.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Tak terbatas" : (userDb?.coin || 0)}\n` +
                     "\n" +
-                    `➛ ${formatter.bold("Mode")}: ${tools.msg.ucwords(ctx.db.bot?.mode || "public")}\n` +
-                    `➛ ${formatter.bold("Uptime")}: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
-                    `➛ ${formatter.bold("Database")}: ${fs.existsSync(ctx.bot.databaseDir) ? tools.msg.formatSize(fs.readdirSync(ctx.bot.databaseDir).reduce((total, file) => total + fs.statSync(path.join(ctx.bot.databaseDir, file)).size, 0) / 1024) : "N/A"}\n` +
-                    `➛ ${formatter.bold("Library")}: @itsreimau/gktw\n` +
+                    `◉ ${formatter.bold("Mode")}: ${tools.msg.ucwords(ctx.db.bot?.mode || "public")}\n` +
+                    `◉ ${formatter.bold("Uptime")}: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
+                    `◉ ${formatter.bold("Database")}: ${fs.existsSync(ctx.bot.databaseDir) ? tools.msg.formatSize(fs.readdirSync(ctx.bot.databaseDir).reduce((total, file) => total + fs.statSync(path.join(ctx.bot.databaseDir, file)).size, 0) / 1024) : "N/A"}\n` +
+                    `◉ ${formatter.bold("Library")}: @itsreimau/gktw\n` +
                     "\n" +
-                    `☆ ${formatter.italic("Jangan lupa berdonasi agar bot tetap online.")}`;
+                    `✧ ${formatter.italic("Jangan lupa berdonasi agar bot tetap online.")}`;
 
                 const rows = Object.keys(tag).map(category => ({
                     title: tag[category],
@@ -100,7 +125,7 @@ module.exports = {
                     image: {
                         url: config.bot.thumbnail
                     },
-                    caption: text.trim(),
+                    caption: text,
                     mentions: [ctx.sender.jid],
                     footer: config.msg.footer,
                     optionText: "Opsi",

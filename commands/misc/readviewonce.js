@@ -16,7 +16,6 @@ module.exports = {
                 ...quotedMessage,
                 raw: true
             });
-            await ctx.reply(`ⓘ ${formatter.italic("Media sekali lihat berhasil dikirim!")}`);
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

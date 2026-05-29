@@ -6,6 +6,7 @@ module.exports = {
         try {
             const users = ctx.db.users.getAll();
             const senderLid = ctx.sender.lid;
+            const senderId = ctx.getId(senderLid);
 
             const leaderboardData = users.map(user => ({
                 jid: user.jid,
@@ -20,14 +21,14 @@ module.exports = {
 
             topUsers.forEach((user, i) => {
                 const isSelf = tools.cmd.areJidsSameUser(user.jid, senderLid);
-                const displayName = isSelf ? `@${user.jid}` : user.pushName ? user.pushName : user.jid;
-                resultText += `➛ ${displayName} - Menang: ${user.winGame}, Level: ${user.level}, Peringkat: ${i + 1}\n`;
+                const displayUser = isSelf ? `@${senderId}` : (user.pushName ? user.pushName : ctx.getId(user.jid));
+                resultText += `◉ ${displayUser} - Menang: ${user.winGame}, Level: ${user.level}, Peringkat: ${i + 1}\n`;
             });
 
             if (userRank > 10) {
                 const userStats = leaderboardData[userRank - 1];
-                const displayName = `@${ctx.getId(senderLid)}`;
-                resultText += `➛ ${displayName} - Menang: ${userStats.winGame}, Level: ${userStats.level}, Peringkat: ${userRank}\n`;
+                const displayUser = `@${senderId}`;
+                resultText += `◉ ${displayUser} - Menang: ${userStats.winGame}, Level: ${userStats.level}, Peringkat: ${userRank}\n`;
             }
 
             await ctx.reply({

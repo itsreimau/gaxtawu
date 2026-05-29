@@ -11,16 +11,16 @@ async function get(type) {
             case "alkitab": {
                 const data = (await axios.get("https://api-alkitab.vercel.app/api/book")).data.data;
                 text = createList(data, (list) =>
-                    `➛ ${formatter.bold("Kitab")}: ${list.name} (${list.abbr})\n` +
-                    `➛ ${formatter.bold("Jumlah Bab")}: ${list.chapter}`
+                    `◉ ${formatter.bold("Kitab")}: ${list.name} (${list.abbr})\n` +
+                    `◉ ${formatter.bold("Jumlah Bab")}: ${list.chapter}`
                 );
                 break;
             }
             case "alquran": {
                 const data = (await axios.get("https://raw.githubusercontent.com/penggguna/QuranJSON/master/quran.json")).data;
                 text = createList(data, (list) =>
-                    `➛ ${formatter.bold("Surah")}: ${list.name} (${list.number_of_surah})\n` +
-                    `➛ ${formatter.bold("Jumlah Ayat")}: ${list.number_of_ayah}`
+                    `◉ ${formatter.bold("Surah")}: ${list.name} (${list.number_of_surah})\n` +
+                    `◉ ${formatter.bold("Jumlah Ayat")}: ${list.number_of_ayah}`
                 );
                 break;
             }
@@ -31,7 +31,7 @@ async function get(type) {
                     "monthly (Hadiah bulanan)",
                     "yearly (Hadiah tahunan)"
                 ];
-                text = createList(data, (list) => `➛ ${list}`);
+                text = createList(data, (list) => `◉ ${list}`);
                 break;
             }
             case "group": {
@@ -45,7 +45,7 @@ async function get(type) {
                     "invite (Izinkan anggota menambah anggota)",
                     "restrict (Hanya admin yang bisa menambah anggota)"
                 ];
-                text = createList(data, (list) => `➛ ${list}`);
+                text = createList(data, (list) => `◉ ${list}`);
                 break;
             }
             case "mode": {
@@ -56,7 +56,7 @@ async function get(type) {
                     "public (Mode publik, merespons dalam grup dan obrolan pribadi)",
                     "self (Mode self, hanya merespons dirinya sendiri dan owner)"
                 ];
-                text = createList(data, (list) => `➛ ${list}`);
+                text = createList(data, (list) => `◉ ${list}`);
                 break;
             }
             case "osettext": {
@@ -65,7 +65,7 @@ async function get(type) {
                     "price - Variabel yang tersedia: %tag%, %name%, %prefix%, %command%, %footer%, %readmore% (Atur teks harga)",
                     "qris (Atur gambar QRIS untuk donasi, gambar harus berupa link)"
                 ];
-                text = createList(data, (list) => `➛ ${list}`);
+                text = createList(data, (list) => `◉ ${list}`);
                 break;
             }
             case "setoption": {
@@ -84,15 +84,15 @@ async function get(type) {
                     "gamerestrict (Anggota dilarang bermain game)",
                     "welcome (Sambutan member)"
                 ];
-                text = createList(data, (list) => `➛ ${list}`);
+                text = createList(data, (list) => `◉ ${list}`);
                 break;
             }
             case "setprofile": {
                 const data = [
                     "autolevelup (Otomatis naik level)",
-                    "stickerwm (WatermarK stiker)"
+                    "stickerwm (Watermark stiker)"
                 ];
-                text = createList(data, (list) => `➛ ${list}`);
+                text = createList(data, (list) => `◉ ${list}`);
                 break;
             }
             case "settext": {
@@ -101,7 +101,7 @@ async function get(type) {
                     "intro (Teks intro)",
                     "welcome (Teks welcome, variabel yang tersedia: %tag%, %subject%, %description%)"
                 ];
-                text = createList(data, (list) => `➛ ${list}`);
+                text = createList(data, (list) => `◉ ${list}`);
                 break;
             }
             default: {

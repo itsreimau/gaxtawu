@@ -28,7 +28,7 @@ module.exports = {
                     video: {
                         url: result.org
                     },
-                    caption: `➛ ${formatter.bold("URL")}: ${url}`
+                    caption: `◉ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
                 const album = result.images.map(res => ({
@@ -39,7 +39,7 @@ module.exports = {
 
                 await ctx.reply({
                     album,
-                    caption: `➛ ${formatter.bold("URL")}: ${url}`
+                    caption: `◉ ${formatter.bold("URL")}: ${url}`
                 });
             }
         } catch (error) {

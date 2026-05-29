@@ -30,7 +30,7 @@ module.exports = {
 
             await ctx.reply({
                 album,
-                caption: `➛ ${formatter.bold("URL")}: ${url}`
+                caption: `◉ ${formatter.bold("URL")}: ${url}`
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

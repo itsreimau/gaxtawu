@@ -28,9 +28,9 @@ module.exports = {
             await ctx.reply({
                 text: `— ${result.soal}\n` +
                     "\n" +
-                    `➛ ${formatter.bold("Bonus")}: ${game.coin.answered} Koin untuk 1 jawaban benar, ${game.coin.allAnswered} Koin untuk semua jawaban benar\n` +
-                    `➛ ${formatter.bold("Jumlah jawaban")}: ${game.answers.size}\n` +
-                    `➛ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
+                    `◉ ${formatter.bold("Bonus")}: ${game.coin.answered} Koin untuk 1 jawaban benar, ${game.coin.allAnswered} Koin untuk semua jawaban benar\n` +
+                    `◉ ${formatter.bold("Jumlah jawaban")}: ${game.answers.size}\n` +
+                    `◉ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
                 buttons: [{
                     text: "Menyerah",
                     id: `surrender_${ctx.used.command}`
