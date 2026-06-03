@@ -21,8 +21,8 @@ module.exports = {
             const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
-                text: `◉ ${formatter.bold("Judul")}: ${result.title}\n` +
-                    `◉ ${formatter.bold("Artis")}: ${result.artist}`,
+                text: `› ${formatter.bold("Judul")}: ${result.title}\n` +
+                    `› ${formatter.bold("Artis")}: ${result.artist}`,
                 buttons: [{
                     text: "Download (Spotify)",
                     id: `${ctx.used.prefix}spotifydl ${result.url.find(url => url.includes("spotify.com"))}`

@@ -75,6 +75,11 @@ function checkQuotedMedia(type, required) {
     return false;
 }
 
+function extractUrlFromText(text) {
+    if (!text) return null;
+    return Baileys.extractUrlFromText(text) || null;
+}
+
 function getRandomElement(array) {
     if (!array || !Array.isArray(array) || array.length === 0) return null;
     return array[Math.floor(Math.random() * array.length)];
@@ -100,7 +105,7 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
         const errorText = util.format(error);
         const reportOwner = getReportOwner();
 
-        consolefy.error(`Error: ${errorText}`);
+        console.error(`Error: ${errorText}`);
         if (reportOwner && reportOwner.length > 0) {
             const {
                 delay
@@ -135,7 +140,7 @@ module.exports = {
     calculateDelay,
     checkMedia,
     checkQuotedMedia,
-    extractUrlFromText: Baileys.extractUrlFromText,
+    extractUrlFromText,
     delay: Baileys.delay,
     didYouMean: Gktw.didYouMean,
     getRandomElement,

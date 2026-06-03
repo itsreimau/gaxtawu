@@ -15,10 +15,18 @@ module.exports = {
             let userMentions = [];
 
             for (const mutedUser of muteList) {
-                const userId = ctx.getId(mutedUser);
-                userMentions.push(mutedUser);
+                const userId = ctx.getId(mutedUser.jid);
+                userMentions.push(mutedUser.jid);
 
-                resultText += `◉ @${userId}\n`;
+                if (mutedUser.expiration) {
+                    const timeDiff = mutedUser.expiration - Date.now();
+                    const daysLeft = tools.msg.convertMsToDuration(timeDiff, ["hari", "jam"]);
+                    resultText += `› @${userId} (${daysLeft} tersisa)\n`;
+                } else {
+                    resultText += `› @${userId} (Permanen)\n`;
+                }
+
+                resultText += `› @${userId}\n`;
             }
 
             await ctx.reply({

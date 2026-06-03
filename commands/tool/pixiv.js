@@ -21,7 +21,7 @@ module.exports = {
 
             await ctx.reply({
                 image: result,
-                caption: `◉ ${formatter.bold("Kueri")}: ${input}`,
+                caption: `› ${formatter.bold("Kueri")}: ${input}`,
                 buttons: [{
                     text: "Ambil Lagi",
                     id: `${ctx.used.prefix + ctx.used.command} ${input}`

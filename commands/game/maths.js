@@ -26,7 +26,7 @@ module.exports = {
             const result = (await axios.get(apiUrl)).data.data;
 
             const game = {
-                coin: result.bonus,
+                coin: levelBonus[input] || 100,
                 timeout: result.time,
                 answer: String(result.result)
             };
@@ -34,11 +34,11 @@ module.exports = {
             session.set(ctx.id, true);
 
             await ctx.reply({
-                text: `— ${result.str}\n` +
+                text: `✿ — ${result.str}\n` +
                     "\n" +
-                    `◉ ${formatter.bold("Level")}: ${levels[result.mode]}\n` +
-                    `◉ ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +
-                    `◉ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
+                    `› ${formatter.bold("Level")}: ${levels[result.mode]}\n` +
+                    `› ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +
+                    `› ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
                 buttons: [{
                     text: "Menyerah",
                     id: `surrender_${ctx.used.command}`
@@ -102,4 +102,17 @@ module.exports = {
             await tools.cmd.handleError(ctx, error, true);
         }
     }
+};
+
+const levelBonus = {
+    noob: 10,
+    easy: 25,
+    medium: 50,
+    hard: 100,
+    extreme: 250,
+    impossible: 500,
+    impossible2: 750,
+    impossible3: 1000,
+    impossible4: 1500,
+    impossible5: 2000
 };

@@ -27,16 +27,15 @@ module.exports = (bot) => {
         if (botDb?.mode === "self" && !isOwner) return;
 
         // Pengecekan mute pada grup
-        if (groupDb?.mutebot === "owner" && !isOwner) return;
-        if (groupDb?.mutebot && !isOwner && !isAdmin) return;
+        if (groupDb?.mutebot && !isOwner && !isAdmin && (!ctx.used.command === "unmute" && ctx.args[0]?.toLowerCase() === "bot")) return;
         const muteList = groupDb?.mute || [];
-        if (muteList.includes(ctx.sender.lid)) return;
+        if (muteList.some(mute => mute.jid === ctx.sender.lid)) return;
 
         // Log command masuk
         if (isGroup && !ctx.msg.key.fromMe) {
-            consolefy.info(`Incoming command: ${ctx.used.command}, from group: ${groupId}, by: ${senderId}`);
+            console.log(`Incoming command: ${ctx.used.command}, from group: ${groupId}, by: ${senderId}`);
         } else if (isPrivate && !ctx.msg.key.fromMe) {
-            consolefy.info(`Incoming command: ${ctx.used.command}, from: ${senderId}`);
+            console.log(`Incoming command: ${ctx.used.command}, from: ${senderId}`);
         }
 
         // Menambah XP pengguna dan menangani level-up

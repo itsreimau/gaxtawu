@@ -15,11 +15,12 @@ module.exports = {
         }
 
         const target = await ctx.target(["quoted", "mentioned"]);
+        const daysAmount = parseInt(ctx.args[target.source === "quoted" ? 0 : 1], 10);
 
         if (!target.jid)
             return await ctx.reply({
                 text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                    `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
+                    `${tools.msg.generateCmdExample(ctx.used, "@6281234567891 8")}\n` +
                     tools.msg.generateNotes([
                         "Balas/quote pesan untuk menjadikan pengirim sebagai akun target.",
                         `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`
@@ -27,22 +28,39 @@ module.exports = {
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (tools.cmd.areJidsSameUser(target.jid, ctx.me.lid))
-            return await ctx.reply(tools.msg.info(`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`));
+        if (daysAmount && daysAmount <= 0) return await ctx.reply(tools.msg.info("Durasi mute (dalam hari) harus lebih dari 0!"));
+        if (tools.cmd.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(tools.msg.info(`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`));
         if (await ctx.group().isOwner(target.jid)) return await ctx.reply(tools.msg.info("Dia adalah owner grup!"));
 
         try {
             const groupDb = ctx.db.group;
             const muteList = groupDb?.mute || [];
 
-            const isAlreadyMuted = muteList.includes(target.jid);
-            if (isAlreadyMuted) return await ctx.reply(tools.msg.info("Pengguna sudah di-mute sebelumnya!"));
+            const existingMute = muteList.find(m => m.jid === target.jid);
+            if (existingMute) return await ctx.reply(tools.msg.info("Pengguna sudah di-mute sebelumnya!"));
 
-            muteList.push(target.jid);
-            groupDb.mute = muteList;
-            groupDb.save();
+            if (daysAmount && daysAmount > 0) {
+                const expirationDate = Date.now() + (daysAmount * 24 * 60 * 60 * 1000);
+                muteList.push({
+                    jid: target.jid,
+                    expiration: expirationDate
+                });
 
-            await ctx.reply(tools.msg.info("Berhasil me-mute pengguna itu dari grup ini!"));
+                groupDb.mute = muteList;
+                await groupDb.save();
+
+                await ctx.reply(tools.msg.info(`Berhasil me-mute pengguna itu selama ${daysAmount} hari!`));
+            } else {
+                muteList.push({
+                    jid: target.jid,
+                    expiration: null
+                });
+
+                groupDb.mute = muteList;
+                await groupDb.save();
+
+                await ctx.reply(tools.msg.info("Berhasil me-mute pengguna itu!"));
+            }
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

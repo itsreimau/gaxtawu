@@ -21,10 +21,10 @@ module.exports = {
             const result = (await axios.get(apiUrl)).data.data;
 
             await ctx.reply(
-                `— ${result.lyrics}\n` +
+                `✿ — ${result.lyrics}\n` +
                 "\n" +
-                `◉ ${formatter.bold("Judul")}: ${result.title}\n` +
-                `◉ ${formatter.bold("Artis")}: ${result.artists}`
+                `› ${formatter.bold("Judul")}: ${result.title}\n` +
+                `› ${formatter.bold("Artis")}: ${result.artists}`
             );
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

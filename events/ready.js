@@ -4,12 +4,13 @@ const { Events } = require("@itsreimau/gktw");
 module.exports = (bot) => {
     // Event saat bot siap
     bot.ev.once(Events.ClientReady, async (b) => {
-        consolefy.success(`${config.bot.name} by ${config.owner.name}, ready at ${b.user?.id || b.user?.lid}`);
+        console.log(`${config.bot.name} by ${config.owner.name}, ready at ${b.user?.id || b.user?.lid}`);
 
         // Mulai ulang bot
         const botDb = bot.getDb("bot");
         const botRestart = botDb?.restart || {};
-        if (botRestart?.jid && botRestart?.timestamp) {
+        if (botRestart?.jid && botRestart?.timestamp && botRestart?.readyAt) {
+            bot.readyAt = botRestart.readyAt;
             const timeago = tools.msg.convertMsToDuration(Date.now() - botRestart.timestamp);
             await bot.sendMessage(botRestart.jid, {
                 text: tools.msg.info(`Berhasil dimulai ulang! Membutuhkan waktu ${timeago}.`),

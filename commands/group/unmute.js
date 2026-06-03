@@ -34,12 +34,12 @@ module.exports = {
             const groupDb = ctx.db.group;
             const muteList = groupDb?.mute || [];
 
-            const index = muteList.indexOf(target.jid);
+            const index = muteList.findIndex(m => m.jid === target.jid);
             if (index === -1) return await ctx.reply(tools.msg.info("Pengguna tidak ditemukan dalam daftar mute!"));
 
             muteList.splice(index, 1);
             groupDb.mute = muteList;
-            groupDb.save();
+            await groupDb.save();
 
             await ctx.reply(tools.msg.info("Berhasil me-unmute pengguna itu dari grup ini!"));
         } catch (error) {

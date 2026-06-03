@@ -16,7 +16,8 @@ module.exports = {
             botDb.restart = {
                 jid: ctx.id,
                 key: waitMsg.key,
-                timestamp: Date.now()
+                timestamp: Date.now(),
+                readyAt: ctx.me.readyAt
             };
             botDb.save();
 

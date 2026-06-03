@@ -27,9 +27,9 @@ module.exports = {
                 if (user.expiration) {
                     const timeDiff = user.expiration - Date.now();
                     const daysLeft = tools.msg.convertMsToDuration(timeDiff, ["hari", "jam"]);
-                    resultText += `◉ @${userId} (${daysLeft} tersisa)\n`;
+                    resultText += `› @${userId} (${daysLeft} tersisa)\n`;
                 } else {
-                    resultText += `◉ @${userId} (Premium permanen)\n`;
+                    resultText += `› @${userId} (Permanen)\n`;
                 }
             }
 

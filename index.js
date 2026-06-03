@@ -1,6 +1,6 @@
 // Impor modul dan dependensi yang diperlukan
 require("node:process").loadEnvFile();
-const { Config, Consolefy, Formatter } = require("@itsreimau/gktw");
+const { Config, Formatter } = require("@itsreimau/gktw");
 const axios = require("axios");
 const axiosRetry = require("axios-retry").default;
 const path = require("node:path");
@@ -22,14 +22,11 @@ axiosRetry(axios, {
 Object.assign(global, {
     axios,
     config: new Config(path.resolve(__dirname, "config.json")),
-    consolefy: new Consolefy({
-        tag: pkg.name
-    }),
     formatter: Formatter,
     tools: require("./tools/exports.js")
 });
 
-consolefy.log("Starting..."); // Logging proses awal
+console.log("Starting..."); // Logging proses awal
 
 // Tampilkan nama proyek serta deskripsi lain
 CFonts.say(pkg.name, {
@@ -45,7 +42,7 @@ CFonts.say(`${pkg.description} - By ${pkg.author}`, {
 // Jalankan server jika diaktifkan dalam konfigurasi
 if (config.system && config.system.useServer) {
     const port = config.system.port;
-    http.createServer((_, res) => res.end(`${pkg.name} berjalan di port ${port}`)).listen(port, () => consolefy.success(`${pkg.name} runs on port ${port}`));
+    http.createServer((_, res) => res.end(`${pkg.name} berjalan di port ${port}`)).listen(port, () => console.log(`${pkg.name} runs on port ${port}`));
 }
 
 require("./main.js"); // Jalankan modul utama

@@ -11,12 +11,12 @@ const {
     system
 } = config;
 const diretory = {
-    auth: path.resolve(__dirname, system?.authAdapter === "single" ? "state.json" : "state"),
+    auth: path.resolve(__dirname, "state"),
     database: path.resolve(__dirname, "database"),
     command: path.resolve(__dirname, "commands")
 };
 
-consolefy.log("Connecting..."); // Logging proses koneksi
+console.log("Connecting..."); // Logging proses koneksi
 
 // Fungsi untuk mengurai prefix
 const parsePrefix = function(prefix) {
@@ -36,7 +36,6 @@ const parsePrefix = function(prefix) {
 // Buat instance bot
 const bot = new Client({
     auth: {
-        adapter: system?.authAdapter,
         dir: diretory.auth,
         phoneNumber: botConfig.phoneNumber,
         usePairingCode: system.usePairingCode,
@@ -44,7 +43,6 @@ const bot = new Client({
         useStore: system.useStore
     },
     connection: {
-        suppressBaileys: system?.suppressBaileys,
         version: system?.WAVersion,
         alwaysOnline: system.alwaysOnline,
         selfReply: system.selfReply,
@@ -68,4 +66,4 @@ middleware(bot);
 const cmd = new CommandHandler(bot, diretory.command);
 cmd.load();
 
-bot.launch().catch(error => consolefy.error(`Error: ${util.format(error)}`)); // Luncurkan bot
+bot.launch().catch(error => console.error(`Error: ${util.format(error)}`)); // Luncurkan bot

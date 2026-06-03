@@ -28,19 +28,19 @@ module.exports = {
         if (input.toLowerCase() === "status") {
             const groupOption = ctx.db.group.option || {};
             return await ctx.reply(
-                `◉ ${formatter.bold("Antiaudio")}: ${groupOption.antiaudio ? "Aktif" : "Nonaktif"}\n` +
-                `◉ ${formatter.bold("Antidocument")}: ${groupOption.antidocument ? "Aktif" : "Nonaktif"}\n` +
-                `◉ ${formatter.bold("Antiimage")}: ${groupOption.antiimage ? "Aktif" : "Nonaktif"}\n` +
-                `◉ ${formatter.bold("Antisticker")}: ${groupOption.antisticker ? "Aktif" : "Nonaktif"}\n` +
-                `◉ ${formatter.bold("Antivideo")}: ${groupOption.antivideo ? "Aktif" : "Nonaktif"}\n` +
-                `◉ ${formatter.bold("Antigcsw")}: ${groupOption.antigcsw ? "Aktif" : "Nonaktif"}\n` +
-                `◉ ${formatter.bold("Antilink")}: ${groupOption.antilink ? "Aktif" : "Nonaktif"}\n` +
-                `◉ ${formatter.bold("Antispam")}: ${groupOption.antispam ? "Aktif" : "Nonaktif"}\n` +
-                `◉ ${formatter.bold("Antitagsw")}: ${groupOption.antitagsw ? "Aktif" : "Nonaktif"}\n` +
-                `◉ ${formatter.bold("Antitoxic")}: ${groupOption.antitoxic ? "Aktif" : "Nonaktif"}\n` +
-                `◉ ${formatter.bold("Autokick")}: ${groupOption.autokick ? "Aktif" : "Nonaktif"}\n` +
-                `◉ ${formatter.bold("Gamerestrict")}: ${groupOption.gamerestrict ? "Aktif" : "Nonaktif"}\n` +
-                `◉ ${formatter.bold("Welcome")}: ${groupOption.welcome ? "Aktif" : "Nonaktif"}`
+                `› ${formatter.bold("Antiaudio")}: ${groupOption.antiaudio ? "Aktif" : "Nonaktif"}\n` +
+                `› ${formatter.bold("Antidocument")}: ${groupOption.antidocument ? "Aktif" : "Nonaktif"}\n` +
+                `› ${formatter.bold("Antiimage")}: ${groupOption.antiimage ? "Aktif" : "Nonaktif"}\n` +
+                `› ${formatter.bold("Antisticker")}: ${groupOption.antisticker ? "Aktif" : "Nonaktif"}\n` +
+                `› ${formatter.bold("Antivideo")}: ${groupOption.antivideo ? "Aktif" : "Nonaktif"}\n` +
+                `› ${formatter.bold("Antigcsw")}: ${groupOption.antigcsw ? "Aktif" : "Nonaktif"}\n` +
+                `› ${formatter.bold("Antilink")}: ${groupOption.antilink ? "Aktif" : "Nonaktif"}\n` +
+                `› ${formatter.bold("Antispam")}: ${groupOption.antispam ? "Aktif" : "Nonaktif"}\n` +
+                `› ${formatter.bold("Antitagsw")}: ${groupOption.antitagsw ? "Aktif" : "Nonaktif"}\n` +
+                `› ${formatter.bold("Antitoxic")}: ${groupOption.antitoxic ? "Aktif" : "Nonaktif"}\n` +
+                `› ${formatter.bold("Autokick")}: ${groupOption.autokick ? "Aktif" : "Nonaktif"}\n` +
+                `› ${formatter.bold("Gamerestrict")}: ${groupOption.gamerestrict ? "Aktif" : "Nonaktif"}\n` +
+                `› ${formatter.bold("Welcome")}: ${groupOption.welcome ? "Aktif" : "Nonaktif"}`
             );
         }
 

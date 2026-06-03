@@ -22,13 +22,13 @@ module.exports = {
             topUsers.forEach((user, i) => {
                 const isSelf = tools.cmd.areJidsSameUser(user.jid, senderLid);
                 const displayUser = isSelf ? `@${senderId}` : (user.pushName ? user.pushName : ctx.getId(user.jid));
-                resultText += `◉ ${displayUser} - Menang: ${user.winGame}, Level: ${user.level}, Peringkat: ${i + 1}\n`;
+                resultText += `› ${displayUser} - Menang: ${user.winGame}, Level: ${user.level}, Peringkat: ${i + 1}\n`;
             });
 
             if (userRank > 10) {
                 const userStats = leaderboardData[userRank - 1];
                 const displayUser = `@${senderId}`;
-                resultText += `◉ ${displayUser} - Menang: ${userStats.winGame}, Level: ${userStats.level}, Peringkat: ${userRank}\n`;
+                resultText += `› ${displayUser} - Menang: ${userStats.winGame}, Level: ${userStats.level}, Peringkat: ${userRank}\n`;
             }
 
             await ctx.reply({

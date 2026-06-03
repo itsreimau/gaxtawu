@@ -67,14 +67,15 @@ module.exports = {
 
                 let text = "";
                 for (const [key, list] of Object.entries(commandsData)) {
-                    text += `○ ${formatter.bold(tag[key] || key)}\n`;
+                    text += "╭┈┈┈┈┈┈ ♡\n" +
+                        `┊ ✿ — ${formatter.bold(tag[key] || key)}\n`;
                     list.forEach(c => {
-                        text += `  ◉ ${ctx.used.prefix + c.name} ${formatPerms(c.permissions)}\n`;
+                        text += `┊ › ${ctx.used.prefix + c.name} ${formatPerms(c.permissions)}\n`;
                     });
-                    text += "\n";
+                    text += "╰┈┈┈┈┈┈\n\n";
                 }
 
-                text += `✧ ⓒ → koin | Ⓖ → group | Ⓞ → owner | Ⓟ → premium | ⓟ → private`;
+                text += `ⓒ koin | Ⓖ group | Ⓞ owner | Ⓟ premium | ⓟ private`;
 
                 await ctx.reply({
                     caption: text,
@@ -96,16 +97,16 @@ module.exports = {
                 });
             } else {
                 const userDb = ctx.db.user;
-                const text = `— Halo, @${ctx.getId(ctx.sender.jid)}! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}.\n` +
+                const text = `✿ — Halo, @${ctx.getId(ctx.sender.jid)}! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}.\n` +
                     "\n" +
-                    `◉ ${formatter.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${tools.msg.convertMsToDuration(Date.now() - userDb.premiumExpiration, ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
-                    `◉ ${formatter.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
-                    `◉ ${formatter.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Tak terbatas" : (userDb?.coin || 0)}\n` +
+                    `› ${formatter.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${tools.msg.convertMsToDuration(Date.now() - userDb.premiumExpiration, ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
+                    `› ${formatter.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
+                    `› ${formatter.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Tak terbatas" : (userDb?.coin || 0)}\n` +
                     "\n" +
-                    `◉ ${formatter.bold("Mode")}: ${tools.msg.ucwords(ctx.db.bot?.mode || "public")}\n` +
-                    `◉ ${formatter.bold("Uptime")}: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
-                    `◉ ${formatter.bold("Database")}: ${fs.existsSync(ctx.bot.databaseDir) ? tools.msg.formatSize(fs.readdirSync(ctx.bot.databaseDir).reduce((total, file) => total + fs.statSync(path.join(ctx.bot.databaseDir, file)).size, 0) / 1024) : "N/A"}\n` +
-                    `◉ ${formatter.bold("Library")}: @itsreimau/gktw\n` +
+                    `› ${formatter.bold("Mode")}: ${tools.msg.ucwords(ctx.db.bot?.mode || "public")}\n` +
+                    `› ${formatter.bold("Uptime")}: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
+                    `› ${formatter.bold("Database")}: ${fs.existsSync(ctx.bot.databaseDir) ? tools.msg.formatSize(fs.readdirSync(ctx.bot.databaseDir).reduce((total, file) => total + fs.statSync(path.join(ctx.bot.databaseDir, file)).size, 0) / 1024) : "N/A"}\n` +
+                    `› ${formatter.bold("Library")}: @itsreimau/gktw\n` +
                     "\n" +
                     `✧ ${formatter.italic("Jangan lupa berdonasi agar bot tetap online.")}`;
 

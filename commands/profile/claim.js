@@ -24,7 +24,7 @@ module.exports = {
         const level = senderDb?.level || 0;
 
         if (!claim) return await ctx.reply(tools.msg.info("Hadiah tidak valid!"));
-        if (ctx.sender.isOwner()) return await ctx.reply(tools.msg.info("Anda sudah memiliki koin tak terbatas!"));
+        if (ctx.sender.isOwner() || senderDb?.premium) return await ctx.reply(tools.msg.info("Anda sudah memiliki koin tak terbatas!"));
         if (level < claim.level) return await ctx.reply(tools.msg.info(`Anda perlu mencapai level ${claim.level} untuk mengklaim hadiah ini. Levelmu saat ini adalah ${level}.`));
 
         const currentTime = Date.now();

@@ -32,7 +32,7 @@ module.exports = {
                 image: {
                     url: result
                 },
-                caption: `◉ ${formatter.bold("Prompt")}: ${input}`
+                caption: `› ${formatter.bold("Prompt")}: ${input}`
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

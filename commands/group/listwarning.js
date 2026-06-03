@@ -19,7 +19,7 @@ module.exports = {
                 const userId = ctx.getId(warning.jid);
                 userMentions.push(warning.jid);
 
-                resultText += `◉ @${userId} (${warning.count}/${groupDb?.maxwarnings || 3})\n`;
+                resultText += `› @${userId} (${warning.count}/${groupDb?.maxwarnings || 3})\n`;
             }
 
             await ctx.reply({

@@ -27,7 +27,7 @@ module.exports = {
                 [result.type]: {
                     url: result.url
                 },
-                caption: `◉ ${formatter.bold("URL")}: ${url}`
+                caption: `› ${formatter.bold("URL")}: ${url}`
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
