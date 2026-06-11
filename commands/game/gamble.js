@@ -38,38 +38,26 @@ module.exports = {
 
             if (resultType === "jackpot") {
                 for (let i = 0; i < 3; i++) {
-                    matrix[i] = [];
-                    for (let j = 0; j < 3; j++) {
-                        matrix[i][j] = targetSymbol;
-                    }
+                    matrix[i] = [targetSymbol, targetSymbol, targetSymbol];
                 }
             } else if (resultType === "win") {
-                for (let j = 0; j < 3; j++) {
-                    matrix[1] = [randomSymbol(), randomSymbol(), randomSymbol()];
-                }
-                const winRow = Math.random() < 0.5 ? 0 : 2;
-                for (let j = 0; j < 3; j++) {
-                    matrix[winRow][j] = targetSymbol;
-                }
-                const otherRow = winRow === 0 ? 2 : 0;
-                for (let j = 0; j < 3; j++) {
-                    matrix[otherRow][j] = randomSymbol();
-                }
-            } else {
                 for (let i = 0; i < 3; i++) {
-                    matrix[i] = [];
-                    for (let j = 0; j < 3; j++) {
-                        matrix[i][j] = randomSymbol();
-                    }
+                    matrix[i] = [randomSymbol(), randomSymbol(), randomSymbol()];
                 }
+
+                const winRow = Math.random() < 0.5 ? 0 : 2;
+                matrix[winRow] = [targetSymbol, targetSymbol, targetSymbol];
+
                 while (matrix[1][0] === matrix[1][1] && matrix[1][1] === matrix[1][2]) {
                     matrix[1] = [randomSymbol(), randomSymbol(), randomSymbol()];
                 }
-                while (matrix[0][0] === matrix[0][1] && matrix[0][1] === matrix[0][2]) {
-                    matrix[0] = [randomSymbol(), randomSymbol(), randomSymbol()];
+            } else {
+                for (let i = 0; i < 3; i++) {
+                    matrix[i] = [randomSymbol(), randomSymbol(), randomSymbol()];
                 }
-                while (matrix[2][0] === matrix[2][1] && matrix[2][1] === matrix[2][2]) {
-                    matrix[2] = [randomSymbol(), randomSymbol(), randomSymbol()];
+
+                while (matrix[1][0] === matrix[1][1] && matrix[1][1] === matrix[1][2]) {
+                    matrix[1] = [randomSymbol(), randomSymbol(), randomSymbol()];
                 }
             }
 
