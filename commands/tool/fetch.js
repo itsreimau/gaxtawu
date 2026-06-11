@@ -1,4 +1,4 @@
-const { Sticker, StickerTypes } = require("wa-sticker-formatter");
+const WASF = require("wa-sticker-formatter");
 
 module.exports = {
     name: "fetch",
@@ -29,10 +29,10 @@ module.exports = {
 
             if (/webp/.test(contentType)) {
                 const userStickerwm = ctx.db.user?.stickerwm;
-                const sticker = await new Sticker(data)
+                const sticker = await new WASF.Sticker(data)
                     .setPack(userStickerwm?.packname || config.sticker.packname)
                     .setAuthor(userStickerwm?.author || config.sticker.author)
-                    .setType(StickerTypes.FULL)
+                    .setType(WASF.StickerTypes.FULL)
                     .setCategories(["🌕"])
                     .setID(ctx.msg.key.id)
                     .setQuality(50)
@@ -77,10 +77,7 @@ module.exports = {
                     json = JSON.parse(text);
                 } catch {}
 
-                await ctx.reply(json ? walkJSON(json) : {
-                    code: text,
-                    language: "html"
-                });
+                await ctx.reply(json ? walkJSON(json) : text);
             }
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

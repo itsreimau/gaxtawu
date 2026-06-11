@@ -14,7 +14,7 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("neo", "/api/ai-image/ailabs", {
+            const apiUrl = tools.api.createUrl("neosoft", "/api/ai-image/ailabs", {
                 prompt: input
             });
             const result = (await axios.get(apiUrl)).data.result;

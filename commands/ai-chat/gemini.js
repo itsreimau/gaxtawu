@@ -30,22 +30,14 @@ module.exports = {
                 });
                 const result = (await axios.get(apiUrl)).data.result;
 
-                await ctx.reply({
-                    richResponse: [{
-                        text: result
-                    }]
-                });
+                await ctx.reply(result);
             } else {
                 const apiUrl = tools.api.createUrl("lexcode", "/api/ai/gemini-2-5-flash", {
                     text: input
                 });
                 const result = (await axios.get(apiUrl)).data.result;
 
-                await ctx.reply({
-                    richResponse: [{
-                        text: result
-                    }]
-                });
+                await ctx.reply(result);
             }
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

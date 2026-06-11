@@ -1,8 +1,8 @@
-// Impor modul dan dependensi yang diperlukan
-const util = require("node:util");
-
 // Daftar API gratis
 const APIs = {
+    alwayscodex: {
+        baseURL: "https://api.alwayscodex.my.id"
+    },
     delirius: {
         baseURL: "https://api.delirius.store"
     },
@@ -17,6 +17,9 @@ const APIs = {
     },
     neo: {
         baseURL: "https://www.neoapis.xyz"
+    },
+    neosoft: {
+        baseURL: "https://api.neosoft.best"
     },
     nexray: {
         baseURL: "https://api.nexray.eu.cc"

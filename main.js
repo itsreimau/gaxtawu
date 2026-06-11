@@ -1,9 +1,9 @@
 // Impor modul dan dependensi yang diperlukan
 const { Client, CommandHandler } = require("@itsreimau/gktw");
-const path = require("node:path");
+const { resolve } = require("node:path");
+const util = require("node:util");
 const events = require("./events/exports.js");
 const middleware = require("./middleware.js");
-const util = require("node:util");
 
 // Konfigurasi bot
 const {
@@ -11,12 +11,12 @@ const {
     system
 } = config;
 const diretory = {
-    auth: path.resolve(__dirname, "state"),
-    database: path.resolve(__dirname, "database"),
-    command: path.resolve(__dirname, "commands")
+    auth: resolve(__dirname, "state"),
+    database: resolve(__dirname, "database"),
+    command: resolve(__dirname, "commands")
 };
 
-console.log("Connecting..."); // Logging proses koneksi
+console.log(util.styleText("cyan", "Connecting..."));
 
 // Fungsi untuk mengurai prefix
 const parsePrefix = function(prefix) {

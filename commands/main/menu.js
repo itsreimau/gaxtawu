@@ -1,6 +1,4 @@
 const { Baileys } = require("@itsreimau/gktw");
-const fs = require("node:fs");
-const path = require("node:path");
 
 module.exports = {
     name: "menu",
@@ -52,12 +50,6 @@ module.exports = {
                 return format;
             };
 
-            const getJpegThumbnail = async (url) => {
-                const stream = await Baileys.getHttpStream(url);
-                const result = await Baileys.extractImageThumb(stream, 300);
-                return result.buffer;
-            };
-
             const input = ctx.args[0]?.toLowerCase();
             if (input || ctx.used.command === "allmenu") {
                 const selectedCats = input === "all" || ctx.used.command === "allmenu" ? Object.keys(tag) : (tag[input] ? [input] : []);
@@ -77,15 +69,17 @@ module.exports = {
 
                 text += `ⓒ koin | Ⓖ group | Ⓞ owner | Ⓟ premium | ⓟ private`;
 
+                const thumbnail = await tools.cmd.getJpegThumbnail(tools.api.createUrl("neosoft", "/api/textpro/1068", {
+                    text: tag[key] || key
+                }));
                 await ctx.reply({
                     caption: text,
-                    footer: config.msg.footer,
                     location: {
                         degreesLatitude: 0,
                         degreesLongitude: 0,
                         name: config.bot.name,
                         address: "Jangan lupa berdonasi agar bot tetap online.",
-                        jpegThumbnail: await getJpegThumbnail(config.bot.thumbnail)
+                        jpegThumbnail:
                     },
                     buttons: [{
                         text: "Hubungi Owner",
@@ -105,7 +99,7 @@ module.exports = {
                     "\n" +
                     `› ${formatter.bold("Mode")}: ${tools.msg.ucwords(ctx.db.bot?.mode || "public")}\n` +
                     `› ${formatter.bold("Uptime")}: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
-                    `› ${formatter.bold("Database")}: ${fs.existsSync(ctx.bot.databaseDir) ? tools.msg.formatSize(fs.readdirSync(ctx.bot.databaseDir).reduce((total, file) => total + fs.statSync(path.join(ctx.bot.databaseDir, file)).size, 0) / 1024) : "N/A"}\n` +
+                    `› ${formatter.bold("Database")}: ${ctx.db.users.entries} users, ${ctx.db.groups.entries}/${Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id).length} groups\n` +
                     `› ${formatter.bold("Library")}: @itsreimau/gktw\n` +
                     "\n" +
                     `✧ ${formatter.italic("Jangan lupa berdonasi agar bot tetap online.")}`;
@@ -134,7 +128,7 @@ module.exports = {
                     offerText: config.bot.name,
                     offerCode: config.system.customPairingCode,
                     offerUrl: config.bot.groupLink,
-                    offerExpiration: Date.now() + 3_600_000,
+                    offerExpiration: Date.now() + 3600000,
                     nativeFlow: [{
                         text: "Daftar Menu",
                         sections: [{

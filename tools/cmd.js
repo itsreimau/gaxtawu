@@ -1,6 +1,6 @@
 // Impor modul dan dependensi yang diperlukan
 const { Baileys, Gktw, MessageType } = require("@itsreimau/gktw");
-const util = require("node:util");
+const { format } = require("node:util");
 
 function calculateDelay(totalTargets) {
     if (!totalTargets || totalTargets <= 0) return null;
@@ -80,6 +80,12 @@ function extractUrlFromText(text) {
     return Baileys.extractUrlFromText(text) || null;
 }
 
+async function getJpegThumbnail(url) {
+    const stream = await Baileys.getHttpStream(url);
+    const result = await Baileys.extractImageThumb(stream, 300);
+    return result.buffer;
+}
+
 function getRandomElement(array) {
     if (!array || !Array.isArray(array) || array.length === 0) return null;
     return array[Math.floor(Math.random() * array.length)];
@@ -102,7 +108,7 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
         const senderId = ctx.getId(senderJid);
         const groupJid = isGroup ? ctx.id : null;
         const groupSubject = isGroup ? await ctx.group(groupJid).name() : null;
-        const errorText = util.format(error);
+        const errorText = format(error);
         const reportOwner = getReportOwner();
 
         console.error(`Error: ${errorText}`);
@@ -143,6 +149,7 @@ module.exports = {
     extractUrlFromText,
     delay: Baileys.delay,
     didYouMean: Gktw.didYouMean,
+    getJpegThumbnail,
     getRandomElement,
     getReportOwner,
     handleError,

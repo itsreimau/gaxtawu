@@ -1,5 +1,6 @@
 // Impor modul dan dependensi yang diperlukan
 const { Baileys, Events } = require("@itsreimau/gktw");
+const { styleText } = require("node:util");
 
 module.exports = (bot) => {
     // Event saat bot menerima panggilan
@@ -16,7 +17,7 @@ module.exports = (bot) => {
         const fromPnJid = call.callerPn;
         const fromPnId = bot.getId(fromPnJid);
 
-        console.log(`Incoming call from: ${fromPnJid}`); // Log panggilan masuk
+        console.log(styleText("green", `Incoming call from: ${fromPnJid}`)); // Log panggilan masuk
 
         await bot.core.rejectCall(call.id, fromJid);
 

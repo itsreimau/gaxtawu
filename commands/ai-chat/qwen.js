@@ -52,11 +52,7 @@ module.exports = {
                     senderDb.save();
                 }
 
-                await ctx.reply({
-                    richResponse: [{
-                        text: result.result
-                    }]
-                });
+                await ctx.reply(result);
             } else {
                 const apiUrl = tools.api.createUrl("omegatech", "/api/ai/qwen-3-vl", {
                     text: input,
@@ -71,11 +67,7 @@ module.exports = {
                     senderDb.save();
                 }
 
-                await ctx.reply({
-                    richResponse: [{
-                        text: result.result
-                    }]
-                });
+                await ctx.reply(result);
             }
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

@@ -38,7 +38,11 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
             url: canvasUrl
         },
         caption: text,
-        mentions: [participantJid]
+        mentions: [participantJid],
+        product: {
+            title: isWelcome ? "Welcome" : "Goodbye"
+        },
+        businessOwnerJid: ctx.sender.jid
     });
 
     if (isWelcome && groupDb?.text?.intro)

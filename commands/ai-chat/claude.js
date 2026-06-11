@@ -1,3 +1,5 @@
+const { randomUUID } = require("node:crypto");
+
 module.exports = {
     name: "claude",
     category: "ai-chat",
@@ -10,20 +12,32 @@ module.exports = {
         if (!input)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")
+                `${tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
+                tools.msg.generateNotes([
+                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} reset`)} untuk mereset riwayat percakapan.`
+                ])
             );
 
-        try {
-            const apiUrl = tools.api.createUrl("lexcode", "/api/ai/claude-4-5-haiku", {
-                prompt: input
-            });
-            const result = (await axios.get(apiUrl)).data.result.answer;
+        const senderDb = ctx.db.user;
 
-            await ctx.reply({
-                richResponse: [{
-                    text: result
-                }]
+        if (input.toLowerCase() === "reset") {
+            senderDb.claudeSessionId = randomUUID();
+            senderDb.save();
+            return await ctx.reply(tools.msg.info("Riwayat percakapan berhasil direset!"));
+        }
+
+        try {
+            if (!senderDb.claudeSessionId) {
+                senderDb.claudeSessionId = randomUUID();
+                senderDb.save();
+            }
+            const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/claude-overchat", {
+                teks: input,
+                session: senderDb.claudeSessionId
             });
+            const result = (await axios.get(apiUrl)).data.result;
+
+            await ctx.reply(result);
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

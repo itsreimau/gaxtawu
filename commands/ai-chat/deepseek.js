@@ -10,20 +10,32 @@ module.exports = {
         if (!input)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")
+                `${tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
+                tools.msg.generateNotes([
+                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} reset`)} untuk mereset riwayat percakapan.`
+                ])
             );
 
-        try {
-            const apiUrl = tools.api.createUrl("neo", "/api/ai/deepseek", {
-                text: input
-            });
-            const result = (await axios.get(apiUrl)).data.data.reply;
+        const senderDb = ctx.db.user;
 
-            await ctx.reply({
-                richResponse: [{
-                    text: result
-                }]
+        if (input.toLowerCase() === "reset") {
+            senderDb.deepseekSessionId = randomUUID();
+            senderDb.save();
+            return await ctx.reply(tools.msg.info("Riwayat percakapan berhasil direset!"));
+        }
+
+        try {
+            if (!senderDb.deepseekSessionId) {
+                senderDb.deepseekSessionId = randomUUID();
+                senderDb.save();
+            }
+            const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/deepseek-flash", {
+                teks: input,
+                session: senderDb.deepseekSessionId
             });
+            const result = (await axios.get(apiUrl)).data.result;
+
+            await ctx.reply(result);
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

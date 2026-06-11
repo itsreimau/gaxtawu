@@ -1,6 +1,4 @@
 const os = require("node:os");
-const fs = require("node:fs");
-const path = require("node:path");
 
 module.exports = {
     name: "server",
@@ -32,7 +30,7 @@ module.exports = {
                 `› ${formatter.bold("PID")}: ${process.pid}\n` +
                 "\n" +
                 `› ${formatter.bold("Uptime")}: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
-                `› ${formatter.bold("Database")}: ${fs.existsSync(ctx.bot.databaseDir) ? tools.msg.formatSize(fs.readdirSync(ctx.bot.databaseDir).reduce((total, file) => total + fs.statSync(path.join(ctx.bot.databaseDir, file)).size, 0) / 1024) : "N/A"} (Simpl.DB with JSON)\n` +
+                `› ${formatter.bold("Database")}: ${ctx.db.users.entries} users, ${ctx.db.groups.entries}/${Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id).length} groups\n` +
                 `› ${formatter.bold("Library")}: @itsreimau/gktw (Fork of @mengkodingan/ckptw)`
             );
         } catch (error) {

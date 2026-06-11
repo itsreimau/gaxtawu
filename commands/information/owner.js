@@ -12,7 +12,7 @@ module.exports = {
                 .setNumber(config.owner.id)
                 .build();
             const coOwners = config.owner.co && Array.isArray(config.owner.co) && config.owner.co.length > 0 ?
-                config.owner.co.map(co => ({
+                config.owner.co.filter(co => !co.invisible).map(co => ({
                     displayName: co.name,
                     vcard: new VCardBuilder()
                         .setFullName(co.name)

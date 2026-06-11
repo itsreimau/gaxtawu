@@ -17,26 +17,65 @@ module.exports = {
         if (senderDb?.coin < input) return await ctx.reply(tools.msg.info("Koin Anda tidak mencukupi!"));
 
         try {
-            const jackpot = Math.ceil(input * 5);
-            const win = Math.ceil(input * 2);
+            const jackpotPrize = Math.ceil(input * 5);
+            const winPrize = Math.ceil(input * 2);
 
             const emojis = ["🍒", "🍋", "🍊", "🍉", "🍇", "🔔", "⭐", "7️⃣", "💎", "🍓", "🥝", "🃏"];
 
+            const roll = Math.floor(Math.random() * 100) + 1;
+
+            let resultType = "lose";
+            if (roll <= 10) {
+                resultType = "jackpot";
+            } else if (roll <= 50) {
+                resultType = "win";
+            }
+
+            const targetSymbol = emojis[Math.floor(Math.random() * emojis.length)];
+            const randomSymbol = () => emojis[Math.floor(Math.random() * emojis.length)];
+
             let matrix = [];
-            for (let i = 0; i < 3; i++) {
-                matrix[i] = [];
+
+            if (resultType === "jackpot") {
+                for (let i = 0; i < 3; i++) {
+                    matrix[i] = [];
+                    for (let j = 0; j < 3; j++) {
+                        matrix[i][j] = targetSymbol;
+                    }
+                }
+            } else if (resultType === "win") {
                 for (let j = 0; j < 3; j++) {
-                    const randomIndex = Math.floor(Math.random() * emojis.length);
-                    matrix[i][j] = emojis[randomIndex];
+                    matrix[1] = [randomSymbol(), randomSymbol(), randomSymbol()];
+                }
+                const winRow = Math.random() < 0.5 ? 0 : 2;
+                for (let j = 0; j < 3; j++) {
+                    matrix[winRow][j] = targetSymbol;
+                }
+                const otherRow = winRow === 0 ? 2 : 0;
+                for (let j = 0; j < 3; j++) {
+                    matrix[otherRow][j] = randomSymbol();
+                }
+            } else {
+                for (let i = 0; i < 3; i++) {
+                    matrix[i] = [];
+                    for (let j = 0; j < 3; j++) {
+                        matrix[i][j] = randomSymbol();
+                    }
+                }
+                while (matrix[1][0] === matrix[1][1] && matrix[1][1] === matrix[1][2]) {
+                    matrix[1] = [randomSymbol(), randomSymbol(), randomSymbol()];
+                }
+                while (matrix[0][0] === matrix[0][1] && matrix[0][1] === matrix[0][2]) {
+                    matrix[0] = [randomSymbol(), randomSymbol(), randomSymbol()];
+                }
+                while (matrix[2][0] === matrix[2][1] && matrix[2][1] === matrix[2][2]) {
+                    matrix[2] = [randomSymbol(), randomSymbol(), randomSymbol()];
                 }
             }
 
             const row0 = matrix[0];
             const row1 = matrix[1];
             const row2 = matrix[2];
-
-            const isJackpot = (row1[0] === row1[1] && row1[1] === row1[2]);
-            const isWin = !isJackpot && ((row0[0] === row0[1] && row0[1] === row0[2]) || (row2[0] === row2[1] && row2[1] === row2[2]));
 
             const slotText = `${row0[0]} | ${row0[1]} | ${row0[2]}\n` +
                 `${row1[0]} | ${row1[1]} | ${row1[2]} <===\n` +
@@ -45,22 +84,21 @@ module.exports = {
             let responseText = "";
             let prizeText = "";
 
-            if (isJackpot) {
+            if (resultType === "jackpot") {
                 responseText = "Jackpot! 🎉🎉🎉";
-                prizeText = `+${jackpot} Koin (5x lipat)`;
-                senderDb.coin += jackpot;
-                senderDb.save();
-            } else if (isWin) {
-                responseText = "Kamu Menang! 🍀";
-                prizeText = `+${win} Koin (2x lipat)`;
-                senderDb.coin += win;
-                senderDb.save();
+                prizeText = `+${jackpotPrize} Koin (5x lipat)`;
+                senderDb.coin += jackpotPrize;
+            } else if (resultType === "win") {
+                responseText = "Kamu Menang!";
+                prizeText = `+${winPrize} Koin (2x lipat)`;
+                senderDb.coin += winPrize;
             } else {
-                responseText = "Anda kalah! Semoga beruntung lain kali! 😢";
+                responseText = "Anda kalah! Semoga beruntung lain kali!";
                 prizeText = `-${input} Koin`;
                 senderDb.coin -= input;
-                senderDb.save();
             }
+
+            senderDb.save();
 
             await ctx.reply(
                 `✿ — ${responseText}\n` +

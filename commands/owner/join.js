@@ -27,14 +27,14 @@ module.exports = {
                             url: config.bot.thumbnail
                         },
                         caption: `>ᴗ< ${formatter.italic(`Halo! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}. Saya bisa melakukan banyak perintah, seperti membuat stiker, menggunakan AI untuk pekerjaan tertentu, dan beberapa perintah berguna lainnya. Saya di sini untuk menghibur dan menyenangkan Anda!`)}`,
-                        footer: config.msg.footer,
-                        optionText: "Opsi",
-                        optionTitle: "Pilih Opsi",
-                        offerText: config.bot.name,
-                        offerCode: config.system.customPairingCode,
-                        offerUrl: config.bot.groupLink,
-                        offerExpiration: Date.now() + 3_600_000,
-                        nativeFlow: [{
+                        location: {
+                            degreesLatitude: 0,
+                            degreesLongitude: 0,
+                            name: config.bot.name,
+                            address: "Jangan lupa berdonasi agar bot tetap online.",
+                            jpegThumbnail: await tools.cmd.getJpegThumbnail(config.bot.thumbnail)
+                        },
+                        buttons: [{
                             text: "Menu",
                             id: `${ctx.used.prefix}menu`
                         }, {

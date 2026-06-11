@@ -4,7 +4,7 @@ const { Events } = require("@itsreimau/gktw");
 module.exports = (bot) => {
     // Event saat bot siap
     bot.ev.once(Events.ClientReady, async (b) => {
-        console.log(`${config.bot.name} by ${config.owner.name}, ready at ${b.user?.id || b.user?.lid}`);
+        console.log(styleText("green", `${config.bot.name} by ${config.owner.name}, ready at ${b.user?.id || b.user?.lid}`));
 
         // Mulai ulang bot
         const botDb = bot.getDb("bot");

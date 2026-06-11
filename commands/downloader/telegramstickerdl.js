@@ -1,5 +1,5 @@
 // Saya tidak tahu mengapa stiker-stiker tersebut tidak bisa diunduh
-const { Sticker, StickerTypes } = require("wa-sticker-formatter");
+const WASF = require("wa-sticker-formatter");
 
 module.exports = {
     name: "telegramstickerdl",
@@ -44,10 +44,10 @@ module.exports = {
 };
 
 async function createSticker(stickerUrl, emoji, id, userStickerwm) {
-    return await new Sticker(stickerUrl)
+    return await new WASF.Sticker(stickerUrl)
         .setPack(userStickerwm?.packname || config.sticker.packname)
         .setAuthor(userStickerwm?.author || config.sticker.author)
-        .setType(StickerTypes.FULL)
+        .setType(WASF.StickerTypes.FULL)
         .setCategories([emoji])
         .setID(id)
         .setQuality(50)

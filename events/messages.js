@@ -1,6 +1,7 @@
 // Impor modul dan dependensi yang diperlukan
 const { Baileys, Events, Gktw } = require("@itsreimau/gktw");
 const moment = require("moment-timezone");
+const { styleText } = require("node:util");
 
 // Fungsi untuk menambahkan warning
 async function handleWarning(ctx, senderJid, senderId, senderLid, groupJid, groupDb) {
@@ -150,7 +151,7 @@ module.exports = (bot) => {
 
             // Penanganan obrolan grup
             if (isGroup) {
-                if (!isCmd || isCmd?.didyoumean) console.log(`Incoming message from group: ${groupId}, by: ${senderId}`); // Log pesan masuk
+                if (!isCmd || isCmd?.didyoumean) console.log(styleText("green", `Incoming message from group: ${groupId}, by: ${senderId}`)); // Log pesan masuk
 
                 // Variabel umum
                 const messageType = ctx.getMessageType();
@@ -286,7 +287,7 @@ module.exports = (bot) => {
 
             // Penanganan obrolan pribadi
             if (isPrivate) {
-                if (!isCmd || isCmd?.didyoumean) console.log(`Incoming message from: ${senderId}`); // Log pesan masuk
+                if (!isCmd || isCmd?.didyoumean) console.log(styleText("green", `Incoming message from: ${senderId}`)); // Log pesan masuk
 
                 // Apa yaa...
             }

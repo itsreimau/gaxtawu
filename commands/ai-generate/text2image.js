@@ -15,8 +15,8 @@ module.exports = {
             );
 
         try {
-            const result = tools.api.createUrl("faaa", "/faa/ai-text2img-pro", {
-                prompt: input
+            const result = tools.api.createUrl("alwayscodex", "/api/imageai/text2imgv2", {
+                teks: input
             });
 
             await ctx.reply({

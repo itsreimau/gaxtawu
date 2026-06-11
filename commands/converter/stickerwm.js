@@ -1,4 +1,4 @@
-const { Sticker, StickerTypes } = require("wa-sticker-formatter");
+const WASF = require("wa-sticker-formatter");
 
 module.exports = {
     name: "stickerwm",
@@ -22,10 +22,10 @@ module.exports = {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
             const [packname, author] = input.split("|");
             const userStickerwm = ctx.db.user?.stickerwm;
-            const sticker = await new Sticker(buffer)
+            const sticker = await new WASF.Sticker(buffer)
                 .setPack(packname || userStickerwm?.packname || "")
                 .setAuthor(author || userStickerwm?.author || "")
-                .setType(StickerTypes.FULL)
+                .setType(WASF.StickerTypes.FULL)
                 .setCategories(["🌕"])
                 .setID(ctx.msg.key.id)
                 .setQuality(50)

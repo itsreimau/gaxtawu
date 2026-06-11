@@ -14,16 +14,12 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("nexray", "/ai/felo", {
-                text: input
+            const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/felo", {
+                teks: input
             });
             const result = (await axios.get(apiUrl)).data.result;
 
-            await ctx.reply({
-                richResponse: [{
-                    text: result
-                }]
-            });
+            await ctx.reply(result);
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

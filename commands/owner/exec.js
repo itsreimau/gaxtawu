@@ -1,4 +1,4 @@
-const util = require("node:util");
+const { promisify } = require("node:util");
 const { exec } = require("node:child_process");
 
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
 
         try {
             const command = ctx.msg.body.slice(2);
-            const output = await util.promisify(exec)(command);
+            const output = await promisify(exec)(command);
 
             await ctx.reply(formatter.monospace(output.stdout || output.stderr));
         } catch (error) {

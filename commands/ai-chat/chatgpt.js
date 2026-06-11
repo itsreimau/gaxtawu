@@ -1,3 +1,5 @@
+const { randomUUID } = require("node:crypto");
+
 module.exports = {
     name: "chatgpt",
     aliases: ["ai", "gpt"],
@@ -11,22 +13,57 @@ module.exports = {
         if (!input)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")
+                `${tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
+                tools.msg.generateNotes([
+                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} reset`)} untuk mereset riwayat percakapan.`
+                ])
             );
 
-        try {
-            const apiUrl = tools.api.createUrl("nexray", "/ai/gpt-3.5-turbo", {
-                text: input
-            });
-            const result = (await axios.get(apiUrl)).data.result;
+        const [checkMedia, checkQuotedMedia] = [
+            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
+            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
+        ];
 
-            await ctx.reply({
-                richResponse: [{
-                    text: result
-                }]
-            });
+        const senderDb = ctx.db.user;
+
+        if (input.toLowerCase() === "reset") {
+            senderDb.chatgptSessionId = randomUUID();
+            senderDb.save();
+            return await ctx.reply(tools.msg.info("Riwayat percakapan berhasil direset!"));
+        }
+
+        try {
+            if (!senderDb.chatgptSessionId) {
+                senderDb.chatgptSessionId = randomUUID();
+                senderDb.save();
+            }
+
+            if (!!checkMedia || !!checkQuotedMedia) {
+                const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
+                const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/gpt4o-mini", {
+                    teks: input,
+                    image: uploadUrl,
+                    session: senderDb.chatgptSessionId
+                });
+                const result = (await axios.get(apiUrl)).data.result;
+
+                await ctx.reply(cleanAnomalyText(result));
+            } else {
+                const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/gpt4o-mini", {
+                    teks: input,
+                    session: senderDb.chatgptSessionId
+                });
+                const result = (await axios.get(apiUrl)).data.result;
+
+                await ctx.reply(cleanAnomalyText(result));
+            }
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }
     }
 };
+
+function cleanAnomalyText(text) {
+    if (!text) return "";
+    return text.replace("-=- --", "").replace("-=--=- ----", " ");
+}
