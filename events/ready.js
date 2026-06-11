@@ -1,5 +1,6 @@
 // Impor modul dan dependensi yang diperlukan
 const { Events } = require("@itsreimau/gktw");
+const { styleText } = require("node:util");
 
 module.exports = (bot) => {
     // Event saat bot siap

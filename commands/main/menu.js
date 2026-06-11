@@ -79,7 +79,7 @@ module.exports = {
                         degreesLongitude: 0,
                         name: config.bot.name,
                         address: "Jangan lupa berdonasi agar bot tetap online.",
-                        jpegThumbnail:
+                        jpegThumbnail: thumbnail
                     },
                     buttons: [{
                         text: "Hubungi Owner",
