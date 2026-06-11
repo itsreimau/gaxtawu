@@ -69,9 +69,11 @@ module.exports = {
 
                 text += `ⓒ koin | Ⓖ group | Ⓞ owner | Ⓟ premium | ⓟ private`;
 
+                const thumbnailText = input === "all" || ctx.used.command === "allmenu" ? "All Menu" : (input && tag[input] ? tag[input] : "Menu");
                 const thumbnail = await tools.cmd.getJpegThumbnail(tools.api.createUrl("neosoft", "/api/textpro/1068", {
-                    text: tag[key] || key
+                    text: thumbnailText
                 }));
+
                 await ctx.reply({
                     caption: text,
                     location: {
