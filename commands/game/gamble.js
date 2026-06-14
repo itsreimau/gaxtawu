@@ -11,82 +11,68 @@ module.exports = {
             );
 
         const senderDb = ctx.db.user;
+        const isUnlimited = (ctx.sender.isOwner() || senderDb?.premium);
 
-        if (ctx.sender.isOwner() || senderDb?.premium) return await ctx.reply(tools.msg.info("Koin tak terbatas tidak dapat digunakan untuk bermain."));
         if (input < 10) return await ctx.reply(tools.msg.info("Jumlah taruhan tidak boleh kurang dari 10!"));
-        if (senderDb?.coin < input) return await ctx.reply(tools.msg.info("Koin Anda tidak mencukupi!"));
+        if (!isUnlimited && senderDb?.coin < input) return await ctx.reply(tools.msg.info("Koin Anda tidak mencukupi!"));
 
         try {
             const jackpotPrize = Math.ceil(input * 5);
             const winPrize = Math.ceil(input * 2);
 
-            const emojis = ["🍒", "🍋", "🍊", "🍉", "🍇", "🔔", "⭐", "7️⃣", "💎", "🍓", "🥝", "🃏"];
+            const emojis = ["🍏", "🍎", "🍊", "🍋", "🍑", "🪙", "🍅", "🍐", "🍒", "🥥", "🍌"];
 
-            const roll = Math.floor(Math.random() * 100) + 1;
+            let topIndex = Math.floor(Math.random() * emojis.length);
+            let middleIndex = Math.floor(Math.random() * emojis.length);
+            let bottomIndex = Math.floor(Math.random() * emojis.length);
 
-            let resultType = "lose";
-            if (roll <= 10) {
-                resultType = "jackpot";
-            } else if (roll <= 50) {
-                resultType = "win";
+            let topRow = [],
+                middleRow = [],
+                bottomRow = [];
+
+            for (let i = 0; i < 3; i++) {
+                topRow[i] = emojis[topIndex];
+                topIndex++;
+                if (topIndex == emojis.length) topIndex = 0;
             }
 
-            const targetSymbol = emojis[Math.floor(Math.random() * emojis.length)];
-            const randomSymbol = () => emojis[Math.floor(Math.random() * emojis.length)];
-
-            let matrix = [];
-
-            if (resultType === "jackpot") {
-                for (let i = 0; i < 3; i++) {
-                    matrix[i] = [targetSymbol, targetSymbol, targetSymbol];
-                }
-            } else if (resultType === "win") {
-                for (let i = 0; i < 3; i++) {
-                    matrix[i] = [randomSymbol(), randomSymbol(), randomSymbol()];
-                }
-
-                const winRow = Math.random() < 0.5 ? 0 : 2;
-                matrix[winRow] = [targetSymbol, targetSymbol, targetSymbol];
-
-                while (matrix[1][0] === matrix[1][1] && matrix[1][1] === matrix[1][2]) {
-                    matrix[1] = [randomSymbol(), randomSymbol(), randomSymbol()];
-                }
-            } else {
-                for (let i = 0; i < 3; i++) {
-                    matrix[i] = [randomSymbol(), randomSymbol(), randomSymbol()];
-                }
-
-                while (matrix[1][0] === matrix[1][1] && matrix[1][1] === matrix[1][2]) {
-                    matrix[1] = [randomSymbol(), randomSymbol(), randomSymbol()];
-                }
+            for (let i = 0; i < 3; i++) {
+                middleRow[i] = emojis[middleIndex];
+                middleIndex++;
+                if (middleIndex == emojis.length) middleIndex = 0;
             }
 
-            const row0 = matrix[0];
-            const row1 = matrix[1];
-            const row2 = matrix[2];
+            for (let i = 0; i < 3; i++) {
+                bottomRow[i] = emojis[bottomIndex];
+                bottomIndex++;
+                if (bottomIndex == emojis.length) bottomIndex = 0;
+            }
 
-            const slotText = `${row0[0]} | ${row0[1]} | ${row0[2]}\n` +
-                `${row1[0]} | ${row1[1]} | ${row1[2]} <===\n` +
-                `${row2[0]} | ${row2[1]} | ${row2[2]}`;
+            const isJackpot = (middleRow[0] === middleRow[1] && middleRow[1] === middleRow[2]);
+            const isWin = (middleRow[0] === middleRow[1] || middleRow[0] === middleRow[2] || middleRow[1] === middleRow[2]);
+
+            const slotText = `${topRow[0]} | ${middleRow[0]} | ${bottomRow[0]}\n` +
+                `${topRow[1]} | ${middleRow[1]} | ${bottomRow[1]} <===\n` +
+                `${topRow[2]} | ${middleRow[2]} | ${bottomRow[2]}`;
 
             let responseText = "";
             let prizeText = "";
 
-            if (resultType === "jackpot") {
-                responseText = "Jackpot! 🎉🎉🎉";
+            if (isJackpot) {
+                responseText = "JACKPOT! 🎉🎉🎉";
                 prizeText = `+${jackpotPrize} Koin (5x lipat)`;
-                senderDb.coin += jackpotPrize;
-            } else if (resultType === "win") {
+                if (!isUnlimited) senderDb.coin += jackpotPrize;
+            } else if (isWin) {
                 responseText = "Kamu Menang!";
                 prizeText = `+${winPrize} Koin (2x lipat)`;
-                senderDb.coin += winPrize;
+                if (!isUnlimited) senderDb.coin += winPrize;
             } else {
                 responseText = "Anda kalah! Semoga beruntung lain kali!";
                 prizeText = `-${input} Koin`;
-                senderDb.coin -= input;
+                if (!isUnlimited) senderDb.coin -= input;
             }
 
-            senderDb.save();
+            if (!isUnlimited) senderDb.save();
 
             await ctx.reply(
                 `✿ — ${responseText}\n` +
@@ -94,7 +80,7 @@ module.exports = {
                 "\n" +
                 `› Taruhan: ${input}\n` +
                 `› Hadiah: ${prizeText}\n` +
-                `› Sisa Koin: ${senderDb.coin}`
+                `› Sisa Koin: ${isUnlimited ? "Tak terbatas (tidak mengurangi/menambah koin)" : senderDb.coin}`
             );
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

@@ -11,7 +11,7 @@ module.exports = {
             `› ${formatter.bold("Owner")}: ${config.owner.name}\n` +
             `› ${formatter.bold("Mode")}: ${tools.msg.ucwords(ctx.db.bot?.mode || "public")}\n` +
             `› ${formatter.bold("Uptime")}: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
-            `› ${formatter.bold("Database")}: ${ctx.db.users.entries} users, ${ctx.db.groups.entries}/${Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id).length} groups\n` +
+            `› ${formatter.bold("Database")}: ${ctx.db.users.totalEntries} users, ${ctx.db.groups.totalEntries}/${Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id).length} groups\n` +
             `› ${formatter.bold("Library")}: @itsreimau/gktw (Fork of @mengkodingan/ckptw)`
         );
     }
