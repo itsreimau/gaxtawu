@@ -1,9 +1,9 @@
 module.exports = {
-    name: "bugilkan",
-    aliases: ["bugil", "pengbugilan", "removeclothes"],
+    name: "toghibli",
+    aliases: ["ghiblikan"],
     category: "ai-misc",
     permissions: {
-        premium: true
+        coin: 10
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
@@ -15,7 +15,7 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("kuroneko", "/api/maker/deepnude", {
+            const result = tools.api.createUrl("faaa", "/faa/toghibli", {
                 url: uploadUrl
             });
 

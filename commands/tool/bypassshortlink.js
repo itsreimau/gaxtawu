@@ -1,9 +1,9 @@
 module.exports = {
-    name: "screenshot",
-    aliases: ["ss", "sshp", "sspc", "sstab", "ssweb"],
+    name: "bypassshortlink",
+    aliases: ["bypasslink"],
     category: "tool",
     permissions: {
-        coin: 10
+        premium: true
     },
     code: async (ctx) => {
         const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.body);
@@ -18,17 +18,12 @@ module.exports = {
         if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
 
         try {
-            const result = tools.api.createUrl("alwayscodex", "/api/tools/ssweb", {
-                url,
-                device: ctx.used === "sshp" ? "mobile" : ctx.used === "sstab" ? "tablet" : "desktop"
+            const apiUrl = tools.api.createUrl("alwayscodex", "/api/solve/bypasslink", {
+                url
             });
+            const result = (await axios.get(apiUrl)).data.result.bypassedUrl;
 
-            await ctx.reply({
-                image: {
-                    url: result
-                },
-                caption: `› ${formatter.bold("URL")}: ${url}`
-            });
+            await ctx.reply(result);
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }

@@ -1,5 +1,6 @@
 module.exports = {
     name: "blackbox",
+    aliases: ["kotakhitam"],
     category: "ai-chat",
     permissions: {
         coin: 10

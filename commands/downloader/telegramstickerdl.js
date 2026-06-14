@@ -1,4 +1,3 @@
-// Saya tidak tahu mengapa stiker-stiker tersebut tidak bisa diunduh
 const WASF = require("wa-sticker-formatter");
 
 module.exports = {
@@ -54,7 +53,7 @@ async function createSticker(stickerUrl, emoji, id, userStickerwm) {
         .build();
 }
 
-async function chunkArray(array, chunkSize) {
+function chunkArray(array, chunkSize) {
     const chunks = [];
     for (let i = 0; i < array.length; i += chunkSize) {
         chunks.push(array.slice(i, i + chunkSize));
@@ -78,7 +77,7 @@ async function prepareStickerPack(stickers, title, publisher, packId, userSticke
         packs.push({
             name: `${title}${stickerChunks.length > 1 ? ` (${packIndex + 1}/${stickerChunks.length})` : ""}`,
             publisher: publisher,
-            description: `Sticker Pack by ${config.bot.name}`,
+            description: `Packed by ${config.bot.name}`,
             cover: await createSticker(stickers[0].url, stickers[0].emoji, packId, userStickerwm),
             stickers: stickersPack
         });

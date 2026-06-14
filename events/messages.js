@@ -118,9 +118,11 @@ module.exports = (bot) => {
             // Pengecekan mute pada grup
             if (groupDb?.mutebot) return;
             const muteList = groupDb?.mute || [];
-            groupDb.mute = muteList.filter(mute => !mute.expiration || Date.now() <= mute.expiration);
-            if (groupDb.mute?.length !== muteList.length) await groupDb.save();
-            if (groupDb.mute?.some(mute => mute.jid === ctx.sender.lid)) await ctx.deleteMessage(ctx.id, msg.key);
+            if (muteList) {
+                groupDb.mute = muteList.filter(mute => !mute.expiration || Date.now() <= mute.expiration);
+                if (groupDb.mute.length !== muteList.length) await groupDb.save();
+                if (groupDb.mute.some(mute => mute.jid === ctx.sender.lid)) await ctx.deleteMessage(ctx.id, msg.key);
+            }
 
             // Pengecekan untuk tidak tersedia pada malam hari
             const now = moment().tz(config.system.timeZone);
@@ -151,7 +153,7 @@ module.exports = (bot) => {
 
             // Penanganan obrolan grup
             if (isGroup) {
-                if (!isCmd || isCmd?.didyoumean) console.log(styleText("green", `Incoming message from group: ${groupId}, by: ${senderId}`)); // Log pesan masuk
+                if (!isCmd || isCmd?.didyoumean) console.log(styleText("cyan", `Incoming message from group: ${groupId}, by: ${senderId}`)); // Log pesan masuk
 
                 // Variabel umum
                 const messageType = ctx.getMessageType();
@@ -287,7 +289,7 @@ module.exports = (bot) => {
 
             // Penanganan obrolan pribadi
             if (isPrivate) {
-                if (!isCmd || isCmd?.didyoumean) console.log(styleText("green", `Incoming message from: ${senderId}`)); // Log pesan masuk
+                if (!isCmd || isCmd?.didyoumean) console.log(styleText("cyan", `Incoming message from: ${senderId}`)); // Log pesan masuk
 
                 // Apa yaa...
             }

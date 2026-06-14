@@ -5,7 +5,7 @@ module.exports = {
     code: async (ctx) => {
         try {
             const botText = ctx.db.bot.text || {};
-            const qrisLink = botText?.qris;
+            const qrisLink = botText?.qris || "https://files.catbox.moe/es2p23.jpeg";
             const customText = botText?.donate;
             const text = customText ? customText.replace(/%tag%/g, `@${ctx.getId(ctx.sender.jid)}`).replace(/%name%/g, config.bot.name).replace(/%prefix%/g, ctx.used.prefix).replace(/%command%/g, ctx.used.command).replace(/%footer%/g, config.msg.footer).replace(/%readmore%/g, "\u200E".repeat(4001)) :
                 "› 083187728625 (DANA & Pulsa & Kuota)\n" +
@@ -14,20 +14,22 @@ module.exports = {
                 "› https://tako.id/itsreimau (Tako)\n" +
                 "› https://trakteer.id/itsreimau (Trakteer)";
 
-            if (qrisLink) {
-                await ctx.reply({
-                    image: {
-                        url: qrisLink
-                    },
-                    caption: text,
-                    mentions: [ctx.sender.jid]
-                });
-            } else {
-                await ctx.reply({
-                    text: text,
-                    mentions: [ctx.sender.jid]
-                });
-            }
+            await ctx.reply({
+                image: {
+                    url: qrisLink
+                },
+                caption: text,
+                mentions: [ctx.sender.jid],
+                product: {
+                    title: "Donate"
+                },
+                businessOwnerJid: ctx.sender.jid,
+                nativeFlow: [{
+                    text: "\u00A0",
+                    id: "\u00A0",
+                    icon: "review"
+                }]
+            });
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

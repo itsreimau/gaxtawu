@@ -7,7 +7,8 @@ module.exports = {
     },
     code: async (ctx) => {
         const langCode = ctx.args[0]?.length === 2 ? ctx.args[0] : "id";
-        const input = ctx.text?.startsWith(`${langCode} `) ? ctx.text.slice(langCode.length + 1) : ctx.quoted?.body;
+        let input = ctx.args.slice(ctx.args[0]?.length === 2 ? 1 : 0).join(" ");
+        if (!input && ctx.quoted?.body) input = ctx.quoted.body;
 
         if (!input)
             return await ctx.reply(

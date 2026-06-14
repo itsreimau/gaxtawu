@@ -21,19 +21,19 @@ module.exports = {
         const senderDb = ctx.db.user;
 
         if (input.toLowerCase() === "reset") {
-            senderDb.claudeSessionId = randomUUID();
+            (senderDb.sessionId ||= {}).claude = randomUUID();
             senderDb.save();
             return await ctx.reply(tools.msg.info("Riwayat percakapan berhasil direset!"));
         }
 
         try {
-            if (!senderDb.claudeSessionId) {
-                senderDb.claudeSessionId = randomUUID();
+            if (!senderDb.sessionId?.claude) {
+                (senderDb.sessionId ||= {}).claude = randomUUID();
                 senderDb.save();
             }
             const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/claude-overchat", {
                 teks: input,
-                session: senderDb.claudeSessionId
+                session: senderDb.sessionId.claude
             });
             const result = (await axios.get(apiUrl)).data.result;
 

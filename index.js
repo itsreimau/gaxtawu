@@ -27,7 +27,7 @@ Object.assign(global, {
     tools: require("./tools/exports.js")
 });
 
-console.log(styleText("yellow", "Starting...")); // Logging proses awal
+console.log(styleText("cyan", "Starting...")); // Logging proses awal
 
 // Tampilkan nama proyek serta deskripsi lain
 say(pkg.name, {

@@ -27,14 +27,14 @@ module.exports = {
         const senderDb = ctx.db.user;
 
         if (input.toLowerCase() === "reset") {
-            senderDb.chatgptSessionId = randomUUID();
+            (senderDb.sessionId ||= {}).chatgpt = randomUUID();
             senderDb.save();
             return await ctx.reply(tools.msg.info("Riwayat percakapan berhasil direset!"));
         }
 
         try {
-            if (!senderDb.chatgptSessionId) {
-                senderDb.chatgptSessionId = randomUUID();
+            if (!senderDb.sessionId?.chatgpt) {
+                (senderDb.sessionId ||= {}).chatgpt = randomUUID();
                 senderDb.save();
             }
 
@@ -43,7 +43,7 @@ module.exports = {
                 const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/gpt4o-mini", {
                     teks: input,
                     image: uploadUrl,
-                    session: senderDb.chatgptSessionId
+                    session: senderDb.sessionId.chatgpt
                 });
                 const result = (await axios.get(apiUrl)).data.result;
 
@@ -51,7 +51,7 @@ module.exports = {
             } else {
                 const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/gpt4o-mini", {
                     teks: input,
-                    session: senderDb.chatgptSessionId
+                    session: senderDb.sessionId.chatgpt
                 });
                 const result = (await axios.get(apiUrl)).data.result;
 
@@ -65,5 +65,5 @@ module.exports = {
 
 function cleanAnomalyText(text) {
     if (!text) return "";
-    return text.replace("-=- --", "").replace("-=--=- ----", " ");
+    return text.replace(/-=- --/g, " ").replace(/-=-n---=-n--/g, " ");
 }

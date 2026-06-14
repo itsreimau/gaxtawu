@@ -100,6 +100,19 @@ async function get(type) {
                 text = createList(data, (list) => `› ${list}`);
                 break;
             }
+            case "vccgenerator": {
+                const data = [
+                    "visa",
+                    "mastercard",
+                    "amex",
+                    "cup",
+                    "jcb",
+                    "diners",
+                    "rupay"
+                ];
+                text = createList(data, (list) => `› ${list}`);
+                break;
+            }
             default: {
                 text = tools.msg.info(`Tipe tidak diketahui: ${type}`);
                 break;

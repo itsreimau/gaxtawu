@@ -33,7 +33,16 @@ module.exports = {
                     `› ${formatter.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
                     `› ${formatter.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Tak terbatas" : (userDb?.coin || 0)}\n` +
                     `› ${formatter.bold("Menang")}: ${userDb?.winGame || 0}\n` +
-                    `› ${formatter.bold("Peringkat")}: ${leaderboardData.findIndex(user => tools.cmd.areJidsSameUser(user.jid, ctx.sender.lid)) + 1}`
+                    `› ${formatter.bold("Peringkat")}: ${leaderboardData.findIndex(user => tools.cmd.areJidsSameUser(user.jid, ctx.sender.lid)) + 1}`,
+                product: {
+                    title: "Profile"
+                },
+                businessOwnerJid: ctx.sender.jid,
+                nativeFlow: [{
+                    text: "\u00A0",
+                    id: "\u00A0",
+                    icon: "review"
+                }]
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

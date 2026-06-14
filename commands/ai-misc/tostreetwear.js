@@ -1,6 +1,6 @@
 module.exports = {
-    name: "hijabkan",
-    aliases: ["hijab", "penghijaban"],
+    name: "tostreetwear",
+    aliases: ["streetwearkan"],
     category: "ai-misc",
     permissions: {
         coin: 10
@@ -15,10 +15,9 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("lexcode", "/api/ai/tohijab", {
+            const result = tools.api.createUrl("faaa", "/faa/tostreetwear", {
                 url: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result.hijab;
 
             await ctx.reply({
                 image: {

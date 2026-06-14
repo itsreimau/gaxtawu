@@ -1,5 +1,3 @@
-const { Baileys } = require("@itsreimau/gktw");
-
 module.exports = {
     name: "menu",
     aliases: ["allmenu", "help"],
@@ -70,7 +68,7 @@ module.exports = {
                 text += `ⓒ koin | Ⓖ group | Ⓞ owner | Ⓟ premium | ⓟ private`;
 
                 const thumbnailText = input === "all" || ctx.used.command === "allmenu" ? "All Menu" : (input && tag[input] ? tag[input] : "Menu");
-                const thumbnail = await tools.cmd.getJpegThumbnail(tools.api.createUrl("neosoft", "/api/textpro/1068", {
+                const thumbnail = await tools.cmd.getJpegThumbnail(tools.api.createUrl("neosoft", "/api/textpro/1141", {
                     text: thumbnailText
                 }));
 

@@ -27,7 +27,7 @@ module.exports = (bot) => {
         if (botDb?.mode === "self" && !isOwner) return;
 
         // Pengecekan mute pada grup
-        if (groupDb?.mutebot && !(isOwner || isAdmin) && (!ctx.used.command === "unmute" && ctx.args[0]?.toLowerCase() === "bot")) return;
+        if (groupDb?.mutebot && !(isOwner || isAdmin) && !(ctx.used.command === "unmute" && ctx.args[0]?.toLowerCase() === "bot")) return;
         const muteList = groupDb?.mute || [];
         if (muteList.some(mute => mute.jid === ctx.sender.lid)) return;
 

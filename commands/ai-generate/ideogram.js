@@ -1,5 +1,5 @@
 module.exports = {
-    name: "gemmy",
+    name: "ideogram",
     category: "ai-generate",
     permissions: {
         coin: 10
@@ -14,7 +14,7 @@ module.exports = {
             );
 
         try {
-            const result = tools.api.createUrl("neo", "/api/ai-image/gemmy", {
+            const result = tools.api.createUrl("nexray", "/ai/ideogram", {
                 prompt: input
             });
 

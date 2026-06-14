@@ -37,6 +37,13 @@
         "organization": "PT. Pencari Cinta Sejati II",
         "id": "62987654321",
         "report": false
+      },
+      {
+        "name": "Rudi",
+        "organization": "PT. Maju Mundur Cantik",
+        "id": "6292837465",
+        "report": false,
+        "invisible": true
       }
     ]
   },

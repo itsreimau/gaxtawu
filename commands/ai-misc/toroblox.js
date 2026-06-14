@@ -1,6 +1,6 @@
 module.exports = {
-    name: "hitamkan",
-    aliases: ["hitam", "penghitaman"],
+    name: "toroblox",
+    aliases: ["robloxkan"],
     category: "ai-misc",
     permissions: {
         coin: 10
@@ -15,7 +15,7 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/tohitam", {
+            const result = tools.api.createUrl("faaa", "/faa/toroblox", {
                 url: uploadUrl
             });
 

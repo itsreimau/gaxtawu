@@ -1,3 +1,5 @@
+const { randomUUID } = require("node:crypto");
+
 module.exports = {
     name: "deepseek",
     category: "ai-chat",
@@ -19,19 +21,19 @@ module.exports = {
         const senderDb = ctx.db.user;
 
         if (input.toLowerCase() === "reset") {
-            senderDb.deepseekSessionId = randomUUID();
+            (senderDb.sessionId ||= {}).deepseek = randomUUID();
             senderDb.save();
             return await ctx.reply(tools.msg.info("Riwayat percakapan berhasil direset!"));
         }
 
         try {
-            if (!senderDb.deepseekSessionId) {
-                senderDb.deepseekSessionId = randomUUID();
+            if (!senderDb.sessionId?.deepseek) {
+                (senderDb.sessionId ||= {}).deepseek = randomUUID();
                 senderDb.save();
             }
             const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/deepseek-flash", {
                 teks: input,
-                session: senderDb.deepseekSessionId
+                session: senderDb.sessionId.deepseek
             });
             const result = (await axios.get(apiUrl)).data.result;
 

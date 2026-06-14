@@ -24,11 +24,8 @@ const APIs = {
     nexray: {
         baseURL: "https://api.nexray.eu.cc"
     },
-    omegatech: {
-        baseURL: "https://omegatech-api.dixonomega.tech"
-    },
     sanka: {
-        baseURL: "https://www.sankavolereii.my.id",
+        baseURL: "https://www.sankavollerei.web.id",
         APIKey: "planaai"
     },
     siputzx: {

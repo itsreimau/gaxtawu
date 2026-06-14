@@ -26,7 +26,7 @@ module.exports = {
                 `${tools.msg.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d -r 720")}\n` +
                 tools.msg.generatesFlagInfo({
                     "-d": "Kirim sebagai dokumen",
-                    "-r": "Resolusi video (tersedia: 360, 480, 720, 1080, 1440, 2160 | default: 720)"
+                    "-r": "Resolusi video (tersedia: 144, 240, 360, 480, 720, 1080, 1440, 2160 | default: 360)"
                 })
             );
 
@@ -34,9 +34,9 @@ module.exports = {
         if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
 
         try {
-            const apiUrl = tools.api.createUrl("nexray", "/downloader/ytmp4", {
+            const apiUrl = tools.api.createUrl("alwayscodex", "/api/downloader/youtube2", {
                 url,
-                resolusi: ["360", "480", "720", "1080", "1440", "2160"].includes(flag.resolution) ? flag.resolution : "720"
+                quality: ["360", "480", "720", "1080", "1440", "2160"].includes(flag.resolution) ? `${flag.resolution}p` : "720p"
             });
             const result = (await axios.get(apiUrl)).data.result;
 
@@ -44,7 +44,7 @@ module.exports = {
             if (document) {
                 await ctx.reply({
                     document: {
-                        url: result.url
+                        url: result.downloadUrl
                     },
                     fileName: `${result.title}.mp4`,
                     mimetype: "video/mp4",
@@ -53,7 +53,7 @@ module.exports = {
             } else {
                 await ctx.reply({
                     video: {
-                        url: result.url
+                        url: result.downloadUrl
                     },
                     caption: `› ${formatter.bold("URL")}: ${url}`
                 });

@@ -17,7 +17,7 @@ module.exports = (bot) => {
         const fromPnJid = call.callerPn;
         const fromPnId = bot.getId(fromPnJid);
 
-        console.log(styleText("green", `Incoming call from: ${fromPnJid}`)); // Log panggilan masuk
+        console.log(styleText("cyan", `Incoming call from: ${fromPnJid}`)); // Log panggilan masuk
 
         await bot.core.rejectCall(call.id, fromJid);
 

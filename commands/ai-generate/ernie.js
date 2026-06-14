@@ -1,5 +1,5 @@
 module.exports = {
-    name: "flux",
+    name: "ernie",
     category: "ai-generate",
     permissions: {
         coin: 10
@@ -14,7 +14,7 @@ module.exports = {
             );
 
         try {
-            const result = tools.api.createUrl("alwayscodex", "/api/imageai/text2imgv2", {
+            const result = tools.api.createUrl("alwayscodex", "/api/imageai/text2imgv3", {
                 teks: input
             });
 
