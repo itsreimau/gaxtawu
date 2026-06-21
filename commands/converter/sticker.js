@@ -15,10 +15,9 @@ module.exports = {
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
             const [packname, author] = ctx.text?.split("|");
-            const userStickerwm = ctx.db.user?.stickerwm;
             const sticker = await new WASF.Sticker(buffer)
-                .setPack(packname || userStickerwm?.packname || config.sticker.packname)
-                .setAuthor(author || userStickerwm?.author || config.sticker.author)
+                .setPack(packname || config.sticker.packname)
+                .setAuthor(author || config.sticker.author)
                 .setType(WASF.StickerTypes.FULL)
                 .setCategories(["🌕"])
                 .setID(ctx.msg.key.id)

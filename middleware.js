@@ -38,7 +38,7 @@ module.exports = (bot) => {
             console.log(`Incoming command: ${ctx.used.command}, from: ${senderId}`);
         }
 
-        // Menambah XP pengguna dan menangani level-up
+        // Menambah XP pengguna
         const xpGain = 10;
         const xpToLevelUp = 100;
         let newSenderXp = (senderDb?.xp || 0) + xpGain;
@@ -46,30 +46,6 @@ module.exports = (bot) => {
             const senderLevel = senderDb?.level || 0;
             let newSenderLevel = senderLevel + 1;
             newSenderXp -= xpToLevelUp;
-            if (senderDb?.autolevelup) {
-                const profilePictureUrl = await ctx.profilePictureUrl(senderJid);
-                const canvasUrl = tools.api.createUrl("siputzx", "/api/canvas/level-up", {
-                    backgroundURL: "https://picsum.photos/600/150",
-                    avatarURL: profilePictureUrl,
-                    fromLevel: senderLevel,
-                    toLevel: newSenderLevel,
-                    name: ctx.sender.pushName
-                });
-                await ctx.reply({
-                    image: {
-                        url: canvasUrl
-                    },
-                    caption: tools.msg.info(`Selamat! Anda telah naik ke level ${newSenderLevel}.`),
-                    product: {
-                        title: "Autolevelup"
-                    },
-                    businessOwnerJid: ctx.sender.jid,
-                    nativeFlow: [{
-                        text: "Nonaktifkan Autolevelup",
-                        id: `${ctx.used.prefix}setprofile autolevelup`
-                    }]
-                });
-            }
             senderDb.xp = newSenderXp;
             senderDb.level = newSenderLevel;
             senderDb.save();

@@ -15,7 +15,9 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
-            await ctx.core.updateProfilePicture(ctx.me.id, buffer);
+            const image = checkMedia ? ctx.msg.message.imageMessage : ctx.quoted.message.imageMessage;
+            const dimensions = tools.calculateDimensions(image.width, image.height);
+            await ctx.core.updateProfilePicture(ctx.me.id, buffer, dimensions);
 
             await ctx.reply(tools.msg.info("Berhasil mengubah gambar profil bot!"));
         } catch (error) {

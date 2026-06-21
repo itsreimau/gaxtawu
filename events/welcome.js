@@ -24,25 +24,10 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
     const text = customText ? customText.replace(/%tag%/g, tag).replace(/%subject%/g, metadata.subject).replace(/%description%/g, metadata.description) : (isWelcome ?
         `>ᴗ< ${formatter.italic(`Selamat datang ${tag} di grup ${metadata.subject}!`)}` :
         `•︵• ${formatter.italic(`Selamat tinggal, ${tag}!`)}`);
-    const profilePictureUrl = await bot.profilePictureUrl(participantJid);
-    const canvasUrl = tools.api.createUrl("siputzx", `/api/canvas/${isWelcome ? "welcomev5" : "goodbyev5"}`, {
-        username: bot.getPushName(participantJid),
-        guildName: metadata.subject,
-        memberCount: metadata.participants.length,
-        avatar: profilePictureUrl,
-        background: "https://picsum.photos/1024/450"
-    });
 
     await bot.sendMessage(groupJid, {
-        image: {
-            url: canvasUrl
-        },
-        caption: text,
-        mentions: [participantJid],
-        product: {
-            title: isWelcome ? "Welcome" : "Goodbye"
-        },
-        businessOwnerJid: ctx.sender.jid
+        text,
+        mentions: [participantJid]
     });
 
     if (isWelcome && groupDb?.text?.intro)

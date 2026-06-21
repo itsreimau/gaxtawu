@@ -24,8 +24,7 @@ module.exports = {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;
-            const userStickerwm = ctx.db.user?.stickerwm;
-            const stickerPacks = await prepareStickerPack(result.sticker, result.title, `t.me/${result.name}`, ctx.msg.key.id, userStickerwm);
+            const stickerPacks = await prepareStickerPack(result.sticker, result.title, `t.me/${result.name}`, ctx.msg.key.id);
 
             for (const stickerPack of stickerPacks) {
                 await ctx.reply({
@@ -42,10 +41,10 @@ module.exports = {
     }
 };
 
-async function createSticker(stickerUrl, emoji, id, userStickerwm) {
+async function createSticker(stickerUrl, emoji, id) {
     return await new WASF.Sticker(stickerUrl)
-        .setPack(userStickerwm?.packname || config.sticker.packname)
-        .setAuthor(userStickerwm?.author || config.sticker.author)
+        .setPack(config.sticker.packname)
+        .setAuthor(config.sticker.author)
         .setType(WASF.StickerTypes.FULL)
         .setCategories([emoji])
         .setID(id)
@@ -61,7 +60,7 @@ function chunkArray(array, chunkSize) {
     return chunks;
 }
 
-async function prepareStickerPack(stickers, title, publisher, packId, userStickerwm) {
+async function prepareStickerPack(stickers, title, publisher, packId) {
     const maxPerPack = 30;
     const stickerChunks = chunkArray(stickers, maxPerPack);
     const packs = [];
@@ -70,7 +69,7 @@ async function prepareStickerPack(stickers, title, publisher, packId, userSticke
         const chunk = stickerChunks[packIndex];
 
         const stickersPack = await Promise.all(chunk.map(async (sticker) => ({
-            data: await createSticker(sticker.url, sticker.emoji, packId, userStickerwm),
+            data: await createSticker(sticker.url, sticker.emoji, packId),
             emojis: [sticker.emoji]
         })));
 
@@ -78,7 +77,7 @@ async function prepareStickerPack(stickers, title, publisher, packId, userSticke
             name: `${title}${stickerChunks.length > 1 ? ` (${packIndex + 1}/${stickerChunks.length})` : ""}`,
             publisher: publisher,
             description: `Packed by ${config.bot.name}`,
-            cover: await createSticker(stickers[0].url, stickers[0].emoji, packId, userStickerwm),
+            cover: await createSticker(stickers[0].url, stickers[0].emoji, packId),
             stickers: stickersPack
         });
     }

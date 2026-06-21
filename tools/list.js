@@ -83,14 +83,6 @@ async function get(type) {
                 text = createList(data, (list) => `› ${list}`);
                 break;
             }
-            case "setprofile": {
-                const data = [
-                    "autolevelup (Otomatis naik level)",
-                    "stickerwm (Watermark stiker)"
-                ];
-                text = createList(data, (list) => `› ${list}`);
-                break;
-            }
             case "settext": {
                 const data = [
                     "goodbye (Teks goodbye, variabel yang tersedia: %tag%, %subject%, %description%)",

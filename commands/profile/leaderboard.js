@@ -31,33 +31,9 @@ module.exports = {
                 resultText += `› ${displayUser} - Menang: ${userStats.winGame}, Level: ${userStats.level}, Peringkat: ${userRank}\n`;
             }
 
-            const usersData = await Promise.all(topUsers.map(async (user, index) => ({
-                top: index + 1,
-                avatar: await ctx.profilePictureUrl(user.jid),
-                tag: user.pushName || ctx.getId(user.jid),
-                score: user.winGame
-            })));
-            const canvasUrl = tools.api.createUrl("siputzx", "/api/canvas/top", {
-                background: "https://picsum.photos/680/745",
-                usersData: JSON.stringify(usersData),
-                scoreMessage: "Level:"
-            });
-
             await ctx.reply({
-                image: {
-                    url: canvasUrl
-                },
-                caption: resultText.trim(),
-                mentions: [senderLid],
-                product: {
-                    title: "Leaderboard"
-                },
-                businessOwnerJid: ctx.sender.jid,
-                nativeFlow: [{
-                    text: "\u00A0",
-                    id: "\u00A0",
-                    icon: "review"
-                }]
+                text: resultText.trim(),
+                mentions: [senderLid]
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

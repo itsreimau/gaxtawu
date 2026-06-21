@@ -93,12 +93,12 @@ module.exports = {
                 const userDb = ctx.db.user;
                 const text = `✿ — Halo, @${ctx.getId(ctx.sender.jid)}! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}.\n` +
                     "\n" +
-                    `› ${formatter.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${tools.msg.convertMsToDuration(Date.now() - userDb.premiumExpiration, ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
+                    `› ${formatter.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${tools.msg.convertMsToDuration(userDb.premiumExpiration - Date.now(), ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
                     `› ${formatter.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
                     `› ${formatter.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Tak terbatas" : (userDb?.coin || 0)}\n` +
                     "\n" +
                     `› ${formatter.bold("Mode")}: ${tools.msg.ucwords(ctx.db.bot?.mode || "public")}\n` +
-                    `› ${formatter.bold("Uptime")}: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
+                    `› ${formatter.bold("Uptime")}: ${tools.msg.convertMsToDuration(ctx.me.readyAt - Date.now())}\n` +
                     `› ${formatter.bold("Database")}: ${ctx.db.users.totalEntries} users, ${ctx.db.groups.totalEntries}/${Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id).length} groups\n` +
                     `› ${formatter.bold("Library")}: @itsreimau/gktw\n` +
                     "\n" +
@@ -128,7 +128,7 @@ module.exports = {
                     offerText: config.bot.name,
                     offerCode: config.system.customPairingCode,
                     offerUrl: config.bot.groupLink,
-                    offerExpiration: Date.now() + 3600000,
+                    offerExpiration: 3600000 + Date.now(),
                     nativeFlow: [{
                         text: "Daftar Menu",
                         sections: [{

@@ -19,16 +19,7 @@ module.exports = {
                     url: qrisLink
                 },
                 caption: text,
-                mentions: [ctx.sender.jid],
-                product: {
-                    title: "Donate"
-                },
-                businessOwnerJid: ctx.sender.jid,
-                nativeFlow: [{
-                    text: "\u00A0",
-                    id: "\u00A0",
-                    icon: "review"
-                }]
+                mentions: [ctx.sender.jid]
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

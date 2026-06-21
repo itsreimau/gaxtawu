@@ -40,7 +40,7 @@ module.exports = {
             if (existingMute) return await ctx.reply(tools.msg.info("Pengguna sudah di-mute sebelumnya!"));
 
             if (daysAmount && daysAmount > 0) {
-                const expirationDate = Date.now() + (daysAmount * 24 * 60 * 60 * 1000);
+                const expirationDate = (daysAmount * 24 * 60 * 60 * 1000) + Date.now();
                 muteList.push({
                     jid: target.jid,
                     expiration: expirationDate

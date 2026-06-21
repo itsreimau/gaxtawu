@@ -6,7 +6,7 @@ module.exports = {
         try {
             const startTime = performance.now();
             const pongMsg = await ctx.reply(tools.msg.info("Pong!"));
-            const responseTime = performance.now() - startTime;
+            const responseTime = startTime - performance.now();
             await ctx.editMessage(ctx.id, pongMsg.key, tools.msg.info(`Pong! Merespon dalam ${tools.msg.convertMsToDuration(responseTime)}.`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

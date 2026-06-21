@@ -27,6 +27,18 @@ function calculateDelay(totalTargets) {
     };
 }
 
+function calculateDimensions(width, height) {
+    const maxSize = 640;
+    if (width <= maxSize && height <= maxSize)
+        return { width, height };
+
+    const ratio = Math.min(maxSize / width, maxSize / height);
+    return {
+        width: Math.round(width * ratio),
+        height: Math.round(height * ratio)
+    };
+}
+
 function checkMedia(type, required) {
     if (!type || !required || !Array.isArray(required)) return false;
 
@@ -144,6 +156,7 @@ function isUrl(url) {
 module.exports = {
     areJidsSameUser: Baileys.areJidsSameUser,
     calculateDelay,
+    calculateDimensions,
     checkMedia,
     checkQuotedMedia,
     extractUrlFromText,

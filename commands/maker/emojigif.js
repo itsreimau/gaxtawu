@@ -20,10 +20,9 @@ module.exports = {
             const result = tools.api.createUrl("nexray", "/tools/emojigif", {
                 emoji
             });
-            const userStickerwm = ctx.db.user?.stickerwm;
             const sticker = await new WASF.Sticker(result)
-                .setPack(userStickerwm?.packname || config.sticker.packname)
-                .setAuthor(userStickerwm?.author || config.sticker.author)
+                .setPack(config.sticker.packname)
+                .setAuthor(config.sticker.author)
                 .setType(WASF.StickerTypes.FULL)
                 .setCategories(["🌕"])
                 .setID(ctx.msg.key.id)

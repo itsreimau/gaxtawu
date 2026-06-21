@@ -47,6 +47,7 @@ module.exports = (bot) => {
             msg
         } = ctx;
         if (msg.key.fromMe) return;
+        if (!msg.body) return;
 
         // Variabel umum
         const isGroup = ctx.isGroup();
@@ -70,15 +71,13 @@ module.exports = (bot) => {
             const groupDb = ctx.db.group;
 
             // Penanganan database pengguna
-            if (senderDb) {
-                if (senderDb?.premium && Date.now() > senderDb?.premiumExpiration) {
-                    delete senderDb.premium;
-                    delete senderDb.premiumExpiration;
-                }
-                if (isOwner || senderDb?.premium) senderDb.coin = 0;
-                if (!senderDb?.coin || !Number.isFinite(senderDb?.coin)) senderDb.coin = 100;
-                senderDb.save();
+            if (senderDb?.premium && senderDb?.premiumExpiration < Date.now()) {
+                delete senderDb.premium;
+                delete senderDb.premiumExpiration;
             }
+            if (isOwner || senderDb?.premium) senderDb.coin = 0;
+            if (!senderDb?.coin || !Number.isFinite(senderDb?.coin)) senderDb.coin = 100;
+            senderDb.save();
 
             // Pengecekan mode bot (premium, group, private, self)
             if (botDb?.mode === "premium" && !isOwner && !senderDb?.premium) return;
@@ -86,43 +85,12 @@ module.exports = (bot) => {
             if (botDb?.mode === "private" && isGroup && !isOwner && !senderDb?.premium) return;
             if (botDb?.mode === "self" && !isOwner) return;
 
-            // Penanganan bug hama!
-            const analyze = Gktw.analyzeBug(msg.message, {
-                maxTextLength: 10000,
-                maxMentions: 1000,
-                maxFileLength: 2 * 1024 * 1024 * 1024,
-                maxPageCount: 10000,
-                maxCharacterFlood: 20000
-            });
-            if (config.system.antiBug && analyze.isMalicious && !senderDb?.banned && !isOwner) {
-                await ctx.deleteMessage(ctx.id, msg.key);
-                await ctx.block(senderJid);
-                senderDb.banned = true;
-                senderDb.save();
-
-                const reportOwner = tools.cmd.getReportOwner();
-                if (reportOwner && reportOwner.length > 0) {
-                    const {
-                        delay
-                    } = tools.cmd.calculateDelay(reportOwner.length);
-                    for (const ownerId of reportOwner) {
-                        await ctx.replyWithJid(ownerId + Baileys.S_WHATSAPP_NET, {
-                            text: tools.msg.info(`Akun @${senderId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode(`Anti Bug - ${analyze.reason}`)}, tingkat bahaya ${formatter.inlineCode(analyze.severity)}, jenis ancaman ${formatter.inlineCode(analyze.severity)}.`),
-                            mentions: [senderJid]
-                        });
-                        await tools.cmd.delay(delay);
-                    }
-                }
-            }
-
             // Pengecekan mute pada grup
             if (groupDb?.mutebot) return;
             const muteList = groupDb?.mute || [];
-            if (muteList) {
-                groupDb.mute = muteList.filter(mute => !mute.expiration || Date.now() <= mute.expiration);
-                if (groupDb.mute.length !== muteList.length) await groupDb.save();
-                if (groupDb.mute.some(mute => mute.jid === ctx.sender.lid)) await ctx.deleteMessage(ctx.id, msg.key);
-            }
+            groupDb.mute = muteList.filter(mute => !mute.expiration || mute.expiration >= Date.now());
+            if (groupDb.mute.length !== muteList.length) await groupDb.save();
+            if (groupDb.mute.some(mute => mute.jid === ctx.sender.lid)) await ctx.deleteMessage(ctx.id, msg.key);
 
             // Pengecekan untuk tidak tersedia pada malam hari
             const now = moment().tz(config.system.timeZone);
@@ -160,7 +128,7 @@ module.exports = (bot) => {
                 const groupAutokick = groupDb?.option?.autokick;
 
                 // Penanganan database grup
-                if (groupDb?.sewa && Date.now() > senderDb?.sewaExpiration) {
+                if (groupDb?.sewa && senderDb?.sewaExpiration < Date.now()) {
                     delete groupDb.sewa;
                     delete groupDb.sewaExpiration;
                     groupDb.save();
@@ -172,7 +140,7 @@ module.exports = (bot) => {
                     for (const afkMention of afkMentions) {
                         const mentionAfk = ctx.getDb("users", afkMention)?.afk || {};
                         if (mentionAfk.reason || mentionAfk.timestamp) {
-                            const timeago = tools.msg.convertMsToDuration(Date.now() - mentionAfk.timestamp);
+                            const timeago = tools.msg.convertMsToDuration(mentionAfk.timestamp - Date.now());
                             await ctx.reply({
                                 text: tools.msg.info(`Jangan ganggu! @${ctx.getId(afkMention)} sedang AFK ${mentionAfk.reason ? `dengan alasan ${formatter.inlineCode(mentionAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`),
                                 mentions: [afkMention]

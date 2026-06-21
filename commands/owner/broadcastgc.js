@@ -51,10 +51,6 @@ module.exports = {
                         caption: input,
                         mentionAll: ctx.used.command === "bcht" ? true : false,
                         footer: config.msg.footer,
-                        product: {
-                            title: "Broadcast"
-                        },
-                        businessOwnerJid: ctx.sender.jid,
                         buttons: [{
                             text: "Hubungi Owner",
                             id: `${ctx.used.prefix}owner`

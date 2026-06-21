@@ -12,38 +12,15 @@ module.exports = {
                 level: user.level || 0,
                 winGame: user.winGame || 0
             })).sort((a, b) => b.winGame - a.winGame || b.level - a.level);
-            const profilePictureUrl = await ctx.profilePictureUrl(ctx.sender.jid);
-            const canvasUrl = tools.api.createUrl("siputzx", "/api/canvas/profile", {
-                backgroundURL: "https://picsum.photos/850/300",
-                avatarURL: profilePictureUrl,
-                rankName: "RANK",
-                rankId: leaderboardData.findIndex(user => tools.cmd.areJidsSameUser(user.jid, ctx.sender.lid)) + 1,
-                exp: userDb?.xp || 0,
-                requireExp: "100",
-                level: userDb?.level || 0,
-                name: ctx.sender.pushName
-            });
 
-            await ctx.reply({
-                image: {
-                    url: canvasUrl
-                },
-                caption: `› ${formatter.bold("Nama")}: ${ctx.sender.pushName}\n` +
-                    `› ${formatter.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${tools.msg.convertMsToDuration(Date.now() - userDb.premiumExpiration, ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
-                    `› ${formatter.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
-                    `› ${formatter.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Tak terbatas" : (userDb?.coin || 0)}\n` +
-                    `› ${formatter.bold("Menang")}: ${userDb?.winGame || 0}\n` +
-                    `› ${formatter.bold("Peringkat")}: ${leaderboardData.findIndex(user => tools.cmd.areJidsSameUser(user.jid, ctx.sender.lid)) + 1}`,
-                product: {
-                    title: "Profile"
-                },
-                businessOwnerJid: ctx.sender.jid,
-                nativeFlow: [{
-                    text: "\u00A0",
-                    id: "\u00A0",
-                    icon: "review"
-                }]
-            });
+            await ctx.reply(
+                `› ${formatter.bold("Nama")}: ${ctx.sender.pushName}\n` +
+                `› ${formatter.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${tools.msg.convertMsToDuration(userDb.premiumExpiration - Date.now(), ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
+                `› ${formatter.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
+                `› ${formatter.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Tak terbatas" : (userDb?.coin || 0)}\n` +
+                `› ${formatter.bold("Menang")}: ${userDb?.winGame || 0}\n` +
+                `› ${formatter.bold("Peringkat")}: ${leaderboardData.findIndex(user => tools.cmd.areJidsSameUser(user.jid, ctx.sender.lid)) + 1}`
+            );
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }
