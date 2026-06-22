@@ -18,7 +18,7 @@ module.exports = {
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
             const image = checkMedia ? ctx.msg.message.imageMessage : ctx.quoted.message.imageMessage;
-            const dimensions = tools.calculateDimensions(image.width, image.height);
+            const dimensions = tools.cmd.calculateDimensions(image.width, image.height);
             await ctx.group().updateProfilePicture(buffer, dimensions);
 
             await ctx.reply(tools.msg.info("Berhasil mengubah gambar profil grup!"));
