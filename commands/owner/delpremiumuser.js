@@ -22,7 +22,7 @@ module.exports = {
         try {
             const targetDb = ctx.getDb("users", target.jid);
             targetDb.premium = false;
-            targetDb?.premiumExpiration = null;
+            targetDb.premiumExpiration = null;
             targetDb.save();
 
             const flag = ctx.flag({
