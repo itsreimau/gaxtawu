@@ -1,27 +1,26 @@
 module.exports = {
-    name: "coinflip",
+    name: "dice",
     category: "game",
-    permissions: {
-        coin: 500
-    },
     code: async (ctx) => {
-        const input = ctx.args[0]?.toLowerCase();
+        const input = parseInt(ctx.args[0]);
 
-        if (!input || !["garuda", "melati"].includes(input))
+        if (isNaN(input) || input < 1 || input > 6)
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "melati")}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "4")}\n` +
                 tools.msg.generateNotes([
-                    "Sisi koin tersedia garuda atau melati, sama seperti koin Rp. 500."
+                    "Tebak angka dadu antara 1-6."
                 ])
             );
 
-        try {
-            const senderDb = ctx.db.user;
-            const isUnlimited = ctx.sender.isOwner() || senderDb?.premium;
+        const senderDb = ctx.db.user;
+        const isUnlimited = ctx.sender.isOwner() || senderDb?.premium;
 
-            const flip = Math.random() < 0.5 ? "garuda" : "melati";
-            const isWin = input === flip;
+        if (!isUnlimited && senderDb?.coin < 500) return await ctx.reply(tools.msg.info("Koin Anda tidak cukup! Minimal memiliki 500 koin untuk bermain."));
+
+        try {
+            const result = Math.floor(Math.random() * 6) + 1;
+            const isWin = input === result;
 
             let responseText = "";
             let prizeText = "";
@@ -40,7 +39,7 @@ module.exports = {
 
             if (!isUnlimited) senderDb.save();
 
-            await ctx.reply(tools.msg.info(`${responseText} Koin jatuh di sisi ${flip}. ${prizeText}`));
+            await ctx.reply(tools.msg.info(`${responseText} Dadu menunjukkan angka ${result}. ${prizeText}`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

@@ -43,7 +43,7 @@ module.exports = {
 
                 await ctx.reply(tools.msg.info(`Berhasil menambahkan premium selama ${daysAmount} hari kepada pengguna itu!`));
             } else {
-                delete targetDb?.premiumExpiration;
+                targetDb.premiumExpiration == null;
                 targetDb.save();
 
                 if (!silent && !config.system.restrict) await ctx.sendMessage(target.jid, tools.msg.info("Anda telah ditambahkan sebagai pengguna premium selamanya oleh owner!"));

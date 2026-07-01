@@ -1,6 +1,6 @@
 {
   "name": "gaxtawu",
-  "version": "1.2.11",
+  "version": "1.2.12",
   "description": "Useless WhatsApp Bot",
   "main": "index.js",
   "directories": {
@@ -22,11 +22,11 @@
   "dependencies": {
     "@ginkohub/speedtest-js": "^0.0.2",
     "@itsreimau/gktw": "github:itsreimau/gktw",
-    "axios": "^1.18.0",
+    "axios": "^1.18.1",
     "axios-retry": "^4.5.0",
     "cfonts": "^3.3.1",
     "jimp": "^1.6.1",
-    "link-preview-js": "^4.0.3",
+    "link-preview-js": "^4.0.4",
     "moment-timezone": "^0.6.2",
     "wa-sticker-formatter": "^4.4.4"
   }

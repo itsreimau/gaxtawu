@@ -24,6 +24,7 @@
     "footer": "Developed by ItsReimau with ♡",
     "wait": "Tunggu sebentar...",
     "notFound": "Tidak ada yang ditemukan! Coba lagi nanti.",
+    "error": "Terjadi kesalahan saat memproses permintaan! Coba lagi nanti atau hubungi owner jika masalah terus berlanjut.",
     "urlInvalid": "URL tidak valid!"
   },
   "owner": {

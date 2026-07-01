@@ -58,7 +58,7 @@ module.exports = {
 
                 await ctx.reply(tools.msg.info(`Berhasil menyewakan bot ke grup ${ctx.isGroup() ? "ini" : "itu"} selama ${daysAmount} hari!`));
             } else {
-                delete targetDb?.sewaExpiration;
+                targetDb.sewaExpiration = false;
                 targetDb.save();
 
                 if (!silent && groupOwner && !config.system.restrict)

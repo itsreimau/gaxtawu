@@ -21,8 +21,8 @@ module.exports = {
             const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply(
-                `› ${formatter.bold("Judul")}: ${result.title.english} (${result.title.romaji})\n` +
-                `› ${formatter.bold("Genre")}: ${result.genres.join(", ")}`
+                `❖ ${formatter.bold("Judul")}: ${result.title.english} (${result.title.romaji})\n` +
+                `❖ ${formatter.bold("Genre")}: ${result.genres.join(", ")}`
             );
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

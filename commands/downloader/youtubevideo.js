@@ -48,14 +48,14 @@ module.exports = {
                     },
                     fileName: `${result.title}.mp4`,
                     mimetype: "video/mp4",
-                    caption: `› ${formatter.bold("URL")}: ${url}`
+                    caption: `❖ ${formatter.bold("URL")}: ${url}`
                 });
             } else {
                 await ctx.reply({
                     video: {
                         url: result.downloadUrl
                     },
-                    caption: `› ${formatter.bold("URL")}: ${url}`
+                    caption: `❖ ${formatter.bold("URL")}: ${url}`
                 });
             }
         } catch (error) {

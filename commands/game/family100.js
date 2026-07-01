@@ -26,11 +26,11 @@ module.exports = {
             session.set(ctx.id, true);
 
             await ctx.reply({
-                text: `✿ — ${result.soal}\n` +
+                text: `✦ — ${result.soal}\n` +
                     "\n" +
-                    `› ${formatter.bold("Bonus")}: ${game.coin.answered} Koin untuk 1 jawaban benar, ${game.coin.allAnswered} Koin untuk semua jawaban benar\n` +
-                    `› ${formatter.bold("Jumlah jawaban")}: ${game.answers.size}\n` +
-                    `› ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
+                    `❖ ${formatter.bold("Bonus")}: ${game.coin.answered} koin untuk 1 jawaban benar, ${game.coin.allAnswered} koin untuk semua jawaban benar\n` +
+                    `❖ ${formatter.bold("Jumlah jawaban")}: ${game.answers.size}\n` +
+                    `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}`,
                 buttons: [{
                     text: "Menyerah",
                     id: `surrender_${ctx.used.command}`
@@ -49,13 +49,16 @@ module.exports = {
             collector.on("collect", async (collCtx) => {
                 const participantAnswer = collCtx.msg.body?.toLowerCase();
                 const participantDb = collCtx.db.user;
+                const isParticipantUnlimited = collCtx.sender.isOwner() || participantDb?.premium;
 
                 if (game.answers.has(participantAnswer)) {
                     game.answers.delete(participantAnswer);
                     game.participants.add(collCtx.sender.lid);
 
-                    participantDb.coin += game.coin.answered;
-                    participantDb.save();
+                    if (!isParticipantUnlimited) {
+                        participantDb.coin += game.coin.answered;
+                        participantDb.save();
+                    }
                     await collCtx.reply(tools.msg.info(`${tools.msg.ucwords(participantAnswer)} benar! Jawaban tersisa: ${game.answers.size}`));
 
                     if (game.answers.size === 0) {
@@ -63,12 +66,13 @@ module.exports = {
                         collector.stop();
                         for (const participant of game.participants) {
                             const allParticipantDb = ctx.getDb("users", participant);
-                            allParticipantDb.coin += game.coin.allAnswered;
+                            const isAllParticipantUnlimited = collCtx.checkOwner(participant) || allParticipantDb?.premium;
+                            if (isAllParticipantUnlimited) allParticipantDb.coin += game.coin.allAnswered;
                             allParticipantDb.winGame += 1;
                             allParticipantDb.save();
                         }
                         await collCtx.reply({
-                            text: tools.msg.info(`Selamat! Semua jawaban telah terjawab! Setiap anggota yang menjawab mendapat ${game.coin.allAnswered} koin.`),
+                            text: tools.msg.info(`Selamat, semua jawaban telah terjawab! Setiap anggota yang menjawab +${game.coin.allAnswered} koin.`),
                             buttons: playAgain
                         });
                     }
@@ -77,11 +81,9 @@ module.exports = {
                     session.delete(ctx.id);
                     collector.stop();
                     await collCtx.reply({
-                        text: tools.msg.info(`Anda menyerah! Jawaban yang belum terjawab adalah ${remaining}.`),
+                        text: tools.msg.info(`Anda menyerah! Jawaban yang belum terjawab: ${remaining}`),
                         buttons: playAgain
                     });
-                } else if (tools.cmd.didYouMean(participantAnswer, [game.answer]) === game.answer) {
-                    await collCtx.reply(tools.msg.info("Sedikit lagi!"));
                 }
             });
 
@@ -91,7 +93,7 @@ module.exports = {
                 if (session.has(ctx.id)) {
                     session.delete(ctx.id);
                     await ctx.reply({
-                        text: tools.msg.info(`Waktu habis! Jawaban yang belum terjawab adalah ${remaining}.`),
+                        text: tools.msg.info(`Waktu habis! Jawaban yang belum terjawab: ${remaining}`),
                         buttons: playAgain
                     });
                 }

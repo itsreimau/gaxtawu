@@ -10,7 +10,7 @@ module.exports = {
         try {
             if (input === "y") {
                 const usersDb = ctx.db.users;
-                usersDb.remove(user => user.jid === ctx.sender.lid);
+                usersDb.reset(user => user.jid === ctx.sender.lid);
                 return await collCtx.reply(tools.msg.info("Database Anda telah berhasil direset!"));
             } else if (input === "n") {
                 return await collCtx.reply(tools.msg.info("Proses reset database telah dibatalkan."));

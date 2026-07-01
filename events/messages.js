@@ -47,7 +47,6 @@ module.exports = (bot) => {
             msg
         } = ctx;
         if (msg.key.fromMe) return;
-        if (!msg.body) return;
 
         // Variabel umum
         const isGroup = ctx.isGroup();
@@ -70,13 +69,15 @@ module.exports = (bot) => {
             const senderDb = ctx.db.user;
             const groupDb = ctx.db.group;
 
+            if (!senderDb || !groupDb) return;
+
             // Penanganan database pengguna
-            if (senderDb?.premium && senderDb?.premiumExpiration < Date.now()) {
-                delete senderDb.premium;
-                delete senderDb.premiumExpiration;
+            if (senderDb?.premium && Date.now() >= senderDb?.premiumExpiration) {
+                senderDb.premium = false;
+                senderDb.premiumExpiration = null;
+                sender.coin = 100;
+                senderDb.save();
             }
-            if (isOwner || senderDb?.premium) senderDb.coin = 0;
-            if (!senderDb?.coin || !Number.isFinite(senderDb?.coin)) senderDb.coin = 100;
             senderDb.save();
 
             // Pengecekan mode bot (premium, group, private, self)
@@ -88,8 +89,8 @@ module.exports = (bot) => {
             // Pengecekan mute pada grup
             if (groupDb?.mutebot) return;
             const muteList = groupDb?.mute || [];
-            groupDb.mute = muteList.filter(mute => !mute.expiration || mute.expiration >= Date.now());
-            if (groupDb.mute.length !== muteList.length) await groupDb.save();
+            groupDb.mute = muteList.filter(mute => !mute.expiration || Date.now() >= mute.expiration);
+            if (groupDb.mute.length !== muteList.length) groupDb.save();
             if (groupDb.mute.some(mute => mute.jid === ctx.sender.lid)) await ctx.deleteMessage(ctx.id, msg.key);
 
             // Pengecekan untuk tidak tersedia pada malam hari
@@ -109,12 +110,12 @@ module.exports = (bot) => {
 
             // Penanganan AFK (Menghapus status AFK pengguna yang mengirim pesan)
             const senderAfk = senderDb?.afk || {};
-            if (senderAfk.reason || senderAfk.timestamp) {
+            if (senderAfk?.reason || senderAfk?.timestamp) {
                 const timeElapsed = Date.now() - senderAfk.timestamp;
                 if (timeElapsed > 3000) {
                     const timeago = tools.msg.convertMsToDuration(timeElapsed);
                     await ctx.reply(tools.msg.info(`Anda telah keluar dari AFK ${senderAfk.reason ? `dengan alasan ${formatter.inlineCode(senderAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`));
-                    delete senderDb.afk;
+                    senderDb.afk = {};
                     senderDb.save();
                 }
             }
@@ -128,9 +129,9 @@ module.exports = (bot) => {
                 const groupAutokick = groupDb?.option?.autokick;
 
                 // Penanganan database grup
-                if (groupDb?.sewa && senderDb?.sewaExpiration < Date.now()) {
-                    delete groupDb.sewa;
-                    delete groupDb.sewaExpiration;
+                if (groupDb?.sewa && Date.now() >= senderDb?.sewaExpiration) {
+                    senderDb.sewa = false;
+                    senderDb.sewaExpiration = null;
                     groupDb.save();
                 }
 
@@ -140,7 +141,7 @@ module.exports = (bot) => {
                     for (const afkMention of afkMentions) {
                         const mentionAfk = ctx.getDb("users", afkMention)?.afk || {};
                         if (mentionAfk.reason || mentionAfk.timestamp) {
-                            const timeago = tools.msg.convertMsToDuration(mentionAfk.timestamp - Date.now());
+                            const timeago = tools.msg.convertMsToDuration(Date.now() - mentionAfk.timestamp);
                             await ctx.reply({
                                 text: tools.msg.info(`Jangan ganggu! @${ctx.getId(afkMention)} sedang AFK ${mentionAfk.reason ? `dengan alasan ${formatter.inlineCode(mentionAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`),
                                 mentions: [afkMention]

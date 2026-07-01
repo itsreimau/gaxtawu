@@ -40,7 +40,7 @@ module.exports = {
             (senderDb.lastClaim ||= {})[input] = currentTime;
             senderDb.save();
 
-            await ctx.reply(tools.msg.info(`Anda berhasil mengklaim hadiah ${input} sebesar ${claim.reward} koin! Koin Anda saat ini adalah ${rewardCoin}.`));
+            await ctx.reply(tools.msg.info(`Anda berhasil mengklaim hadiah ${input} sebesar ${claim.reward} koin! Koin Anda saat ini: ${rewardCoin}`));
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
         }

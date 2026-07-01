@@ -21,13 +21,13 @@ module.exports = {
             const result = (await axios.get(apiUrl)).data.result.forecasts;
 
             const resultText = result.map(res =>
-                `› ${formatter.bold("Waktu")}: ${res.waktu}\n` +
-                `› ${formatter.bold("Cuaca")}: ${res.cuaca}\n` +
-                `› ${formatter.bold("Suhu")}: ${res.suhu}\n` +
-                `› ${formatter.bold("Kelembaban")}: ${res.kelembaban}\n` +
-                `› ${formatter.bold("Kecepatan Angin")}: ${res.kecepatan_angin}\n` +
-                `› ${formatter.bold("Arah Angin")}: ${res.arah_angin}\n` +
-                `› ${formatter.bold("Visibilitas")}: ${res.visibilitas}`
+                `❖ ${formatter.bold("Waktu")}: ${res.waktu}\n` +
+                `❖ ${formatter.bold("Cuaca")}: ${res.cuaca}\n` +
+                `❖ ${formatter.bold("Suhu")}: ${res.suhu}\n` +
+                `❖ ${formatter.bold("Kelembaban")}: ${res.kelembaban}\n` +
+                `❖ ${formatter.bold("Kecepatan Angin")}: ${res.kecepatan_angin}\n` +
+                `❖ ${formatter.bold("Arah Angin")}: ${res.arah_angin}\n` +
+                `❖ ${formatter.bold("Visibilitas")}: ${res.visibilitas}`
             ).join("\n\n");
             await ctx.reply(resultText.trim());
         } catch (error) {

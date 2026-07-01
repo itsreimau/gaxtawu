@@ -29,7 +29,7 @@ module.exports = {
                 },
                 fileName: result.filename,
                 mimetype: result.mimetype,
-                caption: `› ${formatter.bold("URL")}: ${url}`
+                caption: `❖ ${formatter.bold("URL")}: ${url}`
             });
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);

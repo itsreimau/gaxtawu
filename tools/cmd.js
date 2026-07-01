@@ -30,7 +30,10 @@ function calculateDelay(totalTargets) {
 function calculateDimensions(width, height) {
     const maxSize = 640;
     if (width <= maxSize && height <= maxSize)
-        return { width, height };
+        return {
+            width,
+            height
+        };
 
     const ratio = Math.min(maxSize / width, maxSize / height);
     return {
@@ -130,7 +133,7 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
             } = calculateDelay(reportOwner.length);
             for (const ownerId of reportOwner) {
                 await ctx.replyWithJid(ownerId + Baileys.S_WHATSAPP_NET, {
-                    text: `${tools.msg.info(isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${senderId}` : `Terjadi kesalahan dari: @${senderId}`)}\n` +
+                    text: `${isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${senderId}` : `Terjadi kesalahan dari: @${senderId}`}\n` +
                         formatter.monospace(errorText),
                     contextInfo: {
                         mentionedJid: [senderJid],
@@ -145,7 +148,7 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
         }
         if (useAxios && error.status !== 200) return await ctx.reply(tools.msg.info(config.msg.notFound));
     }
-    await ctx.reply(tools.msg.info(`Terjadi kesalahan: ${error.message}`));
+    await ctx.reply(tools.msg.info(config.msg.error));
 }
 
 function isUrl(url) {

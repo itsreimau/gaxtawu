@@ -38,10 +38,10 @@ module.exports = {
             const result = (await axios.get(apiUrl)).data;
 
             const resultText = result.result.cards.map(card =>
-                `› ${formatter.bold("Nomor Kartu")}: ${card.card_number}\n` +
-                `› ${formatter.bold("Kedaluwarsa")}: ${card.expiration_date}\n` +
-                `› ${formatter.bold("Pemegang Kartu")}: ${card.cardholder_name}\n` +
-                `› ${formatter.bold("CVV")}: ${card.cvv}`
+                `❖ ${formatter.bold("Nomor Kartu")}: ${card.card_number}\n` +
+                `❖ ${formatter.bold("Kedaluwarsa")}: ${card.expiration_date}\n` +
+                `❖ ${formatter.bold("Pemegang Kartu")}: ${card.cardholder_name}\n` +
+                `❖ ${formatter.bold("CVV")}: ${card.cvv}`
             ).join("\n\n");
             await ctx.reply(resultText.trim());
         } catch (error) {

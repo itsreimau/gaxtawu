@@ -35,16 +35,16 @@ module.exports = {
             session.set(ctx.id, true);
 
             await ctx.reply({
-                text: `✿ — ${result.pertanyaan}\n` +
+                text: `✦ — ${result.pertanyaan}\n` +
                     `${result.semua_jawaban.map(answers => {
                         const answer = Object.keys(answers)[0];
                         return `${answer.toUpperCase()}. ${answers[answer]}`;
                     }).join("\n")}\n` +
                     "\n" +
-                    `› ${formatter.bold("Mata Pelajaran")}: ${mapel[input]}\n` +
-                    `› ${formatter.bold("Bonus")}: ${game.coin} Koin\n` +
-                    `› ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}\n` +
-                    `› ${formatter.bold("Cara menjawab")}: Ketik A, B, C, atau D`,
+                    `❖ ${formatter.bold("Mata Pelajaran")}: ${mapel[input]}\n` +
+                    `❖ ${formatter.bold("Bonus")}: ${game.coin} koin\n` +
+                    `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}\n` +
+                    `❖ ${formatter.bold("Cara menjawab")}: Ketik A, B, C, atau D`,
                 buttons: [{
                     text: "Menyerah",
                     id: `surrender_${ctx.used.command}`
@@ -74,22 +74,23 @@ module.exports = {
             collector.on("collect", async (collCtx) => {
                 const participantAnswer = collCtx.msg.body?.toLowerCase();
                 const participantDb = collCtx.db.user;
+                const isParticipantUnlimited = collCtx.sender.isOwner() || participantDb?.premium;
 
                 if (participantAnswer === game.answerKey) {
                     session.delete(ctx.id);
                     collector.stop();
-                    participantDb.coin += game.coin;
+                    if (!isParticipantUnlimited) participantDb.coin += game.coin;
                     participantDb.winGame += 1;
-                    await participantDb.save();
+                    participantDb.save();
                     await collCtx.reply({
-                        text: tools.msg.info(`Benar! +${game.coin} Koin`),
+                        text: tools.msg.info(`Benar! +${game.coin} koin`),
                         buttons: playAgain
                     });
                 } else if (participantAnswer === `surrender_${ctx.used.command}`) {
                     session.delete(ctx.id);
                     collector.stop();
                     await collCtx.reply({
-                        text: tools.msg.info(`Anda menyerah! Jawabannya adalah ${game.answer} (${game.answerKey.toUpperCase()}).`),
+                        text: tools.msg.info(`Anda menyerah! Jawaban: ${game.answer} (${game.answerKey.toUpperCase()})`),
                         buttons: playAgain
                     });
                 }
@@ -99,7 +100,7 @@ module.exports = {
                 if (session.has(ctx.id)) {
                     session.delete(ctx.id);
                     await ctx.reply({
-                        text: tools.msg.info(`Waktu habis! Jawabannya adalah ${game.answer}(${game.answerKey.toUpperCase()}).`),
+                        text: tools.msg.info(`Waktu habis! Jawaban: ${game.answer} (${game.answerKey.toUpperCase()})`),
                         buttons: playAgain
                     });
                 }

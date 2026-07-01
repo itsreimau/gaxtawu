@@ -22,8 +22,8 @@ module.exports = {
 
         try {
             const targetDb = ctx.getDb("users", target.jid);
-            delete targetDb.premium;
-            delete targetDb.premiumExpiration;
+            targetDb.sewa = false;
+            targetDb.sewaExpiration = null;
             targetDb.save();
 
             const flag = ctx.flag({

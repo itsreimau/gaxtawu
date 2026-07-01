@@ -32,7 +32,7 @@ module.exports = {
                     const filtered = allCmds.filter(c => c.category === cat).map(c => ({
                         name: c.name,
                         permissions: c.permissions || {}
-                    }));
+                    })).sort((a, b) => a.name.localeCompare(b.name));
                     if (filtered.length > 0) result[cat] = filtered;
                 });
                 return result;
@@ -58,9 +58,9 @@ module.exports = {
                 let text = "";
                 for (const [key, list] of Object.entries(commandsData)) {
                     text += "╭┈┈┈┈┈┈ ♡\n" +
-                        `┊ ✿ — ${formatter.bold(tag[key] || key)}\n`;
+                        `┊ ✦ — ${formatter.bold(tag[key] || key)}\n`;
                     list.forEach(c => {
-                        text += `┊ › ${ctx.used.prefix + c.name} ${formatPerms(c.permissions)}\n`;
+                        text += `┊ ❖ ${ctx.used.prefix + c.name} ${formatPerms(c.permissions)}\n`;
                     });
                     text += "╰┈┈┈┈┈┈\n\n";
                 }
@@ -68,9 +68,7 @@ module.exports = {
                 text += `ⓒ koin | Ⓖ group | Ⓞ owner | Ⓟ premium | ⓟ private`;
 
                 const thumbnailText = input === "all" || ctx.used.command === "allmenu" ? "All Menu" : (input && tag[input] ? tag[input] : "Menu");
-                const thumbnail = await tools.cmd.getJpegThumbnail(tools.api.createUrl("neosoft", "/api/textpro/1141", {
-                    text: thumbnailText
-                }));
+                const thumbnail = await tools.cmd.getJpegThumbnail(config.bot.thumbnail);
 
                 await ctx.reply({
                     caption: text,
@@ -91,16 +89,16 @@ module.exports = {
                 });
             } else {
                 const userDb = ctx.db.user;
-                const text = `✿ — Halo, @${ctx.getId(ctx.sender.jid)}! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}.\n` +
+                const text = `✦ — Halo, @${ctx.getId(ctx.sender.jid)}! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}.\n` +
                     "\n" +
-                    `› ${formatter.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${tools.msg.convertMsToDuration(userDb.premiumExpiration - Date.now(), ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
-                    `› ${formatter.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
-                    `› ${formatter.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Tak terbatas" : (userDb?.coin || 0)}\n` +
+                    `❖ ${formatter.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${tools.msg.convertMsToDuration(userDb.premiumExpiration - Date.now(), ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
+                    `❖ ${formatter.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
+                    `❖ ${formatter.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Unlimited" : (userDb?.coin || 0)}\n` +
                     "\n" +
-                    `› ${formatter.bold("Mode")}: ${tools.msg.ucwords(ctx.db.bot?.mode || "public")}\n` +
-                    `› ${formatter.bold("Uptime")}: ${tools.msg.convertMsToDuration(ctx.me.readyAt - Date.now())}\n` +
-                    `› ${formatter.bold("Database")}: ${ctx.db.users.totalEntries} users, ${ctx.db.groups.totalEntries}/${Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id).length} groups\n` +
-                    `› ${formatter.bold("Library")}: @itsreimau/gktw\n` +
+                    `❖ ${formatter.bold("Mode")}: ${tools.msg.ucwords(ctx.db.bot?.mode || "public")}\n` +
+                    `❖ ${formatter.bold("Uptime")}: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
+                    `❖ ${formatter.bold("Database")}: ${ctx.db.users.totalEntries} users, ${ctx.db.groups.totalEntries}/${Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id).length} groups\n` +
+                    `❖ ${formatter.bold("Library")}: @itsreimau/gktw\n` +
                     "\n" +
                     `✧ ${formatter.italic("Jangan lupa berdonasi agar bot tetap online.")}`;
 
@@ -128,7 +126,7 @@ module.exports = {
                     offerText: config.bot.name,
                     offerCode: config.system.customPairingCode,
                     offerUrl: config.bot.groupLink,
-                    offerExpiration: 3600000 + Date.now(),
+                    offerExpiration: Date.now() - 3600000,
                     nativeFlow: [{
                         text: "Daftar Menu",
                         sections: [{

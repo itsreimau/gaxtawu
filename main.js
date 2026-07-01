@@ -3,7 +3,7 @@ const { Client, CommandHandler } = require("@itsreimau/gktw");
 const { resolve } = require("node:path");
 const util = require("node:util");
 const events = require("./events/exports.js");
-const middleware = require("./middleware.js");
+const middlewares = require("./middlewares/exports.js");
 
 // Konfigurasi bot
 const {
@@ -53,14 +53,48 @@ const bot = new Client({
         prefix: parsePrefix(botConfig?.prefix)
     },
     database: {
-        dir: diretory.database
+        dir: diretory.database,
+        defaults: {
+            users: {
+                pushName: "Unknown",
+                coin: 100,
+                level: 0,
+                xp: 0,
+                winGame: 0,
+                premium: false,
+                premiumExpiration: null,
+                banned: false,
+                afk: {},
+                lastClaim: {},
+                sessionId: {},
+                lastSentMsg: {},
+                botGroupMembership: {}
+            },
+            groups: {
+                mute: [],
+                warnings: [],
+                maxwarnings: 3,
+                mutebot: false,
+                option: {},
+                text: {},
+                sewa: false,
+                sewaExpiration: null,
+                spam: []
+            },
+            bot: {
+                mode: "public",
+                restart: {},
+                text: {},
+                blacklistBroadcast: []
+            }
+        }
     },
     owner: [config.owner.id, ...config.owner.co.map(co => co.id)].filter(Boolean)
 });
 
 // Inisialisasi event dan middleware
 events(bot);
-middleware(bot);
+middlewares(bot);
 
 // Muat dan jalankan command handler
 const cmd = new CommandHandler(bot, diretory.command);
