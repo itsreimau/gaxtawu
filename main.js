@@ -68,9 +68,11 @@ const bot = new Client({
                 lastClaim: {},
                 sessionId: {},
                 lastSentMsg: {},
-                botGroupMembership: {}
+                botGroupMembership: {},
+                autodownload: false
             },
             groups: {
+                members: [],
                 mute: [],
                 warnings: [],
                 maxwarnings: 3,

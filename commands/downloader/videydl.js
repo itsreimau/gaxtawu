@@ -14,8 +14,7 @@ module.exports = {
                 tools.msg.generateCmdExample(ctx.used, "https://videy.co/v/?id=RMuikV761")
             );
 
-        const isUrl = tools.cmd.isUrl(url);
-        if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
+        if (!tools.cmd.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.invalidUrl));
 
         try {
             const id = new URL(url).searchParams.get("id");

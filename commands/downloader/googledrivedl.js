@@ -14,8 +14,7 @@ module.exports = {
                 tools.msg.generateCmdExample(ctx.used, "https://drive.google.com/file/d/1-jkLy92U-uwB36GzGJj04fjRFRz0ZzO3/view")
             );
 
-        const isUrl = tools.cmd.isUrl(url);
-        if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
+        if (!tools.cmd.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.invalidUrl));
 
         try {
             const apiUrl = tools.api.createUrl("lexcode", "/api/dwn/gdrive", {

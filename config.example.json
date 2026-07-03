@@ -25,7 +25,7 @@
     "wait": "Tunggu sebentar...",
     "notFound": "Tidak ada yang ditemukan! Coba lagi nanti.",
     "error": "Terjadi kesalahan saat memproses permintaan! Coba lagi nanti atau hubungi owner jika masalah terus berlanjut.",
-    "urlInvalid": "URL tidak valid!"
+    "invalidUrl": "URL tidak valid!"
   },
   "owner": {
     "name": "Budi",

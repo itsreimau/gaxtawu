@@ -14,8 +14,7 @@ module.exports = {
                 tools.msg.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=v18fHSc813k")
             );
 
-        const isUrl = tools.cmd.isUrl(url);
-        if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
+        if (!tools.cmd.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.invalidUrl));
 
         try {
             const apiUrl = tools.api.createUrl("kuroneko", "/api/tools/ytsum", {

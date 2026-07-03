@@ -16,7 +16,7 @@ module.exports = {
             });
 
         try {
-            const result = await ctx.profilePictureUrl(target.jid);
+            const result = await ctx.core.profilePictureUrl(target.jid);
 
             await ctx.reply({
                 image: {

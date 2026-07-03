@@ -65,7 +65,7 @@ module.exports = {
 
                 game.guessed.add(answer);
 
-                if (!game.word.includes(answer)) {
+                if (!word.includes(answer)) {
                     game.lives--;
                     if (game.lives <= 0) {
                         session.delete(sessionKey);
@@ -77,7 +77,7 @@ module.exports = {
                     }
                 }
 
-                const display = render(game.word, game.guessed);
+                const display = render(word, game.guessed);
 
                 if (!display.includes("_")) {
                     session.delete(sessionKey);
@@ -88,7 +88,7 @@ module.exports = {
                     senderDb.winGame += 1;
                     senderDb.save();
                     return await collCtx.reply({
-                        text: tools.msg.info(`Benar! Jawaban: ${game.word} +${game.coin} koin`),
+                        text: tools.msg.info(`Benar! Jawaban: ${word} +${game.coin} koin`),
                         buttons: playAgain
                     });
                 }

@@ -126,7 +126,7 @@ module.exports = {
                     offerText: config.bot.name,
                     offerCode: config.system.customPairingCode,
                     offerUrl: config.bot.groupLink,
-                    offerExpiration: Date.now() - 3600000,
+                    offerExpiration: Date.now() + 2592000000,
                     nativeFlow: [{
                         text: "Daftar Menu",
                         sections: [{

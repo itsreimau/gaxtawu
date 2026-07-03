@@ -14,8 +14,7 @@ module.exports = {
                 tools.msg.generateCmdExample(ctx.used, "https://id.pinterest.com/pin/843580573994363210")
             );
 
-        const isUrl = tools.cmd.isUrl(url);
-        if (!isUrl) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
+        if (!tools.cmd.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.invalidUrl));
 
         try {
             const apiUrl = tools.api.createUrl("delirius", "/download/pinterestdl", {

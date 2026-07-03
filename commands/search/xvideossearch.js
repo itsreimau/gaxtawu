@@ -14,8 +14,7 @@ module.exports = {
                 tools.msg.generateCmdExample(ctx.used, "evangelion")
             );
 
-        const isUrl = tools.cmd.isUrl(input);
-        if (isUrl)
+        if (!tools.cmd.isUrl(url))
             return await ctx.reply({
                 text: tools.msg.info("Input berupa URL, gunakan tombol download di bawah:"),
                 buttons: [{

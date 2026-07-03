@@ -1,421 +1,147 @@
-module.exports = [{
-    name: "toanime",
-    aliases: ["animekan"],
-    category: "ai-misc",
-    permissions: {
-        coin: 10
-    },
-    code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
+const codeBase = async (ctx, apiConfig) => {
+    const [checkMedia, checkQuotedMedia] = [
+        tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
+        tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
+    ];
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
+    if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
 
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/toanime", {
-                url: uploadUrl
-            });
+    try {
+        const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
+        let result;
 
-            await ctx.reply({
-                image: {
-                    url: result
-                }
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+        if (apiConfig.type === "direct") {
+            const params = apiConfig.params || {};
+            params.url = uploadUrl;
+            result = tools.api.createUrl(apiConfig.base, apiConfig.path, params, apiConfig.apiKeyParam || null);
+        } else if (apiConfig.type === "axios") {
+            const params = {
+                [apiConfig.urlParam || "url"]: uploadUrl
+            };
+            const apiUrl = tools.api.createUrl(apiConfig.base, apiConfig.path, params);
+            const response = await axios.get(apiUrl);
+            result = apiConfig.resultPath.split(".").reduce((obj, key) => obj?.[key], response.data);
         }
+
+        await ctx.reply({
+            image: { url: result }
+        });
+    } catch (error) {
+        await tools.cmd.handleError(ctx, error, true);
     }
-}, {
-    name: "tobugil",
-    aliases: ["bugilkan", "deepnude", "removeclothes"],
-    category: "ai-misc",
-    permissions: {
-        premium: true
+};
+
+const API_CONFIGS = {
+    toanime: {
+        type: "direct",
+        base: "faaa",
+        path: "/faa/toanime",
+        permissions: { coin: 10 },
+        aliases: ["animekan"]
     },
-    code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("kuroneko", "/api/maker/deepnude", {
-                url: uploadUrl
-            });
-
-            await ctx.reply({
-                image: {
-                    url: result
-                }
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
-}, {
-    name: "tochibi",
-    aliases: ["chibikan"],
-    category: "ai-misc",
-    permissions: {
-        coin: 10
+    tobugil: {
+        type: "axios",
+        base: "kuroneko",
+        path: "/api/maker/deepnude",
+        permissions: { premium: true },
+        urlParam: "url",
+        resultPath: "data.image",
+        aliases: ["bugilkan", "deepnude", "removeclothes"]
     },
-    code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/tochibi", {
-                url: uploadUrl
-            });
-
-            await ctx.reply({
-                image: {
-                    url: result
-                }
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
-}, {
-    name: "tofigure",
-    aliases: ["figurekan"],
-    category: "ai-misc",
-    permissions: {
-        coin: 10
+    tochibi: {
+        type: "direct",
+        base: "faaa",
+        path: "/faa/tochibi",
+        permissions: { coin: 10 },
+        aliases: ["chibikan"]
     },
-    code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/tofigura", {
-                url: uploadUrl
-            });
-
-            await ctx.reply({
-                image: {
-                    url: result
-                }
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
-}, {
-    name: "toghibli",
-    aliases: ["ghiblikan"],
-    category: "ai-misc",
-    permissions: {
-        coin: 10
+    tofigure: {
+        type: "direct",
+        base: "faaa",
+        path: "/faa/tofigura",
+        permissions: { coin: 10 },
+        aliases: ["figurekan"]
     },
-    code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/toghibli", {
-                url: uploadUrl
-            });
-
-            await ctx.reply({
-                image: {
-                    url: result
-                }
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
-}, {
-    name: "tohijab",
-    aliases: ["hijabkan"],
-    category: "ai-misc",
-    permissions: {
-        coin: 10
+    toghibli: {
+        type: "direct",
+        base: "faaa",
+        path: "/faa/toghibli",
+        permissions: { coin: 10 },
+        aliases: ["ghiblikan"]
     },
-    code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/tohijab", {
-                url: uploadUrl
-            });
-
-            await ctx.reply({
-                image: {
-                    url: result
-                }
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
-}, {
-    name: "tohitam",
-    aliases: ["hitamkan"],
-    category: "ai-misc",
-    permissions: {
-        coin: 10
+    tohijab: {
+        type: "direct",
+        base: "faaa",
+        path: "/faa/tohijab",
+        permissions: { coin: 10 },
+        aliases: ["hijabkan"]
     },
-    code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/tohitam", {
-                url: uploadUrl
-            });
-
-            await ctx.reply({
-                image: {
-                    url: result
-                }
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
-}, {
-    name: "tolego",
-    aliases: ["legokan"],
-    category: "ai-misc",
-    permissions: {
-        coin: 10
+    tohitam: {
+        type: "direct",
+        base: "faaa",
+        path: "/faa/tohitam",
+        permissions: { coin: 10 },
+        aliases: ["hitamkan"]
     },
-    code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/tolego", {
-                url: uploadUrl
-            });
-
-            await ctx.reply({
-                image: {
-                    url: result
-                }
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
-}, {
-    name: "tomaid",
-    aliases: ["maidkan"],
-    category: "ai-misc",
-    permissions: {
-        coin: 10
+    tolego: {
+        type: "direct",
+        base: "faaa",
+        path: "/faa/tolego",
+        permissions: { coin: 10 },
+        aliases: ["legokan"]
     },
-    code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/tomaid", {
-                url: uploadUrl
-            });
-
-            await ctx.reply({
-                image: {
-                    url: result
-                }
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
-}, {
-    name: "tomirrorselfie",
-    aliases: ["mirrorselfiekan"],
-    category: "ai-misc",
-    permissions: {
-        coin: 10
+    tomaid: {
+        type: "direct",
+        base: "faaa",
+        path: "/faa/tomaid",
+        permissions: { coin: 10 },
+        aliases: ["maidkan"]
     },
-    code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/tomirror", {
-                url: uploadUrl
-            });
-
-            await ctx.reply({
-                image: {
-                    url: result
-                }
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
-}, {
-    name: "toroblox",
-    aliases: ["robloxkan"],
-    category: "ai-misc",
-    permissions: {
-        coin: 10
+    tomirrorselfie: {
+        type: "direct",
+        base: "faaa",
+        path: "/faa/tomirror",
+        permissions: { coin: 10 },
+        aliases: ["mirrorselfiekan"]
     },
-    code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/toroblox", {
-                url: uploadUrl
-            });
-
-            await ctx.reply({
-                image: {
-                    url: result
-                }
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
-}, {
-    name: "tostreetwear",
-    aliases: ["streetwearkan"],
-    category: "ai-misc",
-    permissions: {
-        coin: 10
+    toroblox: {
+        type: "direct",
+        base: "faaa",
+        path: "/faa/toroblox",
+        permissions: { coin: 10 },
+        aliases: ["robloxkan"]
     },
-    code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/tostreetwear", {
-                url: uploadUrl
-            });
-
-            await ctx.reply({
-                image: {
-                    url: result
-                }
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
-}, {
-    name: "tounderground",
-    aliases: ["undergroundkan"],
-    category: "ai-misc",
-    permissions: {
-        coin: 10
+    tostreetwear: {
+        type: "direct",
+        base: "faaa",
+        path: "/faa/tostreetwear",
+        permissions: { coin: 10 },
+        aliases: ["streetwearkan"]
     },
-    code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/tounderground", {
-                url: uploadUrl
-            });
-
-            await ctx.reply({
-                image: {
-                    url: result
-                }
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
-}, {
-    name: "tovintage",
-    aliases: ["vintagekan"],
-    category: "ai-misc",
-    permissions: {
-        coin: 10
+    tounderground: {
+        type: "direct",
+        base: "faaa",
+        path: "/faa/tounderground",
+        permissions: { coin: 10 },
+        aliases: ["undergroundkan"]
     },
-    code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/tovintage", {
-                url: uploadUrl
-            });
-
-            await ctx.reply({
-                image: {
-                    url: result
-                }
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
+    tovintage: {
+        type: "direct",
+        base: "faaa",
+        path: "/faa/tovintage",
+        permissions: { coin: 10 },
+        aliases: ["vintagekan"]
     }
-}];
+};
+
+module.exports = Object.entries(API_CONFIGS).map(([name, config]) => {
+    const aliases = config.aliases || [];
+
+    return {
+        name: name,
+        aliases: aliases,
+        category: "ai-misc",
+        permissions: config.permissions,
+        code: async (ctx) => codeBase(ctx, config)
+    };
+});

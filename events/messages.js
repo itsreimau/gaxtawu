@@ -108,6 +108,41 @@ module.exports = (bot) => {
                     }]
                 });
 
+            // Penanganan unduhan otomatis
+            const autodownloadEnabled = senderDb?.autodownload || false;
+            if (autodownloadEnabled && !isCmd) {
+                const urlPatterns = {
+                    facebook: /(facebook\.com|fb\.watch|fb\.com)/i,
+                    instagram: /(instagram\.com|instagr\.am)/i,
+                    tiktok: /(tiktok\.com|vt\.tiktok)/i,
+                    twitter: /(twitter\.com|x\.com)/i,
+                    youtube: /(youtube\.com|youtu\.be)/i
+                };
+                const platformCommands = {
+                    facebook: "facebookdl",
+                    instagram: "instagramdl",
+                    tiktok: "tiktokdl",
+                    twitter: "twitterdl",
+                    youtube: "youtubevideo"
+                };
+                const url = tools.cmd.extractUrlFromText(msg?.body);
+                if (url) {
+                    let matchedCommand = null;
+                    let platform = null;
+                    for (const [key, pattern] of Object.entries(urlPatterns)) {
+                        if (pattern.test(url)) {
+                            platform = key;
+                            matchedCommand = platformCommands[key];
+                            break;
+                        }
+                    }
+                    if (matchedCommand) {
+                        await ctx.reply(`⏳ Download dari ${platform}...`);
+                        await bot.forceCommand(ctx.id, matchedCommand, url, ctx.sender);
+                    }
+                }
+            }
+
             // Penanganan AFK (Menghapus status AFK pengguna yang mengirim pesan)
             const senderAfk = senderDb?.afk || {};
             if (senderAfk?.reason || senderAfk?.timestamp) {

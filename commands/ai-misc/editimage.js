@@ -1,284 +1,131 @@
-module.exports = [{
-    name: "editimage",
-    aliases: ["editimg"],
-    category: "ai-misc",
-    permissions: {
-        coin: 10
-    },
-    code: async (ctx) => {
-        const input = ctx.text;
+const codeBase = async (ctx, apiConfig) => {
+    const input = ctx.text;
 
-        if (!input)
-            return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "make it evangelion art style")
-            );
+    if (!input)
+        return await ctx.reply(
+            `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+            tools.msg.generateCmdExample(ctx.used, "make it evangelion art style")
+        );
 
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
+    const [checkMedia, checkQuotedMedia] = [
+        tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
+        tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
+    ];
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
+    if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
 
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/editfoto", {
+    try {
+        const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
+        let result;
+
+        if (apiConfig.type === "direct") {
+            const params = {
                 url: uploadUrl,
                 prompt: input
-            });
-
-            await ctx.reply({
-                image: {
-                    url: result
-                },
-                caption: `❖ ${formatter.bold("Prompt")}: ${input}`
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
-}, {
-    name: "editimage2",
-    aliases: ["editimg2"],
-    category: "ai-misc",
-    permissions: {
-        coin: 10
-    },
-    code: async (ctx) => {
-        const input = ctx.text;
-
-        if (!input)
-            return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "make it evangelion art style")
-            );
-
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/nano-banana", {
-                url: uploadUrl,
+            };
+            result = tools.api.createUrl(apiConfig.base, apiConfig.path, params, apiConfig.apiKeyParam || null);
+        } else if (apiConfig.type === "axios") {
+            const params = {
+                [apiConfig.urlParam || "url"]: uploadUrl,
                 prompt: input
-            });
-
-            await ctx.reply({
-                image: {
-                    url: result
-                },
-                caption: `❖ ${formatter.bold("Prompt")}: ${input}`
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+            };
+            const apiUrl = tools.api.createUrl(apiConfig.base, apiConfig.path, params);
+            const response = await axios.get(apiUrl);
+            result = apiConfig.resultPath.split(".").reduce((obj, key) => obj?.[key], response.data);
         }
+
+        await ctx.reply({
+            image: {
+                url: result
+            },
+            caption: `❖ ${formatter.bold("Prompt")}: ${input}`
+        });
+    } catch (error) {
+        await tools.cmd.handleError(ctx, error, true);
     }
-}, {
-    name: "editimage3",
-    aliases: ["editimg3"],
-    category: "ai-misc",
-    permissions: {
-        premium: true
+};
+
+const API_CONFIGS = {
+    editimage: {
+        type: "direct",
+        base: "faaa",
+        path: "/faa/editfoto",
+        permissions: {
+            coin: 10
+        }
     },
-    code: async (ctx) => {
-        const input = ctx.text;
-
-        if (!input)
-            return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "make it evangelion art style")
-            );
-
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("lexcode", "/api/ai/nano-banana", {
-                url: uploadUrl,
-                prompt: input
-            });
-            const result = (await axios.get(apiUrl)).data.result.image;
-
-            await ctx.reply({
-                image: {
-                    url: result
-                },
-                caption: `❖ ${formatter.bold("Prompt")}: ${input}`
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+    editimage2: {
+        type: "direct",
+        base: "faaa",
+        path: "/faa/nano-banana",
+        permissions: {
+            coin: 10
         }
-    }
-}, {
-    name: "editimage4",
-    aliases: ["editimg4"],
-    category: "ai-misc",
-    permissions: {
-        premium: true
     },
-    code: async (ctx) => {
-        const input = ctx.text;
-
-        if (!input)
-            return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "make it evangelion art style")
-            );
-
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("lexcode", "/api/ai/deepai-editor", {
-                imgUrl: uploadUrl,
-                prompt: input
-            });
-            const result = (await axios.get(apiUrl)).data.result.image;
-
-            await ctx.reply({
-                image: {
-                    url: result
-                },
-                caption: `❖ ${formatter.bold("Prompt")}: ${input}`
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
-}, {
-    name: "editimage5",
-    aliases: ["editimg5"],
-    category: "ai-misc",
-    permissions: {
-        premium: true
+    editimage3: {
+        type: "axios",
+        base: "lexcode",
+        path: "/api/ai/nano-banana",
+        permissions: {
+            premium: true
+        },
+        urlParam: "url",
+        resultPath: "result.image"
     },
-    code: async (ctx) => {
-        const input = ctx.text;
-
-        if (!input)
-            return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "make it evangelion art style")
-            );
-
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("neosoft", "/api/ai-image/editimage", {
-                url: uploadUrl,
-                prompt: input
-            });
-
-            await ctx.reply({
-                image: {
-                    url: result
-                },
-                caption: `❖ ${formatter.bold("Prompt")}: ${input}`
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
-    }
-}, {
-    name: "editimage6",
-    aliases: ["editimg6"],
-    category: "ai-misc",
-    permissions: {
-        premium: true
+    editimage4: {
+        type: "axios",
+        base: "lexcode",
+        path: "/api/ai/deepai-editor",
+        permissions: {
+            premium: true
+        },
+        urlParam: "imgUrl",
+        resultPath: "result.image"
     },
-    code: async (ctx) => {
-        const input = ctx.text;
-
-        if (!input)
-            return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "make it evangelion art style")
-            );
-
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("sanka", "/ai/editimg", {
-                url: uploadUrl,
-                prompt: input
-            }, "apikey");
-
-            await ctx.reply({
-                image: {
-                    url: result
-                },
-                caption: `❖ ${formatter.bold("Prompt")}: ${input}`
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+    editimage5: {
+        type: "direct",
+        base: "neosoft",
+        path: "/api/ai-image/editimage",
+        permissions: {
+            premium: true
         }
-    }
-}, {
-    name: "editimage7",
-    aliases: ["editimg7"],
-    category: "ai-misc",
-    permissions: {
-        premium: true
     },
-    code: async (ctx) => {
-        const input = ctx.text;
-
-        if (!input)
-            return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "make it evangelion art style")
-            );
-
-        const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
-
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
-
-        try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("kuroneko", "/api/tools/nanobanana", {
-                prompt: input,
-                media: uploadUrl
-            });
-            const result = (await axios.get(apiUrl)).data.data.image;
-
-            await ctx.reply({
-                image: {
-                    url: result
-                },
-                caption: `❖ ${formatter.bold("Prompt")}: ${input}`
-            });
-        } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
-        }
+    editimage6: {
+        type: "direct",
+        base: "sanka",
+        path: "/ai/editimg",
+        permissions: {
+            premium: true
+        },
+        apiKeyParam: "apikey"
+    },
+    editimage7: {
+        type: "axios",
+        base: "kuroneko",
+        path: "/api/tools/nanobanana",
+        permissions: {
+            premium: true
+        },
+        urlParam: "media",
+        resultPath: "data.image"
     }
-}];
+};
+
+module.exports = Object.entries(API_CONFIGS).map(([name, config]) => {
+    const aliases = [];
+
+    const numberMatch = name.match(/\d+$/);
+    if (numberMatch) {
+        aliases.push(`editimg${numberMatch[0]}`);
+    } else {
+        aliases.push("editimg");
+    }
+
+    return {
+        name: name,
+        aliases: aliases,
+        category: "ai-misc",
+        permissions: config.permissions,
+        code: async (ctx) => codeBase(ctx, config)
+    };
+});

@@ -1,6 +1,6 @@
 const sessions = new Map();
 
-class TebakGame {
+class codeBase {
     constructor(config) {
         this.name = config.name;
         this.apiEndpoint = config.apiEndpoint;
@@ -158,7 +158,7 @@ class TebakGame {
 }
 
 const gameConfigs = {
-    asahotak: new TebakGame({
+    asahotak: new codeBase({
         name: "asahotak",
         apiEndpoint: "/api/games/asahotak",
         answerKey: "jawaban",
@@ -168,7 +168,7 @@ const gameConfigs = {
         timeout: 60000
     }),
 
-    caklontong: new TebakGame({
+    caklontong: new codeBase({
         name: "caklontong",
         apiEndpoint: "/api/games/caklontong",
         answerKey: "jawaban",
@@ -187,7 +187,7 @@ const gameConfigs = {
         }
     }),
 
-    lengkapikalimat: new TebakGame({
+    lengkapikalimat: new codeBase({
         name: "lengkapikalimat",
         apiEndpoint: "/api/games/lengkapikalimat",
         answerKey: "jawaban",
@@ -197,7 +197,7 @@ const gameConfigs = {
         timeout: 60000
     }),
 
-    siapakahaku: new TebakGame({
+    siapakahaku: new codeBase({
         name: "siapakahaku",
         apiEndpoint: "/api/games/siapakahaku",
         answerKey: "jawaban",
@@ -207,7 +207,7 @@ const gameConfigs = {
         timeout: 60000
     }),
 
-    susunkata: new TebakGame({
+    susunkata: new codeBase({
         name: "susunkata",
         apiEndpoint: "/api/games/susunkata",
         answerKey: "jawaban",
@@ -221,7 +221,7 @@ const gameConfigs = {
         }]
     }),
 
-    tebakbendera: new TebakGame({
+    tebakbendera: new codeBase({
         name: "tebakbendera",
         apiEndpoint: "/api/games/tebakbendera",
         answerKey: "name",
@@ -238,9 +238,9 @@ const gameConfigs = {
         }
     }),
 
-    tebakgame: new TebakGame({
-        name: "tebakgame",
-        apiEndpoint: "/api/games/tebakgame",
+    codeBase: new codeBase({
+        name: "codeBase",
+        apiEndpoint: "/api/games/codeBase",
         answerKey: "jawaban",
         questionKey: null,
         imageKey: "img",
@@ -255,7 +255,7 @@ const gameConfigs = {
         }
     }),
 
-    tebakgambar: new TebakGame({
+    tebakgambar: new codeBase({
         name: "tebakgambar",
         apiEndpoint: "/api/games/tebakgambar",
         answerKey: "jawaban",
@@ -266,7 +266,7 @@ const gameConfigs = {
         timeout: 60000
     }),
 
-    tebakhewan: new TebakGame({
+    tebakhewan: new codeBase({
         name: "tebakhewan",
         apiEndpoint: "/api/games/tebakhewan",
         answerKey: "jawaban",
@@ -276,12 +276,12 @@ const gameConfigs = {
         timeout: 60000
     }),
 
-    tebakheroml: new TebakGame({
+    tebakheroml: new codeBase({
         name: "tebakheroml",
         apiEndpoint: "/api/games/tebakheroml",
         answerKey: "name",
         questionKey: null,
-        audioKey: "lagu",
+        audioKey: "audio",
         coinReward: 7,
         hintCost: 3,
         timeout: 60000,
@@ -293,7 +293,7 @@ const gameConfigs = {
         }
     }),
 
-    tebakjkt: new TebakGame({
+    tebakjkt: new codeBase({
         name: "tebakjkt",
         apiEndpoint: "/api/games/tebakjkt",
         answerKey: "jawaban",
@@ -310,7 +310,7 @@ const gameConfigs = {
         }
     }),
 
-    tebakkalimat: new TebakGame({
+    tebakkalimat: new codeBase({
         name: "tebakkalimat",
         apiEndpoint: "/api/games/tebakkalimat",
         answerKey: "jawaban",
@@ -320,7 +320,7 @@ const gameConfigs = {
         timeout: 60000
     }),
 
-    tebakkarakterff: new TebakGame({
+    tebakkarakterff: new codeBase({
         name: "tebakkarakterff",
         apiEndpoint: "/api/games/karakter-freefire",
         answerKey: "name",
@@ -337,7 +337,7 @@ const gameConfigs = {
         }
     }),
 
-    tebakkartun: new TebakGame({
+    tebakkartun: new codeBase({
         name: "tebakkartun",
         apiEndpoint: "/api/games/tebakkartun",
         answerKey: "name",
@@ -354,7 +354,7 @@ const gameConfigs = {
         }
     }),
 
-    tebakkata: new TebakGame({
+    tebakkata: new codeBase({
         name: "tebakkata",
         apiEndpoint: "/api/games/tebakkata",
         answerKey: "jawaban",
@@ -364,7 +364,7 @@ const gameConfigs = {
         timeout: 60000
     }),
 
-    tebakkimia: new TebakGame({
+    tebakkimia: new codeBase({
         name: "tebakkimia",
         apiEndpoint: "/api/games/tebakkimia",
         answerKey: "unsur",
@@ -380,7 +380,7 @@ const gameConfigs = {
         }
     }),
 
-    tebaklagu: new TebakGame({
+    tebaklagu: new codeBase({
         name: "tebaklagu",
         apiEndpoint: "/api/games/tebaklagu",
         answerKey: "judul",
@@ -404,7 +404,7 @@ const gameConfigs = {
         }
     }),
 
-    tebaklirik: new TebakGame({
+    tebaklirik: new codeBase({
         name: "tebaklirik",
         apiEndpoint: "/api/games/tebaklirik",
         answerKey: "jawaban",
@@ -414,7 +414,7 @@ const gameConfigs = {
         timeout: 60000
     }),
 
-    tebaklogo: new TebakGame({
+    tebaklogo: new codeBase({
         name: "tebaklogo",
         apiEndpoint: "/api/games/tebaklogo",
         answerKey: "jawaban",
@@ -432,7 +432,7 @@ const gameConfigs = {
         }
     }),
 
-    tebaktebakan: new TebakGame({
+    tebaktebakan: new codeBase({
         name: "tebaktebakan",
         apiEndpoint: "/api/games/tebaktebakan",
         answerKey: "jawaban",
@@ -442,7 +442,7 @@ const gameConfigs = {
         timeout: 60000
     }),
 
-    tebakwarna: new TebakGame({
+    tebakwarna: new codeBase({
         name: "tebakwarna",
         apiEndpoint: "/api/games/tebakwarna",
         answerKey: "correct",
@@ -459,7 +459,7 @@ const gameConfigs = {
         }
     }),
 
-    tekateki: new TebakGame({
+    tekateki: new codeBase({
         name: "tekateki",
         apiEndpoint: "/api/games/tekateki",
         answerKey: "jawaban",
@@ -500,9 +500,9 @@ module.exports = [{
     category: "game",
     code: handlers.tebakbendera
 }, {
-    name: "tebakgame",
+    name: "codeBase",
     category: "game",
-    code: handlers.tebakgame
+    code: handlers.codeBase
 }, {
     name: "tebakgambar",
     category: "game",

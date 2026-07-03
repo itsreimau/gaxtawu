@@ -14,7 +14,7 @@ module.exports = {
                 tools.msg.generateCmdExample(ctx.used, "https://x.com/evangelion_co/status/1371234691504861186")
             );
 
-        if (!tools.cmd.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.urlInvalid));
+        if (!tools.cmd.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.invalidUrl));
 
         try {
             const apiUrl = tools.api.createUrl("delirius", "/download/twitterdl", {

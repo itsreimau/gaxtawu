@@ -32,7 +32,7 @@ module.exports = (bot) => {
         if (muteList.some(mute => mute.jid === ctx.sender.lid)) return;
 
         // Log command masuk
-        if (isGroup && !ctx.msg.key.fromMe) {
+        if (isGroup && !ctx.msg.key.fromMe && ctx.prefix !== "force") {
             console.log(`Incoming command: ${ctx.used.command}, from group: ${groupId}, by: ${senderId}`);
         } else if (isPrivate && !ctx.msg.key.fromMe) {
             console.log(`Incoming command: ${ctx.used.command}, from: ${senderId}`);

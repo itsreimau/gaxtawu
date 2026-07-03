@@ -20,7 +20,7 @@ module.exports = {
 
         try {
             const isQuoted = !ctx.text && ctx.quoted;
-            const profilePictureUrl = await ctx.profilePictureUrl(isQuoted ? ctx.quoted?.sender : ctx.sender.jid);
+            const profilePictureUrl = await ctx.core.profilePictureUrl(isQuoted ? ctx.quoted?.sender : ctx.sender.jid).catch(() => "https://placehold.net/avatar.png");
             const result = tools.api.createUrl("nexray", "/maker/qc", {
                 text: input,
                 name: isQuoted ? ctx.quoted?.pushName : ctx.sender.pushName,
