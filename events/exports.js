@@ -3,6 +3,7 @@ module.exports = (bot) => {
 
     require("./ready.js")(bot);
     require("./messages.js")(bot);
+    require("./join.js")(bot);
     require("./welcome.js")(bot);
     require("./call.js")(bot);
 };
