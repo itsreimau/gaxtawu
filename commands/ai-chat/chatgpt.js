@@ -47,7 +47,7 @@ module.exports = {
                 });
                 const result = (await axios.get(apiUrl)).data.result;
 
-                await ctx.reply(cleanAnomalyText(result));
+                await ctx.reply(result);
             } else {
                 const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/gpt4o-mini", {
                     teks: input,
@@ -55,15 +55,10 @@ module.exports = {
                 });
                 const result = (await axios.get(apiUrl)).data.result;
 
-                await ctx.reply(cleanAnomalyText(result));
+                await ctx.reply(result);
             }
         } catch (error) {
             await tools.cmd.handleError(ctx, error, true);
         }
     }
 };
-
-function cleanAnomalyText(text) {
-    if (!text) return "";
-    return text.replace(/-=- --/g, " ").replace(/-=-n---=-n--/g, " ");
-}

@@ -31,8 +31,9 @@ module.exports = {
                 (senderDb.sessionId ||= {}).claude = randomUUID();
                 senderDb.save();
             }
-            const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/claude-overchat", {
+            const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/chatgpt-org", {
                 teks: input,
+                model: "anthropic/claude-haiku-4-5",
                 session: senderDb.sessionId.claude
             });
             const result = (await axios.get(apiUrl)).data.result;

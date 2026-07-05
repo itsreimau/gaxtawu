@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = [{
     name: "addsewagroup",
     aliases: ["addsewa", "addsewagrup", "adg"],
     category: "owner",
@@ -13,7 +13,9 @@ module.exports = {
             return await ctx.reply(
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "1234567890 8 -s")}\n` +
-                `${tools.msg.generateNotes(["Gunakan di grup untuk otomatis menyewakan grup tersebut."])}\n` +
+                `${tools.msg.generateNotes([
+                    "Gunakan di grup untuk otomatis menyewakan grup tersebut."
+                ])}\n` +
                 tools.msg.generatesFlagInfo({
                     "-s": "Tetap diam dengan tidak menyiarkan ke owner grup"
                 })
@@ -39,7 +41,7 @@ module.exports = {
                 const groupMentions = [{
                     groupJid: `${group.id}@g.us`,
                     groupSubject: await group.name()
-                }];
+                    }];
             }
 
             const targetDb = ctx.getDb("groups", target.jid);
@@ -75,4 +77,62 @@ module.exports = {
             await tools.cmd.handleError(ctx, error);
         }
     }
-};
+}, {
+    name: "delsewagroup",
+    aliases: ["delsewa", "delsewagrup", "dsg"],
+    category: "owner",
+    permissions: {
+        owner: true
+    },
+    code: async (ctx) => {
+        const target = ctx.isGroup() ? ctx.id : await ctx.target(["text_group"]);
+
+        if (!target.jid)
+            return await ctx.reply(
+                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${tools.msg.generateCmdExample(ctx.used, "1234567890 -s")}\n` +
+                `${tools.msg.generateNotes([
+                    "Gunakan di grup untuk otomatis menghapus sewa grup tersebut."
+            ])}\n` +
+                tools.msg.generatesFlagInfo({
+                    "-s": "Tetap diam dengan tidak menyiarkan ke owner grup"
+                })
+            );
+
+        if (!await ctx.group(target.jid)) return await ctx.reply(tools.msg.info("Grup tidak valid atau bot tidak ada di grup tersebut!"));
+
+        try {
+            const targetDb = ctx.getDb("users", target.jid);
+            targetDb.sewa = false;
+            targetDb.sewaExpiration = null;
+            targetDb.save();
+
+            const flag = ctx.flag({
+                silent: {
+                    type: "boolean",
+                    short: "s",
+                    default: false
+                }
+            });
+            const silent = flag?.silent;
+            const group = await ctx.group(target.jid);
+            const groupOwner = await group.owner();
+            if (!silent && groupOwner && !config.system.restrict) {
+                const groupMentions = [{
+                    groupJid: `${group.id}@g.us`,
+                    groupSubject: await group.name()
+                    }];
+                await ctx.sendMessage(groupOwner, {
+                    text: tools.msg.info(`Sewa bot untuk grup @${groupMentions.groupJid} telah dihentikan oleh owner!`),
+                    contextInfo: {
+                        groupMentions
+                    }
+                });
+            }
+
+            await ctx.reply(tools.msg.info(`Berhasil menghapus sewa bot untuk grup ${ctx.isGroup() ? "ini" : "itu"}!`));
+        } catch (error) {
+            await tools.cmd.handleError(ctx, error);
+        }
+    }
+}];

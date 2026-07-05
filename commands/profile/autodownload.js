@@ -1,6 +1,6 @@
 module.exports = {
     name: "autodownload",
-    aliases: ["autodl", "adl"],
+    aliases: ["autodl"],
     category: "profile",
     code: async (ctx) => {
         const senderDb = ctx.db.user;

@@ -13,7 +13,9 @@ module.exports = {
             return await ctx.reply({
                 text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                     `${tools.msg.generateCmdExample(ctx.used, "@6281234567891 8 -s")}\n` +
-                    `${tools.msg.generateNotes(["Balas/quote pesan untuk menjadikan pengirim sebagai akun target."])}\n` +
+                    `${tools.msg.generateNotes([
+                        "Balas/quote pesan untuk menjadikan pengirim sebagai akun target."
+                     ])}\n` +
                     tools.msg.generatesFlagInfo({
                         "-s": "Tetap diam dengan tidak menyiarkan ke akun target"
                     }),

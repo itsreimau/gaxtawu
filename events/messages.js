@@ -1,5 +1,5 @@
 // Impor modul dan dependensi yang diperlukan
-const { Baileys, Events, Gktw } = require("@itsreimau/gktw");
+const { Events, Gktw } = require("@itsreimau/gktw");
 const moment = require("moment-timezone");
 const { styleText } = require("node:util");
 

@@ -1,6 +1,4 @@
-const { Cooldown } = require("@itsreimau/gktw");
-
-// Middleware untuk pengecekan mode dan mute
+// Middleware untuk pengecekan
 module.exports = (bot) => {
     bot.use(async (ctx, next) => {
         // Variabel umum

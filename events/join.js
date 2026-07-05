@@ -1,5 +1,5 @@
 // Impor modul dan dependensi yang diperlukan
-const { Baileys, Events } = require("@itsreimau/gktw");
+const { Events } = require("@itsreimau/gktw");
 const { styleText } = require("node:util");
 
 module.exports = (bot) => {

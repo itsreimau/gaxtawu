@@ -1,4 +1,4 @@
-const codeBase = async (ctx, apiConfig) => {
+const codeBase = async (ctx, option) => {
     const input = ctx.text;
 
     if (!input)
@@ -18,20 +18,20 @@ const codeBase = async (ctx, apiConfig) => {
         const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
         let result;
 
-        if (apiConfig.type === "direct") {
+        if (option.type === "direct") {
             const params = {
                 url: uploadUrl,
                 prompt: input
             };
-            result = tools.api.createUrl(apiConfig.base, apiConfig.path, params, apiConfig.apiKeyParam || null);
-        } else if (apiConfig.type === "axios") {
+            result = tools.api.createUrl(option.base, option.path, params, option.apiKeyParam || null);
+        } else if (option.type === "axios") {
             const params = {
-                [apiConfig.urlParam || "url"]: uploadUrl,
+                [option.urlParam || "url"]: uploadUrl,
                 prompt: input
             };
-            const apiUrl = tools.api.createUrl(apiConfig.base, apiConfig.path, params);
+            const apiUrl = tools.api.createUrl(option.base, option.path, params);
             const response = await axios.get(apiUrl);
-            result = apiConfig.resultPath.split(".").reduce((obj, key) => obj?.[key], response.data);
+            result = option.resultPath.split(".").reduce((obj, key) => obj?.[key], response.data);
         }
 
         await ctx.reply({
@@ -45,7 +45,7 @@ const codeBase = async (ctx, apiConfig) => {
     }
 };
 
-const API_CONFIGS = {
+const options = {
     editimage: {
         type: "direct",
         base: "faaa",
@@ -63,6 +63,14 @@ const API_CONFIGS = {
         }
     },
     editimage3: {
+        type: "direct",
+        base: "alwayscodex",
+        path: "/api/image/nanobananav2",
+        permissions: {
+            premium: true
+        }
+    },
+    editimage4: {
         type: "axios",
         base: "lexcode",
         path: "/api/ai/nano-banana",
@@ -72,7 +80,7 @@ const API_CONFIGS = {
         urlParam: "url",
         resultPath: "result.image"
     },
-    editimage4: {
+    editimage5: {
         type: "axios",
         base: "lexcode",
         path: "/api/ai/deepai-editor",
@@ -82,7 +90,7 @@ const API_CONFIGS = {
         urlParam: "imgUrl",
         resultPath: "result.image"
     },
-    editimage5: {
+    editimage6: {
         type: "direct",
         base: "neosoft",
         path: "/api/ai-image/editimage",
@@ -90,7 +98,7 @@ const API_CONFIGS = {
             premium: true
         }
     },
-    editimage6: {
+    editimage7: {
         type: "direct",
         base: "sanka",
         path: "/ai/editimg",
@@ -99,7 +107,7 @@ const API_CONFIGS = {
         },
         apiKeyParam: "apikey"
     },
-    editimage7: {
+    editimage8: {
         type: "axios",
         base: "kuroneko",
         path: "/api/tools/nanobanana",
@@ -111,7 +119,7 @@ const API_CONFIGS = {
     }
 };
 
-module.exports = Object.entries(API_CONFIGS).map(([name, config]) => {
+module.exports = Object.entries(options).map(([name, option]) => {
     const aliases = [];
 
     const numberMatch = name.match(/\d+$/);
@@ -125,7 +133,7 @@ module.exports = Object.entries(API_CONFIGS).map(([name, config]) => {
         name: name,
         aliases: aliases,
         category: "ai-misc",
-        permissions: config.permissions,
-        code: async (ctx) => codeBase(ctx, config)
+        permissions: option.permissions,
+        code: async (ctx) => codeBase(ctx, option)
     };
 });

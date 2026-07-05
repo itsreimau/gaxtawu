@@ -1,19 +1,20 @@
 const sessions = new Map();
 
-class codeBase {
-    constructor(config) {
-        this.name = config.name;
-        this.apiEndpoint = config.apiEndpoint;
-        this.coinReward = config.coinReward || 5;
-        this.hintCost = config.hintCost || 3;
-        this.timeout = config.timeout || 60000;
-        this.answerKey = config.answerKey || "jawaban";
-        this.questionKey = config.questionKey || "soal";
-        this.imageKey = config.imageKey || null;
-        this.audioKey = config.audioKey || null;
-        this.extraFields = config.extraFields || [];
-        this.formatQuestion = config.formatQuestion || this.defaultFormatQuestion;
-        this.formatAnswer = config.formatAnswer || this.defaultFormatAnswer;
+class QuizGame {
+    constructor(option) {
+        this.name = option.name;
+        this.apiEndpoint = option.apiEndpoint;
+        this.coinReward = option.coinReward || 5;
+        this.hintCost = option.hintCost || 3;
+        this.timeout = option.timeout || 60000;
+        this.answerKey = option.answerKey || "jawaban";
+        this.questionKey = option.questionKey || "soal";
+        this.imageKey = option.imageKey || null;
+        this.audioKey = option.audioKey || null;
+        this.extraFields = option.extraFields || [];
+        this.formatQuestion = option.formatQuestion || this.defaultFormatQuestion;
+        this.formatAnswer = option.formatAnswer || this.defaultFormatAnswer;
+        this.aliases = option.aliases || [];
     }
 
     defaultFormatQuestion(data) {
@@ -97,7 +98,7 @@ class codeBase {
                 const isParticipantUnlimited = collCtx.sender.isOwner() || participantDb?.premium;
 
                 if (participantAnswer === `hint_${ctx.used.command}`) {
-                    if (!isParticipantUnlimited && participantDb.coin < this.hintCost) return await collCtx.reply(tools.msg.info(config.msg.coin));
+                    if (!isParticipantUnlimited && participantDb.coin < this.hintCost) return await collCtx.reply(tools.msg.info(option.msg.coin));
                     if (!isParticipantUnlimited) {
                         participantDb.coin -= this.hintCost;
                         participantDb.save();
@@ -157,8 +158,8 @@ class codeBase {
     }
 }
 
-const gameConfigs = {
-    asahotak: new codeBase({
+const options = {
+    asahotak: {
         name: "asahotak",
         apiEndpoint: "/api/games/asahotak",
         answerKey: "jawaban",
@@ -166,9 +167,9 @@ const gameConfigs = {
         coinReward: 5,
         hintCost: 3,
         timeout: 60000
-    }),
+    },
 
-    caklontong: new codeBase({
+    caklontong: {
         name: "caklontong",
         apiEndpoint: "/api/games/caklontong",
         answerKey: "jawaban",
@@ -185,9 +186,9 @@ const gameConfigs = {
             const description = data.deskripsi || "";
             return `${tools.msg.ucwords(answer)} (${description})`;
         }
-    }),
+    },
 
-    lengkapikalimat: new codeBase({
+    lengkapikalimat: {
         name: "lengkapikalimat",
         apiEndpoint: "/api/games/lengkapikalimat",
         answerKey: "jawaban",
@@ -195,9 +196,9 @@ const gameConfigs = {
         coinReward: 5,
         hintCost: 3,
         timeout: 60000
-    }),
+    },
 
-    siapakahaku: new codeBase({
+    siapakahaku: {
         name: "siapakahaku",
         apiEndpoint: "/api/games/siapakahaku",
         answerKey: "jawaban",
@@ -205,9 +206,9 @@ const gameConfigs = {
         coinReward: 5,
         hintCost: 3,
         timeout: 60000
-    }),
+    },
 
-    susunkata: new codeBase({
+    susunkata: {
         name: "susunkata",
         apiEndpoint: "/api/games/susunkata",
         answerKey: "jawaban",
@@ -219,9 +220,9 @@ const gameConfigs = {
             key: "tipe",
             label: "Tipe"
         }]
-    }),
+    },
 
-    tebakbendera: new codeBase({
+    tebakbendera: {
         name: "tebakbendera",
         apiEndpoint: "/api/games/tebakbendera",
         answerKey: "name",
@@ -236,11 +237,11 @@ const gameConfigs = {
                 `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
                 `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
         }
-    }),
+    },
 
-    codeBase: new codeBase({
-        name: "codeBase",
-        apiEndpoint: "/api/games/codeBase",
+    tebakgame: {
+        name: "tebakgame",
+        apiEndpoint: "/api/games/tebakgame",
         answerKey: "jawaban",
         questionKey: null,
         imageKey: "img",
@@ -253,9 +254,9 @@ const gameConfigs = {
                 `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
                 `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
         }
-    }),
+    },
 
-    tebakgambar: new codeBase({
+    tebakgambar: {
         name: "tebakgambar",
         apiEndpoint: "/api/games/tebakgambar",
         answerKey: "jawaban",
@@ -264,9 +265,9 @@ const gameConfigs = {
         coinReward: 5,
         hintCost: 3,
         timeout: 60000
-    }),
+    },
 
-    tebakhewan: new codeBase({
+    tebakhewan: {
         name: "tebakhewan",
         apiEndpoint: "/api/games/tebakhewan",
         answerKey: "jawaban",
@@ -274,10 +275,11 @@ const gameConfigs = {
         coinReward: 5,
         hintCost: 3,
         timeout: 60000
-    }),
+    },
 
-    tebakheroml: new codeBase({
+    tebakheroml: {
         name: "tebakheroml",
+        aliases: ["tebakml"],
         apiEndpoint: "/api/games/tebakheroml",
         answerKey: "name",
         questionKey: null,
@@ -291,9 +293,9 @@ const gameConfigs = {
                 `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
                 `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
         }
-    }),
+    },
 
-    tebakjkt: new codeBase({
+    tebakjkt: {
         name: "tebakjkt",
         apiEndpoint: "/api/games/tebakjkt",
         answerKey: "jawaban",
@@ -308,9 +310,9 @@ const gameConfigs = {
                 `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
                 `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
         }
-    }),
+    },
 
-    tebakkalimat: new codeBase({
+    tebakkalimat: {
         name: "tebakkalimat",
         apiEndpoint: "/api/games/tebakkalimat",
         answerKey: "jawaban",
@@ -318,10 +320,11 @@ const gameConfigs = {
         coinReward: 5,
         hintCost: 3,
         timeout: 60000
-    }),
+    },
 
-    tebakkarakterff: new codeBase({
+    tebakkarakterff: {
         name: "tebakkarakterff",
+        aliases: ["tebakff"],
         apiEndpoint: "/api/games/karakter-freefire",
         answerKey: "name",
         questionKey: null,
@@ -335,9 +338,9 @@ const gameConfigs = {
                 `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
                 `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
         }
-    }),
+    },
 
-    tebakkartun: new codeBase({
+    tebakkartun: {
         name: "tebakkartun",
         apiEndpoint: "/api/games/tebakkartun",
         answerKey: "name",
@@ -352,9 +355,9 @@ const gameConfigs = {
                 `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
                 `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
         }
-    }),
+    },
 
-    tebakkata: new codeBase({
+    tebakkata: {
         name: "tebakkata",
         apiEndpoint: "/api/games/tebakkata",
         answerKey: "jawaban",
@@ -362,9 +365,9 @@ const gameConfigs = {
         coinReward: 5,
         hintCost: 3,
         timeout: 60000
-    }),
+    },
 
-    tebakkimia: new codeBase({
+    tebakkimia: {
         name: "tebakkimia",
         apiEndpoint: "/api/games/tebakkimia",
         answerKey: "unsur",
@@ -378,9 +381,9 @@ const gameConfigs = {
                 `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
                 `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
         }
-    }),
+    },
 
-    tebaklagu: new codeBase({
+    tebaklagu: {
         name: "tebaklagu",
         apiEndpoint: "/api/games/tebaklagu",
         answerKey: "judul",
@@ -402,9 +405,9 @@ const gameConfigs = {
             if (data.artis) text += `❖ ${formatter.bold("Petunjuk")}: Artis: ${data.artis}`;
             return text.trim();
         }
-    }),
+    },
 
-    tebaklirik: new codeBase({
+    tebaklirik: {
         name: "tebaklirik",
         apiEndpoint: "/api/games/tebaklirik",
         answerKey: "jawaban",
@@ -412,9 +415,9 @@ const gameConfigs = {
         coinReward: 5,
         hintCost: 3,
         timeout: 60000
-    }),
+    },
 
-    tebaklogo: new codeBase({
+    tebaklogo: {
         name: "tebaklogo",
         apiEndpoint: "/api/games/tebaklogo",
         answerKey: "jawaban",
@@ -430,9 +433,9 @@ const gameConfigs = {
                 `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
                 `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
         }
-    }),
+    },
 
-    tebaktebakan: new codeBase({
+    tebaktebakan: {
         name: "tebaktebakan",
         apiEndpoint: "/api/games/tebaktebakan",
         answerKey: "jawaban",
@@ -440,9 +443,9 @@ const gameConfigs = {
         coinReward: 5,
         hintCost: 3,
         timeout: 60000
-    }),
+    },
 
-    tebakwarna: new codeBase({
+    tebakwarna: {
         name: "tebakwarna",
         apiEndpoint: "/api/games/tebakwarna",
         answerKey: "correct",
@@ -457,9 +460,9 @@ const gameConfigs = {
                 `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
                 `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
         }
-    }),
+    },
 
-    tekateki: new codeBase({
+    tekateki: {
         name: "tekateki",
         apiEndpoint: "/api/games/tekateki",
         answerKey: "jawaban",
@@ -467,102 +470,16 @@ const gameConfigs = {
         coinReward: 5,
         hintCost: 3,
         timeout: 60000
-    })
+    }
 };
 
-const handlers = {};
-for (const [name, game] of Object.entries(gameConfigs)) {
-    handlers[name] = async (ctx) => await game.handle(ctx);
-}
+module.exports = Object.entries(options).map(([name, option]) => {
+    const game = new QuizGame(option);
 
-module.exports = [{
-    name: "asahotak",
-    category: "game",
-    code: handlers.asahotak
-}, {
-    name: "caklontong",
-    category: "game",
-    code: handlers.caklontong
-}, {
-    name: "lengkapikalimat",
-    category: "game",
-    code: handlers.lengkapikalimat
-}, {
-    name: "siapakahaku",
-    category: "game",
-    code: handlers.siapakahaku
-}, {
-    name: "susunkata",
-    category: "game",
-    code: handlers.susunkata
-}, {
-    name: "tebakbendera",
-    category: "game",
-    code: handlers.tebakbendera
-}, {
-    name: "codeBase",
-    category: "game",
-    code: handlers.codeBase
-}, {
-    name: "tebakgambar",
-    category: "game",
-    code: handlers.tebakgambar
-}, {
-    name: "tebakhewan",
-    category: "game",
-    code: handlers.tebakhewan
-}, {
-    name: "tebakheroml",
-    aliases: ["tebakml"],
-    category: "game",
-    code: handlers.tebakheroml
-}, {
-    name: "tebakjkt",
-    category: "game",
-    code: handlers.tebakjkt
-}, {
-    name: "tebakkalimat",
-    category: "game",
-    code: handlers.tebakkalimat
-}, {
-    name: "tebakkarakterff",
-    aliases: ["tebakff"],
-    category: "game",
-    code: handlers.tebakkarakterff
-}, {
-    name: "tebakkartun",
-    category: "game",
-    code: handlers.tebakkartun
-}, {
-    name: "tebakkata",
-    category: "game",
-    code: handlers.tebakkata
-}, {
-    name: "tebakkimia",
-    category: "game",
-    code: handlers.tebakkimia
-}, {
-    name: "tebaklagu",
-    category: "game",
-    code: handlers.tebaklagu
-}, {
-    name: "tebaklirik",
-    category: "game",
-    code: handlers.tebaklirik
-}, {
-    name: "tebaklogo",
-    category: "game",
-    code: handlers.tebaklogo
-}, {
-    name: "tebaktebakan",
-    category: "game",
-    code: handlers.tebaktebakan
-}, {
-    name: "tebakwarna",
-    category: "game",
-    code: handlers.tebakwarna
-}, {
-    name: "tekateki",
-    category: "game",
-    code: handlers.tekateki
-}];
+    return {
+        name: option.name || name,
+        aliases: option.aliases || [],
+        category: "game",
+        code: async (ctx) => await game.handle(ctx)
+    };
+});

@@ -1,6 +1,5 @@
 module.exports = {
-    name: "blackbox",
-    aliases: ["kotakhitam"],
+    name: "venice",
     category: "ai-chat",
     permissions: {
         coin: 10
@@ -15,7 +14,7 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/blackbox", {
+            const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/venice", {
                 teks: input
             });
             const result = (await axios.get(apiUrl)).data.result;

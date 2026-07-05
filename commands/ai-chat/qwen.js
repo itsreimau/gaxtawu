@@ -31,9 +31,10 @@ module.exports = {
                 (senderDb.sessionId ||= {}).qwen = randomUUID();
                 senderDb.save();
             }
-            const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/qwen3", {
+            const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/chatgpt-org", {
                 teks: input,
-                session: senderDb.sessionId.qwen
+                model: "qwen/qwen-2.5-72b-instruct",
+                session: senderDb.sessionId.claude
             });
             const result = (await axios.get(apiUrl)).data.result;
 
