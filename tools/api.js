@@ -1,4 +1,3 @@
-// Daftar API gratis
 const APIs = {
     alwayscodex: {
         baseURL: "https://api.alwayscodex.my.id"

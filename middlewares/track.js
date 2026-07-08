@@ -1,7 +1,5 @@
-// Middleware untuk tracking
 module.exports = (bot) => {
     bot.use(async (ctx, next) => {
-        // Tracking XP pengguna
         const senderDb = ctx.db.user;
         const xpGain = 10;
         const xpToLevelUp = 100;
@@ -17,7 +15,6 @@ module.exports = (bot) => {
         }
         senderDb.save();
 
-        // Tracking pesan untuk top sider/yapping
         if (ctx.isGroup() && !ctx.msg.key.fromMe) {
             const groupDb = ctx.db.group;
             let members = groupDb?.members || [];

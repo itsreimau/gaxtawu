@@ -6,8 +6,9 @@ module.exports = [{
         owner: true
     },
     code: async (ctx) => {
-        const target = ctx.isGroup() ? ctx.id : await ctx.target(["text_group"]);
-        const daysAmount = parseInt(ctx.args[ctx.isGroup() ? 0 : 1], 10);
+        const target = ctx.isGroup() ? {
+            jid: ctx.id
+        } : await ctx.target(["text_group"]);
 
         if (!target.jid)
             return await ctx.reply(
@@ -41,7 +42,7 @@ module.exports = [{
                 const groupMentions = [{
                     groupJid: `${group.id}@g.us`,
                     groupSubject: await group.name()
-                    }];
+                }];
             }
 
             const targetDb = ctx.getDb("groups", target.jid);
@@ -85,7 +86,9 @@ module.exports = [{
         owner: true
     },
     code: async (ctx) => {
-        const target = ctx.isGroup() ? ctx.id : await ctx.target(["text_group"]);
+        const target = ctx.isGroup() ? {
+            jid: ctx.id
+        } : await ctx.target(["text_group"]);
 
         if (!target.jid)
             return await ctx.reply(
@@ -121,7 +124,7 @@ module.exports = [{
                 const groupMentions = [{
                     groupJid: `${group.id}@g.us`,
                     groupSubject: await group.name()
-                    }];
+                }];
                 await ctx.sendMessage(groupOwner, {
                     text: tools.msg.info(`Sewa bot untuk grup @${groupMentions.groupJid} telah dihentikan oleh owner!`),
                     contextInfo: {

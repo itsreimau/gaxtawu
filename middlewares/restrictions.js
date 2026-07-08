@@ -1,10 +1,8 @@
-// Middleware untuk pengecekan restrictions
 const { Cooldown } = require("@itsreimau/gktw");
 const moment = require("moment-timezone");
 
 module.exports = (bot) => {
     bot.use(async (ctx, next) => {
-        // Variabel umum
         const isGroup = ctx.isGroup();
         const isPrivate = ctx.isPrivate();
         const senderJid = ctx.sender.jid;
@@ -13,17 +11,14 @@ module.exports = (bot) => {
         const isOwner = ctx.sender.isOwner();
         const isAdmin = isGroup ? await ctx.group().isSenderAdmin() : false;
 
-        // Mengambil database
         const botDb = ctx.db.bot;
         const senderDb = ctx.db.user;
         const groupDb = ctx.db.group;
 
-        // Simulasi mengetik
         const simulateTyping = async () => {
             if (config.system.autoTypingOnCmd) await ctx.simulateTyping();
         };
 
-        // Pengecekan kondisi restrictions
         const restrictions = [{
             key: "banned",
             condition: senderDb?.banned && ctx.used.command !== "owner",

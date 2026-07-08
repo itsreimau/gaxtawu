@@ -1,8 +1,6 @@
-// Impor modul dan dependensi yang diperlukan
 const { Events } = require("@itsreimau/gktw");
 const moment = require("moment-timezone");
 
-// Fungsi untuk menangani event pengguna bergabung/keluar grup
 async function handleWelcome(bot, welcome, type, isSimulate = false) {
     const groupJid = welcome.id;
     const groupDb = bot.getDb("groups", groupJid);
@@ -42,9 +40,8 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
 }
 
 module.exports = (bot) => {
-    // Event saat pengguna bergabung atau keluar dari grup
     bot.ev.on(Events.UserJoin, async (welcome) => handleWelcome(bot, welcome, Events.UserJoin));
     bot.ev.on(Events.UserLeave, async (welcome) => handleWelcome(bot, welcome, Events.UserLeave));
 };
 
-module.exports.handleWelcome = handleWelcome; // Penanganan event pengguna bergabung/keluar grup
+module.exports.handleWelcome = handleWelcome;

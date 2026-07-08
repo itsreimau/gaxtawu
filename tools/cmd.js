@@ -1,4 +1,3 @@
-// Impor modul dan dependensi yang diperlukan
 const { Baileys, Gktw, MessageType } = require("@itsreimau/gktw");
 const { format } = require("node:util");
 
@@ -11,6 +10,7 @@ function calculateDelay(totalTargets) {
         if (total <= 30) return 20000;
         return 30000;
     };
+
     const delays = Array.from({
         length: totalTargets
     }, () => {
@@ -20,6 +20,7 @@ function calculateDelay(totalTargets) {
         delay *= 0.8 + Math.random() * 0.8;
         return Math.floor(delay);
     });
+
     const totalDuration = delays.reduce((sum, d) => sum + d, 0);
     return {
         delay: delays,
@@ -53,6 +54,7 @@ function checkMedia(type, required) {
         text: [MessageType.conversation, MessageType.extendedTextMessage],
         video: MessageType.videoMessage
     };
+
     for (const media of required) {
         const mappedType = mediaMap[media];
         if (!mappedType) continue;
@@ -77,6 +79,7 @@ function checkQuotedMedia(type, required) {
         text: [MessageType.conversation, MessageType.extendedTextMessage],
         video: MessageType.videoMessage
     };
+
     for (const media of required) {
         const mappedType = mediaMap[media];
         if (!mappedType) continue;
@@ -117,16 +120,18 @@ function getReportOwner() {
 }
 
 async function handleError(ctx, error, useAxios = false, silent = false) {
-    if (!silent) {
-        const isGroup = ctx.isGroup();
-        const senderJid = ctx.sender.jid;
-        const senderId = ctx.getId(senderJid);
-        const groupJid = isGroup ? ctx.id : null;
-        const groupSubject = isGroup ? await ctx.group(groupJid).name() : null;
-        const errorText = format(error);
-        const reportOwner = getReportOwner();
+    const isGroup = ctx.isGroup();
+    const senderJid = ctx.sender.jid;
+    const senderId = ctx.getId(senderJid);
+    const groupJid = isGroup ? ctx.id : null;
+    const groupSubject = isGroup ? await ctx.group(groupJid).name() : null;
+    const errorText = format(error);
+    const isOwner = ctx.sender.isOwner();
 
-        console.error(`Error: ${errorText}`);
+    console.error(`Error: ${errorText}`);
+
+    if (!silent || !config.system.restrict) {
+        const reportOwner = getReportOwner();
         if (reportOwner && reportOwner.length > 0) {
             const {
                 delay
@@ -146,8 +151,14 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
                 await Baileys.delay(delay);
             }
         }
-        if (useAxios && error.status !== 200) return await ctx.reply(tools.msg.info(config.msg.notFound));
     }
+
+    if (isOwner)
+        return await ctx.reply(
+            `${tools.msg.info("Terjadi kesalahan:")}\n` +
+            formatter.monospace(errorText)
+        );
+    if (useAxios && error.status !== 200) return await ctx.reply(tools.msg.info(config.msg.notFound));
     await ctx.reply(tools.msg.info(config.msg.error));
 }
 

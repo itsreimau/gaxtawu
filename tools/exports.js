@@ -1,9 +1,13 @@
-// Ekspor modul atau fungsi yang diperlukan
+const api = require("./api.js");
+const cmd = require("./cmd.js");
+const list = require("./list.js");
+const msg = require("./msg.js");
+
 const tools = {
-    api: require("./api.js"),
-    cmd: require("./cmd.js"),
-    list: require("./list.js"),
-    msg: require("./msg.js")
+    api,
+    cmd,
+    list,
+    msg
 };
 
 module.exports = tools;

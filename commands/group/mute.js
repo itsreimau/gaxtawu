@@ -89,7 +89,7 @@ module.exports = [{
                     `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
                     tools.msg.generateNotes([
                         "Balas/quote pesan untuk menjadikan pengirim sebagai akun target.",
-                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-unmute bot.`
+                        `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-unmute bot.`
                     ]),
                 mentions: ["6281234567891@s.whatsapp.net"]
             });

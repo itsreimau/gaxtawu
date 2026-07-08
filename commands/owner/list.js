@@ -72,7 +72,7 @@ module.exports = [{
             await tools.cmd.handleError(ctx, error);
         }
     }
-    }, {
+}, {
     name: "listsewagroup",
     aliases: ["listsewa"],
     category: "owner",

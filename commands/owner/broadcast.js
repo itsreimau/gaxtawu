@@ -14,7 +14,7 @@ module.exports = [{
                 `${tools.msg.generateCmdExample(ctx.used, "halo, dunia!")}\n` +
                 tools.msg.generateNotes([
                     `Gunakan ${formatter.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`
-               ])
+                ])
             );
 
         const botDb = ctx.db.bot;
@@ -54,10 +54,10 @@ module.exports = [{
                         buttons: [{
                             text: "Hubungi Owner",
                             id: `${ctx.used.prefix}owner`
-                            }, {
+                        }, {
                             text: "Donasi",
                             id: `${ctx.used.prefix}donate`
-                            }]
+                        }]
                     });
                     await tools.cmd.delay(delay);
                 } catch {}
@@ -79,9 +79,9 @@ module.exports = [{
         const input = ctx.text || ctx.quoted?.body;
 
         const [checkMedia, checkQuotedMedia] = [
-                tools.cmd.checkMedia(ctx.msg.messageType, ["image", "video"]),
-                tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image", "video"])
-            ];
+            tools.cmd.checkMedia(ctx.msg.messageType, ["image", "video"]),
+            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image", "video"])
+        ];
 
         const type = checkMedia || checkQuotedMedia;
 
@@ -91,7 +91,7 @@ module.exports = [{
                 `${tools.msg.generateCmdExample(ctx.used, "halo, dunia!")}\n` +
                 tools.msg.generateNotes([
                     `Gunakan ${formatter.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`
-            ])
+                ])
             );
 
         const botDb = ctx.db.bot;
@@ -118,7 +118,7 @@ module.exports = [{
             if (["image", "video"].includes(type)) {
                 const buffer = await ctx.msg.download() || await ctx.quoted.download();
                 content = {
-                        [type]: buffer,
+                    [type]: buffer,
                     caption: input
                 };
             } else {
