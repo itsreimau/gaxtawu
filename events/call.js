@@ -36,14 +36,14 @@ module.exports = (bot) => {
                     await tools.cmd.delay(delay);
                 }
             }
-        }
 
-        await bot.sendMessage(fromJid, {
-            text: tools.msg.info("Anda telah dibanned secara otomatis karena melanggar aturan!"),
-            buttons: [{
-                text: "Hubungi Owner",
-                id: "/owner"
-            }]
-        });
+            await bot.sendMessage(fromJid, {
+                text: tools.msg.info("Anda telah dibanned secara otomatis karena melanggar aturan!"),
+                buttons: [{
+                    text: "Hubungi Owner",
+                    id: "/owner"
+                }]
+            });
+        }
     });
 };
