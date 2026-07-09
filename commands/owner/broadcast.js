@@ -3,7 +3,8 @@ module.exports = [{
     aliases: ["bc", "bcht", "bcgc", "broadcast"],
     category: "owner",
     permissions: {
-        owner: true
+        owner: true,
+        restrict: true
     },
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.body;
@@ -73,7 +74,8 @@ module.exports = [{
     aliases: ["bcgcsw", "bcswgc"],
     category: "owner",
     permissions: {
-        owner: true
+        owner: true,
+        restrict: true
     },
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.body;

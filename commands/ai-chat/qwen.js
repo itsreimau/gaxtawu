@@ -34,7 +34,7 @@ module.exports = {
             const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/chatgpt-org", {
                 teks: input,
                 model: "qwen/qwen-2.5-72b-instruct",
-                session: senderDb.sessionId.claude
+                session: senderDb.sessionId.qwen
             });
             const result = (await axios.get(apiUrl)).data.result;
 

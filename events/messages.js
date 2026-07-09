@@ -143,7 +143,7 @@ module.exports = (bot) => {
             }
 
             if (isGroup) {
-                if (!isCmd || isCmd?.didyoumean) console.log(styleText("cyan", `Incoming message from group: ${groupId}, by: ${senderId}`));
+                if (!isCmd || isCmd?.didyoumean) console.log(styleText("magenta", "[~]"), `Incoming message from group: ${groupId}, by: ${senderId}`);
 
                 const messageType = ctx.getMessageType();
                 const groupAutokick = groupDb?.option?.autokick;
@@ -269,7 +269,7 @@ module.exports = (bot) => {
             }
 
             if (isPrivate) {
-                if (!isCmd || isCmd?.didyoumean) console.log(styleText("cyan", `Incoming message from: ${senderId}`));
+                if (!isCmd || isCmd?.didyoumean) console.log(styleText("magenta", "[~]"), `Incoming message from: ${senderId}`);
             }
         }
     });

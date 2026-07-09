@@ -395,16 +395,7 @@ const options = {
         extraFields: [{
             key: "artis",
             label: "Artis"
-        }],
-        formatQuestion(data) {
-            let text = `✦ — Dengarkan audio berikut dan tebak judul lagunya!\n` +
-                "\n" +
-                `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}\n`;
-
-            if (data.artis) text += `❖ ${formatter.bold("Petunjuk")}: Artis: ${data.artis}`;
-            return text.trim();
-        }
+        }]
     },
 
     tebaklirik: {

@@ -1,3 +1,5 @@
+const { styleText } = require("node:util");
+
 module.exports = (bot) => {
     bot.use(async (ctx, next) => {
         const isGroup = ctx.isGroup();
@@ -25,9 +27,9 @@ module.exports = (bot) => {
         if (muteList.some(mute => mute.jid === ctx.sender.lid)) return;
 
         if (isGroup && !ctx.msg.key.fromMe && ctx.prefix !== "force") {
-            console.log(`Incoming command: ${ctx.used.command}, from group: ${groupId}, by: ${senderId}`);
+            console.log(styleText("magenta", "[~]"), `Incoming command: ${ctx.used.command}, from group: ${groupId}, by: ${senderId}`);
         } else if (isPrivate && !ctx.msg.key.fromMe) {
-            console.log(`Incoming command: ${ctx.used.command}, from: ${senderId}`);
+            console.log(styleText("magenta", "[~]"), `Incoming command: ${ctx.used.command}, from: ${senderId}`);
         }
 
         await next();

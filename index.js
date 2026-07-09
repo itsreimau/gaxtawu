@@ -24,7 +24,7 @@ Object.assign(global, {
     tools: require("./tools/exports.js")
 });
 
-console.log(styleText("cyan", "Starting..."));
+console.log("[*] Starting...");
 
 say(pkg.name, {
     colors: ["#00A1E0", "#00FFFF"],
@@ -38,7 +38,7 @@ say(`${pkg.description} - By ${pkg.author}`, {
 
 if (config.system && config.system.useServer) {
     const port = config.system.port;
-    createServer((_, res) => res.end(`${pkg.name} berjalan di port ${port}`)).listen(port, () => console.log(styleText("green", `${pkg.name} runs on port ${port}`)));
+    createServer((_, res) => res.end(`${pkg.name} berjalan di port ${port}`)).listen(port, () => console.log(styleText("blue", "[>]"), `${pkg.name} runs on port ${port}`));
 }
 
 require("./main.js");

@@ -14,7 +14,7 @@ const directory = {
     command: resolve(__dirname, "commands")
 };
 
-console.log(util.styleText("cyan", "Connecting..."));
+console.log("[*] Connecting...");
 
 const parsePrefix = function(prefix) {
     if (typeof prefix !== "string") return prefix;
@@ -94,4 +94,4 @@ middlewares(bot);
 const cmd = new CommandHandler(bot, directory.command);
 cmd.load();
 
-bot.launch().catch(error => console.error(`Error: ${util.format(error)}`));
+bot.launch().catch(error => console.error(util.styleText("red", "[x]"), `Error: ${util.format(error)}`));

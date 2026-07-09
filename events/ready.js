@@ -3,7 +3,7 @@ const { styleText } = require("node:util");
 
 module.exports = (bot) => {
     bot.ev.once(Events.ClientReady, async (b) => {
-        console.log(styleText("green", `${config.bot.name} by ${config.owner.name}, ready at ${b.user?.id || b.user?.lid}`));
+        console.log(styleText("blue", "[>]"), `${config.bot.name} by ${config.owner.name}, ready at ${b.user?.id || b.user?.lid}`);
 
         const botDb = bot.getDb("bot");
         const botRestart = botDb?.restart || {};

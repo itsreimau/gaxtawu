@@ -128,7 +128,7 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
     const errorText = format(error);
     const isOwner = ctx.sender.isOwner();
 
-    console.error(`Error: ${errorText}`);
+    console.error(util.styleText("red", "[x]"), `Error: ${util.format(errorText)}`)
 
     if (!silent || !config.system.restrict) {
         const reportOwner = getReportOwner();
