@@ -50,7 +50,7 @@ module.exports = {
 
             collector.on("collect", async (collCtx) => {
                 const answer = collCtx.msg.body?.toLowerCase();
-                const isUnlimited = collCtx.sender.isOwner() || participantDb?.premium;
+                const isUnlimited = collCtx.sender.isOwner() || collCtx.db.user?.premium;
 
                 if (answer === `surrender_${ctx.used.command}`) {
                     session.delete(sessionKey);

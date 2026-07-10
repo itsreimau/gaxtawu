@@ -68,7 +68,7 @@ module.exports = (bot) => {
             if (senderDb?.premium && Date.now() >= senderDb?.premiumExpiration) {
                 senderDb.premium = false;
                 senderDb.premiumExpiration = null;
-                sender.coin = 100;
+                senderDb.coin = 100;
                 senderDb.save();
             }
             senderDb.save();
