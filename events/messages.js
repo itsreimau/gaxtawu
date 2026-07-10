@@ -97,6 +97,11 @@ module.exports = (bot) => {
                     }]
                 });
 
+            if (isCmd?.prefix && botDb?.lastPrefix !== isCmd.prefix) {
+                botDb.lastPrefix = isCmd.prefix;
+                botDb.save();
+            }
+
             const autodownloadEnabled = senderDb?.autodownload || false;
             if (autodownloadEnabled && !isCmd) {
                 const urlPatterns = {
