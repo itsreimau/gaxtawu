@@ -20,14 +20,14 @@ module.exports = (bot) => {
             let members = groupDb?.members || [];
 
             const senderLid = ctx.sender.lid;
-            const existingMember = members.find(x => tools.cmd.areJidsSameUser(x.id, senderLid));
+            const existingMember = members.find(member => tools.cmd.areJidsSameUser(member.id, senderLid));
 
             if (existingMember) {
                 existingMember.sent = (existingMember.sent || 0) + 1;
                 if (ctx.sender.pushName) existingMember.pushName = ctx.sender.pushName;
             } else {
                 const groupMembers = await ctx.group().members();
-                const memberData = groupMembers.find(x => tools.cmd.areJidsSameUser(x.id, senderLid));
+                const memberData = groupMembers.find(member => tools.cmd.areJidsSameUser(member.id, senderLid));
                 members.push({
                     id: senderLid,
                     sent: 1,
