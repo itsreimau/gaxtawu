@@ -1,5 +1,5 @@
 const { Baileys, Gktw, MessageType } = require("@itsreimau/gktw");
-const { format } = require("node:util");
+const { format, util } = require("node:util");
 
 function calculateDelay(totalTargets) {
     if (!totalTargets || totalTargets <= 0) return null;
