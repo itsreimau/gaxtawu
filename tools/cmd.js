@@ -1,5 +1,5 @@
 const { Baileys, Gktw, MessageType } = require("@itsreimau/gktw");
-const { format } = require("node:util");
+const util = require("node:util");
 
 function calculateDelay(totalTargets) {
     if (!totalTargets || totalTargets <= 0) return null;
@@ -125,7 +125,7 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
     const senderId = ctx.getId(senderJid);
     const groupJid = isGroup ? ctx.id : null;
     const groupSubject = isGroup ? await ctx.group(groupJid).name() : null;
-    const errorText = format(error);
+    const errorText = util.format(error);
     const isOwner = ctx.sender.isOwner();
 
     console.error(util.styleText("red", "[x]"), `Error: ${util.format(errorText)}`)

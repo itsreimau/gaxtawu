@@ -1,6 +1,5 @@
 module.exports = {
-    name: "pinterest",
-    aliases: ["pin"],
+    name: "safebooru",
     category: "tool",
     permissions: {
         coin: 10
@@ -15,11 +14,10 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("alwayscodex", "/api/search/pinterest", {
-                query: input,
-                limit: 250
+            const apiUrl = tools.api.createUrl("delirius", "/search/safebooru", {
+                query: input.replace(/\s/g, "_")
             });
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result.items).image;
+            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.data).image;
 
             await ctx.reply({
                 image: {

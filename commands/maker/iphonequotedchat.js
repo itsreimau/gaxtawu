@@ -38,8 +38,8 @@ module.exports = {
 };
 
 async function checkBrandProvider(number) {
-    const prefix = number.replace(/^62/, "0").substring(0, 4);
-    const providers = (await axios.get("https://raw.githubusercontent.com/zororaka00/id-mobile-detector/refs/heads/main/dist/providers.json")).data;
-    const found = providers.find(p => p.prefix === prefix);
-    return found ? found.brand : "Telkomsel";
+    const provider = (await axios.get(tools.api.createUrl("sanka", "/random/cek-nomor", {
+        nomor: number.replace(/^62/, "0")
+    }, "apikey"))).data.data.operator;
+    return provider || "Telkomsel";
 }

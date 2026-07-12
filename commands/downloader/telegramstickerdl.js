@@ -19,20 +19,14 @@ module.exports = {
         if (!tools.cmd.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.invalidUrl));
 
         try {
-            const apiUrl = tools.api.createUrl("nexray", "/tools/telegram-sticker", {
+            const apiUrl = tools.api.createUrl("delirius", "/download/telegramsticker", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result;
-            const stickerPacks = await prepareStickerPack(result.sticker, result.title, `t.me/${result.name}`, ctx.msg.key.id);
+            const result = (await axios.get(apiUrl)).data;
+            const stickerPacks = await prepareStickerPack(result.stickers, result.title, ctx.msg.key.id);
 
             for (const stickerPack of stickerPacks) {
-                await ctx.reply({
-                    cover: stickerPack.cover,
-                    stickers: stickerPack.stickers,
-                    name: stickerPack.name,
-                    publisher: stickerPack.publisher,
-                    description: stickerPack.description
-                });
+                await ctx.reply(stickerPack);
             }
         } catch (error) {
             await tools.cmd.handleError(ctx, error);
@@ -40,12 +34,12 @@ module.exports = {
     }
 };
 
-async function createSticker(stickerUrl, emoji, id) {
+async function createSticker(stickerUrl, id) {
     return await new WASF.Sticker(stickerUrl)
         .setPack(config.sticker.packname)
         .setAuthor(config.sticker.author)
         .setType(WASF.StickerTypes.FULL)
-        .setCategories([emoji])
+        .setCategories(["🌕"])
         .setID(id)
         .setQuality(50)
         .build();
@@ -59,7 +53,7 @@ function chunkArray(array, chunkSize) {
     return chunks;
 }
 
-async function prepareStickerPack(stickers, title, publisher, packId) {
+async function prepareStickerPack(stickers, title, packId) {
     const maxPerPack = 30;
     const stickerChunks = chunkArray(stickers, maxPerPack);
     const packs = [];
@@ -68,15 +62,14 @@ async function prepareStickerPack(stickers, title, publisher, packId) {
         const chunk = stickerChunks[packIndex];
 
         const stickersPack = await Promise.all(chunk.map(async (sticker) => ({
-            data: await createSticker(sticker.url, sticker.emoji, packId),
-            emojis: [sticker.emoji]
+            data: await createSticker(sticker.url, packId),
+            emojis: ["🌕"]
         })));
 
         packs.push({
             name: `${title}${stickerChunks.length > 1 ? ` (${packIndex + 1}/${stickerChunks.length})` : ""}`,
-            publisher: publisher,
             description: `Packed by ${config.bot.name}`,
-            cover: await createSticker(stickers[0].url, stickers[0].emoji, packId),
+            cover: await createSticker(stickers[0].url, packId),
             stickers: stickersPack
         });
     }

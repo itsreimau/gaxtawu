@@ -17,14 +17,14 @@ module.exports = {
         if (!tools.cmd.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.invalidUrl));
 
         try {
-            const apiUrl = tools.api.createUrl("nexray", "/downloader/mediafire", {
+            const apiUrl = tools.api.createUrl("alwayscodex", "/api/downloader/mediafirev2", {
                 url
             });
             const result = (await axios.get(apiUrl)).data.result;
 
             await ctx.reply({
                 document: {
-                    url: result.download_url
+                    url: result.link
                 },
                 fileName: result.filename,
                 mimetype: result.mimetype,

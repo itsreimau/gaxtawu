@@ -35,13 +35,13 @@ module.exports = {
             const apiUrl = tools.api.createUrl("alwayscodex", "/api/tools/vccgen", {
                 type: input
             });
-            const result = (await axios.get(apiUrl)).data;
+            const result = (await axios.get(apiUrl)).data.result.cards;
 
-            const resultText = result.result.cards.map(card =>
-                `❖ ${formatter.bold("Nomor Kartu")}: ${card.card_number}\n` +
-                `❖ ${formatter.bold("Kedaluwarsa")}: ${card.expiration_date}\n` +
-                `❖ ${formatter.bold("Pemegang Kartu")}: ${card.cardholder_name}\n` +
-                `❖ ${formatter.bold("CVV")}: ${card.cvv}`
+            const resultText = result.map(res =>
+                `❖ ${formatter.bold("Nomor Kartu")}: ${res.card_number}\n` +
+                `❖ ${formatter.bold("Kedaluwarsa")}: ${res.expiration_date}\n` +
+                `❖ ${formatter.bold("Pemegang Kartu")}: ${res.cardholder_name}\n` +
+                `❖ ${formatter.bold("CVV")}: ${res.cvv}`
             ).join("\n\n");
             await ctx.reply(resultText.trim());
         } catch (error) {
