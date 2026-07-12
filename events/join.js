@@ -15,13 +15,13 @@ module.exports = (bot) => {
             },
             buttons: [{
                 text: "Menu",
-                id: `${prefix}menu`
+                id: `${lastPrefix}menu`
             }, {
                 text: "Hubungi Owner",
-                id: `${prefix}owner`
+                id: `${lastPrefix}owner`
             }, {
                 text: "Donasi",
-                id: `${prefix}donate`
+                id: `${lastPrefix}donate`
             }]
         });
     });
