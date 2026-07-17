@@ -1,4 +1,4 @@
-const WASF = require("wa-sticker-tools.msg");
+const WASF = require("wa-sticker-formatter");
 
 module.exports = [{
     name: "emojigif",

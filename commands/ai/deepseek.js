@@ -1,8 +1,8 @@
 const { randomUUID } = require("node:crypto");
 
 module.exports = {
-    name: "perplexity",
-    category: "ai-chat",
+    name: "deepseek",
+    category: "ai",
     permissions: {
         coin: 10
     },
@@ -21,20 +21,19 @@ module.exports = {
         const senderDb = ctx.db.user;
 
         if (input.toLowerCase() === "reset") {
-            (senderDb.sessionId ||= {}).perplexity = randomUUID();
+            (senderDb.sessionId ||= {}).deepseek = randomUUID();
             senderDb.save();
             return await ctx.reply(tools.msg.info("Riwayat percakapan berhasil direset!"));
         }
 
         try {
-            if (!senderDb.sessionId?.perplexity) {
-                (senderDb.sessionId ||= {}).perplexity = randomUUID();
+            if (!senderDb.sessionId?.deepseek) {
+                (senderDb.sessionId ||= {}).deepseek = randomUUID();
                 senderDb.save();
             }
-            const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/chatgpt-org", {
+            const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/deepseek-flash", {
                 teks: input,
-                model: "perplexity/sonar",
-                session: senderDb.sessionId.perplexity
+                session: senderDb.sessionId.deepseek
             });
             const result = (await axios.get(apiUrl)).data.result;
 

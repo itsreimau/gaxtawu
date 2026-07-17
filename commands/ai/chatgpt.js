@@ -3,7 +3,7 @@ const { randomUUID } = require("node:crypto");
 module.exports = {
     name: "chatgpt",
     aliases: ["ai", "gpt"],
-    category: "ai-chat",
+    category: "ai",
     permissions: {
         coin: 10
     },

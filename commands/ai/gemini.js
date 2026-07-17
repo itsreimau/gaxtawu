@@ -1,6 +1,6 @@
 module.exports = {
     name: "gemini",
-    category: "ai-chat",
+    category: "ai",
     permissions: {
         coin: 10
     },

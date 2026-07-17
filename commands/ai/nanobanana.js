@@ -2,7 +2,7 @@ const { randomUUID } = require("node:crypto");
 
 module.exports = {
         name: "nanobanana",
-        category: "ai-chat",
+    category: "ai",
         permissions: {
             coin: 10
         },
@@ -38,4 +38,5 @@ module.exports = {
             } catch (error) {
                 await tools.helper.handleError(ctx, error, true);
             }
-        };
+        }
+    };

@@ -1,6 +1,6 @@
 module.exports = {
     name: "pollinations",
-    category: "ai-generate",
+    category: "ai",
     permissions: {
         coin: 10
     },

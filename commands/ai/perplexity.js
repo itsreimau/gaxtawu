@@ -1,8 +1,8 @@
 const { randomUUID } = require("node:crypto");
 
 module.exports = {
-    name: "claude",
-    category: "ai-chat",
+    name: "perplexity",
+    category: "ai",
     permissions: {
         coin: 10
     },
@@ -21,20 +21,20 @@ module.exports = {
         const senderDb = ctx.db.user;
 
         if (input.toLowerCase() === "reset") {
-            (senderDb.sessionId ||= {}).claude = randomUUID();
+            (senderDb.sessionId ||= {}).perplexity = randomUUID();
             senderDb.save();
             return await ctx.reply(tools.msg.info("Riwayat percakapan berhasil direset!"));
         }
 
         try {
-            if (!senderDb.sessionId?.claude) {
-                (senderDb.sessionId ||= {}).claude = randomUUID();
+            if (!senderDb.sessionId?.perplexity) {
+                (senderDb.sessionId ||= {}).perplexity = randomUUID();
                 senderDb.save();
             }
             const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/chatgpt-org", {
                 teks: input,
-                model: "anthropic/claude-haiku-4-5",
-                session: senderDb.sessionId.claude
+                model: "perplexity/sonar",
+                session: senderDb.sessionId.perplexity
             });
             const result = (await axios.get(apiUrl)).data.result;
 

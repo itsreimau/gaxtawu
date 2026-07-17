@@ -1,6 +1,6 @@
 module.exports = {
-    name: "copilot",
-    category: "ai-chat",
+    name: "felo",
+    category: "ai",
     permissions: {
         coin: 10
     },
@@ -14,7 +14,7 @@ module.exports = {
             );
 
         try {
-            const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/copilot", {
+            const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/felo", {
                 teks: input
             });
             const result = (await axios.get(apiUrl)).data.result;
