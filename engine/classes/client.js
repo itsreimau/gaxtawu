@@ -409,7 +409,7 @@ class client {
             });
     }
 
-    _createSendMessage(jid, content, options = {}) {
+async    _createSendMessage(jid, content, options = {}) {
         if (typeof content === "string")
             content = {
                 text: content
@@ -493,7 +493,7 @@ class client {
         }
         if (baileys.isPnUser(jid) || baileys.isLidUser(jid)) content.ai = true;
         if ((content.title || content.subtitle || content.footer) && !content.buttons && !content.nativeFlow) content.nativeFlow = {};
-        return this.core.sendMessage(jid, content, options);
+        return await this.core.sendMessage(jid, content, options);
     }
 
     parseContact(contact) {
