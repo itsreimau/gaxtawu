@@ -12,7 +12,7 @@ const WASF = require("wa-sticker-formatter");
 const commands = require("../handler/commands");
 const context = require("./context");
 
-class Client {
+class client {
     constructor(opts = {}) {
         this._initAuth(opts.auth || {});
         this._initConnection(opts.connection || {});
@@ -531,4 +531,4 @@ class Client {
     }
 }
 
-module.exports = Client;
+module.exports = client;
