@@ -202,7 +202,7 @@ class Ctx {
             };
 
         const candidates = commandsList.flatMap(cmd => [cmd.name, ...(cmd.aliases || [])]);
-        const suggestion = tools.helper.didyoumean(result.commandName, candidates);
+        const suggestion = tools.helper.didYouMean(result.commandName, candidates);
         return suggestion ? {
             msg: result.text,
             prefix: result.selectedPrefix,
