@@ -23,7 +23,7 @@
   "license": "MIT",
   "imports": {
     "#engine": "./engine/index.js",
-    "#tools/*": "./tools/exports.js"
+    "#tools": "./tools/exports.js"
   },
   "dependencies": {
     "@cacheable/node-cache": "^3.1.1",
