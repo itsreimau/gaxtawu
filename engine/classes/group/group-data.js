@@ -113,8 +113,8 @@ class groupData {
     async _isMemberCheck(jid, checkFn) {
         const members = await this.members();
         if (!members) return false;
-        const field = baileys..isLidUser(jid) ? "id" : "phoneNumber";
-        return members.some(member => baileys..areJidsSameUser(member[field], jid) && checkFn(member));
+        const field = baileys.isLidUser(jid) ? "id" : "phoneNumber";
+        return members.some(member => baileys.areJidsSameUser(member[field], jid) && checkFn(member));
     }
 
     async isMemberExist(jid) {

@@ -72,7 +72,7 @@ class context {
         const context = this._msg.message?.[this.getMessageType()]?.contextInfo || {};
         if (!context?.quotedMessage) return null;
 
-        const message = baileys..extractMessageContent(context.quotedMessage) || {};
+        const message = baileys.extractMessageContent(context.quotedMessage) || {};
         const chat = context.remoteJid || this.id;
         const sender = context.participant || chat;
 
@@ -85,8 +85,8 @@ class context {
             key: {
                 remoteJid: chat,
                 id: context.stanzaId,
-                fromMe: baileys..areJidsSameUser(sender, this.me.id),
-                participant: baileys..isJidGroup(chat) ? sender : null
+                fromMe: baileys.areJidsSameUser(sender, this.me.id),
+                participant: baileys.isJidGroup(chat) ? sender : null
             },
             id: chat,
             sender,
@@ -101,7 +101,7 @@ class context {
     }
 
     get msg() {
-        const message = baileys..extractMessageContent(this._msg.message);
+        const message = baileys.extractMessageContent(this._msg.message);
         return {
             ...this._msg,
             message,
@@ -120,14 +120,14 @@ class context {
     }
 
     isGroup() {
-        return baileys..isJidGroup(this.id);
+        return baileys.isJidGroup(this.id);
     }
     isPrivate() {
-        return baileys..isPnUser(this.id) || baileys..isLidUser(this.id);
+        return baileys.isPnUser(this.id) || baileys.isLidUser(this.id);
     }
 
     group(jid = this.id, useCache = true) {
-        return baileys..isJidGroup(jid) ? new GroupData(this, jid, useCache) : null;
+        return baileys.isJidGroup(jid) ? new GroupData(this, jid, useCache) : null;
     }
 
     flag(rules = {}) {
@@ -158,7 +158,7 @@ class context {
             text: () => {
                 const number = this.args[0]?.replace(/[^\d]/g, "");
                 return number && {
-                    jid: number + baileys..S_WHATSAPP_NET,
+                    jid: number + baileys.S_WHATSAPP_NET,
                     source: "text"
                 };
             },
@@ -176,7 +176,7 @@ class context {
             if (!strategy) continue;
             const result = await strategy();
             if (result) {
-                if (baileys..isPnUser(result.jid)) result.jid = (await this.core.findUserId(result.jid)).lid;
+                if (baileys.isPnUser(result.jid)) result.jid = (await this.core.findUserId(result.jid)).lid;
                 return result;
             }
         }
@@ -213,7 +213,7 @@ class context {
 
     async _downloadMediaMessage(message) {
         try {
-            return await baileys..downloadMediaMessage(message, "buffer", {}, {
+            return await baileys.downloadMediaMessage(message, "buffer", {}, {
                 logger: this._self.logger,
                 reuploadRequest: this._client.updateMediaMessage
             });
@@ -304,7 +304,7 @@ class context {
         return this._msg.message?.[this.getMessageType()]?.contextInfo?.mentionedJid || [];
     }
     getDevice(id = this._msg.key.id) {
-        return baileys..getDevice(id);
+        return baileys.getDevice(id);
     }
     checkOwner(jid = this._sender.lid, fromMe = false) {
         return tools.helper.checkOwner(jid, this.owner, fromMe);

@@ -9,7 +9,7 @@ async function commands(self, runMiddlewares) {
         core
     } = self;
 
-    if (!m.body || baileys..isJidStatusBroadcast(m.key.remoteJid) || baileys..isJidNewsletter(m.key.remoteJid)) return;
+    if (!m.body || baileys.isJidStatusBroadcast(m.key.remoteJid) || baileys.isJidNewsletter(m.key.remoteJid)) return;
 
     const findMatchingCommands = (cmdMap, commandName) => {
         const commands = Array.from(cmdMap?.values() || []);

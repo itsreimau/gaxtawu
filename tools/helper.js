@@ -70,8 +70,8 @@ function checkMedia(type, required) {
 }
 
 function checkOwner(jid, owner, fromMe) {
-    if (!baileys..isPnUser(jid)) return false;
-    return fromMe || owner.some(o => baileys..areJidsSameUser(o + baileys..S_WHATSAPP_NET, jid));
+    if (!baileys.isPnUser(jid)) return false;
+    return fromMe || owner.some(o => baileys.areJidsSameUser(o + baileys.S_WHATSAPP_NET, jid));
 }
 
 function checkQuotedMedia(type, required) {
@@ -80,7 +80,7 @@ function checkQuotedMedia(type, required) {
 
 function extractUrlFromText(text) {
     if (!text) return null;
-    return baileys..extractUrlFromText(text) || null;
+    return baileys.extractUrlFromText(text) || null;
 }
 
 function getBodyFromMsg(msg) {
@@ -101,7 +101,7 @@ function getBodyFromMsg(msg) {
         templateButtonReplyMessage: (message) => message.templateButtonReplyMessage?.selectedId || "",
         interactiveResponseMessage: (message) => message.interactiveResponseMessage?.nativeFlowResponseMessage?.paramsJson ? JSON.parse(message.interactiveResponseMessage.nativeFlowResponseMessage.paramsJson)?.id || "" : ""
     };
-    return BODY_HANDLERS[baileys..getContentType(msg.message)]?.(msg.message);
+    return BODY_HANDLERS[baileys.getContentType(msg.message)]?.(msg.message);
 }
 
 function getDb(collection, jid) {
@@ -114,28 +114,28 @@ function getDb(collection, jid) {
     };
 
     if (collection.name === "bot") return ensureCollection(collection, "bot", bot => bot.jid === "bot");
-    if (collection.name === "users" && baileys..isLidUser(jid)) return ensureCollection(collection, jid, (user) => baileys..areJidsSameUser(user.jid, jid));
-    if (collection.name === "groups" && baileys..isJidGroup(jid)) return ensureCollection(collection, jid, (group) => baileys..areJidsSameUser(group.jid, jid));
+    if (collection.name === "users" && baileys.isLidUser(jid)) return ensureCollection(collection, jid, (user) => baileys.areJidsSameUser(user.jid, jid));
+    if (collection.name === "groups" && baileys.isJidGroup(jid)) return ensureCollection(collection, jid, (group) => baileys.areJidsSameUser(group.jid, jid));
 
     return null;
 }
 
 function getId(jid) {
-    return baileys..jidDecode(jid)?.user || jid;
+    return baileys.jidDecode(jid)?.user || jid;
 }
 
 async function getJpegThumbnail(url) {
-    const stream = await baileys..getHttpStream(url);
-    const result = await baileys..extractImageThumb(stream, 300);
+    const stream = await baileys.getHttpStream(url);
+    const result = await baileys.extractImageThumb(stream, 300);
     return result.buffer;
 }
 
 function getMessageType(message) {
-    return baileys..getContentType(baileys..extractMessageContent(message));
+    return baileys.getContentType(baileys.extractMessageContent(message));
 }
 
 function getPushName(jid, db) {
-    if (!baileys..isLidUser(jid)) return "Unknown";
+    if (!baileys.isLidUser(jid)) return "Unknown";
     const users = db.getCollection("users");
     return getDb(users, jid)?.pushName || "Unknown";
 }
@@ -178,7 +178,7 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
                 delay
             } = calculateDelay(reportOwner.length);
             for (const ownerId of reportOwner) {
-                await ctx.replyWithJid(ownerId + baileys..S_WHATSAPP_NET, {
+                await ctx.replyWithJid(ownerId + baileys.S_WHATSAPP_NET, {
                     text: `${isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${senderId}` : `Terjadi kesalahan dari: @${senderId}`}\n` +
                         tools.msg.monospace(errorText),
                     contextInfo: {
@@ -189,7 +189,7 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
                         }] : []
                     }
                 });
-                await baileys..delay(delay);
+                await baileys.delay(delay);
             }
         }
     }
@@ -248,13 +248,13 @@ function parseCommand(prefix, body) {
 }
 
 module.exports = {
-    areJidsSameUser: baileys..areJidsSameUser,
+    areJidsSameUser: baileys.areJidsSameUser,
     calculateDelay,
     calculateDimensions,
     checkMedia,
     checkOwner,
     checkQuotedMedia,
-    delay: baileys..delay,
+    delay: baileys.delay,
     didYouMean: didYouMean,
     extractUrlFromText,
     getBodyFromMsg,

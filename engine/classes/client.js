@@ -56,7 +56,7 @@ class client {
     }
 
     _initConnection(connOpts) {
-        this.browser = connOpts.browser || baileys..Browsers.macOS("Safari");
+        this.browser = connOpts.browser || baileys.Browsers.macOS("Safari");
         this.WAVersion = connOpts.version || null;
         this.alwaysOnline = connOpts.alwaysOnline || false;
         this.selfReply = connOpts.selfReply || false;
@@ -120,10 +120,10 @@ class client {
     }
 
     _createMessageContext(message, event) {
-        const senderJids = [message.key.participant, message.key.participantAlt, message.key.remoteJid, message.key.remoteJidAlt].filter(Boolean).map(jid => baileys..jidNormalizedUser(jid));
+        const senderJids = [message.key.participant, message.key.participantAlt, message.key.remoteJid, message.key.remoteJidAlt].filter(Boolean).map(jid => baileys.jidNormalizedUser(jid));
 
-        const senderJid = message.key.fromMe ? baileys..jidNormalizedUser(this.core.user.id) : senderJids.find(jid => baileys..isPnUser(jid));
-        const senderLid = message.key.fromMe ? baileys..jidNormalizedUser(this.core.user.lid) : senderJids.find(jid => baileys..isLidUser(jid));
+        const senderJid = message.key.fromMe ? baileys.jidNormalizedUser(this.core.user.id) : senderJids.find(jid => baileys.isPnUser(jid));
+        const senderLid = message.key.fromMe ? baileys.jidNormalizedUser(this.core.user.lid) : senderJids.find(jid => baileys.isLidUser(jid));
 
         if (!senderJid || !senderLid || !message.pushName) return null;
 
@@ -182,13 +182,13 @@ class client {
             });
 
         if (connection === "close") {
-            const shouldReconnect = lastDisconnect.error.output?.statusCode !== baileys..DisconnectReason.loggedOut;
+            const shouldReconnect = lastDisconnect.error.output?.statusCode !== baileys.DisconnectReason.loggedOut;
             console.warn(styleText("yellow", "[!]"), `Connection closed: ${lastDisconnect.error}, reconnecting: ${shouldReconnect}`);
             if (shouldReconnect) await this.launch();
         } else if (connection === "open") {
             if (!this.readyAt) this.readyAt = Date.now();
             this.ev.emit("ClientReady", this.core);
-            await baileys..delay(3000);
+            await baileys.delay(3000);
             await this._cacheAllGroups();
         }
     }
@@ -290,19 +290,19 @@ class client {
         });
     }
 
-    checkOwner(jid = baileys..PSA_WID, fromMe = false) {
+    checkOwner(jid = baileys.PSA_WID, fromMe = false) {
         return tools.helper.checkOwner(jid, this.owner, fromMe);
     }
 
-    getPushName(jid = baileys..PSA_WID) {
+    getPushName(jid = baileys.PSA_WID) {
         return tools.helper.getPushName(jid, this.db);
     }
 
-    getId(jid = baileys..PSA_WID) {
+    getId(jid = baileys.PSA_WID) {
         return tools.helper.getId(jid);
     }
 
-    getDb(collection, jid = baileys..PSA_WID) {
+    getDb(collection, jid = baileys.PSA_WID) {
         const coll = this.db.getCollection(collection);
         return tools.helper.getDb(coll, jid);
     }
@@ -312,8 +312,8 @@ class client {
         const fakeMsg = {
             key: {
                 remoteJid: jid,
-                fromMe: baileys..areJidsSameUser(sender.jid, this.core.user.id),
-                id: baileys..generateMessageIDV2(),
+                fromMe: baileys.areJidsSameUser(sender.jid, this.core.user.id),
+                id: baileys.generateMessageIDV2(),
                 ...(jid !== sender.jid && {
                     participant: sender.jid,
                     ...(sender.lid && {
@@ -341,11 +341,11 @@ class client {
         const {
             state,
             saveCreds
-        } = await baileys..useMultiFileAuthState(this.authDir);
+        } = await baileys.useMultiFileAuthState(this.authDir);
         this.state = state;
         this.saveCreds = saveCreds;
 
-        this.core = baileys..default({
+        this.core = baileys.default({
             ...(this.WAVersion && {
                 version: this.WAVersion
             }),
@@ -368,7 +368,7 @@ class client {
             this.phoneNumber = this.phoneNumber.replace(/[^0-9]/g, "");
             if (!this.phoneNumber.length) throw new Error("Invalid phoneNumber");
 
-            await baileys..delay(3000);
+            await baileys.delay(3000);
             const code = await this.core.requestPairingCode(this.phoneNumber, this.customPairingCode);
             console.log(styleText("cyan", "[i]"), `Pairing Code: ${code}`);
         }
@@ -384,7 +384,7 @@ class client {
     _setupStore() {
         if (!this.useStore) return;
 
-        this.store = baileys..makeInMemoryStore({
+        this.store = baileys.makeInMemoryStore({
             logger: this.logger,
             socket: this.core
         });
@@ -491,7 +491,7 @@ class client {
                     };
             }
         }
-        if (baileys..isPnUser(jid) || baileys..isLidUser(jid)) content.ai = true;
+        if (baileys.isPnUser(jid) || baileys.isLidUser(jid)) content.ai = true;
         if ((content.title || content.subtitle || content.footer) && !content.buttons && !content.nativeFlow) content.nativeFlow = {};
         return this.core.sendMessage(jid, content, options);
     }
