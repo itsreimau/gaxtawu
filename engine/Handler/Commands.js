@@ -1,7 +1,7 @@
-const Baileys = require("baileys");
-const Ctx = require("../Classes/Ctx.js");
+const baileys = require("baileys");
+const context = require("../classes/context");
 
-async function Commands(self, runMiddlewares) {
+async function commands(self, runMiddlewares) {
     const {
         m,
         prefix,
@@ -9,7 +9,7 @@ async function Commands(self, runMiddlewares) {
         core
     } = self;
 
-    if (!m.body || Baileys.isJidStatusBroadcast(m.key.remoteJid) || Baileys.isJidNewsletter(m.key.remoteJid)) return;
+    if (!m.body || baileys..isJidStatusBroadcast(m.key.remoteJid) || baileys..isJidNewsletter(m.key.remoteJid)) return;
 
     const findMatchingCommands = (cmdMap, commandName) => {
         const commands = Array.from(cmdMap?.values() || []);
@@ -17,7 +17,7 @@ async function Commands(self, runMiddlewares) {
     };
 
     const createContext = (self, client, used, args, text) => {
-        return new Ctx({
+        return new context({
             used,
             args,
             text,
@@ -74,4 +74,4 @@ async function Commands(self, runMiddlewares) {
     matched.forEach(cmd => cmd.code(ctx));
 };
 
-module.exports = Commands;
+module.exports = commands;

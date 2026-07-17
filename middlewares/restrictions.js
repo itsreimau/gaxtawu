@@ -1,4 +1,4 @@
-const { Cooldown } = require("#engine");
+const { cooldown } = require("#engine");
 const moment = require("moment-timezone");
 
 module.exports = (bot) => {
@@ -30,7 +30,7 @@ module.exports = (bot) => {
             reaction: "🚫"
         }, {
             key: "cooldown",
-            condition: new Cooldown(ctx, config.system.cooldown, "multi").onCooldown && !isOwner && !senderDb?.premium,
+            condition: new cooldown(ctx, config.system.cooldown, "multi").oncooldown && !isOwner && !senderDb?.premium,
             msg: config.msg.cooldown,
             reaction: "💤"
         }, {

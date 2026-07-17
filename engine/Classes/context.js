@@ -1,11 +1,11 @@
-const Baileys = require("baileys");
+const baileys = require("baileys");
 const { parseArgs } = require("node:util");
 const { uguu } = require("@neoxr/helper");
-const Group = require("./Group/Group.js");
-const GroupData = require("./Group/GroupData.js");
-const MessageCollector = require("./Collector/MessageCollector.js");
+const group = require("./group/group");
+const groupData = require("./group/group-data");
+const messageCollector = require("./collector/message-collector");
 
-class Ctx {
+class context {
     constructor(opts) {
         this._self = opts.self;
         this._client = opts.client;
@@ -72,7 +72,7 @@ class Ctx {
         const context = this._msg.message?.[this.getMessageType()]?.contextInfo || {};
         if (!context?.quotedMessage) return null;
 
-        const message = Baileys.extractMessageContent(context.quotedMessage) || {};
+        const message = baileys..extractMessageContent(context.quotedMessage) || {};
         const chat = context.remoteJid || this.id;
         const sender = context.participant || chat;
 
@@ -85,8 +85,8 @@ class Ctx {
             key: {
                 remoteJid: chat,
                 id: context.stanzaId,
-                fromMe: Baileys.areJidsSameUser(sender, this.me.id),
-                participant: Baileys.isJidGroup(chat) ? sender : null
+                fromMe: baileys..areJidsSameUser(sender, this.me.id),
+                participant: baileys..isJidGroup(chat) ? sender : null
             },
             id: chat,
             sender,
@@ -101,7 +101,7 @@ class Ctx {
     }
 
     get msg() {
-        const message = Baileys.extractMessageContent(this._msg.message);
+        const message = baileys..extractMessageContent(this._msg.message);
         return {
             ...this._msg,
             message,
@@ -120,14 +120,14 @@ class Ctx {
     }
 
     isGroup() {
-        return Baileys.isJidGroup(this.id);
+        return baileys..isJidGroup(this.id);
     }
     isPrivate() {
-        return Baileys.isPnUser(this.id) || Baileys.isLidUser(this.id);
+        return baileys..isPnUser(this.id) || baileys..isLidUser(this.id);
     }
 
     group(jid = this.id, useCache = true) {
-        return Baileys.isJidGroup(jid) ? new GroupData(this, jid, useCache) : null;
+        return baileys..isJidGroup(jid) ? new GroupData(this, jid, useCache) : null;
     }
 
     flag(rules = {}) {
@@ -158,7 +158,7 @@ class Ctx {
             text: () => {
                 const number = this.args[0]?.replace(/[^\d]/g, "");
                 return number && {
-                    jid: number + Baileys.S_WHATSAPP_NET,
+                    jid: number + baileys..S_WHATSAPP_NET,
                     source: "text"
                 };
             },
@@ -176,7 +176,7 @@ class Ctx {
             if (!strategy) continue;
             const result = await strategy();
             if (result) {
-                if (Baileys.isPnUser(result.jid)) result.jid = (await this.core.findUserId(result.jid)).lid;
+                if (baileys..isPnUser(result.jid)) result.jid = (await this.core.findUserId(result.jid)).lid;
                 return result;
             }
         }
@@ -213,7 +213,7 @@ class Ctx {
 
     async _downloadMediaMessage(message) {
         try {
-            return await Baileys.downloadMediaMessage(message, "buffer", {}, {
+            return await baileys..downloadMediaMessage(message, "buffer", {}, {
                 logger: this._self.logger,
                 reuploadRequest: this._client.updateMediaMessage
             });
@@ -304,7 +304,7 @@ class Ctx {
         return this._msg.message?.[this.getMessageType()]?.contextInfo?.mentionedJid || [];
     }
     getDevice(id = this._msg.key.id) {
-        return Baileys.getDevice(id);
+        return baileys..getDevice(id);
     }
     checkOwner(jid = this._sender.lid, fromMe = false) {
         return tools.helper.checkOwner(jid, this.owner, fromMe);
@@ -328,4 +328,4 @@ class Ctx {
     }
 }
 
-module.exports = Ctx;
+module.exports = context;

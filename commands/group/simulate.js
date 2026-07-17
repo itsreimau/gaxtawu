@@ -1,5 +1,4 @@
-const { Events } = require("#engine");
-const { handleWelcome } = require("../../events/welcome.js");
+const { handleWelcome } = require("../../events/welcome");
 
 module.exports = {
     name: "simulate",
@@ -31,11 +30,11 @@ module.exports = {
             switch (input.toLowerCase()) {
                 case "j":
                 case "join":
-                    await handleWelcome(ctx, welcome, Events.UserJoin, true);
+                    await handleWelcome(ctx, welcome, "UserJoin", true);
                     break;
                 case "l":
                 case "leave":
-                    await handleWelcome(ctx, welcome, Events.UserLeave, true);
+                    await handleWelcome(ctx, welcome, "UserLeave", true);
                     break;
                 default:
                     await ctx.reply(tools.msg.info(`Simulasi ${tools.msg.inlineCode(input)} tidak valid!`));

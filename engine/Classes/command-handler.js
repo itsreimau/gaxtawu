@@ -1,7 +1,7 @@
 const { styleText } = require("node:util");
 const { globSync } = require("glob");
 
-class CommandHandler {
+class commandHandler {
     constructor(bot, path) {
         this._bot = bot;
         this._path = path;
@@ -55,4 +55,4 @@ class CommandHandler {
     }
 }
 
-module.exports = CommandHandler;
+module.exports = commandHandler;

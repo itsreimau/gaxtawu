@@ -1,17 +1,11 @@
-const Client = require("./Classes/Client.js");
-const CommandHandler = require("./Classes/CommandHandler.js");
-const Config = require("./Classes/Config.js");
-const Cooldown = require("./Classes/Cooldown.js");
-const Events = require("./Constant/Events.js");
-const MessageType = require("./Constant/MessageType.js");
-const VCardBuilder = require("./Classes/Builder/VCard.js");
+const client = require("./classes/client");
+const commandHandler = require("./classes/command-handler");
+const config = require("./classes/config");
+const cooldown = require("./classes/cooldown");
 
 module.exports = {
-    Client,
-    CommandHandler,
-    Config,
-    Cooldown,
-    Events,
-    MessageType,
-    VCardBuilder
+    client,
+    commandHandler,
+    config,
+    cooldown
 };

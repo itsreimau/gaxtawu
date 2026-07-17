@@ -110,16 +110,6 @@ module.exports = {
 
 2. Perintah dapat dipicu dengan mengirim `/helloworld` di chat.
 
-### Documentation
-
-`gaxtawu` menggunakan versi modifikasi dari `@mengkodingan/ckptw` yang khusus di-fork dan disesuaikan untuk bot ini. Pustaka ini dibangun di atas `itsliaaa/baileys` yang menawarkan fitur lebih lengkap dibandingkan `@whiskeysockets/baileys`.
-
-Untuk dokumentasi lengkap, silakan kunjungi:
-
-- [@mengkodingan/ckptw](https://www.npmjs.com/package/@mengkodingan/ckptw) - Referensi struktur perintah dasar
-- [itsreimau/gktw](https://github.com/itsreimau/gktw) - Dokumentasi fork kustom
-- [itsliaaa/baileys](https://github.com/itsliaaa/baileys) - Panduan pengiriman pesan/media
-
 ## 🤝 Contribution
 
 Kami menerima kontribusi! Jika Anda menemukan bug atau memiliki ide fitur, jangan ragu untuk membuka issue atau mengirim pull request.

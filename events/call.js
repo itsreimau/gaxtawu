@@ -1,9 +1,8 @@
-const { Events } = require("#engine");
-const Baileys = require("baileys");
+const baileys = require("baileys");
 const { styleText } = require("node:util");
 
 module.exports = (bot) => {
-    bot.ev.on(Events.Call, async (call) => {
+    bot.ev.on("Events", async (call) => {
         if (!config.system.antiCall || call.status !== "offer") return;
 
         const fromJid = call.from;
@@ -30,7 +29,7 @@ module.exports = (bot) => {
                     delay
                 } = tools.helper.calculateDelay(reportOwner.length);
                 for (const ownerId of reportOwner) {
-                    await bot.sendMessage(ownerId + Baileys.S_WHATSAPP_NET, {
+                    await bot.sendMessage(ownerId + baileys..S_WHATSAPP_NET, {
                         text: tools.msg.info(`Akun @${fromPnId} telah dibanned secara otomatis karena alasan ${tools.msg.inlineCode("Anti Call")}.`),
                         mentions: [fromPnJid]
                     });

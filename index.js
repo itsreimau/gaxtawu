@@ -40,4 +40,4 @@ if (config.system && config.system.useServer) {
     createServer((_, res) => res.end(`${pkg.name} berjalan di port ${port}`)).listen(port, () => console.log(styleText("blue", "[>]"), `${pkg.name} runs on port ${port}`));
 }
 
-require("./main.js");
+require("./main");

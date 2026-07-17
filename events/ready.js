@@ -1,8 +1,7 @@
-const { Events } = require("#engine");
 const { styleText } = require("node:util");
 
 module.exports = (bot) => {
-    bot.ev.once(Events.ClientReady, async (b) => {
+    bot.ev.once("ClientReady", async (b) => {
         console.log(styleText("blue", "[>]"), `${config.bot.name} by ${config.owner.name}, ready at ${b.user?.id || b.user?.lid}`);
 
         const botDb = bot.getDb("bot");

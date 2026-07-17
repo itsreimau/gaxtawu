@@ -1,4 +1,3 @@
-const { Events } = require("#engine");
 const moment = require("moment-timezone");
 
 async function handleWelcome(bot, welcome, type, isSimulate = false) {
@@ -15,7 +14,7 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
     const hour = now.hour();
     if (!isSimulate && config.system.unavailableAtNight && hour >= 0 && hour < 6) return;
 
-    const isWelcome = type === Events.UserJoin;
+    const isWelcome = type === "UserJoin";
     const tag = `@${bot.getId(participantJid)}`;
     const customText = isWelcome ? groupDb?.text?.welcome : groupDb?.text?.goodbye;
     const metadata = await bot.core.groupMetadata(groupJid);
@@ -40,8 +39,8 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
 }
 
 module.exports = (bot) => {
-    bot.ev.on(Events.UserJoin, async (welcome) => handleWelcome(bot, welcome, Events.UserJoin));
-    bot.ev.on(Events.UserLeave, async (welcome) => handleWelcome(bot, welcome, Events.UserLeave));
+    bot.ev.on(EVENTS.USER_JOIN, async (welcome) => handleWelcome(bot, welcome, "UserJoin"));
+    bot.ev.on(EVENTS.USER_LEAVE, async (welcome) => handleWelcome(bot, welcome, "UserLeave"));
 };
 
 module.exports.handleWelcome = handleWelcome;

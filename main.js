@@ -1,8 +1,8 @@
-const { Client, CommandHandler } = require("#engine");
+const { client, commandHandler } = require("#engine");
 const { resolve } = require("node:path");
 const util = require("node:util");
-const events = require("./events/exports.js");
-const middlewares = require("./middlewares/exports.js");
+const events = require("./events");
+const middlewares = require("./middlewares");
 
 const {
     bot: botConfig,
@@ -28,7 +28,7 @@ const parsePrefix = function(prefix) {
     }
 };
 
-const bot = new Client({
+const bot = new client({
     auth: {
         dir: directory.auth,
         phoneNumber: botConfig.phoneNumber,
@@ -91,7 +91,7 @@ const bot = new Client({
 events(bot);
 middlewares(bot);
 
-const cmd = new CommandHandler(bot, directory.command);
+const cmd = new commandHandler(bot, directory.command);
 cmd.load();
 
 bot.launch().catch(error => console.error(util.styleText("red", "[x]"), `Error: ${util.format(error)}`));

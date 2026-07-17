@@ -1,14 +1,13 @@
-const Collector = require("./Collector.js");
-const Events = require("../../Constant/Events.js");
+const collector = require("./Collector");
 
-class MessageCollector extends Collector {
+class messageCollector extends collector {
     constructor(clientReq, opts = {}) {
         super(opts);
         this.jids = [clientReq.msg.key.remoteJid, ...(opts.hears || [])];
 
         this.handleCollect = (ctx) => this.collect(ctx);
-        clientReq.self.ev.on(Events.MessagesUpsert, this.handleCollect);
-        this.once("end", () => clientReq.self.ev.removeListener(Events.MessagesUpsert, this.handleCollect));
+        clientReq.self.ev.on("MessagesUpsert", this.handleCollect);
+        this.once("end", () => clientReq.self.ev.removeListener("MessagesUpsert", this.handleCollect));
     }
 
     _collect(ctx) {
@@ -22,4 +21,4 @@ class MessageCollector extends Collector {
     }
 }
 
-module.exports = MessageCollector;
+module.exports = messageCollector;

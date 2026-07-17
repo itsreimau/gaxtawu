@@ -1,15 +1,16 @@
-const Baileys = require("baileys");
+const baileys = require("baileys");
 const EventEmitter = require("node:events");
 const fs = require("node:fs");
 const path = require("node:path");
 const { styleText } = require("node:util");
 const { NodeCache } = require("@cacheable/node-cache");
 const pino = require("pino");
-const { generate } = require("qrcode-terminal");
+const qrcode = require("qrcode-terminal");
 const SimplDB = require("simpl.db");
-const Commands = require("../Handler/Commands.js");
-const Ctx = require("./Ctx.js");
-const Events = require("../Constant/Events.js");
+const vCard = require("vcard-parser");
+const WASF = require("wa-sticker-formatter");
+const commands = require("../handler/commands");
+const context = require("./context");
 
 class Client {
     constructor(opts = {}) {
@@ -55,7 +56,7 @@ class Client {
     }
 
     _initConnection(connOpts) {
-        this.browser = connOpts.browser || Baileys.Browsers.macOS("Safari");
+        this.browser = connOpts.browser || baileys..Browsers.macOS("Safari");
         this.WAVersion = connOpts.version || null;
         this.alwaysOnline = connOpts.alwaysOnline || false;
         this.selfReply = connOpts.selfReply || false;
@@ -119,10 +120,10 @@ class Client {
     }
 
     _createMessageContext(message, event) {
-        const senderJids = [message.key.participant, message.key.participantAlt, message.key.remoteJid, message.key.remoteJidAlt].filter(Boolean).map(jid => Baileys.jidNormalizedUser(jid));
+        const senderJids = [message.key.participant, message.key.participantAlt, message.key.remoteJid, message.key.remoteJidAlt].filter(Boolean).map(jid => baileys..jidNormalizedUser(jid));
 
-        const senderJid = message.key.fromMe ? Baileys.jidNormalizedUser(this.core.user.id) : senderJids.find(jid => Baileys.isPnUser(jid));
-        const senderLid = message.key.fromMe ? Baileys.jidNormalizedUser(this.core.user.lid) : senderJids.find(jid => Baileys.isLidUser(jid));
+        const senderJid = message.key.fromMe ? baileys..jidNormalizedUser(this.core.user.id) : senderJids.find(jid => baileys..isPnUser(jid));
+        const senderLid = message.key.fromMe ? baileys..jidNormalizedUser(this.core.user.lid) : senderJids.find(jid => baileys..isLidUser(jid));
 
         if (!senderJid || !senderLid || !message.pushName) return null;
 
@@ -148,7 +149,7 @@ class Client {
         this.core.ev.on("groups.update", this._handleGroupsUpdate.bind(this));
         this.core.ev.on("group-participants.update", this._handleGroupParticipantsUpdate.bind(this));
         this.core.ev.on("groups.upsert", this._handleGroupsUpsert.bind(this));
-        this.core.ev.on("call", (calls) => calls.forEach(call => this.ev.emit(Events.Call, call)));
+        this.core.ev.on("call", (calls) => calls.forEach(call => this.ev.emit("Call", call)));
 
         this._setupNotificationAck("passkey_prologue_request");
         this._setupNotificationAck("crsc_continuation");
@@ -176,18 +177,18 @@ class Client {
         } = update;
 
         if (qr && !this.usePairingCode)
-            generate(qr, {
+            qrcode.generate(qr, {
                 small: true
             });
 
         if (connection === "close") {
-            const shouldReconnect = lastDisconnect.error.output?.statusCode !== Baileys.DisconnectReason.loggedOut;
+            const shouldReconnect = lastDisconnect.error.output?.statusCode !== baileys..DisconnectReason.loggedOut;
             console.warn(styleText("yellow", "[!]"), `Connection closed: ${lastDisconnect.error}, reconnecting: ${shouldReconnect}`);
             if (shouldReconnect) await this.launch();
         } else if (connection === "open") {
             if (!this.readyAt) this.readyAt = Date.now();
-            this.ev.emit(Events.ClientReady, this.core);
-            await Baileys.delay(3000);
+            this.ev.emit("ClientReady", this.core);
+            await baileys..delay(3000);
             await this._cacheAllGroups();
         }
     }
@@ -199,28 +200,28 @@ class Client {
             if (message.key.fromMe && message.key.id.includes("STARFALL")) continue;
             if (this._shouldIgnore(message.key.id)) continue;
 
-            const context = this._createMessageContext(message, event);
-            if (!context) continue;
+            const messageContext = this._createMessageContext(message, event);
+            if (!messageContext) continue;
 
-            const ctx = new Ctx({
+            const ctx = new context({
                 used: {
-                    upsert: context.message.body
+                    upsert: messageContext.message.body
                 },
                 args: [],
                 self: {
                     ...this,
-                    sender: context.sender,
-                    m: context.message
+                    sender: messageContext.sender,
+                    m: messageContext.message
                 },
                 client: this.core
             });
 
-            this.ev.emit(Events.MessagesUpsert, ctx);
+            this.ev.emit("MessagesUpsert", ctx);
             if (this.autoRead) await this.core.readMessages([message.key]);
-            await Commands({
+            await commands({
                 ...this,
-                m: context.message,
-                sender: context.sender
+                m: messageContext.message,
+                sender: messageContext.sender
             }, this._runMiddlewares.bind(this));
         }
     }
@@ -239,7 +240,7 @@ class Client {
         } = event;
         if (!["add", "leave", "remove"].includes(action)) return;
 
-        const eventName = action === "add" ? Events.UserJoin : Events.UserLeave;
+        const eventName = action === "add" ? "UserJoin" : "UserLeave";
         for (const participant of participants) {
             this.ev.emit(eventName, {
                 ...rest,
@@ -251,7 +252,7 @@ class Client {
 
     async _handleGroupsUpsert([event]) {
         await this._cacheGroupMetadata(event.id);
-        this.ev.emit(Events.GroupJoin, event);
+        this.ev.emit("GroupJoin", event);
     }
 
     use(fn) {
@@ -289,19 +290,19 @@ class Client {
         });
     }
 
-    checkOwner(jid = Baileys.PSA_WID, fromMe = false) {
+    checkOwner(jid = baileys..PSA_WID, fromMe = false) {
         return tools.helper.checkOwner(jid, this.owner, fromMe);
     }
 
-    getPushName(jid = Baileys.PSA_WID) {
+    getPushName(jid = baileys..PSA_WID) {
         return tools.helper.getPushName(jid, this.db);
     }
 
-    getId(jid = Baileys.PSA_WID) {
+    getId(jid = baileys..PSA_WID) {
         return tools.helper.getId(jid);
     }
 
-    getDb(collection, jid = Baileys.PSA_WID) {
+    getDb(collection, jid = baileys..PSA_WID) {
         const coll = this.db.getCollection(collection);
         return tools.helper.getDb(coll, jid);
     }
@@ -311,8 +312,8 @@ class Client {
         const fakeMsg = {
             key: {
                 remoteJid: jid,
-                fromMe: Baileys.areJidsSameUser(sender.jid, this.core.user.id),
-                id: Baileys.generateMessageIDV2(),
+                fromMe: baileys..areJidsSameUser(sender.jid, this.core.user.id),
+                id: baileys..generateMessageIDV2(),
                 ...(jid !== sender.jid && {
                     participant: sender.jid,
                     ...(sender.lid && {
@@ -328,7 +329,7 @@ class Client {
             pushName: sender.pushName
         };
 
-        await Commands({
+        await commands({
             ...this,
             m: fakeMsg,
             sender,
@@ -340,11 +341,11 @@ class Client {
         const {
             state,
             saveCreds
-        } = await Baileys.useMultiFileAuthState(this.authDir);
+        } = await baileys..useMultiFileAuthState(this.authDir);
         this.state = state;
         this.saveCreds = saveCreds;
 
-        this.core = Baileys.default({
+        this.core = baileys..default({
             ...(this.WAVersion && {
                 version: this.WAVersion
             }),
@@ -367,7 +368,7 @@ class Client {
             this.phoneNumber = this.phoneNumber.replace(/[^0-9]/g, "");
             if (!this.phoneNumber.length) throw new Error("Invalid phoneNumber");
 
-            await Baileys.delay(3000);
+            await baileys..delay(3000);
             const code = await this.core.requestPairingCode(this.phoneNumber, this.customPairingCode);
             console.log(styleText("cyan", "[i]"), `Pairing Code: ${code}`);
         }
@@ -383,7 +384,7 @@ class Client {
     _setupStore() {
         if (!this.useStore) return;
 
-        this.store = Baileys.makeInMemoryStore({
+        this.store = baileys..makeInMemoryStore({
             logger: this.logger,
             socket: this.core
         });
@@ -409,30 +410,124 @@ class Client {
     }
 
     _createSendMessage(jid, content, options = {}) {
-        if (content?.album && Array.isArray(content.album)) {
-            if (content.album.length === 1) {
-                const {
-                    album,
-                    ...rest
-                } = content;
+        if (typeof content === "string")
+            content = {
+                text: content
+            };
+        if (content?.album) {
+            const {
+                album,
+                ...restCont
+            } = content;
+            if (album.length === 1) {
                 content = {
-                    ...content.album[0],
-                    ...rest
+                    ...album[0],
+                    ...restCont
                 };
             } else {
-                const album = [...content.album];
-                if (album.every(a => !a.caption) && content.caption) album[0].caption = content.caption;
+                const processedAlbum = [...album];
+                if (processedAlbum.every(a => !a.caption) && content.caption) processedAlbum[0].caption = content.caption;
                 content = {
-                    album
+                    album: processedAlbum
                 };
             }
         }
-        content = typeof content === "string" ? {
-            text: content
-        } : content;
-        if (Baileys.isPnUser(jid) || Baileys.isLidUser(jid)) content.ai = true;
+        if (content?.sticker) {
+            const sticker = Buffer.isBuffer(content.sticker) ? content.sticker : content.sticker?.url;
+            if (sticker) {
+                const {
+                    pack = config.sticker.packname,
+                        author = config.sticker.author,
+                        type = WASF.StickerTypes.FULL,
+                        categories = ["🌕"],
+                        id = Date.now().toString(),
+                        quality = 50,
+                        background,
+                        ...restOpts
+                } = options;
+                content = {
+                    sticker: await new WASF.createSticker({
+                        pack,
+                        author,
+                        type,
+                        categories,
+                        id,
+                        quality,
+                        background,
+                        sticker
+                    }).build()
+                };
+                options = restOpts;
+            }
+        }
+        if (content?.contact || content?.contacts) {
+            if (content.contact) {
+                const parsed = parseContact(content.contact);
+                if (parsed)
+                    content = {
+                        contacts: parsed
+                    };
+            } else if (Array.isArray(content.contacts)) {
+                const parsed = content.contacts.map(parseContact).filter(Boolean);
+                content = {
+                    contacts: {
+                        displayName: "itsliaaa/baileys.",
+                        contacts: parsed
+                    }
+                };
+            } else if (content.contacts?.contacts) {
+                const parsed = content.contacts.contacts.map(parseContact).filter(Boolean);
+                content = {
+                    contacts: {
+                        displayName: content.contacts.displayName || "itsliaaa/baileys.",
+                        contacts: parsed
+                    }
+                };
+            } else {
+                const parsed = parseContact(content.contacts);
+                if (parsed)
+                    content = {
+                        contacts: parsed
+                    };
+            }
+        }
+        if (baileys..isPnUser(jid) || baileys..isLidUser(jid)) content.ai = true;
         if ((content.title || content.subtitle || content.footer) && !content.buttons && !content.nativeFlow) content.nativeFlow = {};
         return this.core.sendMessage(jid, content, options);
+    }
+
+    parseContact(contact) {
+        if (contact.vcard)
+            return {
+                displayName: contact.displayName || contact.fullName || "itsliaaa/baileys.",
+                vcard: contact.vcard
+            };
+        if (contact.number) {
+            const clean = contact.number.toString().replace(/\s/g, "");
+            const vcard = vCard.generate({
+                version: [{
+                    value: "3.0"
+                }],
+                fn: [{
+                    value: contact.fullName || contact.displayName || "itsliaaa/baileys."
+                }],
+                org: [{
+                    value: [contact.org || ""]
+                }],
+                tel: [{
+                    value: `+${clean}`,
+                    meta: {
+                        type: ["CELL", "VOICE"],
+                        waid: [clean]
+                    }
+                }]
+            });
+            return {
+                displayName: contact.fullName || contact.displayName || "itsliaaa/baileys.",
+                vcard
+            };
+        }
+        return null;
     }
 }
 

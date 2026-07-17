@@ -27,17 +27,11 @@ module.exports = {
             const data = response?.data;
 
             if (/webp/.test(contentType)) {
-                const sticker = await new WASF.Sticker(data)
-                    .setPack(config.sticker.packname)
-                    .setAuthor(config.sticker.author)
-                    .setType(WASF.StickerTypes.FULL)
-                    .setCategories(["🌕"])
-                    .setID(ctx.msg.key.id)
-                    .setQuality(50)
-                    .build();
-
                 await ctx.reply({
-                    sticker
+                    sticker: data
+                }, {
+                    pack: config.sticker.packname,
+                    author: config.sticker.author
                 });
             } else if (/image/.test(contentType)) {
                 await ctx.reply({

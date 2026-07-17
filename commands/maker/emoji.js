@@ -1,5 +1,3 @@
-const WASF = require("wa-sticker-formatter");
-
 module.exports = [{
     name: "emojigif",
     aliases: ["egif"],
@@ -20,17 +18,12 @@ module.exports = [{
             const result = tools.api.createUrl("nexray", "/tools/emojigif", {
                 emoji
             });
-            const sticker = await new WASF.Sticker(result)
-                .setPack(config.sticker.packname)
-                .setAuthor(config.sticker.author)
-                .setType(WASF.StickerTypes.FULL)
-                .setCategories(["🌕"])
-                .setID(ctx.msg.key.id)
-                .setQuality(50)
-                .build();
 
             await ctx.reply({
-                sticker
+                sticker: { url: result }
+            }, {
+                pack: config.sticker.packname,
+                author: config.sticker.author
             });
         } catch (error) {
             await tools.helper.handleError(ctx, error, true);
@@ -57,17 +50,12 @@ module.exports = [{
                 emoji1,
                 emoji2
             });
-            const sticker = await new WASF.Sticker(result)
-                .setPack(config.sticker.packname)
-                .setAuthor(config.sticker.author)
-                .setType(WASF.StickerTypes.FULL)
-                .setCategories(["🌕"])
-                .setID(ctx.msg.key.id)
-                .setQuality(50)
-                .build();
 
             await ctx.reply({
-                sticker
+                sticker: { url: result }
+            }, {
+                pack: config.sticker.packname,
+                author: config.sticker.author
             });
         } catch (error) {
             await tools.helper.handleError(ctx, error, true);

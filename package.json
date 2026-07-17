@@ -1,6 +1,6 @@
 {
   "name": "gaxtawu",
-  "version": "1.2.22-engine.3",
+  "version": "1.2.22-engine.4",
   "description": "Useless WhatsApp Bot",
   "main": "index.js",
   "directories": {
@@ -23,7 +23,7 @@
   "license": "MIT",
   "imports": {
     "#engine": "./engine/index.js",
-    "#tools": "./tools/exports.js"
+    "#tools": "./tools/index.js"
   },
   "dependencies": {
     "@cacheable/node-cache": "^3.1.1",
@@ -31,7 +31,7 @@
     "@neoxr/helper": "^2.3.14",
     "axios": "^1.18.1",
     "axios-retry": "^4.5.0",
-    "baileys": "github:itsliaaa/baileys",
+    "baileys.": "github:itsliaaa/baileys.",
     "cfonts": "^3.3.1",
     "didyoumean": "^1.2.2",
     "glob": "^13.0.6",

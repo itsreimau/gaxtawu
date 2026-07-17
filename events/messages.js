@@ -1,4 +1,3 @@
-const { Events } = require("#engine");
 const { styleText } = require("node:util");
 const moment = require("moment-timezone");
 
@@ -40,7 +39,7 @@ async function handleWarning(ctx, senderJid, senderId, senderLid, groupJid, grou
 }
 
 module.exports = (bot) => {
-    bot.ev.on(Events.MessagesUpsert, async (ctx) => {
+    bot.ev.on("MessagesUpsert", async (ctx) => {
         const {
             msg
         } = ctx;

@@ -1,7 +1,5 @@
-const { Events } = require("#engine");
-
 module.exports = (bot) => {
-    bot.ev.on(Events.GroupJoin, async (join) => {
+    bot.ev.on("UserJoin", async (join) => {
         const botDb = bot.getDb("bot");
         const lastPrefix = botDb?.lastPrefix || "/";
         await bot.sendMessage(join.id, {

@@ -1,7 +1,7 @@
 const { existsSync } = require("node:fs");
 const SimplDB = require("simpl.db");
 
-class Config {
+class config {
     constructor(configPath) {
         this.configPath = configPath;
         this.db = new SimplDB({
@@ -68,4 +68,4 @@ class Config {
     }
 }
 
-module.exports = Config;
+module.exports = config;
