@@ -446,7 +446,7 @@ class client {
                         ...restOpts
                 } = options;
                 content = {
-                    sticker: await new WASF.createSticker({
+                    sticker: await WASF.createSticker({
                         pack,
                         author,
                         type,
