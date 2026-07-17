@@ -1,4 +1,5 @@
 require("node:process").loadEnvFile();
+const conf = require("#engine").config;
 const { createServer } = require("node:http");
 const { resolve } = require("node:path");
 const { styleText } = require("node:util");
@@ -18,7 +19,7 @@ axiosRetry(axios, {
 
 Object.assign(global, {
     axios,
-    config: new require("#engine").config(resolve(__dirname, "config.json")),
+    config: new conf(resolve(__dirname, "config.json")),
     tools: require("#tools")
 });
 
