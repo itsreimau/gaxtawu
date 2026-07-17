@@ -1,4 +1,4 @@
-const collector = require("./Collector");
+const collector = require("./collector");
 
 class messageCollector extends collector {
     constructor(clientReq, opts = {}) {
