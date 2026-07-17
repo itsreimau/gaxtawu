@@ -39,8 +39,8 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
 }
 
 module.exports = (bot) => {
-    bot.ev.on(EVENTS.USER_JOIN, async (welcome) => handleWelcome(bot, welcome, "UserJoin"));
-    bot.ev.on(EVENTS.USER_LEAVE, async (welcome) => handleWelcome(bot, welcome, "UserLeave"));
+    bot.ev.on("UserJoin", async (welcome) => handleWelcome(bot, welcome, "UserJoin"));
+    bot.ev.on("UserLeave", async (welcome) => handleWelcome(bot, welcome, "UserLeave"));
 };
 
 module.exports.handleWelcome = handleWelcome;
