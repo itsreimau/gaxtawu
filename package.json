@@ -22,7 +22,7 @@
   "author": "ItsReimau",
   "license": "MIT",
   "imports": {
-    "#engine": "./engine/app.js",
+    "#engine": "./engine/index.js",
     "#tools/*": "./tools/exports.js"
   },
   "dependencies": {
