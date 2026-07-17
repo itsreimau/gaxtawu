@@ -40,7 +40,7 @@ module.exports = [{
                     },
                     fileName: `${result.title}.mp3`,
                     mimetype: "audio/mpeg",
-                    caption: `❖ ${formatter.bold("URL")}: ${url}`
+                    caption: `❖ ${tools.msg.bold("URL")}: ${url}`
                 });
             } else {
                 await ctx.reply({
@@ -103,14 +103,14 @@ module.exports = [{
                     },
                     fileName: `${result.title}.mp4`,
                     mimetype: "video/mp4",
-                    caption: `❖ ${formatter.bold("URL")}: ${url}`
+                    caption: `❖ ${tools.msg.bold("URL")}: ${url}`
                 });
             } else {
                 await ctx.reply({
                     video: {
                         url: result.downloadUrl
                     },
-                    caption: `❖ ${formatter.bold("URL")}: ${url}`
+                    caption: `❖ ${tools.msg.bold("URL")}: ${url}`
                 });
             }
         } catch (error) {

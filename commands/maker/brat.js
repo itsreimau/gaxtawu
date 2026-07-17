@@ -1,4 +1,4 @@
-const WASF = require("wa-sticker-formatter");
+const WASF = require("wa-sticker-tools.msg");
 
 module.exports = [{
     name: "brat",

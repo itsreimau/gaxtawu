@@ -30,9 +30,9 @@ module.exports = {
             const result = (await axios.get(apiUrl)).data.data;
 
             const resultText = result.map(res =>
-                `❖ ${formatter.bold("Judul")}: ${res.title}\n` +
-                `❖ ${formatter.bold("Artis")}: ${res.artist}\n` +
-                `❖ ${formatter.bold("URL")}: ${res.url}`
+                `❖ ${tools.msg.bold("Judul")}: ${res.title}\n` +
+                `❖ ${tools.msg.bold("Artis")}: ${res.artist}\n` +
+                `❖ ${tools.msg.bold("URL")}: ${res.url}`
             ).join("\n\n");
             await ctx.reply(resultText.trim() || tools.msg.info(config.msg.notFound));
         } catch (error) {

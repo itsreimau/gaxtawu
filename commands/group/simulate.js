@@ -17,7 +17,7 @@ module.exports = {
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "join")}\n` +
                 tools.msg.generateNotes([
-                    `Gunakan ${formatter.inlineCode("leave")} untuk mensimulasikan keluar dari grup.`
+                    `Gunakan ${tools.msg.inlineCode("leave")} untuk mensimulasikan keluar dari grup.`
                 ])
             );
 
@@ -38,7 +38,7 @@ module.exports = {
                     await handleWelcome(ctx, welcome, Events.UserLeave, true);
                     break;
                 default:
-                    await ctx.reply(tools.msg.info(`Simulasi ${formatter.inlineCode(input)} tidak valid!`));
+                    await ctx.reply(tools.msg.info(`Simulasi ${tools.msg.inlineCode(input)} tidak valid!`));
             }
 
             await ctx.reply(tools.msg.info("Simulasi berhasil!"));

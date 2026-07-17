@@ -21,8 +21,8 @@ module.exports = {
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "welcome Selamat datang di grup!")}\n` +
                 tools.msg.generateNotes([
-                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`,
-                    `Gunakan ${formatter.inlineCode("delete")} sebagai teks untuk menghapus teks yang disimpan sebelumnya.`
+                    `Ketik ${tools.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`,
+                    `Gunakan ${tools.msg.inlineCode("delete")} sebagai teks untuk menghapus teks yang disimpan sebelumnya.`
                 ])
             );
 
@@ -36,7 +36,7 @@ module.exports = {
                     setKey = key.toLowerCase();
                     break;
                 default:
-                    return await ctx.reply(tools.msg.info(`Teks ${formatter.inlineCode(key)} tidak valid!`));
+                    return await ctx.reply(tools.msg.info(`Teks ${tools.msg.inlineCode(key)} tidak valid!`));
             }
 
             const groupDb = ctx.db.group;
@@ -44,12 +44,12 @@ module.exports = {
             if (text.toLowerCase() === "delete") {
                 delete groupDb?.text?.[setKey];
                 groupDb.save();
-                return await ctx.reply(tools.msg.info(`Pesan untuk teks ${formatter.inlineCode(key)} berhasil dihapus!`));
+                return await ctx.reply(tools.msg.info(`Pesan untuk teks ${tools.msg.inlineCode(key)} berhasil dihapus!`));
             }
 
             (groupDb.text ||= {})[setKey] = text;
             groupDb.save();
-            await ctx.reply(tools.msg.info(`Pesan untuk teks ${formatter.inlineCode(key)} berhasil disimpan!`));
+            await ctx.reply(tools.msg.info(`Pesan untuk teks ${tools.msg.inlineCode(key)} berhasil disimpan!`));
         } catch (error) {
             await tools.helper.handleError(ctx, error);
         }

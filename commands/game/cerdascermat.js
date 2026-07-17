@@ -41,10 +41,10 @@ module.exports = {
                         return `${answer.toUpperCase()}. ${answers[answer]}`;
                     }).join("\n")}\n` +
                     "\n" +
-                    `❖ ${formatter.bold("Mata Pelajaran")}: ${mapel[input]}\n` +
-                    `❖ ${formatter.bold("Bonus")}: ${game.coin} koin\n` +
-                    `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}\n` +
-                    `❖ ${formatter.bold("Cara menjawab")}: Ketik A, B, C, atau D`,
+                    `❖ ${tools.msg.bold("Mata Pelajaran")}: ${mapel[input]}\n` +
+                    `❖ ${tools.msg.bold("Bonus")}: ${game.coin} koin\n` +
+                    `❖ ${tools.msg.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}\n` +
+                    `❖ ${tools.msg.bold("Cara menjawab")}: Ketik A, B, C, atau D`,
                 buttons: [{
                     text: "Menyerah",
                     id: `surrender_${ctx.used.command}`

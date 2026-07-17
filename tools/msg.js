@@ -82,12 +82,12 @@ function formatSize(byteCount, withPerSecond = false) {
 }
 
 function generateCmdExample(used, args) {
-    if (!used || !args) return `${formatter.inlineCode("used")} atau ${formatter.inlineCode("args")} harus diberikan!`;
-    return `Contoh: ${formatter.inlineCode(`${used.prefix + used.command} ${args}`)}`;
+    if (!used || !args) return `${tools.msg.inlineCode("used")} atau ${tools.msg.inlineCode("args")} harus diberikan!`;
+    return `Contoh: ${tools.msg.inlineCode(`${used.prefix + used.command} ${args}`)}`;
 }
 
 function generateInstruction(actions, mediaTypes) {
-    if (!actions || !mediaTypes || !Array.isArray(actions) || !Array.isArray(mediaTypes)) return `${formatter.inlineCode("actions")} dan ${formatter.inlineCode("mediaTypes")} harus berupa array!`;
+    if (!actions || !mediaTypes || !Array.isArray(actions) || !Array.isArray(mediaTypes)) return `${tools.msg.inlineCode("actions")} dan ${tools.msg.inlineCode("mediaTypes")} harus berupa array!`;
 
     const mediaTypeTranslations = {
         audio: "audio",
@@ -118,19 +118,19 @@ function generateInstruction(actions, mediaTypes) {
 }
 
 function generatesFlagInfo(flags) {
-    if (!flags || typeof flags !== "object") return `${formatter.inlineCode("flags")} harus berupa objek!`;
+    if (!flags || typeof flags !== "object") return `${tools.msg.inlineCode("flags")} harus berupa objek!`;
     return "Flag:\n" +
-        Object.entries(flags).map(([flag, description]) => `- ${formatter.inlineCode(flag)}: ${description}`).join("\n");
+        Object.entries(flags).map(([flag, description]) => `- ${tools.msg.inlineCode(flag)}: ${description}`).join("\n");
 }
 
 function generateNotes(notes) {
-    if (!notes || !Array.isArray(notes)) return `${formatter.inlineCode("notes")} harus berupa string!`;
+    if (!notes || !Array.isArray(notes)) return `${tools.msg.inlineCode("notes")} harus berupa string!`;
     return "Catatan:\n" +
         notes.map(note => `- ${note}`).join("\n");
 }
 
 function info(text) {
-    return `ⓘ ${formatter.italic(text)}`;
+    return `ⓘ ${tools.msg.italic(text)}`;
 }
 
 function inlineCode(text) {

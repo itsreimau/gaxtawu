@@ -17,7 +17,7 @@ module.exports = {
             const result = await ctx.msg.upload() || await ctx.quoted.upload();
 
             await ctx.reply({
-                text: `❖ ${formatter.bold("URL")}: ${result}`,
+                text: `❖ ${tools.msg.bold("URL")}: ${result}`,
                 footer: tools.msg.info("File akan kedaluwarsa setelah 3 jam."),
                 nativeFlow: [{
                     text: "Salin URL",

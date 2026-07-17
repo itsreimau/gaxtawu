@@ -90,7 +90,7 @@ module.exports = (bot) => {
 
             if (isCmd?.didyoumean)
                 await ctx.reply({
-                    text: tools.msg.info(`Apakah maksudmu ${formatter.inlineCode(isCmd.prefix + isCmd.didyoumean)}?`),
+                    text: tools.msg.info(`Apakah maksudmu ${tools.msg.inlineCode(isCmd.prefix + isCmd.didyoumean)}?`),
                     buttons: [{
                         text: "Ya, benar!",
                         id: `${isCmd.prefix + isCmd.didyoumean} ${isCmd.input}`
@@ -141,7 +141,7 @@ module.exports = (bot) => {
                 const timeElapsed = Date.now() - senderAfk.timestamp;
                 if (timeElapsed > 3000) {
                     const timeago = tools.msg.convertMsToDuration(timeElapsed);
-                    await ctx.reply(tools.msg.info(`Anda telah keluar dari AFK ${senderAfk.reason ? `dengan alasan ${formatter.inlineCode(senderAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`));
+                    await ctx.reply(tools.msg.info(`Anda telah keluar dari AFK ${senderAfk.reason ? `dengan alasan ${tools.msg.inlineCode(senderAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`));
                     senderDb.afk = {};
                     senderDb.save();
                 }
@@ -166,7 +166,7 @@ module.exports = (bot) => {
                         if (mentionAfk.reason || mentionAfk.timestamp) {
                             const timeago = tools.msg.convertMsToDuration(Date.now() - mentionAfk.timestamp);
                             await ctx.reply({
-                                text: tools.msg.info(`Jangan ganggu! @${ctx.getId(afkMention)} sedang AFK ${mentionAfk.reason ? `dengan alasan ${formatter.inlineCode(mentionAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`),
+                                text: tools.msg.info(`Jangan ganggu! @${ctx.getId(afkMention)} sedang AFK ${mentionAfk.reason ? `dengan alasan ${tools.msg.inlineCode(mentionAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`),
                                 mentions: [afkMention]
                             });
                         }

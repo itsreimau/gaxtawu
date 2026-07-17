@@ -31,7 +31,7 @@ module.exports = (bot) => {
                 } = tools.helper.calculateDelay(reportOwner.length);
                 for (const ownerId of reportOwner) {
                     await bot.sendMessage(ownerId + Baileys.S_WHATSAPP_NET, {
-                        text: tools.msg.info(`Akun @${fromPnId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`),
+                        text: tools.msg.info(`Akun @${fromPnId} telah dibanned secara otomatis karena alasan ${tools.msg.inlineCode("Anti Call")}.`),
                         mentions: [fromPnJid]
                     });
                     await tools.helper.delay(delay);

@@ -40,7 +40,7 @@ module.exports = {
                     },
                     fileName: `${result.title}.mp3`,
                     mimetype: "audio/mpeg",
-                    caption: `❖ ${formatter.bold("URL")}: ${url}`
+                    caption: `❖ ${tools.msg.bold("URL")}: ${url}`
                 });
             } else {
                 await ctx.reply({

@@ -14,7 +14,7 @@ module.exports = [{
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "halo, dunia!")}\n` +
                 tools.msg.generateNotes([
-                    `Gunakan ${formatter.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`
+                    `Gunakan ${tools.msg.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`
                 ])
             );
 
@@ -92,7 +92,7 @@ module.exports = [{
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "halo, dunia!")}\n` +
                 tools.msg.generateNotes([
-                    `Gunakan ${formatter.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`
+                    `Gunakan ${tools.msg.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`
                 ])
             );
 

@@ -13,7 +13,7 @@ module.exports = {
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "kej 2:18")}\n` +
                 tools.msg.generateNotes([
-                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
+                    `Ketik ${tools.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
                 ])
             );
 
@@ -30,14 +30,14 @@ module.exports = {
             const result = (await axios.get(apiUrl)).data.bible.book;
 
             const resultText = result.chapter.verses.map(vers =>
-                `❖ ${formatter.bold("Ayat")}: ${vers.number}\n` +
+                `❖ ${tools.msg.bold("Ayat")}: ${vers.number}\n` +
                 vers.text
             ).join("\n");
             await ctx.reply(
                 `${resultText}\n` +
                 "\n" +
-                `❖ ${formatter.bold("Nama")}: ${result.name}\n` +
-                `❖ ${formatter.bold("Bab")}: ${result.chapter.chap}`
+                `❖ ${tools.msg.bold("Nama")}: ${result.name}\n` +
+                `❖ ${tools.msg.bold("Bab")}: ${result.chapter.chap}`
             );
         } catch (error) {
             await tools.helper.handleError(ctx, error, true);

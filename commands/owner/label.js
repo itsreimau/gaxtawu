@@ -29,7 +29,7 @@ module.exports = {
                 } catch {}
             }
 
-            await ctx.editMessage(ctx.id, waitMsg.key, tools.msg.info(`Label bot berhasil diubah menjadi ${formatter.inlineCode(input)} di ${groupJids.length} grup!`));
+            await ctx.editMessage(ctx.id, waitMsg.key, tools.msg.info(`Label bot berhasil diubah menjadi ${tools.msg.inlineCode(input)} di ${groupJids.length} grup!`));
         } catch (error) {
             await tools.helper.handleError(ctx, error, false);
         }

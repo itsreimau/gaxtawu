@@ -20,11 +20,11 @@ class QuizGame {
     defaultFormatQuestion(data) {
         let text = `✦ — ${data[this.questionKey]}\n` +
             "\n" +
-            `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
-            `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}\n`;
+            `❖ ${tools.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
+            `❖ ${tools.msg.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}\n`;
 
         for (const field of this.extraFields) {
-            if (data[field.key]) text += `❖ ${formatter.bold(field.label)}: ${data[field.key]}\n`;
+            if (data[field.key]) text += `❖ ${tools.msg.bold(field.label)}: ${data[field.key]}\n`;
         }
 
         return text.trim();
@@ -104,7 +104,7 @@ class QuizGame {
                         participantDb.save();
                     }
                     const clue = game.answer.replace(/[aiueo]/g, "_");
-                    await collCtx.reply(formatter.monospace(clue.toUpperCase()));
+                    await collCtx.reply(tools.msg.monospace(clue.toUpperCase()));
                     return;
                 }
 
@@ -234,8 +234,8 @@ const options = {
         formatQuestion(data) {
             return `✦ — Bendera negara apa ini?\n` +
                 "\n" +
-                `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
+                `❖ ${tools.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
+                `❖ ${tools.msg.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
         }
     },
 
@@ -251,8 +251,8 @@ const options = {
         formatQuestion(data) {
             return `✦ — Game apa ini?\n` +
                 "\n" +
-                `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
+                `❖ ${tools.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
+                `❖ ${tools.msg.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
         }
     },
 
@@ -290,8 +290,8 @@ const options = {
         formatQuestion(data) {
             return `✦ — Dengarkan suara hero Mobile Legends ini!\n` +
                 "\n" +
-                `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
+                `❖ ${tools.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
+                `❖ ${tools.msg.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
         }
     },
 
@@ -307,8 +307,8 @@ const options = {
         formatQuestion(data) {
             return `✦ — Siapa member JKT48 ini?\n` +
                 "\n" +
-                `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
+                `❖ ${tools.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
+                `❖ ${tools.msg.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
         }
     },
 
@@ -335,8 +335,8 @@ const options = {
         formatQuestion(data) {
             return `✦ — Siapa karakter Free Fire ini?\n` +
                 "\n" +
-                `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
+                `❖ ${tools.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
+                `❖ ${tools.msg.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
         }
     },
 
@@ -352,8 +352,8 @@ const options = {
         formatQuestion(data) {
             return `✦ — Kartun apa ini?\n` +
                 "\n" +
-                `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
+                `❖ ${tools.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
+                `❖ ${tools.msg.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
         }
     },
 
@@ -378,8 +378,8 @@ const options = {
         formatQuestion(data) {
             return `✦ — Lambang ${data.lambang} adalah unsur apa?\n` +
                 "\n" +
-                `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
+                `❖ ${tools.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
+                `❖ ${tools.msg.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
         }
     },
 
@@ -421,8 +421,8 @@ const options = {
             const d = data.data || data;
             return `✦ — Logo apa ini?\n` +
                 "\n" +
-                `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
+                `❖ ${tools.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
+                `❖ ${tools.msg.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
         }
     },
 
@@ -448,8 +448,8 @@ const options = {
         formatQuestion(data) {
             return `✦ — Angka berapa yang terlihat?\n` +
                 "\n" +
-                `❖ ${formatter.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
+                `❖ ${tools.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
+                `❖ ${tools.msg.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(this.timeout)}`;
         }
     },
 

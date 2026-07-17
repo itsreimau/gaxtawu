@@ -15,8 +15,8 @@ module.exports = {
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "antilink")}\n` +
                 tools.msg.generateNotes([
-                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`,
-                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} status`)} untuk melihat status.`
+                    `Ketik ${tools.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`,
+                    `Ketik ${tools.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} status`)} untuk melihat status.`
                 ])
             );
 
@@ -28,19 +28,19 @@ module.exports = {
         if (input.toLowerCase() === "status") {
             const groupOption = ctx.db.group.option || {};
             return await ctx.reply(
-                `❖ ${formatter.bold("Antiaudio")}: ${groupOption.antiaudio ? "Aktif" : "Nonaktif"}\n` +
-                `❖ ${formatter.bold("Antidocument")}: ${groupOption.antidocument ? "Aktif" : "Nonaktif"}\n` +
-                `❖ ${formatter.bold("Antiimage")}: ${groupOption.antiimage ? "Aktif" : "Nonaktif"}\n` +
-                `❖ ${formatter.bold("Antisticker")}: ${groupOption.antisticker ? "Aktif" : "Nonaktif"}\n` +
-                `❖ ${formatter.bold("Antivideo")}: ${groupOption.antivideo ? "Aktif" : "Nonaktif"}\n` +
-                `❖ ${formatter.bold("Antigcsw")}: ${groupOption.antigcsw ? "Aktif" : "Nonaktif"}\n` +
-                `❖ ${formatter.bold("Antilink")}: ${groupOption.antilink ? "Aktif" : "Nonaktif"}\n` +
-                `❖ ${formatter.bold("Antispam")}: ${groupOption.antispam ? "Aktif" : "Nonaktif"}\n` +
-                `❖ ${formatter.bold("Antitagsw")}: ${groupOption.antitagsw ? "Aktif" : "Nonaktif"}\n` +
-                `❖ ${formatter.bold("Antitoxic")}: ${groupOption.antitoxic ? "Aktif" : "Nonaktif"}\n` +
-                `❖ ${formatter.bold("Autokick")}: ${groupOption.autokick ? "Aktif" : "Nonaktif"}\n` +
-                `❖ ${formatter.bold("Gamerestrict")}: ${groupOption.gamerestrict ? "Aktif" : "Nonaktif"}\n` +
-                `❖ ${formatter.bold("Welcome")}: ${groupOption.welcome ? "Aktif" : "Nonaktif"}`
+                `❖ ${tools.msg.bold("Antiaudio")}: ${groupOption.antiaudio ? "Aktif" : "Nonaktif"}\n` +
+                `❖ ${tools.msg.bold("Antidocument")}: ${groupOption.antidocument ? "Aktif" : "Nonaktif"}\n` +
+                `❖ ${tools.msg.bold("Antiimage")}: ${groupOption.antiimage ? "Aktif" : "Nonaktif"}\n` +
+                `❖ ${tools.msg.bold("Antisticker")}: ${groupOption.antisticker ? "Aktif" : "Nonaktif"}\n` +
+                `❖ ${tools.msg.bold("Antivideo")}: ${groupOption.antivideo ? "Aktif" : "Nonaktif"}\n` +
+                `❖ ${tools.msg.bold("Antigcsw")}: ${groupOption.antigcsw ? "Aktif" : "Nonaktif"}\n` +
+                `❖ ${tools.msg.bold("Antilink")}: ${groupOption.antilink ? "Aktif" : "Nonaktif"}\n` +
+                `❖ ${tools.msg.bold("Antispam")}: ${groupOption.antispam ? "Aktif" : "Nonaktif"}\n` +
+                `❖ ${tools.msg.bold("Antitagsw")}: ${groupOption.antitagsw ? "Aktif" : "Nonaktif"}\n` +
+                `❖ ${tools.msg.bold("Antitoxic")}: ${groupOption.antitoxic ? "Aktif" : "Nonaktif"}\n` +
+                `❖ ${tools.msg.bold("Autokick")}: ${groupOption.autokick ? "Aktif" : "Nonaktif"}\n` +
+                `❖ ${tools.msg.bold("Gamerestrict")}: ${groupOption.gamerestrict ? "Aktif" : "Nonaktif"}\n` +
+                `❖ ${tools.msg.bold("Welcome")}: ${groupOption.welcome ? "Aktif" : "Nonaktif"}`
             );
         }
 
@@ -64,7 +64,7 @@ module.exports = {
                     setKey = input.toLowerCase();
                     break;
                 default:
-                    return await ctx.reply(tools.msg.info(`Opsi ${formatter.inlineCode(input)} tidak valid!`));
+                    return await ctx.reply(tools.msg.info(`Opsi ${tools.msg.inlineCode(input)} tidak valid!`));
             }
 
             const groupDb = ctx.db.group;
@@ -75,7 +75,7 @@ module.exports = {
             (groupDb.option ||= {})[setKey] = newStatus;
             groupDb.save();
             const statusText = newStatus ? "diaktifkan" : "dinonaktifkan";
-            await ctx.reply(tools.msg.info(`Opsi ${formatter.inlineCode(input)} berhasil ${statusText}!`));
+            await ctx.reply(tools.msg.info(`Opsi ${tools.msg.inlineCode(input)} berhasil ${statusText}!`));
         } catch (error) {
             await tools.helper.handleError(ctx, error);
         }

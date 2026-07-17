@@ -26,7 +26,7 @@ module.exports = {
                 image: {
                     url: result
                 },
-                caption: `❖ ${formatter.bold("URL")}: ${url}`
+                caption: `❖ ${tools.msg.bold("URL")}: ${url}`
             });
         } catch (error) {
             await tools.helper.handleError(ctx, error, true);

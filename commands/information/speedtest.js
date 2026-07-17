@@ -30,9 +30,9 @@ module.exports = {
             });
 
             await ctx.editMessage(ctx.id, speedtestMsg.key,
-                `❖ ${formatter.bold("Latency")}: ${tools.msg.convertMsToDuration(latencySpeed)}\n` +
-                `❖ ${formatter.bold("Download")}: ${tools.msg.formatSize(downloadSpeed, true)}\n` +
-                `❖ ${formatter.bold("Upload")}: ${tools.msg.formatSize(uploadSpeed, true)}`
+                `❖ ${tools.msg.bold("Latency")}: ${tools.msg.convertMsToDuration(latencySpeed)}\n` +
+                `❖ ${tools.msg.bold("Download")}: ${tools.msg.formatSize(downloadSpeed, true)}\n` +
+                `❖ ${tools.msg.bold("Upload")}: ${tools.msg.formatSize(uploadSpeed, true)}`
             );
         } catch (error) {
             await tools.helper.handleError(ctx, error);

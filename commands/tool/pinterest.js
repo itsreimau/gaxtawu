@@ -25,7 +25,7 @@ module.exports = {
                 image: {
                     url: result
                 },
-                caption: `❖ ${formatter.bold("Kueri")}: ${input}`,
+                caption: `❖ ${tools.msg.bold("Kueri")}: ${input}`,
                 buttons: [{
                     text: "Ambil Lagi",
                     id: `${ctx.used.prefix + ctx.used.command} ${input}`

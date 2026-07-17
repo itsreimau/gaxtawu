@@ -33,7 +33,7 @@ module.exports = {
                     image: {
                         url: result
                     },
-                    caption: `❖ ${formatter.bold("Prompt")}: ${input}`
+                    caption: `❖ ${tools.msg.bold("Prompt")}: ${input}`
                 });
             } catch (error) {
                 await tools.helper.handleError(ctx, error, true);

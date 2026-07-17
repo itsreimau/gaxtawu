@@ -24,9 +24,9 @@ module.exports = {
                 text: `✦ — ${render(word, new Set())}\n` +
                     `Ketik huruf untuk menebak.\n` +
                     "\n" +
-                    `❖ ${formatter.bold("Bonus")}: ${game.coin} koin\n` +
-                    `❖ ${formatter.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}\n` +
-                    `❖ ${formatter.bold("Nyawa")}: ${game.lives}`,
+                    `❖ ${tools.msg.bold("Bonus")}: ${game.coin} koin\n` +
+                    `❖ ${tools.msg.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}\n` +
+                    `❖ ${tools.msg.bold("Nyawa")}: ${game.lives}`,
                 buttons: [{
                     text: "Menyerah",
                     id: `surrender_${ctx.used.command}`
@@ -97,8 +97,8 @@ module.exports = {
                     `✦ — ${display}\n` +
                     `Ketik huruf untuk menebak lagi.\n` +
                     "\n" +
-                    `❖ ${formatter.bold("Nyawa")}: ${game.lives}\n` +
-                    `❖ ${formatter.bold("Huruf")}: ${[...game.guessed].join(", ")}`
+                    `❖ ${tools.msg.bold("Nyawa")}: ${game.lives}\n` +
+                    `❖ ${tools.msg.bold("Huruf")}: ${[...game.guessed].join(", ")}`
                 );
             });
 

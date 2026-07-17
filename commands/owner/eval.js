@@ -10,7 +10,7 @@ module.exports = {
             const code = ctx.msg.body.slice(ctx.msg.body.startsWith("==> ") ? 4 : 3);
             const result = await eval(ctx.msg.body.startsWith("==> ") ? `(async () => { ${code} })()` : code);
 
-            await ctx.reply(formatter.monospace(format(result)));
+            await ctx.reply(tools.msg.monospace(format(result)));
         } catch (error) {
             await tools.helper.handleError(ctx, error, false, true);
         }

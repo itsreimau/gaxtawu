@@ -15,7 +15,7 @@ module.exports = {
             });
             await ctx.reply(tools.msg.info(`Collector dimulai dengan timeout ${tools.msg.convertMsToDuration(timeout)}.`));
 
-            collector.on("collect", async (collCtx) => await collCtx.reply(formatter.monospace(format(collCtx.bot.m))));
+            collector.on("collect", async (collCtx) => await collCtx.reply(tools.msg.monospace(format(collCtx.bot.m))));
 
             collector.on("end", async () => await ctx.reply(tools.msg.info("Collector berhenti!")));
         } catch (error) {

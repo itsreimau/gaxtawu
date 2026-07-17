@@ -1,4 +1,4 @@
-const WASF = require("wa-sticker-formatter");
+const WASF = require("wa-sticker-tools.msg");
 
 module.exports = {
     name: "fetch",
@@ -85,7 +85,7 @@ module.exports = {
 
 function walkJSON(json, depth = 0, array = []) {
     for (const key in json) {
-        array.push(`${"┊".repeat(depth)}${depth > 0 ? " " : ""}${formatter.bold(key)}:`);
+        array.push(`${"┊".repeat(depth)}${depth > 0 ? " " : ""}${tools.msg.bold(key)}:`);
         if (typeof json[key] === "object" && json[key] !== undefined) {
             walkJSON(json[key], depth + 1, array);
         } else {

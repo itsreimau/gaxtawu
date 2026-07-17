@@ -1,5 +1,5 @@
 require("node:process").loadEnvFile();
-const { Config, Formatter } = require("#engine");
+const { Config } = require("#engine");
 const { createServer } = require("node:http");
 const { resolve } = require("node:path");
 const { styleText } = require("node:util");
@@ -20,7 +20,6 @@ axiosRetry(axios, {
 Object.assign(global, {
     axios,
     config: new Config(resolve(__dirname, "config.json")),
-    formatter: Formatter,
     tools: require("#tools")
 });
 

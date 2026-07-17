@@ -23,8 +23,8 @@ module.exports = {
             await ctx.reply(
                 `✦ — ${result.lyrics}\n` +
                 "\n" +
-                `❖ ${formatter.bold("Judul")}: ${result.title}\n` +
-                `❖ ${formatter.bold("Artis")}: ${result.artists}`
+                `❖ ${tools.msg.bold("Judul")}: ${result.title}\n` +
+                `❖ ${tools.msg.bold("Artis")}: ${result.artists}`
             );
         } catch (error) {
             await tools.helper.handleError(ctx, error, true);

@@ -42,6 +42,6 @@
     "simpl.db": "^2.13.0",
     "qrcode-terminal": "^0.12.0",
     "vcard-parser": "^1.0.0",
-    "wa-sticker-formatter": "^4.4.4"
+    "wa-sticker-tools.msg": "^4.4.4"
   }
 }

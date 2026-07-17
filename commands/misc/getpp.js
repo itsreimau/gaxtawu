@@ -22,7 +22,7 @@ module.exports = {
                 image: {
                     url: result
                 },
-                caption: `❖ ${formatter.bold("Akun")}: @${ctx.getId(target.jid)}`,
+                caption: `❖ ${tools.msg.bold("Akun")}: @${ctx.getId(target.jid)}`,
                 mentions: [target.jid]
             });
         } catch (error) {

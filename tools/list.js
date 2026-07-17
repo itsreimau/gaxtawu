@@ -7,16 +7,16 @@ async function get(type) {
             case "alkitab": {
                 const data = (await axios.get("https://api-alkitab.vercel.app/api/book")).data.data;
                 text = createList(data, (list) =>
-                    `❖ ${formatter.bold("Kitab")}: ${list.name} (${list.abbr})\n` +
-                    `❖ ${formatter.bold("Jumlah Bab")}: ${list.chapter}`
+                    `❖ ${tools.msg.bold("Kitab")}: ${list.name} (${list.abbr})\n` +
+                    `❖ ${tools.msg.bold("Jumlah Bab")}: ${list.chapter}`
                 );
                 break;
             }
             case "alquran": {
                 const data = (await axios.get("https://raw.githubusercontent.com/penggguna/QuranJSON/master/quran.json")).data;
                 text = createList(data, (list) =>
-                    `❖ ${formatter.bold("Surah")}: ${list.name} (${list.number_of_surah})\n` +
-                    `❖ ${formatter.bold("Jumlah Ayat")}: ${list.number_of_ayah}`
+                    `❖ ${tools.msg.bold("Surah")}: ${list.name} (${list.number_of_surah})\n` +
+                    `❖ ${tools.msg.bold("Jumlah Ayat")}: ${list.number_of_ayah}`
                 );
                 break;
             }
@@ -76,7 +76,7 @@ async function get(type) {
                     "antispam (Anti spam)",
                     "antitagsw (Anti Tag SW)",
                     "antitoxic (Anti toxic, seperti bahasa kasar)",
-                    `autokick (Dikeluarkan secara otomatis, jika ada yang melanggar salah satu opsi ${formatter.inlineCode("anti...")})`,
+                    `autokick (Dikeluarkan secara otomatis, jika ada yang melanggar salah satu opsi ${tools.msg.inlineCode("anti...")})`,
                     "gamerestrict (Anggota dilarang bermain game)",
                     "welcome (Sambutan member)"
                 ];

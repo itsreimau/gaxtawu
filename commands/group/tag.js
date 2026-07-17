@@ -17,7 +17,7 @@ module.exports = [{
 
             const resultText = mentions.map(mention => mention.tag).join(" ");
             await ctx.reply({
-                text: `${input || `>ᴗ< ${formatter.italic("Halo, Dunia!")}`}\n` +
+                text: `${input || `>ᴗ< ${tools.msg.italic("Halo, Dunia!")}`}\n` +
                     `${"\u200E".repeat(4001)}\n` +
                     resultText,
                 mentions: mentions.map(mention => mention.mention)
@@ -39,7 +39,7 @@ module.exports = [{
 
         try {
             await ctx.reply({
-                text: input || `>ᴗ< ${formatter.italic("Halo, Dunia!")}`,
+                text: input || `>ᴗ< ${tools.msg.italic("Halo, Dunia!")}`,
                 mentionAll: true
             });
         } catch (error) {

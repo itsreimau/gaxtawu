@@ -40,9 +40,9 @@ module.exports = {
                 const searchResult = (await axios.get(searchApiUrl)).data.data[searchIndex];
 
                 await ctx.reply(
-                    `❖ ${formatter.bold("Judul")}: ${searchResult.title}\n` +
-                    `❖ ${formatter.bold("Artis")}: ${searchResult.artist}\n` +
-                    `❖ ${formatter.bold("URL")}: ${searchResult.url}`
+                    `❖ ${tools.msg.bold("Judul")}: ${searchResult.title}\n` +
+                    `❖ ${tools.msg.bold("Artis")}: ${searchResult.artist}\n` +
+                    `❖ ${tools.msg.bold("URL")}: ${searchResult.url}`
                 );
 
                 const downloadApiUrl = tools.api.createUrl("delirius", "/download/spotifydl", {
@@ -63,9 +63,9 @@ module.exports = {
                 const searchResult = (await axios.get(searchApiUrl)).data.data[searchIndex];
 
                 await ctx.reply(
-                    `❖ ${formatter.bold("Judul")}: ${searchResult.title}\n` +
-                    `❖ ${formatter.bold("Artis")}: ${searchResult.author.name}\n` +
-                    `❖ ${formatter.bold("URL")}: ${searchResult.url}`
+                    `❖ ${tools.msg.bold("Judul")}: ${searchResult.title}\n` +
+                    `❖ ${tools.msg.bold("Artis")}: ${searchResult.author.name}\n` +
+                    `❖ ${tools.msg.bold("URL")}: ${searchResult.url}`
                 );
 
                 const downloadApiUrl = tools.api.createUrl("delirius", "/download/ytmp3", {

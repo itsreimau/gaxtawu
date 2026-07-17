@@ -100,7 +100,7 @@ module.exports = (bot) => {
                     (senderDb.lastSentMsg ||= {})[key] = now;
                     senderDb.save();
                     return await ctx.reply({
-                        text: tools.msg.info(`${msg} Respon selanjutnya akan berupa reaksi emoji ${formatter.inlineCode(reaction)}.`),
+                        text: tools.msg.info(`${msg} Respon selanjutnya akan berupa reaksi emoji ${tools.msg.inlineCode(reaction)}.`),
                         buttons: buttons || null
                     });
                 } else {

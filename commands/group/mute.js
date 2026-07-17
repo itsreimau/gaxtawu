@@ -23,13 +23,13 @@ module.exports = [{
                     `${tools.msg.generateCmdExample(ctx.used, "@6281234567891 8")}\n` +
                     tools.msg.generateNotes([
                         "Balas/quote pesan untuk menjadikan pengirim sebagai akun target.",
-                        `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`
+                        `Ketik ${tools.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`
                     ]),
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
         if (daysAmount && daysAmount <= 0) return await ctx.reply(tools.msg.info("Durasi mute (dalam hari) harus lebih dari 0!"));
-        if (tools.helper.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(tools.msg.info(`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`));
+        if (tools.helper.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(tools.msg.info(`Ketik ${tools.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-mute bot.`));
         if (await ctx.group().isOwner(target.jid)) return await ctx.reply(tools.msg.info("Dia adalah owner grup!"));
 
         try {
@@ -89,12 +89,12 @@ module.exports = [{
                     `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
                     tools.msg.generateNotes([
                         "Balas/quote pesan untuk menjadikan pengirim sebagai akun target.",
-                        `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-unmute bot.`
+                        `Ketik ${tools.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-unmute bot.`
                     ]),
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (tools.helper.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(tools.msg.info(`Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-unmute bot.`));
+        if (tools.helper.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(tools.msg.info(`Ketik ${tools.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-unmute bot.`));
         if (await ctx.group().isOwner(target.jid)) return await ctx.reply(tools.msg.info("Dia adalah owner grup!"));
 
         try {

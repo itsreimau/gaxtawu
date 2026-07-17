@@ -10,7 +10,7 @@ module.exports = {
                 `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
                 `${tools.msg.generateCmdExample(ctx.used, "21 35")}\n` +
                 tools.msg.generateNotes([
-                    `Ketik ${formatter.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
+                    `Ketik ${tools.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
                 ])
             );
 
@@ -36,15 +36,15 @@ module.exports = {
                     if (!selectedVerses.length) return await ctx.reply(tools.msg.info(`Ayat dalam rentang ${startAyat}-${endAyat} tidak ada!`));
 
                     const versesText = selectedVerses.map(vers =>
-                        `❖ ${formatter.bold("Ayat")}: ${vers.number}\n` +
+                        `❖ ${tools.msg.bold("Ayat")}: ${vers.number}\n` +
                         `${vers.text}\n` +
-                        formatter.italic(vers.translation_id)
+                        tools.msg.italic(vers.translation_id)
                     ).join("\n");
                     await ctx.reply(
                         `${versesText}\n` +
                         "\n" +
-                        `❖ ${formatter.bold("Surat")}: ${result.name}\n` +
-                        `❖ ${formatter.bold("Arti")}: ${result.name_translations.id}`
+                        `❖ ${tools.msg.bold("Surat")}: ${result.name}\n` +
+                        `❖ ${tools.msg.bold("Arti")}: ${result.name_translations.id}`
                     );
                 } else {
                     const singleAyat = parseInt(ayat, 10);
@@ -54,24 +54,24 @@ module.exports = {
 
                     await ctx.reply(
                         `${verse.text}\n` +
-                        `${formatter.italic(verse.translation_id)}\n` +
+                        `${tools.msg.italic(verse.translation_id)}\n` +
                         "\n" +
-                        `❖ ${formatter.bold("Surat")}: ${result.name}\n` +
-                        `❖ ${formatter.bold("Arti")}: ${result.name_translations.id}\n` +
-                        `❖ ${formatter.bold("Ayat")}: ${singleAyat}`
+                        `❖ ${tools.msg.bold("Surat")}: ${result.name}\n` +
+                        `❖ ${tools.msg.bold("Arti")}: ${result.name_translations.id}\n` +
+                        `❖ ${tools.msg.bold("Ayat")}: ${singleAyat}`
                     );
                 }
             } else {
                 const versesText = verses.map(vers =>
-                    `❖ ${formatter.bold("Ayat")}: ${vers.number}\n` +
+                    `❖ ${tools.msg.bold("Ayat")}: ${vers.number}\n` +
                     `${vers.text}\n` +
-                    formatter.italic(vers.translation_id)
+                    tools.msg.italic(vers.translation_id)
                 ).join("\n");
                 await ctx.reply(
                     `${versesText}\n` +
                     "\n" +
-                    `❖ ${formatter.bold("Surat")}: ${result.name}\n` +
-                    `❖ ${formatter.bold("Arti")}: ${result.name_translations.id}`
+                    `❖ ${tools.msg.bold("Surat")}: ${result.name}\n` +
+                    `❖ ${tools.msg.bold("Arti")}: ${result.name_translations.id}`
                 );
             }
         } catch (error) {
