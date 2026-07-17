@@ -96,7 +96,7 @@ module.exports = {
                     `❖ ${tools.msg.bold("Mode")}: ${tools.msg.ucwords(ctx.db.bot?.mode || "public")}\n` +
                     `❖ ${tools.msg.bold("Uptime")}: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
                     `❖ ${tools.msg.bold("Database")}: ${ctx.db.users.totalEntries} users, ${ctx.db.groups.totalEntries}/${Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id).length} groups\n` +
-                    `❖ ${tools.msg.bold("Library")}: @itsliaaa/baileys.\n` +
+                    `❖ ${tools.msg.bold("Library")}: @itsliaaa/baileys\n` +
                     "\n" +
                     `✧ ${tools.msg.italic("Jangan lupa berdonasi agar bot tetap online.")}`;
 

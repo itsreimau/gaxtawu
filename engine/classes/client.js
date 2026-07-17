@@ -471,7 +471,7 @@ class client {
                 const parsed = content.contacts.map(parseContact).filter(Boolean);
                 content = {
                     contacts: {
-                        displayName: "itsliaaa/baileys.",
+                        displayName: "itsliaaa/baileys",
                         contacts: parsed
                     }
                 };
@@ -479,7 +479,7 @@ class client {
                 const parsed = content.contacts.contacts.map(parseContact).filter(Boolean);
                 content = {
                     contacts: {
-                        displayName: content.contacts.displayName || "itsliaaa/baileys.",
+                        displayName: content.contacts.displayName || "itsliaaa/baileys",
                         contacts: parsed
                     }
                 };
@@ -499,7 +499,7 @@ class client {
     parseContact(contact) {
         if (contact.vcard)
             return {
-                displayName: contact.displayName || contact.fullName || "itsliaaa/baileys.",
+                displayName: contact.displayName || contact.fullName || "itsliaaa/baileys",
                 vcard: contact.vcard
             };
         if (contact.number) {
@@ -509,7 +509,7 @@ class client {
                     value: "3.0"
                 }],
                 fn: [{
-                    value: contact.fullName || contact.displayName || "itsliaaa/baileys."
+                    value: contact.fullName || contact.displayName || "itsliaaa/baileys"
                 }],
                 org: [{
                     value: [contact.org || ""]
@@ -523,7 +523,7 @@ class client {
                 }]
             });
             return {
-                displayName: contact.fullName || contact.displayName || "itsliaaa/baileys.",
+                displayName: contact.fullName || contact.displayName || "itsliaaa/baileys",
                 vcard
             };
         }
