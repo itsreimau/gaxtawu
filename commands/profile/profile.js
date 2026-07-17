@@ -19,10 +19,10 @@ module.exports = {
                 `❖ ${formatter.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
                 `❖ ${formatter.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Unlimited" : (userDb?.coin || 0)}\n` +
                 `❖ ${formatter.bold("Menang")}: ${userDb?.winGame || 0}\n` +
-                `❖ ${formatter.bold("Peringkat")}: ${leaderboardData.findIndex(user => tools.cmd.areJidsSameUser(user.jid, ctx.sender.lid)) + 1}`
+                `❖ ${formatter.bold("Peringkat")}: ${leaderboardData.findIndex(user => tools.helper.areJidsSameUser(user.jid, ctx.sender.lid)) + 1}`
             );
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

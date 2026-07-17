@@ -7,8 +7,8 @@ module.exports = {
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["audio", "document", "image", "sticker", "video"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["audio", "document", "image", "sticker", "video"])
+            tools.helper.checkMedia(ctx.msg.messageType, ["audio", "document", "image", "sticker", "video"]),
+            tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["audio", "document", "image", "sticker", "video"])
         ];
 
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["audio", "document", "image", "sticker", "video"]));
@@ -25,7 +25,7 @@ module.exports = {
                 }]
             });
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+            await tools.helper.handleError(ctx, error, true);
         }
     }
 };

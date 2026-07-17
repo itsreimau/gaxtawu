@@ -31,7 +31,7 @@ module.exports = {
 
             await ctx.reply(tools.msg.info(`Berhasil mentransfer ${coinAmount} koin ke pengguna itu!`));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

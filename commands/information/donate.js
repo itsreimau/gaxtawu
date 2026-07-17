@@ -22,7 +22,7 @@ module.exports = {
                 mentions: [ctx.sender.jid]
             });
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

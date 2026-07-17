@@ -19,7 +19,7 @@ module.exports = {
 
             collector.on("end", async () => await ctx.reply(tools.msg.info("Collector berhenti!")));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

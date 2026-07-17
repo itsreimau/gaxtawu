@@ -39,7 +39,7 @@ module.exports = {
 
             await ctx.reply(result);
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+            await tools.helper.handleError(ctx, error, true);
         }
     }
 };

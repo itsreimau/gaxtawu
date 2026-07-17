@@ -21,7 +21,7 @@ module.exports = [{
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (tools.cmd.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(tools.msg.info("Tidak bisa mengubah warning bot!"));
+        if (tools.helper.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(tools.msg.info("Tidak bisa mengubah warning bot!"));
         if (await ctx.group().isOwner(target.jid)) return await ctx.reply(tools.msg.info("Tidak bisa memberikan warning ke owner grup!"));
 
         try {
@@ -29,7 +29,7 @@ module.exports = [{
             const warnings = groupDb?.warnings || [];
             const maxWarnings = groupDb?.maxwarnings || 3;
 
-            const targetIndex = warnings.findIndex(warning => tools.cmd.areJidsSameUser(warning.jid, target.jid));
+            const targetIndex = warnings.findIndex(warning => tools.helper.areJidsSameUser(warning.jid, target.jid));
 
             let newWarningCount;
 
@@ -55,7 +55,7 @@ module.exports = [{
                 await ctx.reply(tools.msg.info(`Berhasil menambahkan warning menjadi ${newWarningCount}/${maxWarnings}.`));
             }
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 }, {
@@ -81,7 +81,7 @@ module.exports = [{
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (tools.cmd.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(tools.msg.info(`Tidak bisa mengubah warning bot!`));
+        if (tools.helper.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(tools.msg.info(`Tidak bisa mengubah warning bot!`));
         if (await ctx.group().isOwner(target.jid)) return await ctx.reply(tools.msg.info("Tidak bisa memberikan warning ke owner grup!"));
 
         try {
@@ -89,7 +89,7 @@ module.exports = [{
             const warnings = groupDb?.warnings || [];
             const maxWarnings = groupDb?.maxwarnings || 3;
 
-            const targetIndex = warnings.findIndex(warning => tools.cmd.areJidsSameUser(warning.jid, target.jid));
+            const targetIndex = warnings.findIndex(warning => tools.helper.areJidsSameUser(warning.jid, target.jid));
 
             if (targetIndex === -1) return await ctx.reply(tools.msg.info("Pengguna tidak memiliki warning."));
 
@@ -115,7 +115,7 @@ module.exports = [{
 
             await ctx.reply(tools.msg.info(`Berhasil mengurangi warning menjadi ${newWarningCount}/${maxWarnings}.`));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 }];

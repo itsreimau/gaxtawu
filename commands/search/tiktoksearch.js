@@ -18,7 +18,7 @@ module.exports = {
             const apiUrl = tools.api.createUrl("delirius", "/search/tiktoksearch", {
                 query: input
             });
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.meta).hd;
+            const result = tools.helper.getRandomElement((await axios.get(apiUrl)).data.meta).hd;
 
             await ctx.reply({
                 video: {
@@ -31,7 +31,7 @@ module.exports = {
                 }]
             });
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+            await tools.helper.handleError(ctx, error, true);
         }
     }
 };

@@ -35,7 +35,7 @@ module.exports = {
                 `❖ ${formatter.bold("Upload")}: ${tools.msg.formatSize(uploadSpeed, true)}`
             );
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

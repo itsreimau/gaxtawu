@@ -53,7 +53,7 @@ module.exports = [{
                 await ctx.reply(tools.msg.info("Berhasil menambahkan premium selamanya kepada pengguna itu!"));
             }
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 }, {
@@ -97,7 +97,7 @@ module.exports = [{
 
             await ctx.reply(tools.msg.info("Berhasil menghapuskan premium kepada pengguna itu!"));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 }];

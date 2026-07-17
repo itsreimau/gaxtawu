@@ -14,7 +14,7 @@ module.exports = {
                 tools.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada")
             );
 
-        if (!tools.cmd.isUrl(input))
+        if (!tools.helper.isUrl(input))
             return await ctx.reply({
                 text: tools.msg.info("Input berupa URL, gunakan tombol download di bawah:"),
                 buttons: [{
@@ -40,7 +40,7 @@ module.exports = {
             ).join("\n\n");
             await ctx.reply(resultText.trim() || tools.msg.info(config.msg.notFound));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+            await tools.helper.handleError(ctx, error, true);
         }
     }
 };

@@ -7,8 +7,8 @@ module.exports = {
     },
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["video"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["video"])
+            tools.helper.checkMedia(ctx.msg.messageType, ["video"]),
+            tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["video"])
         ];
 
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["video"]));
@@ -27,7 +27,7 @@ module.exports = {
                 mimetype: "audio/mpeg"
             });
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+            await tools.helper.handleError(ctx, error, true);
         }
     }
 };

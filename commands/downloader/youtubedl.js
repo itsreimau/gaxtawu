@@ -13,7 +13,7 @@ module.exports = [{
                 default: false
             }
         });
-        const url = flag.input || tools.cmd.extractUrlFromText(ctx.quoted?.body);
+        const url = flag.input || tools.helper.extractUrlFromText(ctx.quoted?.body);
 
         if (!url)
             return await ctx.reply(
@@ -24,7 +24,7 @@ module.exports = [{
                 })
             );
 
-        if (!tools.cmd.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.invalidUrl));
+        if (!tools.helper.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.invalidUrl));
 
         try {
             const apiUrl = tools.api.createUrl("delirius", "/download/ytmp3", {
@@ -51,7 +51,7 @@ module.exports = [{
                 });
             }
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+            await tools.helper.handleError(ctx, error, true);
         }
     }
 }, {
@@ -74,7 +74,7 @@ module.exports = [{
                 default: "360"
             }
         });
-        const url = flag.input || tools.cmd.extractUrlFromText(ctx.quoted?.body);
+        const url = flag.input || tools.helper.extractUrlFromText(ctx.quoted?.body);
 
         if (!url)
             return await ctx.reply(
@@ -86,7 +86,7 @@ module.exports = [{
                 })
             );
 
-        if (!tools.cmd.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.invalidUrl));
+        if (!tools.helper.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.invalidUrl));
 
         try {
             const apiUrl = tools.api.createUrl("alwayscodex", "/api/downloader/youtube2", {
@@ -114,7 +114,7 @@ module.exports = [{
                 });
             }
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+            await tools.helper.handleError(ctx, error, true);
         }
     }
 }];

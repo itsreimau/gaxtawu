@@ -23,7 +23,7 @@ module.exports = [{
                 mentions: mentions.map(mention => mention.mention)
             });
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 }, {
@@ -43,7 +43,7 @@ module.exports = [{
                 mentionAll: true
             });
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 }, {

@@ -66,7 +66,7 @@ module.exports = {
                 text += `ⓒ koin | Ⓖ group | Ⓞ owner | Ⓟ premium | ⓟ private`;
 
                 const thumbnailText = input === "all" || ctx.used.command === "allmenu" ? "All Menu" : (input && tag[input] ? tag[input] : "Menu");
-                const thumbnail = await tools.cmd.getJpegThumbnail(config.bot.thumbnail);
+                const thumbnail = await tools.helper.getJpegThumbnail(config.bot.thumbnail);
 
                 await ctx.reply({
                     caption: text,
@@ -142,7 +142,7 @@ module.exports = {
                 });
             }
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

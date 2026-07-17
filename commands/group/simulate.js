@@ -43,7 +43,7 @@ module.exports = {
 
             await ctx.reply(tools.msg.info("Simulasi berhasil!"));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

@@ -41,7 +41,7 @@ module.exports = [{
             const {
                 delay,
                 duration
-            } = tools.cmd.calculateDelay(groupJids.length);
+            } = tools.helper.calculateDelay(groupJids.length);
             const waitMsg = await ctx.reply(tools.msg.info(`Mengirim siaran ke ${groupJids.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(duration)}`));
             for (const groupJid of groupJids) {
                 try {
@@ -60,13 +60,13 @@ module.exports = [{
                             id: `${ctx.used.prefix}donate`
                         }]
                     });
-                    await tools.cmd.delay(delay);
+                    await tools.helper.delay(delay);
                 } catch {}
             }
 
             await ctx.editMessage(ctx.id, waitMsg.key, tools.msg.info(`Berhasil mengirim ke ${groupJids.length} grup.`));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 }, {
@@ -81,8 +81,8 @@ module.exports = [{
         const input = ctx.text || ctx.quoted?.body;
 
         const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image", "video"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image", "video"])
+            tools.helper.checkMedia(ctx.msg.messageType, ["image", "video"]),
+            tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["image", "video"])
         ];
 
         const type = checkMedia || checkQuotedMedia;
@@ -131,7 +131,7 @@ module.exports = [{
             const {
                 delay,
                 duration
-            } = tools.cmd.calculateDelay(groupJids.length);
+            } = tools.helper.calculateDelay(groupJids.length);
             const waitMsg = await ctx.reply(tools.msg.info(`Mengirim siaran ke ${groupJids.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(duration)}`));
             for (const groupJid of groupJids) {
                 try {
@@ -139,13 +139,13 @@ module.exports = [{
                         ...content,
                         groupStatus: true
                     });
-                    await tools.cmd.delay(delay);
+                    await tools.helper.delay(delay);
                 } catch {}
             }
 
             await ctx.editMessage(ctx.id, waitMsg.key, tools.msg.info(`Berhasil mengirim ke ${groupJids.length} grup.`));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 }];

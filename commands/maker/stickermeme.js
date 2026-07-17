@@ -17,8 +17,8 @@ module.exports = {
             );
 
         const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image", "sticker"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image", "sticker"])
+            tools.helper.checkMedia(ctx.msg.messageType, ["image", "sticker"]),
+            tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["image", "sticker"])
         ];
 
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image", "sticker"]));
@@ -45,7 +45,7 @@ module.exports = {
                 sticker
             });
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+            await tools.helper.handleError(ctx, error, true);
         }
     }
 };

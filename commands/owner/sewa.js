@@ -76,7 +76,7 @@ module.exports = [{
                 await ctx.reply(tools.msg.info(`Berhasil menyewakan bot ke grup ${ctx.isGroup() ? "ini" : "itu"} selamanya!`));
             }
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 }, {
@@ -136,7 +136,7 @@ module.exports = [{
 
             await ctx.reply(tools.msg.info(`Berhasil menghapus sewa bot untuk grup ${ctx.isGroup() ? "ini" : "itu"}!`));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 }];

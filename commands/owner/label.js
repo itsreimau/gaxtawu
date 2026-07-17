@@ -21,17 +21,17 @@ module.exports = {
             const groupJids = Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id);
             const {
                 delay
-            } = tools.cmd.calculateDelay(groupJids.length);
+            } = tools.helper.calculateDelay(groupJids.length);
             for (const groupJid of groupJids) {
                 try {
                     await ctx.core.updateMemberLabel(groupJid, input);
-                    await tools.cmd.delay(delay);
+                    await tools.helper.delay(delay);
                 } catch {}
             }
 
             await ctx.editMessage(ctx.id, waitMsg.key, tools.msg.info(`Label bot berhasil diubah menjadi ${formatter.inlineCode(input)} di ${groupJids.length} grup!`));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, false);
+            await tools.helper.handleError(ctx, error, false);
         }
     }
 };

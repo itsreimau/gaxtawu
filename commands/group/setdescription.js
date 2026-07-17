@@ -21,7 +21,7 @@ module.exports = {
 
             await ctx.reply(tools.msg.info("Berhasil mengubah deskripsi grup!"));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

@@ -20,7 +20,7 @@ module.exports = {
 
             await ctx.reply(tools.msg.info("Berhasil mengubah nama grup!"));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

@@ -51,7 +51,7 @@ module.exports = {
             groupDb.save();
             await ctx.reply(tools.msg.info(`Pesan untuk teks ${formatter.inlineCode(key)} berhasil disimpan!`));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

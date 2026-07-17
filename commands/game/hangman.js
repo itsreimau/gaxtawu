@@ -10,7 +10,7 @@ module.exports = {
 
         try {
             const words = (await axios.get("https://raw.githubusercontent.com/siuspsrb/database/main/game/kbbi.json")).data.filter(w => w.length > 1);
-            const word = tools.cmd.getRandomElement(words);
+            const word = tools.helper.getRandomElement(words);
             const game = {
                 coin: 10,
                 timeout: 60000,
@@ -112,7 +112,7 @@ module.exports = {
                 }
             });
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+            await tools.helper.handleError(ctx, error, true);
         }
     }
 };

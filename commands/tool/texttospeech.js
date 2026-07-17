@@ -33,7 +33,7 @@ module.exports = {
                 mimetype: "audio/mpeg"
             });
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+            await tools.helper.handleError(ctx, error, true);
         }
     }
 };

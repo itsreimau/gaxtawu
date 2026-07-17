@@ -20,8 +20,8 @@ module.exports = {
             );
 
         const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
+            tools.helper.checkMedia(ctx.msg.messageType, ["image"]),
+            tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
         ];
 
         const senderDb = ctx.db.user;
@@ -58,7 +58,7 @@ module.exports = {
                 await ctx.reply(result);
             }
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+            await tools.helper.handleError(ctx, error, true);
         }
     }
 };

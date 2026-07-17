@@ -37,7 +37,7 @@ module.exports = {
 
             await ctx.reply(resultText.trim());
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

@@ -11,7 +11,7 @@ module.exports = (bot) => {
                 degreesLongitude: 0,
                 name: config.bot.name,
                 address: "Jangan lupa berdonasi agar bot tetap online.",
-                jpegThumbnail: await tools.cmd.getJpegThumbnail(config.bot.thumbnail)
+                jpegThumbnail: await tools.helper.getJpegThumbnail(config.bot.thumbnail)
             },
             buttons: [{
                 text: "Menu",

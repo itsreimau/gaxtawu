@@ -9,7 +9,7 @@ module.exports = {
             const responseTime = performance.now() - startTime;
             await ctx.editMessage(ctx.id, pongMsg.key, tools.msg.info(`Pong! Merespon dalam ${tools.msg.convertMsToDuration(responseTime)}.`));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

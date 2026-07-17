@@ -40,7 +40,7 @@ module.exports = {
                 sticker
             });
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+            await tools.helper.handleError(ctx, error, true);
         }
     }
 };

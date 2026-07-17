@@ -38,7 +38,7 @@ module.exports = [{
 
             await ctx.reply(tools.msg.info("Berhasil dibanned!"));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 }, {
@@ -81,7 +81,7 @@ module.exports = [{
 
             await ctx.reply(tools.msg.info("Berhasil diunbanned!"));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 }];

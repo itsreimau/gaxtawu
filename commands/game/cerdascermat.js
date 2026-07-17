@@ -23,7 +23,7 @@ module.exports = {
             const apiUrl = tools.api.createUrl("siputzx", "/api/games/cc-sd", {
                 matapelajaran: input
             });
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.data.soal);
+            const result = tools.helper.getRandomElement((await axios.get(apiUrl)).data.data.soal);
 
             const game = {
                 coin: 5,
@@ -106,7 +106,7 @@ module.exports = {
                 }
             });
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+            await tools.helper.handleError(ctx, error, true);
         }
     }
 };

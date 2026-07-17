@@ -16,8 +16,8 @@ module.exports = {
                 );
 
             const [checkMedia, checkQuotedMedia] = [
-                tools.cmd.checkMedia(ctx.msg.messageType, ["image"]),
-                tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
+                tools.helper.checkMedia(ctx.msg.messageType, ["image"]),
+                tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
             ];
 
             if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
@@ -36,6 +36,6 @@ module.exports = {
                     caption: `❖ ${formatter.bold("Prompt")}: ${input}`
                 });
             } catch (error) {
-                await tools.cmd.handleError(ctx, error, true);
+                await tools.helper.handleError(ctx, error, true);
             }
         };

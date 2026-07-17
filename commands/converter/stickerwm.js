@@ -16,7 +16,7 @@ module.exports = {
                 tools.msg.generateCmdExample(ctx.used, "stiker saya|itsreimau")
             );
 
-        if (!tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["sticker"])) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["sticker"]));
+        if (!tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["sticker"])) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["sticker"]));
 
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
@@ -34,7 +34,7 @@ module.exports = {
                 sticker
             });
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

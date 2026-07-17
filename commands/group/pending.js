@@ -17,7 +17,7 @@ module.exports = [{
 
                 return await ctx.reply(tools.msg.info(`Berhasil menyetujui semua anggota (${allJids.length}).`));
             } catch (error) {
-                return await tools.cmd.handleError(ctx, error);
+                return await tools.helper.handleError(ctx, error);
             }
         }
 
@@ -33,7 +33,7 @@ module.exports = [{
             );
 
         const pendings = await ctx.group().pendingMembers();
-        const isPending = pendings.some(pending => tools.cmd.areJidsSameUser(pending.jid, target.jid));
+        const isPending = pendings.some(pending => tools.helper.areJidsSameUser(pending.jid, target.jid));
         if (!isPending) return await ctx.reply(tools.msg.info("Akun tidak ditemukan di daftar anggota yang menunggu persetujuan."));
 
         try {
@@ -41,7 +41,7 @@ module.exports = [{
 
             await ctx.reply(tools.msg.info("Berhasil disetujui!"));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 }, {
@@ -63,7 +63,7 @@ module.exports = [{
 
                 return await ctx.reply(tools.msg.info(`Berhasil menolak semua anggota (${allJids.length}).`));
             } catch (error) {
-                return await tools.cmd.handleError(ctx, error);
+                return await tools.helper.handleError(ctx, error);
             }
         }
 
@@ -79,7 +79,7 @@ module.exports = [{
             );
 
         const pendings = await ctx.group().pendingMembers();
-        const isPending = pendings.some(pending => tools.cmd.areJidsSameUser(pending.jid, target.jid));
+        const isPending = pendings.some(pending => tools.helper.areJidsSameUser(pending.jid, target.jid));
         if (!isPending) return await ctx.reply(tools.msg.info("Akun tidak ditemukan di daftar anggota yang menunggu persetujuan."));
 
         try {
@@ -87,7 +87,7 @@ module.exports = [{
 
             await ctx.reply(tools.msg.info("Berhasil ditolak!"));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 }];

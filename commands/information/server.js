@@ -34,7 +34,7 @@ module.exports = {
                 `❖ ${formatter.bold("Library")}: #engine (Fork of @mengkodingan/ckptw)`
             );
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

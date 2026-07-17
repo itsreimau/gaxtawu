@@ -24,17 +24,17 @@ module.exports = (bot) => {
         fromDb.save();
 
         if (!config.system.restrict) {
-            const reportOwner = tools.cmd.getReportOwner();
+            const reportOwner = tools.helper.getReportOwner();
             if (reportOwner && reportOwner.length > 0) {
                 const {
                     delay
-                } = tools.cmd.calculateDelay(reportOwner.length);
+                } = tools.helper.calculateDelay(reportOwner.length);
                 for (const ownerId of reportOwner) {
                     await bot.sendMessage(ownerId + Baileys.S_WHATSAPP_NET, {
                         text: tools.msg.info(`Akun @${fromPnId} telah dibanned secara otomatis karena alasan ${formatter.inlineCode("Anti Call")}.`),
                         mentions: [fromPnJid]
                     });
-                    await tools.cmd.delay(delay);
+                    await tools.helper.delay(delay);
                 }
             }
 

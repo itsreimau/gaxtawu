@@ -40,7 +40,7 @@ module.exports = {
                 `❖ ${formatter.bold("Bab")}: ${result.chapter.chap}`
             );
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+            await tools.helper.handleError(ctx, error, true);
         }
     }
 };

@@ -15,7 +15,7 @@ class MessageCollector extends Collector {
         const chatJids = [ctx.msg.key.remoteJid, ctx.msg.key.remoteJidAlt];
         for (const jid of this.jids) {
             for (const chatJid of chatJids) {
-                if (tools.cmd.areJidsSameUser(jid, chatJid)) return ctx;
+                if (tools.helper.areJidsSameUser(jid, chatJid)) return ctx;
             }
         }
         return false;

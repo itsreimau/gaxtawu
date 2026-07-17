@@ -23,7 +23,7 @@ module.exports = {
 
             exec("pm2 restart $(basename $(pwd))"); // Hanya berfungsi saat menggunakan PM2
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

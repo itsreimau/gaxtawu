@@ -24,7 +24,7 @@ module.exports = [{
 
             await ctx.reply(tools.msg.info("Berhasil ditambahkan!"));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 }, {
@@ -57,7 +57,7 @@ module.exports = [{
 
             await ctx.reply(tools.msg.info("Berhasil dikeluarkan!"));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 }];

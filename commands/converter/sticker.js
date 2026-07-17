@@ -6,8 +6,8 @@ module.exports = {
     category: "converter",
     code: async (ctx) => {
         const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image", "video"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image", "video"])
+            tools.helper.checkMedia(ctx.msg.messageType, ["image", "video"]),
+            tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["image", "video"])
         ];
 
         if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image", "video"]));
@@ -28,7 +28,7 @@ module.exports = {
                 sticker
             });
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

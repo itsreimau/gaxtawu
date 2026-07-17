@@ -6,7 +6,7 @@ module.exports = {
         premium: true
     },
     code: async (ctx) => {
-        const url = ctx.args[0] || tools.cmd.extractUrlFromText(ctx.quoted?.body);
+        const url = ctx.args[0] || tools.helper.extractUrlFromText(ctx.quoted?.body);
 
         if (!url)
             return await ctx.reply(
@@ -14,7 +14,7 @@ module.exports = {
                 tools.msg.generateCmdExample(ctx.used, "https://itsreimau.is-a.dev")
             );
 
-        if (!tools.cmd.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.invalidUrl));
+        if (!tools.helper.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.invalidUrl));
 
         try {
             const apiUrl = tools.api.createUrl("alwayscodex", "/api/solve/bypasslink", {
@@ -24,7 +24,7 @@ module.exports = {
 
             await ctx.reply(result);
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+            await tools.helper.handleError(ctx, error, true);
         }
     }
 };

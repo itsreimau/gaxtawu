@@ -10,8 +10,8 @@ module.exports = {
         const input = ctx.text || ctx.quoted?.body;
 
         const [checkMedia, checkQuotedMedia] = [
-            tools.cmd.checkMedia(ctx.msg.messageType, ["image", "video"]),
-            tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["image", "video"])
+            tools.helper.checkMedia(ctx.msg.messageType, ["image", "video"]),
+            tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["image", "video"])
         ];
 
         const type = checkMedia || checkQuotedMedia;
@@ -42,7 +42,7 @@ module.exports = {
 
             await ctx.reply(tools.msg.info("Group status berhasil dikirim!"));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, false);
+            await tools.helper.handleError(ctx, error, false);
         }
     }
 };

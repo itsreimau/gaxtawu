@@ -77,7 +77,7 @@ module.exports = {
             const statusText = newStatus ? "diaktifkan" : "dinonaktifkan";
             await ctx.reply(tools.msg.info(`Opsi ${formatter.inlineCode(input)} berhasil ${statusText}!`));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

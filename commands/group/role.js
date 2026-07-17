@@ -26,7 +26,7 @@ module.exports = [{
 
             await ctx.reply(tools.msg.info("Berhasil ditingkatkan dari anggota menjadi admin!"));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 }, {
@@ -57,7 +57,7 @@ module.exports = [{
 
             await ctx.reply(tools.msg.info("Berhasil diturunkan dari admin menjadi anggota!"));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 }];

@@ -49,7 +49,7 @@ module.exports = {
 
             await ctx.reply(tools.msg.info("Berhasil mengubah setelan grup!"));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

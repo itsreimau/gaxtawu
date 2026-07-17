@@ -11,7 +11,7 @@ module.exports = {
 
             await ctx.reply(introText || tools.msg.info("Grup ini tidak memiliki intro."));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

@@ -10,7 +10,7 @@ module.exports = {
 
             await ctx.reply(tools.msg.info(`Anda memiliki ${coin} koin tersisa.`));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

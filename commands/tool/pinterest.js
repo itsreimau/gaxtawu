@@ -19,7 +19,7 @@ module.exports = {
                 query: input,
                 limit: 250
             });
-            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result.items).image;
+            const result = tools.helper.getRandomElement((await axios.get(apiUrl)).data.result.items).image;
 
             await ctx.reply({
                 image: {
@@ -32,7 +32,7 @@ module.exports = {
                 }]
             });
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+            await tools.helper.handleError(ctx, error, true);
         }
     }
 };

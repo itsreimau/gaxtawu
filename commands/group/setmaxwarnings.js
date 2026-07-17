@@ -22,7 +22,7 @@ module.exports = {
 
             await ctx.reply(tools.msg.info("Berhasil mengubah max warnings!"));
         } catch (error) {
-            await tools.cmd.handleError(ctx, error);
+            await tools.helper.handleError(ctx, error);
         }
     }
 };

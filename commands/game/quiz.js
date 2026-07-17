@@ -147,13 +147,13 @@ class QuizGame {
 
         } catch (error) {
             sessions.delete(sessionKey);
-            await tools.cmd.handleError(ctx, error, true);
+            await tools.helper.handleError(ctx, error, true);
         }
     }
 
     _isCloseMatch(input, answer) {
         if (!input || !answer) return false;
-        const similarity = tools.cmd.didYouMean(input, [answer]);
+        const similarity = tools.helper.didYouMean(input, [answer]);
         return similarity === answer;
     }
 }

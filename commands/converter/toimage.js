@@ -6,7 +6,7 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        if (!tools.cmd.checkQuotedMedia(ctx.quoted?.messageType, ["sticker"])) return await ctx.reply(tools.msg.generateInstruction(["reply"], ["sticker"]));
+        if (!tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["sticker"])) return await ctx.reply(tools.msg.generateInstruction(["reply"], ["sticker"]));
 
         try {
             const buffer = await ctx.quoted.download();
@@ -21,7 +21,7 @@ module.exports = {
                 }
             });
         } catch (error) {
-            await tools.cmd.handleError(ctx, error, true);
+            await tools.helper.handleError(ctx, error, true);
         }
     }
 };

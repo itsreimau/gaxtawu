@@ -6,7 +6,7 @@ async function handleWarning(ctx, senderJid, senderId, senderLid, groupJid, grou
     const maxWarnings = groupDb?.maxwarnings || 3;
     const warnings = groupDb?.warnings || [];
 
-    const senderWarning = warnings.find(warning => tools.cmd.areJidsSameUser(warning.jid, senderLid));
+    const senderWarning = warnings.find(warning => tools.helper.areJidsSameUser(warning.jid, senderLid));
     let currentWarnings = senderWarning ? senderWarning.count : 0;
     currentWarnings += 1;
 
@@ -118,7 +118,7 @@ module.exports = (bot) => {
                     twitter: "twitterdl",
                     youtube: "youtubevideo"
                 };
-                const url = tools.cmd.extractUrlFromText(msg?.body);
+                const url = tools.helper.extractUrlFromText(msg?.body);
                 if (url) {
                     let matchedCommand = null;
                     let platform = null;
@@ -176,7 +176,7 @@ module.exports = (bot) => {
                 if (!isCmd && !isOwner && !isAdmin) {
                     for (const type of ["audio", "document", "image", "sticker", "video"]) {
                         if (groupDb?.option?.[`anti${type}`]) {
-                            const checkMedia = tools.cmd.checkMedia(messageType, type);
+                            const checkMedia = tools.helper.checkMedia(messageType, type);
                             if (!!checkMedia) {
                                 await ctx.reply(tools.msg.info(`Jangan kirim ${type}!`));
                                 await ctx.deleteMessage(ctx.id, msg.key);
@@ -203,7 +203,7 @@ module.exports = (bot) => {
                     }
 
                     if (groupDb?.option?.antilink) {
-                        if (msg.body && tools.cmd.isUrl(msg.body)) {
+                        if (msg.body && tools.helper.isUrl(msg.body)) {
                             await ctx.reply(tools.msg.info("Jangan kirim link!"));
                             await ctx.deleteMessage(ctx.id, msg.key);
                             if (groupAutokick) {
@@ -217,7 +217,7 @@ module.exports = (bot) => {
                     if (groupDb?.option?.antispam) {
                         const now = Date.now();
                         const spamData = groupDb?.spam || [];
-                        const senderSpam = spamData.find(spam => tools.cmd.areJidsSameUser(spam.jid, senderLid)) || {
+                        const senderSpam = spamData.find(spam => tools.helper.areJidsSameUser(spam.jid, senderLid)) || {
                             jid: senderLid,
                             count: 0,
                             lastMessageTime: 0
@@ -228,7 +228,7 @@ module.exports = (bot) => {
 
                         senderSpam.count = newCount;
                         senderSpam.lastMessageTime = now;
-                        if (!spamData.some(spam => tools.cmd.areJidsSameUser(spam.jid, senderLid))) spamData.push(senderSpam);
+                        if (!spamData.some(spam => tools.helper.areJidsSameUser(spam.jid, senderLid))) spamData.push(senderSpam);
                         groupDb.spam = spamData;
 
                         if (newCount > 5) {
