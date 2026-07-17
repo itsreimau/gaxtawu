@@ -1,11 +1,13 @@
 {
   "name": "gaxtawu",
-  "version": "1.2.21",
+  "version": "1.2.22-engine.1",
   "description": "Useless WhatsApp Bot",
   "main": "index.js",
   "directories": {
     "commands": "commands",
+    "engine": "engine",
     "events": "events",
+    "middlewares": "middlewares",
     "tools": "tools"
   },
   "scripts": {
@@ -19,15 +21,27 @@
   ],
   "author": "ItsReimau",
   "license": "MIT",
+  "imports": {
+    "#engine": "./engine/app.js",
+    "#tools/*": "./tools/exports.js"
+  },
   "dependencies": {
+    "@cacheable/node-cache": "^3.1.1",
     "@ginkohub/speedtest-js": "^0.0.2",
-    "@itsreimau/gktw": "github:itsreimau/gktw",
+    "@neoxr/helper": "^2.3.14",
     "axios": "^1.18.1",
     "axios-retry": "^4.5.0",
+    "baileys": "github:itsliaaa/baileys",
     "cfonts": "^3.3.1",
+    "didyoumean": "^1.2.2",
+    "glob": "^13.0.6",
     "jimp": "^1.6.1",
     "link-preview-js": "^4.0.4",
     "moment-timezone": "^0.6.2",
+    "pino": "^10.3.1",
+    "simpl.db": "^2.13.0",
+    "qrcode-terminal": "^0.12.0",
+    "vcard-parser": "^1.0.0",
     "wa-sticker-formatter": "^4.4.4"
   }
 }

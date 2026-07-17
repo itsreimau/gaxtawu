@@ -1,4 +1,4 @@
-const { Events } = require("@itsreimau/gktw");
+const { Events } = require("#engine");
 const moment = require("moment-timezone");
 
 async function handleWelcome(bot, welcome, type, isSimulate = false) {

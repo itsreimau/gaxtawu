@@ -1,4 +1,4 @@
-const { VCardBuilder } = require("@itsreimau/gktw");
+const { VCardBuilder } = require("#engine");
 
 module.exports = {
     name: "owner",

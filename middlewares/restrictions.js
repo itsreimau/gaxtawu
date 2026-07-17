@@ -1,4 +1,4 @@
-const { Cooldown } = require("@itsreimau/gktw");
+const { Cooldown } = require("#engine");
 const moment = require("moment-timezone");
 
 module.exports = (bot) => {

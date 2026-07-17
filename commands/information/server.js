@@ -31,7 +31,7 @@ module.exports = {
                 "\n" +
                 `❖ ${formatter.bold("Uptime")}: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
                 `❖ ${formatter.bold("Database")}: ${ctx.db.users.totalEntries} users, ${ctx.db.groups.totalEntries}/${Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id).length} groups\n` +
-                `❖ ${formatter.bold("Library")}: @itsreimau/gktw (Fork of @mengkodingan/ckptw)`
+                `❖ ${formatter.bold("Library")}: #engine (Fork of @mengkodingan/ckptw)`
             );
         } catch (error) {
             await tools.cmd.handleError(ctx, error);

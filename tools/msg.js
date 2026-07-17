@@ -1,5 +1,9 @@
 const moment = require("moment-timezone");
 
+function bold(text) {
+    return `*${text}*`;
+}
+
 function convertMsToDuration(ms, requestedParts = null) {
     if (!ms || ms <= 0) return "0 detik";
 
@@ -129,12 +133,33 @@ function info(text) {
     return `ⓘ ${formatter.italic(text)}`;
 }
 
+function inlineCode(text) {
+    return `\`${text}\``;
+}
+
+function italic(text) {
+    return `_${text}_`;
+}
+
+function monospace(text) {
+    return `\`\`\`${text}\`\`\``;
+}
+
+function quote(text) {
+    return `> ${text}`;
+}
+
+function strikethrough(text) {
+    return `~${text}~`;
+}
+
 function ucwords(text) {
     if (!text) return null;
     return text.toLowerCase().replace(/\b\w/g, (txt) => txt.toUpperCase());
 }
 
 module.exports = {
+    bold,
     convertMsToDuration,
     formatSize,
     generateCmdExample,
@@ -142,5 +167,10 @@ module.exports = {
     generatesFlagInfo,
     generateNotes,
     info,
+    inlineCode,
+    italic,
+    monospace,
+    quote,
+    strikethrough,
     ucwords
 };

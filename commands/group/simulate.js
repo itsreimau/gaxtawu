@@ -1,4 +1,4 @@
-const { Events } = require("@itsreimau/gktw");
+const { Events } = require("#engine");
 const { handleWelcome } = require("../../events/welcome.js");
 
 module.exports = {

@@ -1,4 +1,4 @@
-const { Events, Gktw } = require("@itsreimau/gktw");
+const { Events } = require("#engine");
 const { styleText } = require("node:util");
 const moment = require("moment-timezone");
 

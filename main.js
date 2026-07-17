@@ -1,4 +1,4 @@
-const { Client, CommandHandler } = require("@itsreimau/gktw");
+const { Client, CommandHandler } = require("#engine");
 const { resolve } = require("node:path");
 const util = require("node:util");
 const events = require("./events/exports.js");

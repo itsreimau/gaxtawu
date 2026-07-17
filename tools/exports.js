@@ -1,11 +1,11 @@
 const api = require("./api.js");
-const cmd = require("./cmd.js");
+const helper = require("./helper.js");
 const list = require("./list.js");
 const msg = require("./msg.js");
 
 const tools = {
     api,
-    cmd,
+    helper,
     list,
     msg
 };

@@ -20,7 +20,6 @@ class TopHandler {
             }
 
             const topMembers = members.slice(0, 10);
-            const group = await ctx.group().metadata();
             let text = "";
             const mentions = [];
 

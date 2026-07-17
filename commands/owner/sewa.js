@@ -37,9 +37,10 @@ module.exports = [{
 
             const group = await ctx.group(target.jid);
             const groupOwner = await group.owner();
+            let groupMentions;
 
             if ((!silent && groupOwner) && !config.system.restrict) {
-                const groupMentions = [{
+                groupMentions = [{
                     groupJid: `${group.id}@g.us`,
                     groupSubject: await group.name()
                 }];

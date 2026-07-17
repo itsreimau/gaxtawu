@@ -8,9 +8,7 @@ module.exports = {
                 cmd
             } = ctx.bot;
             const tag = {
-                "ai-chat": "AI (Chat)",
-                "ai-generate": "AI (Generate)",
-                "ai-misc": "AI (Miscellaneous)",
+                ai: "Artificial Intelligence",
                 converter: "Converter",
                 downloader: "Downloader",
                 game: "Game",
@@ -98,7 +96,7 @@ module.exports = {
                     `❖ ${formatter.bold("Mode")}: ${tools.msg.ucwords(ctx.db.bot?.mode || "public")}\n` +
                     `❖ ${formatter.bold("Uptime")}: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
                     `❖ ${formatter.bold("Database")}: ${ctx.db.users.totalEntries} users, ${ctx.db.groups.totalEntries}/${Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id).length} groups\n` +
-                    `❖ ${formatter.bold("Library")}: @itsreimau/gktw\n` +
+                    `❖ ${formatter.bold("Library")}: #engine\n` +
                     "\n" +
                     `✧ ${formatter.italic("Jangan lupa berdonasi agar bot tetap online.")}`;
 

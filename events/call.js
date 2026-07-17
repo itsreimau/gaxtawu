@@ -1,4 +1,5 @@
-const { Baileys, Events } = require("@itsreimau/gktw");
+const { Events } = require("#engine");
+const Baileys = require("baileys");
 const { styleText } = require("node:util");
 
 module.exports = (bot) => {

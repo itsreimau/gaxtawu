@@ -8,24 +8,11 @@ const APIs = {
     faaa: {
         baseURL: "https://api-faa.my.id"
     },
-    kuroneko: {
-        baseURL: "https://api.danzy.web.id"
-    },
     lexcode: {
         baseURL: "https://api.lexcode.biz.id"
     },
-    neo: {
-        baseURL: "https://www.neoapis.xyz"
-    },
-    neosoft: {
-        baseURL: "https://api.neosoft.best"
-    },
     nexray: {
         baseURL: "https://api.nexray.eu.cc"
-    },
-    sanka: {
-        baseURL: "https://www.sankavollerei.web.id",
-        APIKey: "planaai"
     },
     siputzx: {
         baseURL: "https://api.siputzx.my.id"

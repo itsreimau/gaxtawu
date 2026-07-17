@@ -1,4 +1,4 @@
-const { Events } = require("@itsreimau/gktw");
+const { Events } = require("#engine");
 
 module.exports = (bot) => {
     bot.ev.on(Events.GroupJoin, async (join) => {
