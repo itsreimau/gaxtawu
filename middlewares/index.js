@@ -1,7 +1,7 @@
-const check = require("./check");
-const permissions = require("./permissions");
-const restrictions = require("./restrictions");
-const track = require("./track");
+const Check = require("./check");
+const Permissions = require("./permissions");
+const Restrictions = require("./restrictions");
+const Track = require("./track");
 
 module.exports = (bot) => {
     Check(bot);
