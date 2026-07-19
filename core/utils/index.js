@@ -1,11 +1,11 @@
 const api = require("./api");
 const helper = require("./helper");
 const list = require("./list");
-const msg = require("./msg");
+const text = require("./text");
 
 module.exports = {
     api,
     helper,
     list,
-    msg
+    text
 };
