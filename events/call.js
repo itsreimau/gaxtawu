@@ -23,22 +23,22 @@ module.exports = (bot) => {
         fromDb.save();
 
         if (!config.system.restrict) {
-            const reportOwner = ctx.helper.getReportOwner();
+            const reportOwner = bot.helper.getReportOwner();
             if (reportOwner && reportOwner.length > 0) {
                 const {
                     delay
-                } = ctx.helper.calculateDelay(reportOwner.length);
+                } = bot.helper.calculateDelay(reportOwner.length);
                 for (const ownerId of reportOwner) {
                     await bot.sendMessage(ownerId + Baileys.S_WHATSAPP_NET, {
-                        text: ctx.msg.info(`Akun @${fromPnId} telah dibanned secara otomatis karena alasan ${ctx.msg.inlineCode("Anti Call")}.`),
+                        text: bot.msg.info(`Akun @${fromPnId} telah dibanned secara otomatis karena alasan ${bot.msg.inlineCode("Anti Call")}.`),
                         mentions: [fromPnJid]
                     });
-                    await ctx.helper.delay(delay);
+                    await bot.helper.delay(delay);
                 }
             }
 
             await bot.sendMessage(fromJid, {
-                text: ctx.msg.info("Anda telah dibanned secara otomatis karena melanggar aturan!"),
+                text: bot.msg.info("Anda telah dibanned secara otomatis karena melanggar aturan!"),
                 buttons: [{
                     text: "Hubungi Owner",
                     id: "/owner"

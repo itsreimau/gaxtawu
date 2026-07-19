@@ -291,6 +291,22 @@ class Client {
         });
     }
 
+    get api() {
+        return Utils.api;
+    }
+
+    get helper() {
+        return Utils.helper;
+    }
+
+    get list() {
+        return Utils.list;
+    }
+
+    get msg() {
+        return Utils.msg;
+    }
+
     checkOwner(jid = Baileys.PSA_WID, fromMe = false) {
         return Utils.helper.checkOwner(jid, this.owner, fromMe);
     }

@@ -3,13 +3,13 @@ module.exports = (bot) => {
         const botDb = bot.getDb("bot");
         const lastPrefix = botDb?.lastPrefix || "/";
         await bot.sendMessage(join.id, {
-            caption: `>ᴗ< ${ctx.msg.italic(`Halo! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}. Saya bisa melakukan banyak perintah, seperti membuat stiker, menggunakan AI untuk pekerjaan tertentu, dan beberapa perintah berguna lainnya. Saya di sini untuk menghibur dan menyenangkan Anda!`)}`,
+            caption: `>ᴗ< ${bot.msg.italic(`Halo! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}. Saya bisa melakukan banyak perintah, seperti membuat stiker, menggunakan AI untuk pekerjaan tertentu, dan beberapa perintah berguna lainnya. Saya di sini untuk menghibur dan menyenangkan Anda!`)}`,
             location: {
                 degreesLatitude: 0,
                 degreesLongitude: 0,
                 name: config.bot.name,
                 address: "Jangan lupa berdonasi agar bot tetap online.",
-                jpegThumbnail: await ctx.helper.getJpegThumbnail(config.bot.thumbnail)
+                jpegThumbnail: await bot.helper.getJpegThumbnail(config.bot.thumbnail)
             },
             buttons: [{
                 text: "Menu",

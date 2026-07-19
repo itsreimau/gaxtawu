@@ -75,11 +75,11 @@ class Ctx {
         return Utils.api;
     }
 
-    get api() {
+    get helper() {
         return Utils.helper;
     }
 
-    get api() {
+    get list() {
         return Utils.list;
     }
 
