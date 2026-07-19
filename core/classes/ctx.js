@@ -3,8 +3,8 @@ const util = require("node:util");
 const { uguu } = require("@neoxr/helper");
 const axios = require("axios");
 const { default: axiosRetry } = require("axios-retry");
-const group = require("./group/group");
-const groupData = require("./group/group-data");
+const Group = require("./group/group");
+const GroupData = require("./group/group-data");
 const MessageCollector = require("./collector/message-collector");
 const Utils = require("../utils");
 
