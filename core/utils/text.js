@@ -82,12 +82,12 @@ function formatSize(byteCount, withPerSecond = false) {
 }
 
 function generateCmdExample(used, args) {
-    if (!used || !args) return `${ctx.text.inlineCode("used")} atau ${ctx.text.inlineCode("args")} harus diberikan!`;
-    return `Contoh: ${ctx.text.inlineCode(`${used.prefix + used.command} ${args}`)}`;
+    if (!used || !args) return `${inlineCode("used")} atau ${inlineCode("args")} harus diberikan!`;
+    return `Contoh: ${inlineCode(`${used.prefix + used.command} ${args}`)}`;
 }
 
 function generateInstruction(actions, mediaTypes) {
-    if (!actions || !mediaTypes || !Array.isArray(actions) || !Array.isArray(mediaTypes)) return `${ctx.text.inlineCode("actions")} dan ${ctx.text.inlineCode("mediaTypes")} harus berupa array!`;
+    if (!actions || !mediaTypes || !Array.isArray(actions) || !Array.isArray(mediaTypes)) return `${inlineCode("actions")} dan ${inlineCode("mediaTypes")} harus berupa array!`;
 
     const mediaTypeTranslations = {
         audio: "audio",
@@ -118,19 +118,19 @@ function generateInstruction(actions, mediaTypes) {
 }
 
 function generatesFlagInfo(flags) {
-    if (!flags || typeof flags !== "object") return `${ctx.text.inlineCode("flags")} harus berupa objek!`;
+    if (!flags || typeof flags !== "object") return `${inlineCode("flags")} harus berupa objek!`;
     return "Flag:\n" +
-        Object.entries(flags).map(([flag, description]) => `- ${ctx.text.inlineCode(flag)}: ${description}`).join("\n");
+        Object.entries(flags).map(([flag, description]) => `- ${inlineCode(flag)}: ${description}`).join("\n");
 }
 
 function generateNotes(notes) {
-    if (!notes || !Array.isArray(notes)) return `${ctx.text.inlineCode("notes")} harus berupa string!`;
+    if (!notes || !Array.isArray(notes)) return `${inlineCode("notes")} harus berupa string!`;
     return "Catatan:\n" +
         notes.map(note => `- ${note}`).join("\n");
 }
 
 function info(text) {
-    return `ⓘ ${ctx.text.italic(text)}`;
+    return `ⓘ ${italic(text)}`;
 }
 
 function inlineCode(text) {

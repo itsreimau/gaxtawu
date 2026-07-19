@@ -22,7 +22,7 @@ module.exports = [{
 
             await ctx.reply({
                 sticker: {
-                    url: buffer
+                    url: result
                 }
             }, {
                 pack: config.sticker.packname,

@@ -479,7 +479,7 @@ class Client {
         }
         if (content?.contacts) {
             if (Array.isArray(content.contacts)) {
-                const parsed = content.contacts.map(_parseContact).filter(Boolean);
+                const parsed = content.contacts.map(this._parseContact).filter(Boolean);
                 content = {
                     contacts: {
                         displayName: "nirwabot",
@@ -487,7 +487,7 @@ class Client {
                     }
                 };
             } else if (content.contacts?.contacts) {
-                const parsed = content.contacts.contacts.map(_parseContact).filter(Boolean);
+                const parsed = content.contacts.contacts.map(this._parseContact).filter(Boolean);
                 content = {
                     contacts: {
                         displayName: content.contacts.displayName || "nirwabot",
@@ -495,7 +495,7 @@ class Client {
                     }
                 };
             } else {
-                const parsed = _parseContact(content.contacts);
+                const parsed = this._parseContact(content.contacts);
                 if (parsed)
                     content = {
                         contacts: parsed

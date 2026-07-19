@@ -55,6 +55,11 @@ function extractUrlFromText(text) {
     return Baileys.extractUrlFromText(text) || null;
 }
 
+function getBaileysVersion() {
+    const version = require("../../package.json").dependencies?.baileys;
+    return version.replace(/^[\^~]|https?:\/\/[^/]+\//g, "").split("#")[0];
+}
+
 function getBodyFromMsg(msg) {
     const BODY_HANDLERS = {
         conversation: (message) => message.conversation || "",
@@ -143,7 +148,7 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
             `${ctx.text.info("Terjadi kesalahan:")}\n` +
             ctx.text.monospace(errorText)
         );
-    if (!silent || !config.system.restrict) {
+    if (silent || !config.system.restrict) {
         const reportOwner = getReportOwner();
         if (reportOwner && reportOwner.length > 0) {
             const {
@@ -227,6 +232,7 @@ module.exports = {
     delay: Baileys.delay,
     didYouMean: didYouMean,
     extractUrlFromText,
+    getBaileysVersion,
     getBodyFromMsg,
     getDb,
     getId,
