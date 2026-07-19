@@ -7,7 +7,7 @@ module.exports = {
     code: async (ctx) => {
         const isMedia = ctx.isMedia(["sticker"]);
 
-        if (!isMedia) return await ctx.reply(ctx.msg.generateInstruction(["reply"], ["sticker"]));
+        if (!isMedia) return await ctx.reply(ctx.text.generateInstruction(["reply"], ["sticker"]));
 
         try {
             const buffer = await ctx.quoted.download();

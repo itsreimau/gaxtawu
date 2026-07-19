@@ -10,13 +10,13 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                ctx.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada")
+                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                ctx.text.generateCmdExample(ctx.used, "one last kiss - hikaru utada")
             );
 
         if (!ctx.helper.isUrl(input))
             return await ctx.reply({
-                text: ctx.msg.info("Input berupa URL, gunakan tombol download di bawah:"),
+                text: ctx.text.info("Input berupa URL, gunakan tombol download di bawah:"),
                 buttons: [{
                     text: "Download Audio",
                     id: `${ctx.used.prefix}youtubeaudio ${input}`
@@ -33,12 +33,12 @@ module.exports = {
             const result = (await ctx.request.get(apiUrl)).data.data;
 
             const resultText = result.map(res =>
-                `❖ ${ctx.msg.bold("Judul")}: ${res.title}\n` +
-                `❖ ${ctx.msg.bold("Channel")}: ${res.author.name}\n` +
-                `❖ ${ctx.msg.bold("Durasi")}: ${res.duration}\n` +
-                `❖ ${ctx.msg.bold("URL")}: ${res.url}`
+                `❖ ${ctx.text.bold("Judul")}: ${res.title}\n` +
+                `❖ ${ctx.text.bold("Channel")}: ${res.author.name}\n` +
+                `❖ ${ctx.text.bold("Durasi")}: ${res.duration}\n` +
+                `❖ ${ctx.text.bold("URL")}: ${res.url}`
             ).join("\n\n");
-            await ctx.reply(resultText.trim() || ctx.msg.info(config.msg.notFound));
+            await ctx.reply(resultText.trim() || ctx.text.info(config.msg.notFound));
         } catch (error) {
             await ctx.helper.handleError(ctx, error, true);
         }

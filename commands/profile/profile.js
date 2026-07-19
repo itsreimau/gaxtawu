@@ -14,12 +14,12 @@ module.exports = {
             })).sort((a, b) => b.winGame - a.winGame || b.level - a.level);
 
             await ctx.reply(
-                `❖ ${ctx.msg.bold("Nama")}: ${ctx.sender.pushName}\n` +
-                `❖ ${ctx.msg.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${ctx.msg.convertMsToDuration(userDb.premiumExpiration - Date.now(), ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
-                `❖ ${ctx.msg.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
-                `❖ ${ctx.msg.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Unlimited" : (userDb?.coin || 0)}\n` +
-                `❖ ${ctx.msg.bold("Menang")}: ${userDb?.winGame || 0}\n` +
-                `❖ ${ctx.msg.bold("Peringkat")}: ${leaderboardData.findIndex(user => ctx.helper.areJidsSameUser(user.jid, ctx.sender.lid)) + 1}`
+                `❖ ${ctx.text.bold("Nama")}: ${ctx.sender.pushName}\n` +
+                `❖ ${ctx.text.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${ctx.text.convertMsToDuration(userDb.premiumExpiration - Date.now(), ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
+                `❖ ${ctx.text.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
+                `❖ ${ctx.text.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Unlimited" : (userDb?.coin || 0)}\n` +
+                `❖ ${ctx.text.bold("Menang")}: ${userDb?.winGame || 0}\n` +
+                `❖ ${ctx.text.bold("Peringkat")}: ${leaderboardData.findIndex(user => ctx.helper.areJidsSameUser(user.jid, ctx.sender.lid)) + 1}`
             );
         } catch (error) {
             await ctx.helper.handleError(ctx, error);

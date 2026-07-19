@@ -7,10 +7,10 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${ctx.msg.generateCmdExample(ctx.used, "daily")}\n` +
-                ctx.msg.generateNotes([
-                    `Ketik ${ctx.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
+                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.text.generateCmdExample(ctx.used, "daily")}\n` +
+                ctx.text.generateNotes([
+                    `Ketik ${ctx.text.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
                 ])
             );
 
@@ -23,16 +23,16 @@ module.exports = {
         const claim = claimRewards[input];
         const level = senderDb?.level || 0;
 
-        if (!claim) return await ctx.reply(ctx.msg.info("Hadiah tidak valid!"));
-        if (ctx.sender.isOwner() || senderDb?.premium) return await ctx.reply(ctx.msg.info("Anda sudah memiliki koin tak terbatas!"));
-        if (level < claim.level) return await ctx.reply(ctx.msg.info(`Anda perlu mencapai level ${claim.level} untuk mengklaim hadiah ini. Levelmu saat ini adalah ${level}.`));
+        if (!claim) return await ctx.reply(ctx.text.info("Hadiah tidak valid!"));
+        if (ctx.sender.isOwner() || senderDb?.premium) return await ctx.reply(ctx.text.info("Anda sudah memiliki koin tak terbatas!"));
+        if (level < claim.level) return await ctx.reply(ctx.text.info(`Anda perlu mencapai level ${claim.level} untuk mengklaim hadiah ini. Levelmu saat ini adalah ${level}.`));
 
         const currentTime = Date.now();
 
         const lastClaim = (senderDb?.lastClaim ?? {})[input] || 0;
         const timePassed = currentTime - lastClaim;
         const remainingTime = claim.cooldown - timePassed;
-        if (remainingTime > 0) return await ctx.reply(ctx.msg.info(`Anda telah mengklaim hadiah ${input}. Tunggu ${ctx.msg.convertMsToDuration(remainingTime)} untuk mengklaim lagi.`));
+        if (remainingTime > 0) return await ctx.reply(ctx.text.info(`Anda telah mengklaim hadiah ${input}. Tunggu ${ctx.text.convertMsToDuration(remainingTime)} untuk mengklaim lagi.`));
 
         try {
             const rewardCoin = (senderDb?.coin || 0) + claim.reward;
@@ -40,7 +40,7 @@ module.exports = {
             (senderDb.lastClaim ||= {})[input] = currentTime;
             senderDb.save();
 
-            await ctx.reply(ctx.msg.info(`Anda berhasil mengklaim hadiah ${input} sebesar ${claim.reward} koin! Koin Anda saat ini: ${rewardCoin}`));
+            await ctx.reply(ctx.text.info(`Anda berhasil mengklaim hadiah ${input} sebesar ${claim.reward} koin! Koin Anda saat ini: ${rewardCoin}`));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

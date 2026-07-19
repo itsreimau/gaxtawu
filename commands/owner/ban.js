@@ -10,12 +10,12 @@ module.exports = [{
 
         if (!target.jid)
             return await ctx.reply({
-                text: `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                    `${ctx.msg.generateCmdExample(ctx.used, "@6281234567891 -s")}\n` +
-                    `${ctx.msg.generateNotes([
+                text: `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                    `${ctx.text.generateCmdExample(ctx.used, "@6281234567891 -s")}\n` +
+                    `${ctx.text.generateNotes([
                         "Balas/quote pesan untuk menjadikan pengirim sebagai akun target."
                     ])}\n` +
-                    ctx.msg.generatesFlagInfo({
+                    ctx.text.generatesFlagInfo({
                         "-s": "Tetap diam dengan tidak menyiarkan ke akun target"
                     }),
                 mentions: ["6281234567891@s.whatsapp.net"]
@@ -34,9 +34,9 @@ module.exports = [{
                 }
             });
             const silent = flag?.silent;
-            if (!silent && !config.system.restrict) await ctx.sendMessage(target.jid, ctx.msg.info("Anda telah dibanned oleh owner!"));
+            if (!silent && !config.system.restrict) await ctx.sendMessage(target.jid, ctx.text.info("Anda telah dibanned oleh owner!"));
 
-            await ctx.reply(ctx.msg.info("Berhasil dibanned!"));
+            await ctx.reply(ctx.text.info("Berhasil dibanned!"));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }
@@ -53,12 +53,12 @@ module.exports = [{
 
         if (!target.jid)
             return await ctx.reply({
-                text: `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                    `${ctx.msg.generateCmdExample(ctx.used, "@6281234567891 -s")}\n` +
-                    `${ctx.msg.generateNotes([
+                text: `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                    `${ctx.text.generateCmdExample(ctx.used, "@6281234567891 -s")}\n` +
+                    `${ctx.text.generateNotes([
                         "Balas/quote pesan untuk menjadikan pengirim sebagai akun target."
                     ])}\n` +
-                    ctx.msg.generatesFlagInfo({
+                    ctx.text.generatesFlagInfo({
                         "-s": "Tetap diam dengan tidak menyiarkan ke akun target"
                     }),
                 mentions: ["6281234567891@s.whatsapp.net"]
@@ -77,9 +77,9 @@ module.exports = [{
                 }
             });
             const silent = flag?.silent;
-            if (!silent && !config.system.restrict) await ctx.sendMessage(target.jid, ctx.msg.info("Anda telah diunbanned oleh owner!"));
+            if (!silent && !config.system.restrict) await ctx.sendMessage(target.jid, ctx.text.info("Anda telah diunbanned oleh owner!"));
 
-            await ctx.reply(ctx.msg.info("Berhasil diunbanned!"));
+            await ctx.reply(ctx.text.info("Berhasil diunbanned!"));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

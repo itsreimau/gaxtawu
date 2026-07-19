@@ -4,7 +4,7 @@ module.exports = {
     name: "cerdascermat",
     category: "game",
     code: async (ctx) => {
-        if (session.has(ctx.id)) return await ctx.reply(ctx.msg.info("Sesi permainan sedang berjalan!"));
+        if (session.has(ctx.id)) return await ctx.reply(ctx.text.info("Sesi permainan sedang berjalan!"));
 
         try {
             const mapel = {
@@ -41,10 +41,10 @@ module.exports = {
                         return `${answer.toUpperCase()}. ${answers[answer]}`;
                     }).join("\n")}\n` +
                     "\n" +
-                    `❖ ${ctx.msg.bold("Mata Pelajaran")}: ${mapel[input]}\n` +
-                    `❖ ${ctx.msg.bold("Bonus")}: ${game.coin} koin\n` +
-                    `❖ ${ctx.msg.bold("Batas waktu")}: ${ctx.msg.convertMsToDuration(game.timeout)}\n` +
-                    `❖ ${ctx.msg.bold("Cara menjawab")}: Ketik A, B, C, atau D`,
+                    `❖ ${ctx.text.bold("Mata Pelajaran")}: ${mapel[input]}\n` +
+                    `❖ ${ctx.text.bold("Bonus")}: ${game.coin} koin\n` +
+                    `❖ ${ctx.text.bold("Batas waktu")}: ${ctx.text.convertMsToDuration(game.timeout)}\n` +
+                    `❖ ${ctx.text.bold("Cara menjawab")}: Ketik A, B, C, atau D`,
                 buttons: [{
                     text: "Menyerah",
                     id: `surrender_${ctx.used.command}`
@@ -83,14 +83,14 @@ module.exports = {
                     participantDb.winGame += 1;
                     participantDb.save();
                     await collCtx.reply({
-                        text: ctx.msg.info(`Benar! +${game.coin} koin`),
+                        text: ctx.text.info(`Benar! +${game.coin} koin`),
                         buttons: playAgain
                     });
                 } else if (participantAnswer === `surrender_${ctx.used.command}`) {
                     session.delete(ctx.id);
                     collector.stop();
                     await collCtx.reply({
-                        text: ctx.msg.info(`Anda menyerah! Jawaban: ${game.answer} (${game.answerKey.toUpperCase()})`),
+                        text: ctx.text.info(`Anda menyerah! Jawaban: ${game.answer} (${game.answerKey.toUpperCase()})`),
                         buttons: playAgain
                     });
                 }
@@ -100,7 +100,7 @@ module.exports = {
                 if (session.has(ctx.id)) {
                     session.delete(ctx.id);
                     await ctx.reply({
-                        text: ctx.msg.info(`Waktu habis! Jawaban: ${game.answer} (${game.answerKey.toUpperCase()})`),
+                        text: ctx.text.info(`Waktu habis! Jawaban: ${game.answer} (${game.answerKey.toUpperCase()})`),
                         buttons: playAgain
                     });
                 }

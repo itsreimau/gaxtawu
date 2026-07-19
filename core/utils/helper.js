@@ -140,8 +140,8 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
 
     if (isOwner)
         return await ctx.reply(
-            `${ctx.msg.info("Terjadi kesalahan:")}\n` +
-            ctx.msg.monospace(errorText)
+            `${ctx.text.info("Terjadi kesalahan:")}\n` +
+            ctx.text.monospace(errorText)
         );
     if (!silent || !config.system.restrict) {
         const reportOwner = getReportOwner();
@@ -152,7 +152,7 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
             for (const ownerId of reportOwner) {
                 await ctx.replyWithJid(ownerId + Baileys.S_WHATSAPP_NET, {
                     text: `${isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${senderId}` : `Terjadi kesalahan dari: @${senderId}`}\n` +
-                        ctx.msg.monospace(errorText),
+                        ctx.text.monospace(errorText),
                     contextInfo: {
                         mentionedJid: [senderJid],
                         groupMentions: isGroup ? [{
@@ -165,8 +165,8 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
             }
         }
     }
-    if (useAxios && error.status !== 200) return await ctx.reply(ctx.msg.info(config.msg.notFound));
-    await ctx.reply(ctx.msg.info(config.msg.error));
+    if (useAxios && error.status !== 200) return await ctx.reply(ctx.text.info(config.msg.notFound));
+    await ctx.reply(ctx.text.info(config.msg.error));
 }
 
 function isUrl(url) {

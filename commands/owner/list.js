@@ -22,7 +22,7 @@ module.exports = [{
             }
 
             await ctx.reply({
-                text: resultText.trim() || ctx.msg.info(config.msg.notFound),
+                text: resultText.trim() || ctx.text.info(config.msg.notFound),
                 mentions: userMentions
             });
         } catch (error) {
@@ -57,7 +57,7 @@ module.exports = [{
 
                 if (user.expiration) {
                     const timeDiff = user.expiration - Date.now();
-                    const daysLeft = ctx.msg.convertMsToDuration(timeDiff, ["hari", "jam"]);
+                    const daysLeft = ctx.text.convertMsToDuration(timeDiff, ["hari", "jam"]);
                     resultText += `❖ @${userId} (${daysLeft} tersisa)\n`;
                 } else {
                     resultText += `❖ @${userId} (Permanen)\n`;
@@ -65,7 +65,7 @@ module.exports = [{
             }
 
             await ctx.reply({
-                text: resultText.trim() || ctx.msg.info(config.msg.notFound),
+                text: resultText.trim() || ctx.text.info(config.msg.notFound),
                 mentions: userMentions
             });
         } catch (error) {
@@ -104,7 +104,7 @@ module.exports = [{
 
                 if (group.expiration) {
                     const timeDiff = group.expiration - Date.now();
-                    const daysLeft = ctx.msg.convertMsToDuration(timeDiff, ["hari", "jam"]);
+                    const daysLeft = ctx.text.convertMsToDuration(timeDiff, ["hari", "jam"]);
                     resultText += `❖ @${groupJid} (${daysLeft} tersisa)\n`;
                 } else {
                     resultText += `❖ @${groupJid} (Permanen)\n`;
@@ -112,7 +112,7 @@ module.exports = [{
             }
 
             await ctx.reply({
-                text: resultText.trim() || ctx.msg.info(config.msg.notFound),
+                text: resultText.trim() || ctx.text.info(config.msg.notFound),
                 contextInfo: {
                     groupMentions
                 }

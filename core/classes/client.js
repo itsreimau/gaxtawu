@@ -303,8 +303,8 @@ class Client {
         return Utils.list;
     }
 
-    get msg() {
-        return Utils.msg;
+    get text() {
+        return Utils.text;
     }
 
     checkOwner(jid = Baileys.PSA_WID, fromMe = false) {

@@ -13,10 +13,10 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${ctx.msg.generateCmdExample(ctx.used, "join")}\n` +
-                ctx.msg.generateNotes([
-                    `Gunakan ${ctx.msg.inlineCode("leave")} untuk mensimulasikan keluar dari grup.`
+                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.text.generateCmdExample(ctx.used, "join")}\n` +
+                ctx.text.generateNotes([
+                    `Gunakan ${ctx.text.inlineCode("leave")} untuk mensimulasikan keluar dari grup.`
                 ])
             );
 
@@ -37,10 +37,10 @@ module.exports = {
                     await WelcomeHandler(ctx, welcome, "UserLeave", true);
                     break;
                 default:
-                    await ctx.reply(ctx.msg.info(`Simulasi ${ctx.msg.inlineCode(input)} tidak valid!`));
+                    await ctx.reply(ctx.text.info(`Simulasi ${ctx.text.inlineCode(input)} tidak valid!`));
             }
 
-            await ctx.reply(ctx.msg.info("Simulasi berhasil!"));
+            await ctx.reply(ctx.text.info("Simulasi berhasil!"));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

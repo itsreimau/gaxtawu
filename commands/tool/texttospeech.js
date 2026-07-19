@@ -12,9 +12,9 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${ctx.msg.generateCmdExample(ctx.used, "id halo, dunia!")}\n` +
-                ctx.msg.generateNotes([
+                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.text.generateCmdExample(ctx.used, "id halo, dunia!")}\n` +
+                ctx.text.generateNotes([
                     "Gunakan kode bahasa 2 huruf, periksa daftar lengkapnya di Google. (contoh: en, id, ja, ar, ko)"
                 ])
             );

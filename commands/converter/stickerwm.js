@@ -10,13 +10,13 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${ctx.msg.generateInstruction(["send", "reply"], ["text", "sticker"])}\n` +
-                ctx.msg.generateCmdExample(ctx.used, "stiker saya|itsreimau")
+                `${ctx.text.generateInstruction(["send", "reply"], ["text", "sticker"])}\n` +
+                ctx.text.generateCmdExample(ctx.used, "stiker saya|itsreimau")
             );
 
         const isMedia = ctx.isMedia(["sticker"]);
 
-        if (!isMedia) return await ctx.reply(ctx.msg.generateInstruction(["reply"], ["sticker"]));
+        if (!isMedia) return await ctx.reply(ctx.text.generateInstruction(["reply"], ["sticker"]));
 
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();

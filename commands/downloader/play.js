@@ -21,9 +21,9 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${ctx.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada -i 8 -s spotify")}\n` +
-                ctx.msg.generatesFlagInfo({
+                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.text.generateCmdExample(ctx.used, "one last kiss - hikaru utada -i 8 -s spotify")}\n` +
+                ctx.text.generatesFlagInfo({
                     "-i <number>": "Pilihan pada data indeks",
                     "-s <text>": "Sumber untuk memutar lagu (tersedia: spotify, youtube | default: youtube)"
                 })
@@ -40,9 +40,9 @@ module.exports = {
                 const searchResult = (await ctx.request.get(searchApiUrl)).data.data[searchIndex];
 
                 await ctx.reply(
-                    `❖ ${ctx.msg.bold("Judul")}: ${searchResult.title}\n` +
-                    `❖ ${ctx.msg.bold("Artis")}: ${searchResult.artist}\n` +
-                    `❖ ${ctx.msg.bold("URL")}: ${searchResult.url}`
+                    `❖ ${ctx.text.bold("Judul")}: ${searchResult.title}\n` +
+                    `❖ ${ctx.text.bold("Artis")}: ${searchResult.artist}\n` +
+                    `❖ ${ctx.text.bold("URL")}: ${searchResult.url}`
                 );
 
                 const downloadApiUrl = ctx.api.createUrl("delirius", "/download/spotifydl", {
@@ -63,9 +63,9 @@ module.exports = {
                 const searchResult = (await ctx.request.get(searchApiUrl)).data.data[searchIndex];
 
                 await ctx.reply(
-                    `❖ ${ctx.msg.bold("Judul")}: ${searchResult.title}\n` +
-                    `❖ ${ctx.msg.bold("Artis")}: ${searchResult.author.name}\n` +
-                    `❖ ${ctx.msg.bold("URL")}: ${searchResult.url}`
+                    `❖ ${ctx.text.bold("Judul")}: ${searchResult.title}\n` +
+                    `❖ ${ctx.text.bold("Artis")}: ${searchResult.author.name}\n` +
+                    `❖ ${ctx.text.bold("URL")}: ${searchResult.url}`
                 );
 
                 const downloadApiUrl = ctx.api.createUrl("delirius", "/download/ytmp3", {

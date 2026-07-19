@@ -1,6 +1,6 @@
 {
   "name": "nirwabot",
-  "version": "1.2.22-core.5",
+  "version": "1.2.22-core.7",
   "description": "Useless WhatsApp Bot",
   "main": "index.js",
   "directories": {

@@ -17,14 +17,14 @@ module.exports = [{
 
         if (!url)
             return await ctx.reply(
-                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${ctx.msg.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d")}\n` +
-                ctx.msg.generatesFlagInfo({
+                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.text.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d")}\n` +
+                ctx.text.generatesFlagInfo({
                     "-d": "Kirim sebagai dokumen"
                 })
             );
 
-        if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.msg.info(config.msg.invalidUrl));
+        if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.text.info(config.msg.invalidUrl));
 
         try {
             const apiUrl = ctx.api.createUrl("delirius", "/download/ytmp3", {
@@ -40,7 +40,7 @@ module.exports = [{
                     },
                     fileName: `${result.title}.mp3`,
                     mimetype: "audio/mpeg",
-                    caption: `❖ ${ctx.msg.bold("URL")}: ${url}`
+                    caption: `❖ ${ctx.text.bold("URL")}: ${url}`
                 });
             } else {
                 await ctx.reply({
@@ -78,15 +78,15 @@ module.exports = [{
 
         if (!url)
             return await ctx.reply(
-                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${ctx.msg.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d -r 720")}\n` +
-                ctx.msg.generatesFlagInfo({
+                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.text.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d -r 720")}\n` +
+                ctx.text.generatesFlagInfo({
                     "-d": "Kirim sebagai dokumen",
                     "-r": "Resolusi video (tersedia: 144, 240, 360, 480, 720, 1080, 1440, 2160 | default: 360)"
                 })
             );
 
-        if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.msg.info(config.msg.invalidUrl));
+        if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.text.info(config.msg.invalidUrl));
 
         try {
             const apiUrl = ctx.api.createUrl("alwayscodex", "/api/downloader/youtube2", {
@@ -103,14 +103,14 @@ module.exports = [{
                     },
                     fileName: `${result.title}.mp4`,
                     mimetype: "video/mp4",
-                    caption: `❖ ${ctx.msg.bold("URL")}: ${url}`
+                    caption: `❖ ${ctx.text.bold("URL")}: ${url}`
                 });
             } else {
                 await ctx.reply({
                     video: {
                         url: result.downloadUrl
                     },
-                    caption: `❖ ${ctx.msg.bold("URL")}: ${url}`
+                    caption: `❖ ${ctx.text.bold("URL")}: ${url}`
                 });
             }
         } catch (error) {

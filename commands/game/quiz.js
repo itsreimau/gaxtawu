@@ -20,24 +20,24 @@ class QuizGame {
     defaultFormatQuestion(data) {
         let text = `✦ — ${data[this.questionKey]}\n` +
             "\n" +
-            `❖ ${ctx.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
-            `❖ ${ctx.msg.bold("Batas waktu")}: ${ctx.msg.convertMsToDuration(this.timeout)}\n`;
+            `❖ ${ctx.text.bold("Bonus")}: ${this.coinReward} Koin\n` +
+            `❖ ${ctx.text.bold("Batas waktu")}: ${ctx.text.convertMsToDuration(this.timeout)}\n`;
 
         for (const field of this.extraFields) {
-            if (data[field.key]) text += `❖ ${ctx.msg.bold(field.label)}: ${data[field.key]}\n`;
+            if (data[field.key]) text += `❖ ${ctx.text.bold(field.label)}: ${data[field.key]}\n`;
         }
 
         return text.trim();
     }
 
     defaultFormatAnswer(answer) {
-        return ctx.msg.ucwords(answer);
+        return ctx.text.ucwords(answer);
     }
 
     async handle(ctx) {
         const sessionKey = `${ctx.id}_${this.name}`;
 
-        if (sessions.has(sessionKey)) return await ctx.reply(ctx.msg.info("Sesi permainan sedang berjalan!"));
+        if (sessions.has(sessionKey)) return await ctx.reply(ctx.text.info("Sesi permainan sedang berjalan!"));
 
         try {
             const apiUrl = ctx.api.createUrl("siputzx", this.apiEndpoint);
@@ -98,13 +98,13 @@ class QuizGame {
                 const isParticipantUnlimited = collCtx.sender.isOwner() || participantDb?.premium;
 
                 if (participantAnswer === `hint_${ctx.used.command}`) {
-                    if (!isParticipantUnlimited && participantDb.coin < this.hintCost) return await collCtx.reply(ctx.msg.info(option.msg.coin));
+                    if (!isParticipantUnlimited && participantDb.coin < this.hintCost) return await collCtx.reply(ctx.text.info(option.msg.coin));
                     if (!isParticipantUnlimited) {
                         participantDb.coin -= this.hintCost;
                         participantDb.save();
                     }
                     const clue = game.answer.replace(/[aiueo]/g, "_");
-                    await collCtx.reply(ctx.msg.monospace(clue.toUpperCase()));
+                    await collCtx.reply(ctx.text.monospace(clue.toUpperCase()));
                     return;
                 }
 
@@ -113,7 +113,7 @@ class QuizGame {
                     collector.stop();
                     const formattedAnswer = this.formatAnswer(game.answer);
                     await collCtx.reply({
-                        text: ctx.msg.info(`Anda menyerah! Jawaban: ${formattedAnswer}.`),
+                        text: ctx.text.info(`Anda menyerah! Jawaban: ${formattedAnswer}.`),
                         buttons: playAgain
                     });
                     return;
@@ -126,11 +126,11 @@ class QuizGame {
                     participantDb.winGame += 1;
                     participantDb.save();
                     await collCtx.reply({
-                        text: ctx.msg.info(`Benar! +${game.coin} Koin`),
+                        text: ctx.text.info(`Benar! +${game.coin} Koin`),
                         buttons: playAgain
                     });
                 } else if (this._isCloseMatch(participantAnswer, game.answer)) {
-                    await collCtx.reply(ctx.msg.info("Sedikit lagi!"));
+                    await collCtx.reply(ctx.text.info("Sedikit lagi!"));
                 }
             });
 
@@ -139,7 +139,7 @@ class QuizGame {
                     sessions.delete(sessionKey);
                     const formattedAnswer = this.formatAnswer(game.answer);
                     await ctx.reply({
-                        text: ctx.msg.info(`Waktu habis! Jawaban: ${formattedAnswer}.`),
+                        text: ctx.text.info(`Waktu habis! Jawaban: ${formattedAnswer}.`),
                         buttons: playAgain
                     });
                 }
@@ -184,7 +184,7 @@ const options = {
         formatAnswer(data) {
             const answer = data[this.answerKey] || "";
             const description = data.deskripsi || "";
-            return `${ctx.msg.ucwords(answer)} (${description})`;
+            return `${ctx.text.ucwords(answer)} (${description})`;
         }
     },
 
@@ -234,8 +234,8 @@ const options = {
         formatQuestion(data) {
             return `✦ — Bendera negara apa ini?\n` +
                 "\n" +
-                `❖ ${ctx.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${ctx.msg.bold("Batas waktu")}: ${ctx.msg.convertMsToDuration(this.timeout)}`;
+                `❖ ${ctx.text.bold("Bonus")}: ${this.coinReward} Koin\n` +
+                `❖ ${ctx.text.bold("Batas waktu")}: ${ctx.text.convertMsToDuration(this.timeout)}`;
         }
     },
 
@@ -251,8 +251,8 @@ const options = {
         formatQuestion(data) {
             return `✦ — Game apa ini?\n` +
                 "\n" +
-                `❖ ${ctx.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${ctx.msg.bold("Batas waktu")}: ${ctx.msg.convertMsToDuration(this.timeout)}`;
+                `❖ ${ctx.text.bold("Bonus")}: ${this.coinReward} Koin\n` +
+                `❖ ${ctx.text.bold("Batas waktu")}: ${ctx.text.convertMsToDuration(this.timeout)}`;
         }
     },
 
@@ -290,8 +290,8 @@ const options = {
         formatQuestion(data) {
             return `✦ — Dengarkan suara hero Mobile Legends ini!\n` +
                 "\n" +
-                `❖ ${ctx.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${ctx.msg.bold("Batas waktu")}: ${ctx.msg.convertMsToDuration(this.timeout)}`;
+                `❖ ${ctx.text.bold("Bonus")}: ${this.coinReward} Koin\n` +
+                `❖ ${ctx.text.bold("Batas waktu")}: ${ctx.text.convertMsToDuration(this.timeout)}`;
         }
     },
 
@@ -307,8 +307,8 @@ const options = {
         formatQuestion(data) {
             return `✦ — Siapa member JKT48 ini?\n` +
                 "\n" +
-                `❖ ${ctx.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${ctx.msg.bold("Batas waktu")}: ${ctx.msg.convertMsToDuration(this.timeout)}`;
+                `❖ ${ctx.text.bold("Bonus")}: ${this.coinReward} Koin\n` +
+                `❖ ${ctx.text.bold("Batas waktu")}: ${ctx.text.convertMsToDuration(this.timeout)}`;
         }
     },
 
@@ -335,8 +335,8 @@ const options = {
         formatQuestion(data) {
             return `✦ — Siapa karakter Free Fire ini?\n` +
                 "\n" +
-                `❖ ${ctx.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${ctx.msg.bold("Batas waktu")}: ${ctx.msg.convertMsToDuration(this.timeout)}`;
+                `❖ ${ctx.text.bold("Bonus")}: ${this.coinReward} Koin\n` +
+                `❖ ${ctx.text.bold("Batas waktu")}: ${ctx.text.convertMsToDuration(this.timeout)}`;
         }
     },
 
@@ -352,8 +352,8 @@ const options = {
         formatQuestion(data) {
             return `✦ — Kartun apa ini?\n` +
                 "\n" +
-                `❖ ${ctx.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${ctx.msg.bold("Batas waktu")}: ${ctx.msg.convertMsToDuration(this.timeout)}`;
+                `❖ ${ctx.text.bold("Bonus")}: ${this.coinReward} Koin\n` +
+                `❖ ${ctx.text.bold("Batas waktu")}: ${ctx.text.convertMsToDuration(this.timeout)}`;
         }
     },
 
@@ -378,8 +378,8 @@ const options = {
         formatQuestion(data) {
             return `✦ — Lambang ${data.lambang} adalah unsur apa?\n` +
                 "\n" +
-                `❖ ${ctx.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${ctx.msg.bold("Batas waktu")}: ${ctx.msg.convertMsToDuration(this.timeout)}`;
+                `❖ ${ctx.text.bold("Bonus")}: ${this.coinReward} Koin\n` +
+                `❖ ${ctx.text.bold("Batas waktu")}: ${ctx.text.convertMsToDuration(this.timeout)}`;
         }
     },
 
@@ -421,8 +421,8 @@ const options = {
             const d = data.data || data;
             return `✦ — Logo apa ini?\n` +
                 "\n" +
-                `❖ ${ctx.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${ctx.msg.bold("Batas waktu")}: ${ctx.msg.convertMsToDuration(this.timeout)}`;
+                `❖ ${ctx.text.bold("Bonus")}: ${this.coinReward} Koin\n` +
+                `❖ ${ctx.text.bold("Batas waktu")}: ${ctx.text.convertMsToDuration(this.timeout)}`;
         }
     },
 
@@ -448,8 +448,8 @@ const options = {
         formatQuestion(data) {
             return `✦ — Angka berapa yang terlihat?\n` +
                 "\n" +
-                `❖ ${ctx.msg.bold("Bonus")}: ${this.coinReward} Koin\n` +
-                `❖ ${ctx.msg.bold("Batas waktu")}: ${ctx.msg.convertMsToDuration(this.timeout)}`;
+                `❖ ${ctx.text.bold("Bonus")}: ${this.coinReward} Koin\n` +
+                `❖ ${ctx.text.bold("Batas waktu")}: ${ctx.text.convertMsToDuration(this.timeout)}`;
         }
     },
 

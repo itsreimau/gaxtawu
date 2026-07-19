@@ -6,15 +6,15 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                ctx.msg.generateCmdExample(ctx.used, "18")
+                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                ctx.text.generateCmdExample(ctx.used, "18")
             );
 
         const senderDb = ctx.db.user;
         const isUnlimited = ctx.sender.isOwner() || senderDb?.premium;
 
-        if (input < 10) return await ctx.reply(ctx.msg.info("Jumlah taruhan tidak boleh kurang dari 10!"));
-        if (!isUnlimited && senderDb?.coin < input) return await ctx.reply(ctx.msg.info("Koin Anda tidak mencukupi!"));
+        if (input < 10) return await ctx.reply(ctx.text.info("Jumlah taruhan tidak boleh kurang dari 10!"));
+        if (!isUnlimited && senderDb?.coin < input) return await ctx.reply(ctx.text.info("Koin Anda tidak mencukupi!"));
 
         try {
             const jackpotPrize = Math.ceil(input * 5);
@@ -55,7 +55,7 @@ module.exports = {
             if (!isUnlimited) senderDb.save();
 
             await ctx.reply(
-                `${ctx.msg.info(responseText)}\n` +
+                `${ctx.text.info(responseText)}\n` +
                 slotText
             );
         } catch (error) {

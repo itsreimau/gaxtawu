@@ -7,7 +7,7 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        if (session.has(ctx.id)) return await ctx.reply(ctx.msg.info("Sesi permainan sedang berjalan!"));
+        if (session.has(ctx.id)) return await ctx.reply(ctx.text.info("Sesi permainan sedang berjalan!"));
 
         try {
             const apiUrl = ctx.api.createUrl("siputzx", "/api/games/family100");
@@ -28,9 +28,9 @@ module.exports = {
             await ctx.reply({
                 text: `✦ — ${result.soal}\n` +
                     "\n" +
-                    `❖ ${ctx.msg.bold("Bonus")}: ${game.coin.answered} koin untuk 1 jawaban benar, ${game.coin.allAnswered} koin untuk semua jawaban benar\n` +
-                    `❖ ${ctx.msg.bold("Jumlah jawaban")}: ${game.answers.size}\n` +
-                    `❖ ${ctx.msg.bold("Batas waktu")}: ${ctx.msg.convertMsToDuration(game.timeout)}`,
+                    `❖ ${ctx.text.bold("Bonus")}: ${game.coin.answered} koin untuk 1 jawaban benar, ${game.coin.allAnswered} koin untuk semua jawaban benar\n` +
+                    `❖ ${ctx.text.bold("Jumlah jawaban")}: ${game.answers.size}\n` +
+                    `❖ ${ctx.text.bold("Batas waktu")}: ${ctx.text.convertMsToDuration(game.timeout)}`,
                 buttons: [{
                     text: "Menyerah",
                     id: `surrender_${ctx.used.command}`
@@ -59,7 +59,7 @@ module.exports = {
                         participantDb.coin += game.coin.answered;
                         participantDb.save();
                     }
-                    await collCtx.reply(ctx.msg.info(`${ctx.msg.ucwords(participantAnswer)} benar! Jawaban tersisa: ${game.answers.size}`));
+                    await collCtx.reply(ctx.text.info(`${ctx.text.ucwords(participantAnswer)} benar! Jawaban tersisa: ${game.answers.size}`));
 
                     if (game.answers.size === 0) {
                         session.delete(ctx.id);
@@ -72,28 +72,28 @@ module.exports = {
                             allParticipantDb.save();
                         }
                         await collCtx.reply({
-                            text: ctx.msg.info(`Selamat, semua jawaban telah terjawab! Setiap anggota yang menjawab +${game.coin.allAnswered} koin.`),
+                            text: ctx.text.info(`Selamat, semua jawaban telah terjawab! Setiap anggota yang menjawab +${game.coin.allAnswered} koin.`),
                             buttons: playAgain
                         });
                     }
                 } else if (participantAnswer === `surrender_${ctx.used.command}`) {
-                    const remaining = [...game.answers].map(ctx.msg.ucwords).join(", ").replace(/, ([^,]*)$/, ", dan $1");
+                    const remaining = [...game.answers].map(ctx.text.ucwords).join(", ").replace(/, ([^,]*)$/, ", dan $1");
                     session.delete(ctx.id);
                     collector.stop();
                     await collCtx.reply({
-                        text: ctx.msg.info(`Anda menyerah! Jawaban yang belum terjawab: ${remaining}`),
+                        text: ctx.text.info(`Anda menyerah! Jawaban yang belum terjawab: ${remaining}`),
                         buttons: playAgain
                     });
                 }
             });
 
             collector.on("end", async () => {
-                const remaining = [...game.answers].map(ctx.msg.ucwords).join(", ").replace(/, ([^,]*)$/, ", dan $1");
+                const remaining = [...game.answers].map(ctx.text.ucwords).join(", ").replace(/, ([^,]*)$/, ", dan $1");
 
                 if (session.has(ctx.id)) {
                     session.delete(ctx.id);
                     await ctx.reply({
-                        text: ctx.msg.info(`Waktu habis! Jawaban yang belum terjawab: ${remaining}`),
+                        text: ctx.text.info(`Waktu habis! Jawaban yang belum terjawab: ${remaining}`),
                         buttons: playAgain
                     });
                 }

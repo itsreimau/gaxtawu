@@ -10,8 +10,8 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                ctx.msg.generateCmdExample(ctx.used, "evangelion")
+                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                ctx.text.generateCmdExample(ctx.used, "evangelion")
             );
 
         try {
@@ -24,7 +24,7 @@ module.exports = {
                 video: {
                     url: result
                 },
-                caption: `❖ ${ctx.msg.bold("Kueri")}: ${input}`,
+                caption: `❖ ${ctx.text.bold("Kueri")}: ${input}`,
                 buttons: [{
                     text: "Ambil Lagi",
                     id: `${ctx.used.prefix + ctx.used.command} ${input}`

@@ -12,6 +12,6 @@ module.exports = {
         senderDb.save();
 
         const statusText = newStatus ? "diaktifkan" : "dinonaktifkan";
-        await ctx.reply(ctx.msg.info(`Auto download berhasil ${statusText}!`));
+        await ctx.reply(ctx.text.info(`Auto download berhasil ${statusText}!`));
     }
 };

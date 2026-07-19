@@ -13,16 +13,16 @@ module.exports = [{
 
         if (!target.jid)
             return await ctx.reply({
-                text: `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                    `${ctx.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
-                    ctx.msg.generateNotes([
+                text: `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                    `${ctx.text.generateCmdExample(ctx.used, "@6281234567891")}\n` +
+                    ctx.text.generateNotes([
                         "Balas/quote pesan untuk menjadikan pengirim sebagai akun target."
                     ]),
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (ctx.helper.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(ctx.msg.info("Tidak bisa mengubah warning bot!"));
-        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(ctx.msg.info("Tidak bisa memberikan warning ke owner grup!"));
+        if (ctx.helper.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(ctx.text.info("Tidak bisa mengubah warning bot!"));
+        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(ctx.text.info("Tidak bisa memberikan warning ke owner grup!"));
 
         try {
             const groupDb = ctx.db.group;
@@ -48,11 +48,11 @@ module.exports = [{
             groupDb.save();
 
             if (newWarningCount >= maxWarnings) {
-                await ctx.reply(ctx.msg.info(`Pengguna mencapai batas warning (${newWarningCount}/${maxWarnings}).`));
+                await ctx.reply(ctx.text.info(`Pengguna mencapai batas warning (${newWarningCount}/${maxWarnings}).`));
                 await ctx.group().kick(target);
                 groupDb.warnings = warnings.filter(warning => warning.jid !== target);
             } else {
-                await ctx.reply(ctx.msg.info(`Berhasil menambahkan warning menjadi ${newWarningCount}/${maxWarnings}.`));
+                await ctx.reply(ctx.text.info(`Berhasil menambahkan warning menjadi ${newWarningCount}/${maxWarnings}.`));
             }
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
@@ -73,16 +73,16 @@ module.exports = [{
 
         if (!target.jid)
             return await ctx.reply({
-                text: `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                    `${ctx.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
-                    ctx.msg.generateNotes([
+                text: `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                    `${ctx.text.generateCmdExample(ctx.used, "@6281234567891")}\n` +
+                    ctx.text.generateNotes([
                         "Balas/quote pesan untuk menjadikan pengirim sebagai akun target."
                     ]),
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (ctx.helper.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(ctx.msg.info(`Tidak bisa mengubah warning bot!`));
-        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(ctx.msg.info("Tidak bisa memberikan warning ke owner grup!"));
+        if (ctx.helper.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(ctx.text.info(`Tidak bisa mengubah warning bot!`));
+        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(ctx.text.info("Tidak bisa memberikan warning ke owner grup!"));
 
         try {
             const groupDb = ctx.db.group;
@@ -91,7 +91,7 @@ module.exports = [{
 
             const targetIndex = warnings.findIndex(warning => ctx.helper.areJidsSameUser(warning.jid, target.jid));
 
-            if (targetIndex === -1) return await ctx.reply(ctx.msg.info("Pengguna tidak memiliki warning."));
+            if (targetIndex === -1) return await ctx.reply(ctx.text.info("Pengguna tidak memiliki warning."));
 
             const currentCount = warnings[targetIndex].count || 0;
 
@@ -99,7 +99,7 @@ module.exports = [{
                 warnings.splice(targetIndex, 1);
                 groupDb.warnings = warnings;
                 groupDb.save();
-                return await ctx.reply(ctx.msg.info("Pengguna tidak memiliki warning."));
+                return await ctx.reply(ctx.text.info("Pengguna tidak memiliki warning."));
             }
 
             const newWarningCount = currentCount - 1;
@@ -113,7 +113,7 @@ module.exports = [{
             groupDb.warnings = warnings;
             groupDb.save();
 
-            await ctx.reply(ctx.msg.info(`Berhasil mengurangi warning menjadi ${newWarningCount}/${maxWarnings}.`));
+            await ctx.reply(ctx.text.info(`Berhasil mengurangi warning menjadi ${newWarningCount}/${maxWarnings}.`));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

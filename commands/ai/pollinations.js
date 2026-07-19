@@ -9,8 +9,8 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                ctx.msg.generateCmdExample(ctx.used, "anime girl with short blue hair")
+                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                ctx.text.generateCmdExample(ctx.used, "anime girl with short blue hair")
             );
 
         try {
@@ -22,7 +22,7 @@ module.exports = {
                 image: {
                     url: result
                 },
-                caption: `❖ ${ctx.msg.bold("Prompt")}: ${input}`,
+                caption: `❖ ${ctx.text.bold("Prompt")}: ${input}`,
                 buttons: [{
                     text: "Ambil Lagi",
                     id: `${ctx.used.prefix + ctx.used.command} ${input}`

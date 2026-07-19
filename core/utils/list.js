@@ -7,16 +7,16 @@ async function get(ctx, type) {
             case "alkitab": {
                 const data = (await ctx.request.get("https://api-alkitab.vercel.app/api/book")).data.data;
                 text = createList(data, (list) =>
-                    `❖ ${ctx.msg.bold("Kitab")}: ${list.name} (${list.abbr})\n` +
-                    `❖ ${ctx.msg.bold("Jumlah Bab")}: ${list.chapter}`
+                    `❖ ${ctx.text.bold("Kitab")}: ${list.name} (${list.abbr})\n` +
+                    `❖ ${ctx.text.bold("Jumlah Bab")}: ${list.chapter}`
                 );
                 break;
             }
             case "alquran": {
                 const data = (await ctx.request.get("https://raw.githubusercontent.com/penggguna/QuranJSON/master/quran.json")).data;
                 text = createList(data, (list) =>
-                    `❖ ${ctx.msg.bold("Surah")}: ${list.name} (${list.number_of_surah})\n` +
-                    `❖ ${ctx.msg.bold("Jumlah Ayat")}: ${list.number_of_ayah}`
+                    `❖ ${ctx.text.bold("Surah")}: ${list.name} (${list.number_of_surah})\n` +
+                    `❖ ${ctx.text.bold("Jumlah Ayat")}: ${list.number_of_ayah}`
                 );
                 break;
             }
@@ -76,7 +76,7 @@ async function get(ctx, type) {
                     "antispam (Anti spam)",
                     "antitagsw (Anti Tag SW)",
                     "antitoxic (Anti toxic, seperti bahasa kasar)",
-                    `autokick (Dikeluarkan secara otomatis, jika ada yang melanggar salah satu opsi ${ctx.msg.inlineCode("anti...")})`,
+                    `autokick (Dikeluarkan secara otomatis, jika ada yang melanggar salah satu opsi ${ctx.text.inlineCode("anti...")})`,
                     "gamerestrict (Anggota dilarang bermain game)",
                     "welcome (Sambutan member)"
                 ];
@@ -106,7 +106,7 @@ async function get(ctx, type) {
                 break;
             }
             default: {
-                text = ctx.msg.info(`Tipe tidak diketahui: ${type}`);
+                text = ctx.text.info(`Tipe tidak diketahui: ${type}`);
                 break;
             }
         }

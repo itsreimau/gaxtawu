@@ -8,10 +8,10 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        if (!process.env.PM2_HOME) return await ctx.reply(ctx.msg.info("Bot tidak berjalan di bawah PM2! Restart manual diperlukan."));
+        if (!process.env.PM2_HOME) return await ctx.reply(ctx.text.info("Bot tidak berjalan di bawah PM2! Restart manual diperlukan."));
 
         try {
-            const waitMsg = await ctx.reply(ctx.msg.info(config.msg.wait));
+            const waitMsg = await ctx.reply(ctx.text.info(config.msg.wait));
             const botDb = ctx.db.bot;
             botDb.restart = {
                 jid: ctx.id,

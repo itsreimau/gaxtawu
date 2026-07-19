@@ -9,9 +9,9 @@ module.exports = {
 
         if (!input || !["garuda", "melati"].includes(input))
             return await ctx.reply(
-                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${ctx.msg.generateCmdExample(ctx.used, "melati")}\n` +
-                ctx.msg.generateNotes([
+                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.text.generateCmdExample(ctx.used, "melati")}\n` +
+                ctx.text.generateNotes([
                     "Sisi koin tersedia garuda atau melati, sama seperti koin Rp. 500."
                 ])
             );
@@ -40,7 +40,7 @@ module.exports = {
 
             if (!isUnlimited) senderDb.save();
 
-            await ctx.reply(ctx.msg.info(`${responseText} Koin jatuh di sisi ${flip}. ${prizeText}`));
+            await ctx.reply(ctx.text.info(`${responseText} Koin jatuh di sisi ${flip}. ${prizeText}`));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

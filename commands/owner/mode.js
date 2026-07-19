@@ -10,10 +10,10 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${ctx.msg.generateCmdExample(ctx.used, "self")}\n` +
-                ctx.msg.generateNotes([
-                    `Ketik ${ctx.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
+                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.text.generateCmdExample(ctx.used, "self")}\n` +
+                ctx.text.generateNotes([
+                    `Ketik ${ctx.text.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
                 ])
             );
 
@@ -35,10 +35,10 @@ module.exports = {
                     botDb.save();
                     break;
                 default:
-                    return await ctx.reply(ctx.msg.info(`Mode "${input}" tidak valid!`));
+                    return await ctx.reply(ctx.text.info(`Mode "${input}" tidak valid!`));
             }
 
-            await ctx.reply(ctx.msg.info(`Berhasil mengubah mode ke ${input}!`));
+            await ctx.reply(ctx.text.info(`Berhasil mengubah mode ke ${input}!`));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

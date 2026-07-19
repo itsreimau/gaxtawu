@@ -11,8 +11,8 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                ctx.msg.generateCmdExample(ctx.used, "8")
+                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                ctx.text.generateCmdExample(ctx.used, "8")
             );
 
         try {
@@ -20,7 +20,7 @@ module.exports = {
             groupDb.maxwarnings = input;
             groupDb.save();
 
-            await ctx.reply(ctx.msg.info("Berhasil mengubah max warnings!"));
+            await ctx.reply(ctx.text.info("Berhasil mengubah max warnings!"));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

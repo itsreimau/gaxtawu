@@ -6,9 +6,9 @@ module.exports = {
 
         if (isNaN(input) || input < 1 || input > 6)
             return await ctx.reply(
-                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${ctx.msg.generateCmdExample(ctx.used, "4")}\n` +
-                ctx.msg.generateNotes([
+                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.text.generateCmdExample(ctx.used, "4")}\n` +
+                ctx.text.generateNotes([
                     "Tebak angka dadu antara 1-6."
                 ])
             );
@@ -16,7 +16,7 @@ module.exports = {
         const senderDb = ctx.db.user;
         const isUnlimited = ctx.sender.isOwner() || senderDb?.premium;
 
-        if (!isUnlimited && senderDb?.coin < 500) return await ctx.reply(ctx.msg.info("Koin Anda tidak cukup! Minimal memiliki 500 koin untuk bermain."));
+        if (!isUnlimited && senderDb?.coin < 500) return await ctx.reply(ctx.text.info("Koin Anda tidak cukup! Minimal memiliki 500 koin untuk bermain."));
 
         try {
             const result = Math.floor(Math.random() * 6) + 1;
@@ -39,7 +39,7 @@ module.exports = {
 
             if (!isUnlimited) senderDb.save();
 
-            await ctx.reply(ctx.msg.info(`${responseText} Dadu menunjukkan angka ${result}. ${prizeText}`));
+            await ctx.reply(ctx.text.info(`${responseText} Dadu menunjukkan angka ${result}. ${prizeText}`));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

@@ -15,8 +15,8 @@ module.exports = {
 
         if (!input && !type)
             return await ctx.reply(
-                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                ctx.msg.generateCmdExample(ctx.used, "halo, dunia!")
+                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                ctx.text.generateCmdExample(ctx.used, "halo, dunia!")
             );
 
         try {
@@ -37,7 +37,7 @@ module.exports = {
                 groupStatus: true
             });
 
-            await ctx.reply(ctx.msg.info("Group status berhasil dikirim!"));
+            await ctx.reply(ctx.text.info("Group status berhasil dikirim!"));
         } catch (error) {
             await ctx.helper.handleError(ctx, error, false);
         }

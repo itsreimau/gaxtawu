@@ -83,8 +83,8 @@ class Ctx {
         return Utils.list;
     }
 
-    get msg() {
-        return Utils.msg;
+    get text() {
+        return Utils.text;
     }
 
     get request() {

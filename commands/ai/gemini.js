@@ -9,9 +9,9 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${ctx.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
-                ctx.msg.generateNotes([
+                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.text.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
+                ctx.text.generateNotes([
                     "AI ini dapat melihat gambar."
                 ])
             );
