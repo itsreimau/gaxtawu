@@ -12,17 +12,17 @@ module.exports = {
         const text = ctx.text ? (ctx.text.startsWith(`${key} `) ? ctx.text.slice(key.length + 1) : ctx.text) : ctx.quoted?.body;
 
         if (key?.toLowerCase() === "list") {
-            const listText = await tools.list.get("settext");
+            const listText = await ctx.list.get(ctx, "settext");
             return await ctx.reply(listText);
         }
 
         if (!key || !text)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "welcome Selamat datang di grup!")}\n` +
-                tools.msg.generateNotes([
-                    `Ketik ${tools.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`,
-                    `Gunakan ${tools.msg.inlineCode("delete")} sebagai teks untuk menghapus teks yang disimpan sebelumnya.`
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.msg.generateCmdExample(ctx.used, "welcome Selamat datang di grup!")}\n` +
+                ctx.msg.generateNotes([
+                    `Ketik ${ctx.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`,
+                    `Gunakan ${ctx.msg.inlineCode("delete")} sebagai teks untuk menghapus teks yang disimpan sebelumnya.`
                 ])
             );
 
@@ -36,7 +36,7 @@ module.exports = {
                     setKey = key.toLowerCase();
                     break;
                 default:
-                    return await ctx.reply(tools.msg.info(`Teks ${tools.msg.inlineCode(key)} tidak valid!`));
+                    return await ctx.reply(ctx.msg.info(`Teks ${ctx.msg.inlineCode(key)} tidak valid!`));
             }
 
             const groupDb = ctx.db.group;
@@ -44,14 +44,14 @@ module.exports = {
             if (text.toLowerCase() === "delete") {
                 delete groupDb?.text?.[setKey];
                 groupDb.save();
-                return await ctx.reply(tools.msg.info(`Pesan untuk teks ${tools.msg.inlineCode(key)} berhasil dihapus!`));
+                return await ctx.reply(ctx.msg.info(`Pesan untuk teks ${ctx.msg.inlineCode(key)} berhasil dihapus!`));
             }
 
             (groupDb.text ||= {})[setKey] = text;
             groupDb.save();
-            await ctx.reply(tools.msg.info(`Pesan untuk teks ${tools.msg.inlineCode(key)} berhasil disimpan!`));
+            await ctx.reply(ctx.msg.info(`Pesan untuk teks ${ctx.msg.inlineCode(key)} berhasil disimpan!`));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

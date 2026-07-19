@@ -11,12 +11,12 @@ module.exports = {
 
         if (!target || !coinAmount)
             return await ctx.reply({
-                text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                    `${tools.msg.generateCmdExample(ctx.used, "@6281234567891 8 -s")}\n` +
-                    `${tools.msg.generateNotes([
+                text: `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                    `${ctx.msg.generateCmdExample(ctx.used, "@6281234567891 8 -s")}\n` +
+                    `${ctx.msg.generateNotes([
                         "Balas/quote pesan untuk menjadikan pengirim sebagai akun target."
                      ])}\n` +
-                    tools.msg.generatesFlagInfo({
+                    ctx.msg.generatesFlagInfo({
                         "-s": "Tetap diam dengan tidak menyiarkan ke akun target"
                     }),
                 mentions: ["6281234567891@s.whatsapp.net"]
@@ -35,11 +35,11 @@ module.exports = {
                 }
             });
             const silent = flag?.silent;
-            if (!silent && !config.system.restrict) await ctx.sendMessage(target.jid, tools.msg.info(`Anda telah menerima ${coinAmount} koin dari owner!`));
+            if (!silent && !config.system.restrict) await ctx.sendMessage(target.jid, ctx.msg.info(`Anda telah menerima ${coinAmount} koin dari owner!`));
 
-            await ctx.reply(tools.msg.info(`Berhasil menambahkan ${coinAmount} koin kepada pengguna itu!`));
+            await ctx.reply(ctx.msg.info(`Berhasil menambahkan ${coinAmount} koin kepada pengguna itu!`));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

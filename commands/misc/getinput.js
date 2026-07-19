@@ -6,14 +6,14 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "rei ayanami")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "rei ayanami")
             );
 
         try {
             await ctx.reply(input);
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

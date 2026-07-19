@@ -10,23 +10,25 @@ module.exports = [{
 
         if (!emoji)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "😱")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "😱")
             );
 
         try {
-            const result = tools.api.createUrl("nexray", "/tools/emojigif", {
+            const result = ctx.api.createUrl("nexray", "/tools/emojigif", {
                 emoji
             });
 
             await ctx.reply({
-                sticker: { url: result }
+                sticker: {
+                    url: result
+                }
             }, {
                 pack: config.sticker.packname,
                 author: config.sticker.author
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 }, {
@@ -41,24 +43,26 @@ module.exports = [{
 
         if (!emoji1 || !emoji2)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "😱 🤓")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "😱 🤓")
             );
 
         try {
-            const result = tools.api.createUrl("nexray", "/tools/emojimix", {
+            const result = ctx.api.createUrl("nexray", "/tools/emojimix", {
                 emoji1,
                 emoji2
             });
 
             await ctx.reply({
-                sticker: { url: result }
+                sticker: {
+                    url: result
+                }
             }, {
                 pack: config.sticker.packname,
                 author: config.sticker.author
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 }];

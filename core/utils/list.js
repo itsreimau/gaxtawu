@@ -1,22 +1,22 @@
-async function get(type) {
+async function get(ctx, type) {
     try {
         let text = "";
         const createList = (data, list) => data.map(list).join("\n");
 
         switch (type) {
             case "alkitab": {
-                const data = (await axios.get("https://api-alkitab.vercel.app/api/book")).data.data;
+                const data = (await ctx.request.get("https://api-alkitab.vercel.app/api/book")).data.data;
                 text = createList(data, (list) =>
-                    `❖ ${tools.msg.bold("Kitab")}: ${list.name} (${list.abbr})\n` +
-                    `❖ ${tools.msg.bold("Jumlah Bab")}: ${list.chapter}`
+                    `❖ ${ctx.msg.bold("Kitab")}: ${list.name} (${list.abbr})\n` +
+                    `❖ ${ctx.msg.bold("Jumlah Bab")}: ${list.chapter}`
                 );
                 break;
             }
             case "alquran": {
-                const data = (await axios.get("https://raw.githubusercontent.com/penggguna/QuranJSON/master/quran.json")).data;
+                const data = (await ctx.request.get("https://raw.githubusercontent.com/penggguna/QuranJSON/master/quran.json")).data;
                 text = createList(data, (list) =>
-                    `❖ ${tools.msg.bold("Surah")}: ${list.name} (${list.number_of_surah})\n` +
-                    `❖ ${tools.msg.bold("Jumlah Ayat")}: ${list.number_of_ayah}`
+                    `❖ ${ctx.msg.bold("Surah")}: ${list.name} (${list.number_of_surah})\n` +
+                    `❖ ${ctx.msg.bold("Jumlah Ayat")}: ${list.number_of_ayah}`
                 );
                 break;
             }
@@ -76,7 +76,7 @@ async function get(type) {
                     "antispam (Anti spam)",
                     "antitagsw (Anti Tag SW)",
                     "antitoxic (Anti toxic, seperti bahasa kasar)",
-                    `autokick (Dikeluarkan secara otomatis, jika ada yang melanggar salah satu opsi ${tools.msg.inlineCode("anti...")})`,
+                    `autokick (Dikeluarkan secara otomatis, jika ada yang melanggar salah satu opsi ${ctx.msg.inlineCode("anti...")})`,
                     "gamerestrict (Anggota dilarang bermain game)",
                     "welcome (Sambutan member)"
                 ];
@@ -106,7 +106,7 @@ async function get(type) {
                 break;
             }
             default: {
-                text = tools.msg.info(`Tipe tidak diketahui: ${type}`);
+                text = ctx.msg.info(`Tipe tidak diketahui: ${type}`);
                 break;
             }
         }

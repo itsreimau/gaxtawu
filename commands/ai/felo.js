@@ -9,19 +9,19 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "apa itu evangelion?")
             );
 
         try {
-            const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/felo", {
+            const apiUrl = ctx.api.createUrl("alwayscodex", "/api/ai/felo", {
                 teks: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await ctx.request.get(apiUrl)).data.result;
 
             await ctx.reply(result);
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

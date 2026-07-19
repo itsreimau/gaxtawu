@@ -21,9 +21,9 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada -i 8 -s spotify")}\n` +
-                tools.msg.generatesFlagInfo({
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada -i 8 -s spotify")}\n` +
+                ctx.msg.generatesFlagInfo({
                     "-i <number>": "Pilihan pada data indeks",
                     "-s <text>": "Sumber untuk memutar lagu (tersedia: spotify, youtube | default: youtube)"
                 })
@@ -34,21 +34,21 @@ module.exports = {
             const source = flag.source;
 
             if (source === "spotify") {
-                const searchApiUrl = tools.api.createUrl("delirius", "/search/spotify", {
+                const searchApiUrl = ctx.api.createUrl("delirius", "/search/spotify", {
                     q: input
                 });
-                const searchResult = (await axios.get(searchApiUrl)).data.data[searchIndex];
+                const searchResult = (await ctx.request.get(searchApiUrl)).data.data[searchIndex];
 
                 await ctx.reply(
-                    `❖ ${tools.msg.bold("Judul")}: ${searchResult.title}\n` +
-                    `❖ ${tools.msg.bold("Artis")}: ${searchResult.artist}\n` +
-                    `❖ ${tools.msg.bold("URL")}: ${searchResult.url}`
+                    `❖ ${ctx.msg.bold("Judul")}: ${searchResult.title}\n` +
+                    `❖ ${ctx.msg.bold("Artis")}: ${searchResult.artist}\n` +
+                    `❖ ${ctx.msg.bold("URL")}: ${searchResult.url}`
                 );
 
-                const downloadApiUrl = tools.api.createUrl("delirius", "/download/spotifydl", {
+                const downloadApiUrl = ctx.api.createUrl("delirius", "/download/spotifydl", {
                     url: searchResult.url
                 });
-                const downloadResult = (await axios.get(downloadApiUrl)).data.data.download;
+                const downloadResult = (await ctx.request.get(downloadApiUrl)).data.data.download;
 
                 await ctx.reply({
                     audio: {
@@ -57,21 +57,21 @@ module.exports = {
                     mimetype: "audio/mpeg"
                 });
             } else {
-                const searchApiUrl = tools.api.createUrl("delirius", "/search/ytsearch", {
+                const searchApiUrl = ctx.api.createUrl("delirius", "/search/ytsearch", {
                     q: input
                 });
-                const searchResult = (await axios.get(searchApiUrl)).data.data[searchIndex];
+                const searchResult = (await ctx.request.get(searchApiUrl)).data.data[searchIndex];
 
                 await ctx.reply(
-                    `❖ ${tools.msg.bold("Judul")}: ${searchResult.title}\n` +
-                    `❖ ${tools.msg.bold("Artis")}: ${searchResult.author.name}\n` +
-                    `❖ ${tools.msg.bold("URL")}: ${searchResult.url}`
+                    `❖ ${ctx.msg.bold("Judul")}: ${searchResult.title}\n` +
+                    `❖ ${ctx.msg.bold("Artis")}: ${searchResult.author.name}\n` +
+                    `❖ ${ctx.msg.bold("URL")}: ${searchResult.url}`
                 );
 
-                const downloadApiUrl = tools.api.createUrl("delirius", "/download/ytmp3", {
+                const downloadApiUrl = ctx.api.createUrl("delirius", "/download/ytmp3", {
                     url: searchResult.url
                 });
-                const downloadResult = (await axios.get(downloadApiUrl)).data.data.download;
+                const downloadResult = (await ctx.request.get(downloadApiUrl)).data.data.download;
 
                 await ctx.reply({
                     audio: {
@@ -81,7 +81,7 @@ module.exports = {
                 });
             }
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

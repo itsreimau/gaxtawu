@@ -7,9 +7,9 @@ module.exports = {
 
         if (!target.jid)
             return await ctx.reply({
-                text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                    `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
-                    tools.msg.generateNotes([
+                text: `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                    `${ctx.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
+                    ctx.msg.generateNotes([
                         "Balas/quote pesan untuk menjadikan pengirim sebagai akun target."
                     ]),
                 mentions: ["6281234567891@s.whatsapp.net"]
@@ -22,11 +22,11 @@ module.exports = {
                 image: {
                     url: result
                 },
-                caption: `❖ ${tools.msg.bold("Akun")}: @${ctx.getId(target.jid)}`,
+                caption: `❖ ${ctx.msg.bold("Akun")}: @${ctx.getId(target.jid)}`,
                 mentions: [target.jid]
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

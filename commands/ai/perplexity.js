@@ -1,5 +1,3 @@
-const { randomUUID } = require("node:crypto");
-
 module.exports = {
     name: "perplexity",
     category: "ai",
@@ -11,36 +9,36 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
-                tools.msg.generateNotes([
-                    `Ketik ${tools.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} reset`)} untuk mereset riwayat percakapan.`
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
+                ctx.msg.generateNotes([
+                    `Ketik ${ctx.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} reset`)} untuk mereset riwayat percakapan.`
                 ])
             );
 
         const senderDb = ctx.db.user;
 
         if (input.toLowerCase() === "reset") {
-            (senderDb.sessionId ||= {}).perplexity = randomUUID();
+            (senderDb.sessionId ||= {}).perplexity = tools.helper.randomUUID();
             senderDb.save();
-            return await ctx.reply(tools.msg.info("Riwayat percakapan berhasil direset!"));
+            return await ctx.reply(ctx.msg.info("Riwayat percakapan berhasil direset!"));
         }
 
         try {
             if (!senderDb.sessionId?.perplexity) {
-                (senderDb.sessionId ||= {}).perplexity = randomUUID();
+                (senderDb.sessionId ||= {}).perplexity = tools.helper.randomUUID();
                 senderDb.save();
             }
-            const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/chatgpt-org", {
+            const apiUrl = ctx.api.createUrl("alwayscodex", "/api/ai/chatgpt-org", {
                 teks: input,
                 model: "perplexity/sonar",
                 session: senderDb.sessionId.perplexity
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await ctx.request.get(apiUrl)).data.result;
 
             await ctx.reply(result);
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

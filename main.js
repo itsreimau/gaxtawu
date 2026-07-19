@@ -1,17 +1,17 @@
-const { client, commandHandler } = require("#engine");
-const { resolve } = require("node:path");
+const { Client, CommandHandler } = require("#core");
+const path = require("node:path");
 const util = require("node:util");
-const events = require("./events");
-const middlewares = require("./middlewares");
+const Events = require("./events");
+const Middlewares = require("./middlewares");
 
 const {
     bot: botConfig,
     system
 } = config;
 const directory = {
-    auth: resolve(__dirname, "state"),
-    database: resolve(__dirname, "database"),
-    command: resolve(__dirname, "commands")
+    auth: path.resolve(__dirname, "state"),
+    database: path.resolve(__dirname, "database"),
+    command: path.resolve(__dirname, "commands")
 };
 
 console.log("[*] Connecting...");
@@ -28,7 +28,7 @@ const parsePrefix = function(prefix) {
     }
 };
 
-const bot = new client({
+const bot = new Client({
     auth: {
         dir: directory.auth,
         phoneNumber: botConfig.phoneNumber,
@@ -88,10 +88,10 @@ const bot = new client({
     owner: [config.owner.id, ...config.owner.co.map(co => co.id)].filter(Boolean)
 });
 
-events(bot);
-middlewares(bot);
+Events(bot);
+Middlewares(bot);
 
-const cmd = new commandHandler(bot, directory.command);
+const cmd = new CommandHandler(bot, directory.command);
 cmd.load();
 
 bot.launch().catch(error => console.error(util.styleText("red", "[x]"), `Error: ${util.format(error)}`));

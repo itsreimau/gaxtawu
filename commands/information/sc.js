@@ -3,6 +3,6 @@ module.exports = {
     aliases: ["script", "source", "sourcecode"],
     category: "information",
     code: async (ctx) => {
-        await ctx.reply("https://github.com/itsreimau/gaxtawu"); // Jika Anda tidak menghapus ini, terima kasih!
+        await ctx.reply("https://github.com/itsreimau/nirwabot"); // Jika Anda tidak menghapus ini, terima kasih!
     }
 };

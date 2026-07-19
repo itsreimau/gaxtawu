@@ -10,24 +10,24 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "one last kiss - hikaru utada")
             );
 
         try {
-            const apiUrl = tools.api.createUrl("delirius", "/search/lyrics", {
+            const apiUrl = ctx.api.createUrl("delirius", "/search/lyrics", {
                 query: input
             });
-            const result = (await axios.get(apiUrl)).data.data;
+            const result = (await ctx.request.get(apiUrl)).data.data;
 
             await ctx.reply(
                 `✦ — ${result.lyrics}\n` +
                 "\n" +
-                `❖ ${tools.msg.bold("Judul")}: ${result.title}\n` +
-                `❖ ${tools.msg.bold("Artis")}: ${result.artists}`
+                `❖ ${ctx.msg.bold("Judul")}: ${result.title}\n` +
+                `❖ ${ctx.msg.bold("Artis")}: ${result.artists}`
             );
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

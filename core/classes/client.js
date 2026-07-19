@@ -1,18 +1,18 @@
-const baileys = require("baileys");
+const Baileys = require("baileys");
 const EventEmitter = require("node:events");
 const fs = require("node:fs");
 const path = require("node:path");
-const { styleText } = require("node:util");
+const util = require("node:util");
 const { NodeCache } = require("@cacheable/node-cache");
 const pino = require("pino");
 const qrcode = require("qrcode-terminal");
 const SimplDB = require("simpl.db");
 const vCard = require("vcard-parser");
 const WASF = require("wa-sticker-formatter");
-const commands = require("../handler/commands");
-const context = require("./context");
+const Commands = require("../handler/commands");
+const Ctx = require("./ctx");
 
-class client {
+class Client {
     constructor(opts = {}) {
         this._initAuth(opts.auth || {});
         this._initConnection(opts.connection || {});
@@ -56,7 +56,7 @@ class client {
     }
 
     _initConnection(connOpts) {
-        this.browser = connOpts.browser || baileys.Browsers.macOS("Safari");
+        this.browser = connOpts.browser || Baileys.Browsers.macOS("Safari");
         this.WAVersion = connOpts.version || null;
         this.alwaysOnline = connOpts.alwaysOnline || false;
         this.selfReply = connOpts.selfReply || false;
@@ -95,7 +95,7 @@ class client {
     }
 
     _updatePushName(jid, pushName) {
-        const userDb = tools.helper.getDb(this.db.getCollection("users"), jid);
+        const userDb = ctx.helper.getDb(this.db.getCollection("users"), jid);
         if (userDb?.pushName !== pushName) {
             userDb.pushName = pushName;
             userDb.save();
@@ -119,11 +119,11 @@ class client {
         }
     }
 
-    _createMessageContext(message, event) {
-        const senderJids = [message.key.participant, message.key.participantAlt, message.key.remoteJid, message.key.remoteJidAlt].filter(Boolean).map(jid => baileys.jidNormalizedUser(jid));
+    _normalizeMessage(message, event) {
+        const senderJids = [message.key.participant, message.key.participantAlt, message.key.remoteJid, message.key.remoteJidAlt].filter(Boolean).map(jid => Baileys.jidNormalizedUser(jid));
 
-        const senderJid = message.key.fromMe ? baileys.jidNormalizedUser(this.core.user.id) : senderJids.find(jid => baileys.isPnUser(jid));
-        const senderLid = message.key.fromMe ? baileys.jidNormalizedUser(this.core.user.lid) : senderJids.find(jid => baileys.isLidUser(jid));
+        const senderJid = message.key.fromMe ? Baileys.jidNormalizedUser(this.core.user.id) : senderJids.find(jid => Baileys.isPnUser(jid));
+        const senderLid = message.key.fromMe ? Baileys.jidNormalizedUser(this.core.user.lid) : senderJids.find(jid => Baileys.isLidUser(jid));
 
         if (!senderJid || !senderLid || !message.pushName) return null;
 
@@ -137,7 +137,7 @@ class client {
             },
             message: {
                 ...message,
-                body: tools.helper.getBodyFromMsg(message)
+                body: ctx.helper.getBodyFromMsg(message)
             }
         };
     }
@@ -182,13 +182,13 @@ class client {
             });
 
         if (connection === "close") {
-            const shouldReconnect = lastDisconnect.error.output?.statusCode !== baileys.DisconnectReason.loggedOut;
-            console.warn(styleText("yellow", "[!]"), `Connection closed: ${lastDisconnect.error}, reconnecting: ${shouldReconnect}`);
+            const shouldReconnect = lastDisconnect.error.output?.statusCode !== Baileys.DisconnectReason.loggedOut;
+            console.warn(util.styleText("yellow", "[!]"), `Connection closed: ${lastDisconnect.error}, reconnecting: ${shouldReconnect}`);
             if (shouldReconnect) await this.launch();
         } else if (connection === "open") {
             if (!this.readyAt) this.readyAt = Date.now();
             this.ev.emit("ClientReady", this.core);
-            await baileys.delay(3000);
+            await Baileys.delay(3000);
             await this._cacheAllGroups();
         }
     }
@@ -200,28 +200,28 @@ class client {
             if (message.key.fromMe && message.key.id.includes("STARFALL")) continue;
             if (this._shouldIgnore(message.key.id)) continue;
 
-            const messageContext = this._createMessageContext(message, event);
-            if (!messageContext) continue;
+            const normalized = this._normalizeMessage(message, event);
+            if (!normalized) continue;
 
-            const ctx = new context({
+            const ctx = new Ctx({
                 used: {
-                    upsert: messageContext.message.body
+                    upsert: normalized.message.body
                 },
                 args: [],
                 self: {
                     ...this,
-                    sender: messageContext.sender,
-                    m: messageContext.message
+                    sender: normalized.sender,
+                    m: normalized.message
                 },
-                client: this.core
+                Client: this.core
             });
 
             this.ev.emit("MessagesUpsert", ctx);
             if (this.autoRead) await this.core.readMessages([message.key]);
-            await commands({
+            await Commands({
                 ...this,
-                m: messageContext.message,
-                sender: messageContext.sender
+                m: normalized.message,
+                sender: normalized.sender
             }, this._runMiddlewares.bind(this));
         }
     }
@@ -290,21 +290,21 @@ class client {
         });
     }
 
-    checkOwner(jid = baileys.PSA_WID, fromMe = false) {
-        return tools.helper.checkOwner(jid, this.owner, fromMe);
+    checkOwner(jid = Baileys.PSA_WID, fromMe = false) {
+        return ctx.helper.checkOwner(jid, this.owner, fromMe);
     }
 
-    getPushName(jid = baileys.PSA_WID) {
-        return tools.helper.getPushName(jid, this.db);
+    getPushName(jid = Baileys.PSA_WID) {
+        return ctx.helper.getPushName(jid, this.db);
     }
 
-    getId(jid = baileys.PSA_WID) {
-        return tools.helper.getId(jid);
+    getId(jid = Baileys.PSA_WID) {
+        return ctx.helper.getId(jid);
     }
 
-    getDb(collection, jid = baileys.PSA_WID) {
+    getDb(collection, jid = Baileys.PSA_WID) {
         const coll = this.db.getCollection(collection);
-        return tools.helper.getDb(coll, jid);
+        return ctx.helper.getDb(coll, jid);
     }
 
     async forceCommand(jid, command, text = "", sender) {
@@ -312,8 +312,8 @@ class client {
         const fakeMsg = {
             key: {
                 remoteJid: jid,
-                fromMe: baileys.areJidsSameUser(sender.jid, this.core.user.id),
-                id: baileys.generateMessageIDV2(),
+                fromMe: Baileys.areJidsSameUser(sender.jid, this.core.user.id),
+                id: Baileys.generateMessageIDV2(),
                 ...(jid !== sender.jid && {
                     participant: sender.jid,
                     ...(sender.lid && {
@@ -329,7 +329,7 @@ class client {
             pushName: sender.pushName
         };
 
-        await commands({
+        await Commands({
             ...this,
             m: fakeMsg,
             sender,
@@ -341,11 +341,11 @@ class client {
         const {
             state,
             saveCreds
-        } = await baileys.useMultiFileAuthState(this.authDir);
+        } = await Baileys.useMultiFileAuthState(this.authDir);
         this.state = state;
         this.saveCreds = saveCreds;
 
-        this.core = baileys.default({
+        this.core = Baileys.default({
             ...(this.WAVersion && {
                 version: this.WAVersion
             }),
@@ -368,9 +368,9 @@ class client {
             this.phoneNumber = this.phoneNumber.replace(/[^0-9]/g, "");
             if (!this.phoneNumber.length) throw new Error("Invalid phoneNumber");
 
-            await baileys.delay(3000);
+            await Baileys.delay(3000);
             const code = await this.core.requestPairingCode(this.phoneNumber, this.customPairingCode);
-            console.log(styleText("cyan", "[i]"), `Pairing Code: ${code}`);
+            console.log(util.styleText("cyan", "[i]"), `Pairing Code: ${code}`);
         }
 
         this._setupStore();
@@ -384,7 +384,7 @@ class client {
     _setupStore() {
         if (!this.useStore) return;
 
-        this.store = baileys.makeInMemoryStore({
+        this.store = Baileys.makeInMemoryStore({
             logger: this.logger,
             socket: this.core
         });
@@ -409,7 +409,7 @@ class client {
             });
     }
 
-async    _createSendMessage(jid, content, options = {}) {
+    async _createSendMessage(jid, content, options = {}) {
         if (typeof content === "string")
             content = {
                 text: content
@@ -460,46 +460,40 @@ async    _createSendMessage(jid, content, options = {}) {
                 options = restOpts;
             }
         }
-        if (content?.contact || content?.contacts) {
-            if (content.contact) {
-                const parsed = parseContact(content.contact);
-                if (parsed)
-                    content = {
-                        contacts: parsed
-                    };
-            } else if (Array.isArray(content.contacts)) {
-                const parsed = content.contacts.map(parseContact).filter(Boolean);
+        if (content?.contacts) {
+            if (Array.isArray(content.contacts)) {
+                const parsed = content.contacts.map(_parseContact).filter(Boolean);
                 content = {
                     contacts: {
-                        displayName: "itsliaaa/baileys",
+                        displayName: "nirwabot",
                         contacts: parsed
                     }
                 };
             } else if (content.contacts?.contacts) {
-                const parsed = content.contacts.contacts.map(parseContact).filter(Boolean);
+                const parsed = content.contacts.contacts.map(_parseContact).filter(Boolean);
                 content = {
                     contacts: {
-                        displayName: content.contacts.displayName || "itsliaaa/baileys",
+                        displayName: content.contacts.displayName || "nirwabot",
                         contacts: parsed
                     }
                 };
             } else {
-                const parsed = parseContact(content.contacts);
+                const parsed = _parseContact(content.contacts);
                 if (parsed)
                     content = {
                         contacts: parsed
                     };
             }
         }
-        if (baileys.isPnUser(jid) || baileys.isLidUser(jid)) content.ai = true;
+        if (Baileys.isPnUser(jid) || Baileys.isLidUser(jid)) content.ai = true;
         if ((content.title || content.subtitle || content.footer) && !content.buttons && !content.nativeFlow) content.nativeFlow = {};
         return await this.core.sendMessage(jid, content, options);
     }
 
-    parseContact(contact) {
+    _parseContact(contact) {
         if (contact.vcard)
             return {
-                displayName: contact.displayName || contact.fullName || "itsliaaa/baileys",
+                displayName: contact.displayName || contact.fullName || "nirwabot",
                 vcard: contact.vcard
             };
         if (contact.number) {
@@ -509,7 +503,7 @@ async    _createSendMessage(jid, content, options = {}) {
                     value: "3.0"
                 }],
                 fn: [{
-                    value: contact.fullName || contact.displayName || "itsliaaa/baileys"
+                    value: contact.fullName || contact.displayName || "nirwabot"
                 }],
                 org: [{
                     value: [contact.org || ""]
@@ -523,7 +517,7 @@ async    _createSendMessage(jid, content, options = {}) {
                 }]
             });
             return {
-                displayName: contact.fullName || contact.displayName || "itsliaaa/baileys",
+                displayName: contact.fullName || contact.displayName || "nirwabot",
                 vcard
             };
         }
@@ -531,4 +525,4 @@ async    _createSendMessage(jid, content, options = {}) {
     }
 }
 
-module.exports = client;
+module.exports = Client;

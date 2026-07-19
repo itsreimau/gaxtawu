@@ -11,13 +11,13 @@ module.exports = {
             if (input === "y") {
                 const usersDb = ctx.db.users;
                 usersDb.reset(user => user.jid === ctx.sender.lid);
-                return await ctx.reply(tools.msg.info("Database Anda telah berhasil direset!"));
+                return await ctx.reply(ctx.msg.info("Database Anda telah berhasil direset!"));
             } else if (input === "n") {
-                return await ctx.reply(tools.msg.info("Proses reset database telah dibatalkan."));
+                return await ctx.reply(ctx.msg.info("Proses reset database telah dibatalkan."));
             }
 
             await ctx.reply({
-                text: tools.msg.info("Yakin ingin mereset database Anda? Tindakan ini akan menghapus semua data yang tersimpan dan tidak dapat dipulihkan."),
+                text: ctx.msg.info("Yakin ingin mereset database Anda? Tindakan ini akan menghapus semua data yang tersimpan dan tidak dapat dipulihkan."),
                 buttons: [{
                     text: "Ya",
                     id: `${ctx.used.prefix + ctx.used.command} yes`
@@ -27,7 +27,7 @@ module.exports = {
                 }]
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

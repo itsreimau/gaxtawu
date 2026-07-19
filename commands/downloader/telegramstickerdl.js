@@ -8,28 +8,28 @@ module.exports = {
         premium: true
     },
     code: async (ctx) => {
-        const url = ctx.args[0] || tools.helper.extractUrlFromText(ctx.quoted?.body);
+        const url = ctx.args[0] || ctx.helper.extractUrlFromText(ctx.quoted?.body);
 
         if (!url)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "https://t.me/addstickers/ReiAyanamiEvangelionCute")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "https://t.me/addstickers/ReiAyanamiEvangelionCute")
             );
 
-        if (!tools.helper.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.invalidUrl));
+        if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.msg.info(config.msg.invalidUrl));
 
         try {
-            const apiUrl = tools.api.createUrl("delirius", "/download/telegramsticker", {
+            const apiUrl = ctx.api.createUrl("delirius", "/download/telegramsticker", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data;
+            const result = (await ctx.request.get(apiUrl)).data;
             const stickerPacks = await prepareStickerPack(result.stickers, result.title, ctx.msg.key.id);
 
             for (const stickerPack of stickerPacks) {
                 await ctx.reply(stickerPack);
             }
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

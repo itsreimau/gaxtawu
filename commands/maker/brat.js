@@ -9,25 +9,27 @@ module.exports = [{
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")
             );
 
-        if (input.length > 1000) return await ctx.reply(tools.msg.info("Maksimal 1000 karakter!"));
+        if (input.length > 1000) return await ctx.reply(ctx.msg.info("Maksimal 1000 karakter!"));
 
         try {
-            const result = tools.api.createUrl("delirius", "/canvas/brat", {
+            const result = ctx.api.createUrl("delirius", "/canvas/brat", {
                 text: input
             });
 
             await ctx.reply({
-                sticker: { url: buffer }
+                sticker: {
+                    url: buffer
+                }
             }, {
                 pack: config.sticker.packname,
                 author: config.sticker.author
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 }, {
@@ -42,25 +44,27 @@ module.exports = [{
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")
             );
 
-        if (input.length > 1000) return await ctx.reply(tools.msg.info("Maksimal 1000 karakter!"));
+        if (input.length > 1000) return await ctx.reply(ctx.msg.info("Maksimal 1000 karakter!"));
 
         try {
-            const result = tools.api.createUrl("delirius", "/canvas/bratvideo", {
+            const result = ctx.api.createUrl("delirius", "/canvas/bratvideo", {
                 text: input
             });
 
             await ctx.reply({
-                sticker: { url: result }
+                sticker: {
+                    url: result
+                }
             }, {
                 pack: config.sticker.packname,
                 author: config.sticker.author
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 }];

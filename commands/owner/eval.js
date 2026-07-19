@@ -1,4 +1,4 @@
-const { format } = require("node:util");
+const util = require("node:util");
 
 module.exports = {
     name: /^==> |^=> /,
@@ -10,9 +10,14 @@ module.exports = {
             const code = ctx.msg.body.slice(ctx.msg.body.startsWith("==> ") ? 4 : 3);
             const result = await eval(ctx.msg.body.startsWith("==> ") ? `(async () => { ${code} })()` : code);
 
-            await ctx.reply(tools.msg.monospace(format(result)));
+            await ctx.reply(ctx.msg.monospace(util.inspect(result, {
+                depth: null,
+                maxArrayLength: null,
+                maxStringLength: null,
+                showHidden: true
+            })));
         } catch (error) {
-            await tools.helper.handleError(ctx, error, false, true);
+            await ctx.helper.handleError(ctx, error, false, true);
         }
     }
 };

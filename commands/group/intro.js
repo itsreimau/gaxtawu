@@ -9,9 +9,9 @@ module.exports = {
         try {
             const introText = ctx.db.group.text?.intro;
 
-            await ctx.reply(introText || tools.msg.info("Grup ini tidak memiliki intro."));
+            await ctx.reply(introText || ctx.msg.info("Grup ini tidak memiliki intro."));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

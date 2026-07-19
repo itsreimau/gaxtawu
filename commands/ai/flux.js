@@ -9,12 +9,12 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "anime girl with short blue hair")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "anime girl with short blue hair")
             );
 
         try {
-            const result = tools.api.createUrl("alwayscodex", "/api/imageai/text2imgv2", {
+            const result = ctx.api.createUrl("alwayscodex", "/api/imageai/text2imgv2", {
                 teks: input
             });
 
@@ -22,14 +22,14 @@ module.exports = {
                 image: {
                     url: result
                 },
-                caption: `❖ ${tools.msg.bold("Prompt")}: ${input}`,
+                caption: `❖ ${ctx.msg.bold("Prompt")}: ${input}`,
                 buttons: [{
                     text: "Ambil Lagi",
                     id: `${ctx.used.prefix + ctx.used.command} ${input}`
                 }]
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

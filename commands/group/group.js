@@ -11,15 +11,15 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "open")}\n` +
-                tools.msg.generateNotes([
-                    `Ketik ${tools.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.msg.generateCmdExample(ctx.used, "open")}\n` +
+                ctx.msg.generateNotes([
+                    `Ketik ${ctx.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
                 ])
             );
 
         if (input.toLowerCase() === "list") {
-            const listText = await tools.list.get("group");
+            const listText = await ctx.list.get(ctx, "group");
             return await ctx.reply(listText);
         }
 
@@ -44,12 +44,12 @@ module.exports = {
                     await ctx.group().membersCanAddMemberMode("off");
                     break;
                 default:
-                    return await ctx.reply(tools.msg.info(`Setelan "${input}" tidak valid!`));
+                    return await ctx.reply(ctx.msg.info(`Setelan "${input}" tidak valid!`));
             }
 
-            await ctx.reply(tools.msg.info("Berhasil mengubah setelan grup!"));
+            await ctx.reply(ctx.msg.info("Berhasil mengubah setelan grup!"));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

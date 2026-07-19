@@ -1,14 +1,14 @@
-const { styleText } = require("node:util");
+const util = require("node:util");
 const { globSync } = require("glob");
 
-class commandHandler {
+class CommandHandler {
     constructor(bot, path) {
         this._bot = bot;
         this._path = path;
     }
 
     load(isShowLog = true) {
-        if (isShowLog) console.group(styleText("cyan", "[i]"), "Command Handler");
+        if (isShowLog) console.group(util.styleText("cyan", "[i]"), "Command Handler");
 
         const files = this._getFiles();
 
@@ -21,11 +21,11 @@ class commandHandler {
                     this._registerCommand(cmd);
                     if (isShowLog) {
                         const type = cmd.type === "hears" ? "Hears" : "Command";
-                        console.log(styleText("green", "[+]"), `Loaded ${type} - ${cmd.name}`);
+                        console.log(util.styleText("green", "[+]"), `Loaded ${type} - ${cmd.name}`);
                     }
                 }
             } catch (error) {
-                if (isShowLog) console.warn(styleText("yellow", "[!]"), `Failed to load ${file}: ${error}`);
+                if (isShowLog) console.warn(util.styleText("yellow", "[!]"), `Failed to load ${file}: ${error}`);
             }
         }
 
@@ -55,4 +55,4 @@ class commandHandler {
     }
 }
 
-module.exports = commandHandler;
+module.exports = CommandLoader;

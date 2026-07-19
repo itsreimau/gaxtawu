@@ -12,7 +12,7 @@ module.exports = {
 
             await ctx.reply(`https://chat.whatsapp.com/${code}`);
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

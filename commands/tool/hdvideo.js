@@ -6,19 +6,16 @@ module.exports = {
         premium: true
     },
     code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
-            tools.helper.checkMedia(ctx.msg.messageType, ["video"]),
-            tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["video"])
-        ];
+        const isMedia = ctx.isMedia(["video"]);
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["video"]));
+        if (!isMedia) return await ctx.reply(ctx.msg.generateInstruction(["send", "reply"], ["video"]));
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("nexray", "/tools/hdvideo", {
+            const apiUrl = ctx.api.createUrl("nexray", "/tools/hdvideo", {
                 url: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await ctx.request.get(apiUrl)).data.result;
 
             await ctx.reply({
                 video: {
@@ -26,7 +23,7 @@ module.exports = {
                 }
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

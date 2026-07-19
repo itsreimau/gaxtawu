@@ -12,9 +12,9 @@ module.exports = {
             };
             senderDb.save();
 
-            await ctx.reply(tools.msg.info(`Anda akan AFK, ${input ? `dengan alasan ${tools.msg.inlineCode(input)}` : "tanpa alasan apapun"}`));
+            await ctx.reply(ctx.msg.info(`Anda akan AFK, ${input ? `dengan alasan ${ctx.msg.inlineCode(input)}` : "tanpa alasan apapun"}`));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

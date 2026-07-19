@@ -12,14 +12,14 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")
             );
 
-        if (input.length > 1000) return await ctx.reply(tools.msg.info("Maksimal 1000 karakter!"));
+        if (input.length > 1000) return await ctx.reply(ctx.msg.info("Maksimal 1000 karakter!"));
 
         try {
-            const result = tools.api.createUrl("nexray", "/maker/v1/iqc", {
+            const result = ctx.api.createUrl("nexray", "/maker/v1/iqc", {
                 text: input,
                 provider: await checkBrandProvider(ctx.getId(ctx.sender.jid)),
                 jam: moment.tz(config.system.timeZone).format("HH:mm"),
@@ -32,13 +32,13 @@ module.exports = {
                 }
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };
 
 async function checkBrandProvider(number) {
-    const provider = (await axios.get(tools.api.createUrl("sanka", "/random/cek-nomor", {
+    const provider = (await ctx.request.get(ctx.api.createUrl("sanka", "/random/cek-nomor", {
         nomor: number.replace(/^62/, "0")
     }, "apikey"))).data.data.operator;
     return provider || "Telkomsel";

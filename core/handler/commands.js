@@ -1,7 +1,7 @@
-const baileys = require("baileys");
-const context = require("../classes/context");
+const Baileys = require("baileys");
+const Ctx = require("../classes/ctx");
 
-async function commands(self, runMiddlewares) {
+async function Commands(self, runMiddlewares) {
     const {
         m,
         prefix,
@@ -9,15 +9,15 @@ async function commands(self, runMiddlewares) {
         core
     } = self;
 
-    if (!m.body || baileys.isJidStatusBroadcast(m.key.remoteJid) || baileys.isJidNewsletter(m.key.remoteJid)) return;
+    if (!m.body || Baileys.isJidStatusBroadcast(m.key.remoteJid) || Baileys.isJidNewsletter(m.key.remoteJid)) return;
 
     const findMatchingCommands = (cmdMap, commandName) => {
         const commands = Array.from(cmdMap?.values() || []);
         return commands.filter(cmd => cmd.name?.toLowerCase() === commandName || (Array.isArray(cmd.aliases) && cmd.aliases.includes(commandName)) || cmd.aliases === commandName);
     };
 
-    const createContext = (self, client, used, args, text) => {
-        return new context({
+    const createCtx = (self, client, used, args, text) => {
+        return new Ctx({
             used,
             args,
             text,
@@ -41,7 +41,7 @@ async function commands(self, runMiddlewares) {
         const matched = findMatchingCommands(cmd, commandName);
         if (!matched.length) return;
 
-        const ctx = createContext(self, core, {
+        const ctx = createCtx(self, core, {
             prefix: "force",
             command: commandName
         }, args, text);
@@ -52,20 +52,20 @@ async function commands(self, runMiddlewares) {
 
     const hears = handleHears(self, m.body, m.messageType);
     if (hears.length) {
-        const ctx = createContext(self, core, {
+        const ctx = createCtx(self, core, {
             hears: m.body
         }, [], "");
         hears.forEach(hear => hear.code(ctx));
         return;
     }
 
-    const parsed = tools.helper.parseCommand(prefix, m.body);
+    const parsed = ctx.helper.parseCommand(prefix, m.body);
     if (!parsed.commandName) return;
 
     const matched = findMatchingCommands(cmd, parsed.commandName);
     if (!matched.length) return;
 
-    const ctx = createContext(self, core, {
+    const ctx = createCtx(self, core, {
         prefix: parsed.selectedPrefix,
         command: parsed.commandName
     }, parsed.args, parsed.text);
@@ -74,4 +74,4 @@ async function commands(self, runMiddlewares) {
     matched.forEach(cmd => cmd.code(ctx));
 };
 
-module.exports = commands;
+module.exports = Commands;

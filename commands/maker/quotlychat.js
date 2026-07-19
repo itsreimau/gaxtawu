@@ -12,16 +12,16 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")
             );
 
-        if (input.length > 1000) return await ctx.reply(tools.msg.info("Maksimal 1000 karakter!"));
+        if (input.length > 1000) return await ctx.reply(ctx.msg.info("Maksimal 1000 karakter!"));
 
         try {
             const isQuoted = !ctx.text && ctx.quoted;
             const profilePictureUrl = await ctx.core.profilePictureUrl(isQuoted ? ctx.quoted?.sender : ctx.sender.jid).catch(() => "https://placehold.net/avatar.png");
-            const result = tools.api.createUrl("nexray", "/maker/qc", {
+            const result = ctx.api.createUrl("nexray", "/maker/qc", {
                 text: input,
                 name: isQuoted ? ctx.quoted?.pushName : ctx.sender.pushName,
                 avatar: profilePictureUrl,
@@ -29,13 +29,15 @@ module.exports = {
             });
 
             await ctx.reply({
-                sticker: { url: result }
+                sticker: {
+                    url: result
+                }
             }, {
                 pack: config.sticker.packname,
                 author: config.sticker.author
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

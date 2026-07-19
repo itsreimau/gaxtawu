@@ -11,7 +11,7 @@ class TopHandler {
     async handle(ctx) {
         try {
             let members = ctx.db.group?.members || [];
-            members = members.filter(member => !tools.helper.areJidsSameUser(member.id, ctx.me.lid));
+            members = members.filter(member => !ctx.helper.areJidsSameUser(member.id, ctx.me.lid));
 
             if (this.sortDirection === "asc") {
                 members = members.sort((a, b) => a.sent - b.sent);
@@ -24,7 +24,7 @@ class TopHandler {
             const mentions = [];
 
             topMembers.forEach((member, id) => {
-                const isSelf = tools.helper.areJidsSameUser(member.id, ctx.sender.lid);
+                const isSelf = ctx.helper.areJidsSameUser(member.id, ctx.sender.lid);
                 let displayName = member.pushName || ctx.getId(member.id);
 
                 if (isSelf) {
@@ -49,7 +49,7 @@ class TopHandler {
                 mentions: mentions
             });
         } catch (err) {
-            await tools.helper.handleError(ctx, err);
+            await ctx.helper.handleError(ctx, err);
         }
     }
 }

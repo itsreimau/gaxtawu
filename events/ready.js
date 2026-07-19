@@ -1,16 +1,16 @@
-const { styleText } = require("node:util");
+const util = require("node:util");
 
 module.exports = (bot) => {
     bot.ev.once("ClientReady", async (b) => {
-        console.log(styleText("blue", "[>]"), `${config.bot.name} by ${config.owner.name}, ready at ${b.user?.id || b.user?.lid}`);
+        console.log(util.styleText("blue", "[>]"), `${config.bot.name} by ${config.owner.name}, ready at ${b.user?.id || b.user?.lid}`);
 
         const botDb = bot.getDb("bot");
         const botRestart = botDb?.restart || {};
         if (botRestart?.jid && botRestart?.timestamp && botRestart?.readyAt) {
             bot.readyAt = botRestart.readyAt;
-            const timeago = tools.msg.convertMsToDuration(Date.now() - botRestart.timestamp);
+            const timeago = ctx.msg.convertMsToDuration(Date.now() - botRestart.timestamp);
             await bot.sendMessage(botRestart.jid, {
-                text: tools.msg.info(`Berhasil dimulai ulang! Membutuhkan waktu ${timeago}.`),
+                text: ctx.msg.info(`Berhasil dimulai ulang! Membutuhkan waktu ${timeago}.`),
                 edit: botRestart.key
             });
             botDb.restart = {};

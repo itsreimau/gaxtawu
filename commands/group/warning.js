@@ -13,23 +13,23 @@ module.exports = [{
 
         if (!target.jid)
             return await ctx.reply({
-                text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                    `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
-                    tools.msg.generateNotes([
+                text: `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                    `${ctx.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
+                    ctx.msg.generateNotes([
                         "Balas/quote pesan untuk menjadikan pengirim sebagai akun target."
                     ]),
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (tools.helper.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(tools.msg.info("Tidak bisa mengubah warning bot!"));
-        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(tools.msg.info("Tidak bisa memberikan warning ke owner grup!"));
+        if (ctx.helper.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(ctx.msg.info("Tidak bisa mengubah warning bot!"));
+        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(ctx.msg.info("Tidak bisa memberikan warning ke owner grup!"));
 
         try {
             const groupDb = ctx.db.group;
             const warnings = groupDb?.warnings || [];
             const maxWarnings = groupDb?.maxwarnings || 3;
 
-            const targetIndex = warnings.findIndex(warning => tools.helper.areJidsSameUser(warning.jid, target.jid));
+            const targetIndex = warnings.findIndex(warning => ctx.helper.areJidsSameUser(warning.jid, target.jid));
 
             let newWarningCount;
 
@@ -48,14 +48,14 @@ module.exports = [{
             groupDb.save();
 
             if (newWarningCount >= maxWarnings) {
-                await ctx.reply(tools.msg.info(`Pengguna mencapai batas warning (${newWarningCount}/${maxWarnings}).`));
+                await ctx.reply(ctx.msg.info(`Pengguna mencapai batas warning (${newWarningCount}/${maxWarnings}).`));
                 await ctx.group().kick(target);
                 groupDb.warnings = warnings.filter(warning => warning.jid !== target);
             } else {
-                await ctx.reply(tools.msg.info(`Berhasil menambahkan warning menjadi ${newWarningCount}/${maxWarnings}.`));
+                await ctx.reply(ctx.msg.info(`Berhasil menambahkan warning menjadi ${newWarningCount}/${maxWarnings}.`));
             }
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 }, {
@@ -73,25 +73,25 @@ module.exports = [{
 
         if (!target.jid)
             return await ctx.reply({
-                text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                    `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
-                    tools.msg.generateNotes([
+                text: `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                    `${ctx.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
+                    ctx.msg.generateNotes([
                         "Balas/quote pesan untuk menjadikan pengirim sebagai akun target."
                     ]),
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (tools.helper.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(tools.msg.info(`Tidak bisa mengubah warning bot!`));
-        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(tools.msg.info("Tidak bisa memberikan warning ke owner grup!"));
+        if (ctx.helper.areJidsSameUser(target.jid, ctx.me.lid)) return await ctx.reply(ctx.msg.info(`Tidak bisa mengubah warning bot!`));
+        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(ctx.msg.info("Tidak bisa memberikan warning ke owner grup!"));
 
         try {
             const groupDb = ctx.db.group;
             const warnings = groupDb?.warnings || [];
             const maxWarnings = groupDb?.maxwarnings || 3;
 
-            const targetIndex = warnings.findIndex(warning => tools.helper.areJidsSameUser(warning.jid, target.jid));
+            const targetIndex = warnings.findIndex(warning => ctx.helper.areJidsSameUser(warning.jid, target.jid));
 
-            if (targetIndex === -1) return await ctx.reply(tools.msg.info("Pengguna tidak memiliki warning."));
+            if (targetIndex === -1) return await ctx.reply(ctx.msg.info("Pengguna tidak memiliki warning."));
 
             const currentCount = warnings[targetIndex].count || 0;
 
@@ -99,7 +99,7 @@ module.exports = [{
                 warnings.splice(targetIndex, 1);
                 groupDb.warnings = warnings;
                 groupDb.save();
-                return await ctx.reply(tools.msg.info("Pengguna tidak memiliki warning."));
+                return await ctx.reply(ctx.msg.info("Pengguna tidak memiliki warning."));
             }
 
             const newWarningCount = currentCount - 1;
@@ -113,9 +113,9 @@ module.exports = [{
             groupDb.warnings = warnings;
             groupDb.save();
 
-            await ctx.reply(tools.msg.info(`Berhasil mengurangi warning menjadi ${newWarningCount}/${maxWarnings}.`));
+            await ctx.reply(ctx.msg.info(`Berhasil mengurangi warning menjadi ${newWarningCount}/${maxWarnings}.`));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 }];

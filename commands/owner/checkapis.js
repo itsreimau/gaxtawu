@@ -7,12 +7,12 @@ module.exports = {
     },
     code: async (ctx) => {
         try {
-            const APIs = tools.api.listUrl();
+            const APIs = ctx.api.listUrl();
             let resultText = "";
 
             for (const [name, api] of Object.entries(APIs)) {
                 try {
-                    const response = await axios.get(api.baseURL, {
+                    const response = await ctx.request.get(api.baseURL, {
                         timeout: 5000,
                         headers: {
                             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
@@ -37,7 +37,7 @@ module.exports = {
 
             await ctx.reply(resultText.trim());
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

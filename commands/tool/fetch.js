@@ -8,18 +8,18 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const url = ctx.args[0] || tools.helper.extractUrlFromText(ctx.quoted?.body);
+        const url = ctx.args[0] || ctx.helper.extractUrlFromText(ctx.quoted?.body);
 
         if (!url)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "https://itsreimau.is-a.dev")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "https://itsreimau.is-a.dev")
             );
 
-        if (!tools.helper.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.invalidUrl));
+        if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.msg.info(config.msg.invalidUrl));
 
         try {
-            const response = await axios.get(url, {
+            const response = await ctx.request.get(url, {
                 responseType: "arraybuffer",
                 validateStatus: () => true
             });
@@ -72,14 +72,14 @@ module.exports = {
                 await ctx.reply(json ? walkJSON(json) : text);
             }
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };
 
 function walkJSON(json, depth = 0, array = []) {
     for (const key in json) {
-        array.push(`${"┊".repeat(depth)}${depth > 0 ? " " : ""}${tools.msg.bold(key)}:`);
+        array.push(`${"┊".repeat(depth)}${depth > 0 ? " " : ""}${ctx.msg.bold(key)}:`);
         if (typeof json[key] === "object" && json[key] !== undefined) {
             walkJSON(json[key], depth + 1, array);
         } else {

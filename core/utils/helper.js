@@ -1,5 +1,6 @@
-const baileys = require("baileys");
+const Baileys = require("baileys");
 const didYouMean = require("didyoumean");
+const crypto = require("node:crypto");
 const util = require("node:util");
 
 function calculateDelay(totalTargets) {
@@ -44,43 +45,14 @@ function calculateDimensions(width, height) {
     };
 }
 
-function checkMedia(type, required) {
-    if (!type || !required || !Array.isArray(required)) return false;
-
-    const mediaMap = {
-        audio: "audioMessage",
-        document: ["documentMessage", "documentWithCaptionMessage"],
-        image: "imageMessage",
-        sticker: "stickerMessage",
-        text: ["conversation", "extendedTextMessage"],
-        video: "videoMessage"
-    };
-
-    for (const media of required) {
-        const mappedType = mediaMap[media];
-        if (!mappedType) continue;
-        if (Array.isArray(mappedType)) {
-            if (mappedType.includes(type)) return media;
-        } else {
-            if (type === mappedType) return media;
-        }
-    }
-
-    return false;
-}
-
 function checkOwner(jid, owner, fromMe) {
-    if (!baileys.isPnUser(jid)) return false;
-    return fromMe || owner.some(o => baileys.areJidsSameUser(o + baileys.S_WHATSAPP_NET, jid));
-}
-
-function checkQuotedMedia(type, required) {
-    return checkMedia(type, required);
+    if (!Baileys.isPnUser(jid)) return false;
+    return fromMe || owner.some(o => Baileys.areJidsSameUser(o + Baileys.S_WHATSAPP_NET, jid));
 }
 
 function extractUrlFromText(text) {
     if (!text) return null;
-    return baileys.extractUrlFromText(text) || null;
+    return Baileys.extractUrlFromText(text) || null;
 }
 
 function getBodyFromMsg(msg) {
@@ -101,7 +73,7 @@ function getBodyFromMsg(msg) {
         templateButtonReplyMessage: (message) => message.templateButtonReplyMessage?.selectedId || "",
         interactiveResponseMessage: (message) => message.interactiveResponseMessage?.nativeFlowResponseMessage?.paramsJson ? JSON.parse(message.interactiveResponseMessage.nativeFlowResponseMessage.paramsJson)?.id || "" : ""
     };
-    return BODY_HANDLERS[baileys.getContentType(msg.message)]?.(msg.message);
+    return BODY_HANDLERS[Baileys.getContentType(msg.message)]?.(msg.message);
 }
 
 function getDb(collection, jid) {
@@ -114,28 +86,28 @@ function getDb(collection, jid) {
     };
 
     if (collection.name === "bot") return ensureCollection(collection, "bot", bot => bot.jid === "bot");
-    if (collection.name === "users" && baileys.isLidUser(jid)) return ensureCollection(collection, jid, (user) => baileys.areJidsSameUser(user.jid, jid));
-    if (collection.name === "groups" && baileys.isJidGroup(jid)) return ensureCollection(collection, jid, (group) => baileys.areJidsSameUser(group.jid, jid));
+    if (collection.name === "users" && Baileys.isLidUser(jid)) return ensureCollection(collection, jid, (user) => Baileys.areJidsSameUser(user.jid, jid));
+    if (collection.name === "groups" && Baileys.isJidGroup(jid)) return ensureCollection(collection, jid, (group) => Baileys.areJidsSameUser(group.jid, jid));
 
     return null;
 }
 
 function getId(jid) {
-    return baileys.jidDecode(jid)?.user || jid;
+    return Baileys.jidDecode(jid)?.user || jid;
 }
 
 async function getJpegThumbnail(url) {
-    const stream = await baileys.getHttpStream(url);
-    const result = await baileys.extractImageThumb(stream, 300);
+    const stream = await Baileys.getHttpStream(url);
+    const result = await Baileys.extractImageThumb(stream, 300);
     return result.buffer;
 }
 
 function getMessageType(message) {
-    return baileys.getContentType(baileys.extractMessageContent(message));
+    return Baileys.getContentType(Baileys.extractMessageContent(message));
 }
 
 function getPushName(jid, db) {
-    if (!baileys.isLidUser(jid)) return "Unknown";
+    if (!Baileys.isLidUser(jid)) return "Unknown";
     const users = db.getCollection("users");
     return getDb(users, jid)?.pushName || "Unknown";
 }
@@ -168,8 +140,8 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
 
     if (isOwner)
         return await ctx.reply(
-            `${tools.msg.info("Terjadi kesalahan:")}\n` +
-            tools.msg.monospace(errorText)
+            `${ctx.msg.info("Terjadi kesalahan:")}\n` +
+            ctx.msg.monospace(errorText)
         );
     if (!silent || !config.system.restrict) {
         const reportOwner = getReportOwner();
@@ -178,9 +150,9 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
                 delay
             } = calculateDelay(reportOwner.length);
             for (const ownerId of reportOwner) {
-                await ctx.replyWithJid(ownerId + baileys.S_WHATSAPP_NET, {
+                await ctx.replyWithJid(ownerId + Baileys.S_WHATSAPP_NET, {
                     text: `${isGroup ? `Terjadi kesalahan dari grup: @${groupJid}, oleh: @${senderId}` : `Terjadi kesalahan dari: @${senderId}`}\n` +
-                        tools.msg.monospace(errorText),
+                        ctx.msg.monospace(errorText),
                     contextInfo: {
                         mentionedJid: [senderJid],
                         groupMentions: isGroup ? [{
@@ -189,12 +161,12 @@ async function handleError(ctx, error, useAxios = false, silent = false) {
                         }] : []
                     }
                 });
-                await baileys.delay(delay);
+                await Baileys.delay(delay);
             }
         }
     }
-    if (useAxios && error.status !== 200) return await ctx.reply(tools.msg.info(config.msg.notFound));
-    await ctx.reply(tools.msg.info(config.msg.error));
+    if (useAxios && error.status !== 200) return await ctx.reply(ctx.msg.info(config.msg.notFound));
+    await ctx.reply(ctx.msg.info(config.msg.error));
 }
 
 function isUrl(url) {
@@ -248,13 +220,11 @@ function parseCommand(prefix, body) {
 }
 
 module.exports = {
-    areJidsSameUser: baileys.areJidsSameUser,
+    areJidsSameUser: Baileys.areJidsSameUser,
     calculateDelay,
     calculateDimensions,
-    checkMedia,
     checkOwner,
-    checkQuotedMedia,
-    delay: baileys.delay,
+    delay: Baileys.delay,
     didYouMean: didYouMean,
     extractUrlFromText,
     getBodyFromMsg,
@@ -267,5 +237,6 @@ module.exports = {
     getReportOwner,
     handleError,
     isUrl,
-    parseCommand
+    parseCommand,
+    randomUUID: crypto.randomUUID
 };

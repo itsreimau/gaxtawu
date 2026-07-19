@@ -6,23 +6,20 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
-            tools.helper.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
+        const isMedia = ctx.isMedia(["image"]);
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
+        if (!isMedia) return await ctx.reply(ctx.msg.generateInstruction(["send", "reply"], ["image"]));
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const apiUrl = tools.api.createUrl("alwayscodex", "/api/tools/qr2text", {
+            const apiUrl = ctx.api.createUrl("alwayscodex", "/api/tools/qr2text", {
                 url: uploadUrl
             });
-            const result = (await axios.get(apiUrl)).data.result.text;
+            const result = (await ctx.request.get(apiUrl)).data.result.text;
 
             await ctx.reply(result);
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

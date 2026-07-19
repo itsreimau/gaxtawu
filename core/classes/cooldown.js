@@ -1,6 +1,6 @@
 const EventEmitter = require("node:events");
 
-class cooldown extends EventEmitter {
+class Cooldown extends EventEmitter {
     constructor(ctx, ms, mode = "multi") {
         super();
         this.ms = ms;
@@ -29,4 +29,4 @@ class cooldown extends EventEmitter {
     }
 }
 
-module.exports = cooldown;
+module.exports = Cooldown;

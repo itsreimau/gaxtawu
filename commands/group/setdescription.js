@@ -12,16 +12,16 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "by itsreimau")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "by itsreimau")
             );
 
         try {
             await ctx.group().updateDescription(input);
 
-            await ctx.reply(tools.msg.info("Berhasil mengubah deskripsi grup!"));
+            await ctx.reply(ctx.msg.info("Berhasil mengubah deskripsi grup!"));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

@@ -1,5 +1,3 @@
-const { randomUUID } = require("node:crypto");
-
 module.exports = {
     name: "chatgpt",
     aliases: ["ai", "gpt"],
@@ -12,53 +10,50 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
-                tools.msg.generateNotes([
-                    `Ketik ${tools.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} reset`)} untuk mereset riwayat percakapan.`
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
+                ctx.msg.generateNotes([
+                    `Ketik ${ctx.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} reset`)} untuk mereset riwayat percakapan.`
                 ])
             );
 
-        const [checkMedia, checkQuotedMedia] = [
-            tools.helper.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
+        const isMedia = ctx.isMedia(["image"]);
 
         const senderDb = ctx.db.user;
 
         if (input.toLowerCase() === "reset") {
-            (senderDb.sessionId ||= {}).chatgpt = randomUUID();
+            (senderDb.sessionId ||= {}).chatgpt = tools.helper.randomUUID();
             senderDb.save();
-            return await ctx.reply(tools.msg.info("Riwayat percakapan berhasil direset!"));
+            return await ctx.reply(ctx.msg.info("Riwayat percakapan berhasil direset!"));
         }
 
         try {
             if (!senderDb.sessionId?.chatgpt) {
-                (senderDb.sessionId ||= {}).chatgpt = randomUUID();
+                (senderDb.sessionId ||= {}).chatgpt = tools.helper.randomUUID();
                 senderDb.save();
             }
 
-            if (!!checkMedia || !!checkQuotedMedia) {
+            if (!!isMedia) {
                 const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-                const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/gpt4o-mini", {
+                const apiUrl = ctx.api.createUrl("alwayscodex", "/api/ai/gpt4o-mini", {
                     teks: input,
                     image: uploadUrl,
                     session: senderDb.sessionId.chatgpt
                 });
-                const result = (await axios.get(apiUrl)).data.result;
+                const result = (await ctx.request.get(apiUrl)).data.result;
 
                 await ctx.reply(result);
             } else {
-                const apiUrl = tools.api.createUrl("alwayscodex", "/api/ai/gpt4o-mini", {
+                const apiUrl = ctx.api.createUrl("alwayscodex", "/api/ai/gpt4o-mini", {
                     teks: input,
                     session: senderDb.sessionId.chatgpt
                 });
-                const result = (await axios.get(apiUrl)).data.result;
+                const result = (await ctx.request.get(apiUrl)).data.result;
 
                 await ctx.reply(result);
             }
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

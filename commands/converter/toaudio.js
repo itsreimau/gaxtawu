@@ -6,16 +6,13 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
-            tools.helper.checkMedia(ctx.msg.messageType, ["video"]),
-            tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["video"])
-        ];
+        const isMedia = ctx.isMedia(["video"]);
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["video"]));
+        if (!isMedia) return await ctx.reply(ctx.msg.generateInstruction(["send", "reply"], ["video"]));
 
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
-            const result = (await axios.post("https://nekochii-converter.hf.space/mp4tomp3", {
+            const result = (await ctx.request.post("https://nekochii-converter.hf.space/mp4tomp3", {
                 file: buffer.toString("base64"),
                 json: true
             })).data.result;
@@ -27,7 +24,7 @@ module.exports = {
                 mimetype: "audio/mpeg"
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

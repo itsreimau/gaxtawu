@@ -10,11 +10,13 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send", "reply"], ["text", "sticker"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "stiker saya|itsreimau")
+                `${ctx.msg.generateInstruction(["send", "reply"], ["text", "sticker"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "stiker saya|itsreimau")
             );
 
-        if (!tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["sticker"])) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["sticker"]));
+        const isMedia = ctx.isMedia(["sticker"]);
+
+        if (!isMedia) return await ctx.reply(ctx.msg.generateInstruction(["reply"], ["sticker"]));
 
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
@@ -27,7 +29,7 @@ module.exports = {
                 author: author || config.sticker.author
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

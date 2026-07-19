@@ -10,29 +10,29 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "rei ayanami")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "rei ayanami")
             );
 
         try {
-            const apiUrl = tools.api.createUrl("alwayscodex", "/api/search/pinterest", {
+            const apiUrl = ctx.api.createUrl("alwayscodex", "/api/search/pinterest", {
                 query: input,
                 limit: 250
             });
-            const result = tools.helper.getRandomElement((await axios.get(apiUrl)).data.result.items).image;
+            const result = ctx.helper.getRandomElement((await ctx.request.get(apiUrl)).data.result.items).image;
 
             await ctx.reply({
                 image: {
                     url: result
                 },
-                caption: `❖ ${tools.msg.bold("Kueri")}: ${input}`,
+                caption: `❖ ${ctx.msg.bold("Kueri")}: ${input}`,
                 buttons: [{
                     text: "Ambil Lagi",
                     id: `${ctx.used.prefix + ctx.used.command} ${input}`
                 }]
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

@@ -1,15 +1,15 @@
-const call = require("./call");
-const join = require("./join");
-const messages = require("./messages");
-const ready = require("./ready");
-const welcome = require("./welcome");
+const Call = require("./call");
+const Join = require("./join");
+const Messages = require("./messages");
+const Ready = require("./ready");
+const Welcome = require("./welcome");
 
 module.exports = (bot) => {
     bot.ev.setMaxListeners(config.system.maxListeners);
 
-    call(bot);
-    join(bot);
-    messages(bot);
-    ready(bot);
-    welcome(bot);
+    Call(bot);
+    Join(bot);
+    Messages(bot);
+    Ready(bot);
+    Welcome(bot);
 };

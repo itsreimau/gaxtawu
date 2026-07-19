@@ -12,23 +12,23 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "en halo, dunia!")}\n` +
-                tools.msg.generateNotes([
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.msg.generateCmdExample(ctx.used, "en halo, dunia!")}\n` +
+                ctx.msg.generateNotes([
                     "Gunakan kode bahasa 2 huruf, periksa daftar lengkapnya di Google. (contoh: en, id, ja, ar)"
                 ])
             );
 
         try {
-            const apiUrl = tools.api.createUrl("delirius", "/tools/translate", {
+            const apiUrl = ctx.api.createUrl("delirius", "/tools/translate", {
                 text: input,
                 language: langCode
             });
-            const result = (await axios.get(apiUrl)).data.data;
+            const result = (await ctx.request.get(apiUrl)).data.data;
 
             await ctx.reply(result);
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

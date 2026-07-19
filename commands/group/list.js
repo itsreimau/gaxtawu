@@ -20,7 +20,7 @@ module.exports = [{
 
                 if (mutedUser.expiration) {
                     const timeDiff = mutedUser.expiration - Date.now();
-                    const daysLeft = tools.msg.convertMsToDuration(timeDiff, ["hari", "jam"]);
+                    const daysLeft = ctx.msg.convertMsToDuration(timeDiff, ["hari", "jam"]);
                     resultText += `❖ @${userId} (${daysLeft} tersisa)\n`;
                 } else {
                     resultText += `❖ @${userId} (Permanen)\n`;
@@ -30,11 +30,11 @@ module.exports = [{
             }
 
             await ctx.reply({
-                text: resultText.trim() || tools.msg.info(config.msg.notFound),
+                text: resultText.trim() || ctx.msg.info(config.msg.notFound),
                 mentions: userMentions
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 }, {
@@ -51,9 +51,9 @@ module.exports = [{
             const pendings = await ctx.group().pendingMembers();
             const resultText = pendings.map(pending => `❖ ${ctx.getId(pending.id)}`).join("\n");
 
-            await ctx.reply(resultText.trim() || tools.msg.info(config.msg.notFound));
+            await ctx.reply(resultText.trim() || ctx.msg.info(config.msg.notFound));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 }, {
@@ -81,11 +81,11 @@ module.exports = [{
             }
 
             await ctx.reply({
-                text: resultText.trim() || tools.msg.info(config.msg.notFound),
+                text: resultText.trim() || ctx.msg.info(config.msg.notFound),
                 mentions: userMentions
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 }];

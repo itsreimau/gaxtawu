@@ -6,11 +6,11 @@ module.exports = {
     code: async (ctx) => {
         const sessionKey = `${ctx.id}_${ctx.sender.jid}`;
 
-        if (session.has(sessionKey)) return await ctx.reply(tools.msg.info("Sesi permainan sedang berjalan!"));
+        if (session.has(sessionKey)) return await ctx.reply(ctx.msg.info("Sesi permainan sedang berjalan!"));
 
         try {
-            const words = (await axios.get("https://raw.githubusercontent.com/siuspsrb/database/main/game/kbbi.json")).data.filter(w => w.length > 1);
-            const word = tools.helper.getRandomElement(words);
+            const words = (await ctx.request.get("https://raw.githubusercontent.com/siuspsrb/database/main/game/kbbi.json")).data.filter(w => w.length > 1);
+            const word = ctx.helper.getRandomElement(words);
             const game = {
                 coin: 10,
                 timeout: 60000,
@@ -24,9 +24,9 @@ module.exports = {
                 text: `✦ — ${render(word, new Set())}\n` +
                     `Ketik huruf untuk menebak.\n` +
                     "\n" +
-                    `❖ ${tools.msg.bold("Bonus")}: ${game.coin} koin\n` +
-                    `❖ ${tools.msg.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}\n` +
-                    `❖ ${tools.msg.bold("Nyawa")}: ${game.lives}`,
+                    `❖ ${ctx.msg.bold("Bonus")}: ${game.coin} koin\n` +
+                    `❖ ${ctx.msg.bold("Batas waktu")}: ${ctx.msg.convertMsToDuration(game.timeout)}\n` +
+                    `❖ ${ctx.msg.bold("Nyawa")}: ${game.lives}`,
                 buttons: [{
                     text: "Menyerah",
                     id: `surrender_${ctx.used.command}`
@@ -56,7 +56,7 @@ module.exports = {
                     session.delete(sessionKey);
                     collector.stop();
                     return await collCtx.reply({
-                        text: tools.msg.info(`Anda menyerah! Jawaban: ${word}`),
+                        text: ctx.msg.info(`Anda menyerah! Jawaban: ${word}`),
                         buttons: playAgain
                     });
                 }
@@ -71,7 +71,7 @@ module.exports = {
                         session.delete(sessionKey);
                         collector.stop();
                         return await collCtx.reply({
-                            text: tools.msg.info(`Permainan berakhir! Jawaban: ${word}`),
+                            text: ctx.msg.info(`Permainan berakhir! Jawaban: ${word}`),
                             buttons: playAgain
                         });
                     }
@@ -88,7 +88,7 @@ module.exports = {
                     senderDb.winGame += 1;
                     senderDb.save();
                     return await collCtx.reply({
-                        text: tools.msg.info(`Benar! Jawaban: ${word} +${game.coin} koin`),
+                        text: ctx.msg.info(`Benar! Jawaban: ${word} +${game.coin} koin`),
                         buttons: playAgain
                     });
                 }
@@ -97,8 +97,8 @@ module.exports = {
                     `✦ — ${display}\n` +
                     `Ketik huruf untuk menebak lagi.\n` +
                     "\n" +
-                    `❖ ${tools.msg.bold("Nyawa")}: ${game.lives}\n` +
-                    `❖ ${tools.msg.bold("Huruf")}: ${[...game.guessed].join(", ")}`
+                    `❖ ${ctx.msg.bold("Nyawa")}: ${game.lives}\n` +
+                    `❖ ${ctx.msg.bold("Huruf")}: ${[...game.guessed].join(", ")}`
                 );
             });
 
@@ -106,13 +106,13 @@ module.exports = {
                 if (session.has(sessionKey)) {
                     session.delete(sessionKey);
                     await ctx.reply({
-                        text: tools.msg.info(`Waktu habis! Jawaban: ${word}`),
+                        text: ctx.msg.info(`Waktu habis! Jawaban: ${word}`),
                         buttons: playAgain
                     });
                 }
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

@@ -6,25 +6,25 @@ module.exports = {
         premium: true
     },
     code: async (ctx) => {
-        const url = ctx.args[0] || tools.helper.extractUrlFromText(ctx.quoted?.body);
+        const url = ctx.args[0] || ctx.helper.extractUrlFromText(ctx.quoted?.body);
 
         if (!url)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "https://itsreimau.is-a.dev")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "https://itsreimau.is-a.dev")
             );
 
-        if (!tools.helper.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.invalidUrl));
+        if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.msg.info(config.msg.invalidUrl));
 
         try {
-            const apiUrl = tools.api.createUrl("alwayscodex", "/api/solve/bypasslink", {
+            const apiUrl = ctx.api.createUrl("alwayscodex", "/api/solve/bypasslink", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.result.bypassedUrl;
+            const result = (await ctx.request.get(apiUrl)).data.result.bypassedUrl;
 
             await ctx.reply(result);
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

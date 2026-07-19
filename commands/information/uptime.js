@@ -3,6 +3,6 @@ module.exports = {
     aliases: ["runtime"],
     category: "information",
     code: async (ctx) => {
-        await ctx.reply(tools.msg.info(`Bot telah aktif selama ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}.`));
+        await ctx.reply(ctx.msg.info(`Bot telah aktif selama ${ctx.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}.`));
     }
 };

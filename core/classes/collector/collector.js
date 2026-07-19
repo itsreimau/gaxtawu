@@ -1,6 +1,6 @@
 const EventEmitter = require("node:events");
 
-class collector extends EventEmitter {
+class Collector extends EventEmitter {
     constructor(opts = {}) {
         super();
         this.isRun = false;
@@ -48,4 +48,4 @@ class collector extends EventEmitter {
     }
 }
 
-module.exports = collector;
+module.exports = Collector;

@@ -10,12 +10,12 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "rei ayanami")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "rei ayanami")
             );
 
         try {
-            const result = tools.api.createUrl("alwayscodex", "/api/tools/text2qr", {
+            const result = ctx.api.createUrl("alwayscodex", "/api/tools/text2qr", {
                 text: input
             });
 
@@ -25,7 +25,7 @@ module.exports = {
                 }
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

@@ -12,19 +12,19 @@ module.exports = [{
 
         if (!target.jid)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "6281234567891")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "6281234567891")
             );
 
         const isOnWhatsApp = await ctx.core.onWhatsApp(target.jid);
-        if (!isOnWhatsApp?.[0]?.exists) return await ctx.reply(tools.msg.info("Akun tidak ada di WhatsApp!"));
+        if (!isOnWhatsApp?.[0]?.exists) return await ctx.reply(ctx.msg.info("Akun tidak ada di WhatsApp!"));
 
         try {
             await ctx.group().add(target.jid);
 
-            await ctx.reply(tools.msg.info("Berhasil ditambahkan!"));
+            await ctx.reply(ctx.msg.info("Berhasil ditambahkan!"));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 }, {
@@ -42,22 +42,22 @@ module.exports = [{
 
         if (!target.jid)
             return await ctx.reply({
-                text: `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                    `${tools.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
-                    tools.msg.generateNotes([
+                text: `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                    `${ctx.msg.generateCmdExample(ctx.used, "@6281234567891")}\n` +
+                    ctx.msg.generateNotes([
                         "Balas/quote pesan untuk menjadikan pengirim sebagai akun target."
                     ]),
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(tools.msg.info("Dia adalah owner grup!"));
+        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(ctx.msg.info("Dia adalah owner grup!"));
 
         try {
             await ctx.group().kick(target.jid);
 
-            await ctx.reply(tools.msg.info("Berhasil dikeluarkan!"));
+            await ctx.reply(ctx.msg.info("Berhasil dikeluarkan!"));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 }];

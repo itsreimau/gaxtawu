@@ -1,6 +1,6 @@
 {
   "bot": {
-    "name": "GAXTAWU",
+    "name": "NIRWABOT",
     "phoneNumber": "",
     "thumbnail": "https://repository-images.githubusercontent.com/753096396/3f4b7686-0f1d-43f2-8293-2ae1b4487220",
     "groupJid": ""
@@ -50,7 +50,7 @@
   },
   "sticker": {
     "packname": "",
-    "author": "gaxtawu <github.com/itsreimau/gaxtawu>"
+    "author": "nirwabot <github.com/itsreimau/nirwabot>"
   },
   "system": {
     "alwaysOnline": true,

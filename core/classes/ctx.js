@@ -1,11 +1,14 @@
-const baileys = require("baileys");
-const { parseArgs } = require("node:util");
+const Baileys = require("baileys");
+const util = require("node:util");
 const { uguu } = require("@neoxr/helper");
+const axios = require("axios");
+const { default: axiosRetry } = require("axios-retry");
 const group = require("./group/group");
 const groupData = require("./group/group-data");
-const messageCollector = require("./collector/message-collector");
+const MessageCollector = require("./collector/message-collector");
+const utils = require("../utils");
 
-class context {
+class Ctx {
     constructor(opts) {
         this._self = opts.self;
         this._client = opts.client;
@@ -42,7 +45,7 @@ class context {
     get sender() {
         return {
             ...this._sender,
-            isOwner: () => tools.helper.checkOwner(this._sender.jid, this._self.owner, this._msg.key.fromMe)
+            isOwner: () => ctx.helper.checkOwner(this._sender.jid, this._self.owner, this._msg.key.fromMe)
         };
     }
 
@@ -62,35 +65,63 @@ class context {
             core: this._db,
             users,
             groups,
-            bot: tools.helper.getDb(bot),
-            user: tools.helper.getDb(users, this._sender.lid),
-            group: this.isGroup() ? tools.helper.getDb(groups, this.id) : null
+            bot: ctx.helper.getDb(bot),
+            user: ctx.helper.getDb(users, this._sender.lid),
+            group: this.isGroup() ? ctx.helper.getDb(groups, this.id) : null
         };
+    }
+
+    get api() {
+        return utils.api;
+    }
+
+    get api() {
+        return utils.helper;
+    }
+
+    get api() {
+        return utils.list;
+    }
+
+    get msg() {
+        return utils.msg;
+    }
+
+    get request() {
+        axiosRetry(axios, {
+            retries: 3,
+            retryCondition: (error) => {
+                const status = error.response?.status;
+                return axiosRetry.isNetworkOrIdempotentRequestError(error) || status === 408 || status === 429;
+            },
+            retryDelay: (retryCount) => Math.pow(2, retryCount - 1) * 1000 + Math.random() * 500
+        });
+        return axios;
     }
 
     get quoted() {
         const context = this._msg.message?.[this.getMessageType()]?.contextInfo || {};
         if (!context?.quotedMessage) return null;
 
-        const message = baileys.extractMessageContent(context.quotedMessage) || {};
+        const message = Baileys.extractMessageContent(context.quotedMessage) || {};
         const chat = context.remoteJid || this.id;
         const sender = context.participant || chat;
 
         return {
-            body: tools.helper.getBodyFromMsg({
+            body: ctx.helper.getBodyFromMsg({
                 message
             }),
             message,
-            messageType: tools.helper.getMessageType(message),
+            messageType: ctx.helper.getMessageType(message),
             key: {
                 remoteJid: chat,
                 id: context.stanzaId,
-                fromMe: baileys.areJidsSameUser(sender, this.me.id),
-                participant: baileys.isJidGroup(chat) ? sender : null
+                fromMe: Baileys.areJidsSameUser(sender, this.me.id),
+                participant: Baileys.isJidGroup(chat) ? sender : null
             },
             id: chat,
             sender,
-            pushName: tools.helper.getPushName(sender, this._db),
+            pushName: ctx.helper.getPushName(sender, this._db),
             download: () => this._downloadMediaMessage({
                 message
             }),
@@ -101,11 +132,11 @@ class context {
     }
 
     get msg() {
-        const message = baileys.extractMessageContent(this._msg.message);
+        const message = Baileys.extractMessageContent(this._msg.message);
         return {
             ...this._msg,
             message,
-            messageType: tools.helper.getMessageType(message),
+            messageType: ctx.helper.getMessageType(message),
             download: () => this._downloadMediaMessage({
                 message
             }),
@@ -120,18 +151,18 @@ class context {
     }
 
     isGroup() {
-        return baileys.isJidGroup(this.id);
+        return Baileys.isJidGroup(this.id);
     }
     isPrivate() {
-        return baileys.isPnUser(this.id) || baileys.isLidUser(this.id);
+        return Baileys.isPnUser(this.id) || Baileys.isLidUser(this.id);
     }
 
     group(jid = this.id, useCache = true) {
-        return baileys.isJidGroup(jid) ? new GroupData(this, jid, useCache) : null;
+        return Baileys.isJidGroup(jid) ? new GroupData(this, jid, useCache) : null;
     }
 
     flag(rules = {}) {
-        const parsed = parseArgs({
+        const parsed = util.parseArgs({
             args: this._text.split(" "),
             options: rules,
             allowPositionals: true
@@ -158,7 +189,7 @@ class context {
             text: () => {
                 const number = this.args[0]?.replace(/[^\d]/g, "");
                 return number && {
-                    jid: number + baileys.S_WHATSAPP_NET,
+                    jid: number + Baileys.S_WHATSAPP_NET,
                     source: "text"
                 };
             },
@@ -176,7 +207,7 @@ class context {
             if (!strategy) continue;
             const result = await strategy();
             if (result) {
-                if (baileys.isPnUser(result.jid)) result.jid = (await this.core.findUserId(result.jid)).lid;
+                if (Baileys.isPnUser(result.jid)) result.jid = (await this.core.findUserId(result.jid)).lid;
                 return result;
             }
         }
@@ -186,8 +217,31 @@ class context {
         };
     }
 
+    isMedia(types, sources = ["primary", "quoted"]) {
+        const map = {
+            audio: "audioMessage",
+            document: ["documentMessage", "documentWithCaptionMessage"],
+            image: "imageMessage",
+            sticker: "stickerMessage",
+            text: ["conversation", "extendedTextMessage"],
+            video: "videoMessage"
+        };
+
+        for (const source of sources) {
+            const type = source === "primary" ? this.getMessageType() : this.quoted?.messageType;
+            if (!type) continue;
+
+            for (const media of types) {
+                const mapped = map[media];
+                if (!mapped) continue;
+                if (Array.isArray(mapped) ? mapped.includes(type) : type === mapped) return media;
+            }
+        }
+        return false;
+    }
+
     isCmd() {
-        const result = tools.helper.parseCommand(this._self.prefix, this._msg.body);
+        const result = ctx.helper.parseCommand(this._self.prefix, this._msg.body);
         if (!result.commandName) return null;
 
         const commandsList = Array.from(this._self.cmd?.values() || []);
@@ -202,7 +256,7 @@ class context {
             };
 
         const candidates = commandsList.flatMap(cmd => [cmd.name, ...(cmd.aliases || [])]);
-        const suggestion = tools.helper.didYouMean(result.commandName, candidates);
+        const suggestion = ctx.helper.didYouMean(result.commandName, candidates);
         return suggestion ? {
             msg: result.text,
             prefix: result.selectedPrefix,
@@ -213,7 +267,7 @@ class context {
 
     async _downloadMediaMessage(message) {
         try {
-            return await baileys.downloadMediaMessage(message, "buffer", {}, {
+            return await Baileys.downloadMediaMessage(message, "buffer", {}, {
                 logger: this._self.logger,
                 reuploadRequest: this._client.updateMediaMessage
             });
@@ -304,20 +358,20 @@ class context {
         return this._msg.message?.[this.getMessageType()]?.contextInfo?.mentionedJid || [];
     }
     getDevice(id = this._msg.key.id) {
-        return baileys.getDevice(id);
+        return Baileys.getDevice(id);
     }
     checkOwner(jid = this._sender.lid, fromMe = false) {
-        return tools.helper.checkOwner(jid, this.owner, fromMe);
+        return ctx.helper.checkOwner(jid, this.owner, fromMe);
     }
     getPushName(jid = this._sender.lid) {
-        return tools.helper.getPushName(jid, this._db);
+        return ctx.helper.getPushName(jid, this._db);
     }
     getId(jid = this._sender.jid) {
-        return tools.helper.getId(jid);
+        return ctx.helper.getId(jid);
     }
     getDb(collection, jid = this._sender.lid) {
         const coll = this._db.getCollection(collection);
-        return tools.helper.getDb(coll, jid);
+        return ctx.helper.getDb(coll, jid);
     }
 
     MessageCollector(args) {
@@ -328,4 +382,4 @@ class context {
     }
 }
 
-module.exports = context;
+module.exports = Ctx;

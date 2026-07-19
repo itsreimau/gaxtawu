@@ -11,16 +11,16 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "gaxtawu")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "nirwabot")
             );
 
         try {
             await ctx.group().updateSubject(input);
 
-            await ctx.reply(tools.msg.info("Berhasil mengubah nama grup!"));
+            await ctx.reply(ctx.msg.info("Berhasil mengubah nama grup!"));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

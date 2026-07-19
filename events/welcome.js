@@ -1,6 +1,6 @@
 const moment = require("moment-timezone");
 
-async function handleWelcome(bot, welcome, type, isSimulate = false) {
+async function WelcomeHandler(bot, welcome, type, isSimulate = false) {
     const groupJid = welcome.id;
     const groupDb = bot.getDb("groups", groupJid);
     const botDb = bot.getDb("bot");
@@ -19,8 +19,8 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
     const customText = isWelcome ? groupDb?.text?.welcome : groupDb?.text?.goodbye;
     const metadata = await bot.core.groupMetadata(groupJid);
     const text = customText ? customText.replace(/%tag%/g, tag).replace(/%subject%/g, metadata.subject).replace(/%description%/g, metadata.description) : (isWelcome ?
-        `>ᴗ< ${tools.msg.italic(`Selamat datang ${tag} di grup ${metadata.subject}!`)}` :
-        `•︵• ${tools.msg.italic(`Selamat tinggal, ${tag}!`)}`);
+        `>ᴗ< ${ctx.msg.italic(`Selamat datang ${tag} di grup ${metadata.subject}!`)}` :
+        `•︵• ${ctx.msg.italic(`Selamat tinggal, ${tag}!`)}`);
 
     await bot.sendMessage(groupJid, {
         text,
@@ -39,8 +39,8 @@ async function handleWelcome(bot, welcome, type, isSimulate = false) {
 }
 
 module.exports = (bot) => {
-    bot.ev.on("UserJoin", async (welcome) => handleWelcome(bot, welcome, "UserJoin"));
-    bot.ev.on("UserLeave", async (welcome) => handleWelcome(bot, welcome, "UserLeave"));
+    bot.ev.on("UserJoin", async (welcome) => WelcomeHandler(bot, welcome, "UserJoin"));
+    bot.ev.on("UserLeave", async (welcome) => WelcomeHandler(bot, welcome, "UserLeave"));
 };
 
-module.exports.handleWelcome = handleWelcome;
+module.exports.WelcomeHandler = WelcomeHandler;

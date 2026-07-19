@@ -1,6 +1,6 @@
-const baileys = require("baileys");
+const Baileys = require("baileys");
 
-class groupData {
+class GroupData {
     constructor(ctx, jid, useCache) {
         this.ctx = ctx;
         this.jid = jid;
@@ -113,8 +113,8 @@ class groupData {
     async _isMemberCheck(jid, checkFn) {
         const members = await this.members();
         if (!members) return false;
-        const field = baileys.isLidUser(jid) ? "id" : "phoneNumber";
-        return members.some(member => baileys.areJidsSameUser(member[field], jid) && checkFn(member));
+        const field = Baileys.isLidUser(jid) ? "id" : "phoneNumber";
+        return members.some(member => Baileys.areJidsSameUser(member[field], jid) && checkFn(member));
     }
 
     async isMemberExist(jid) {
@@ -138,4 +138,4 @@ class groupData {
     }
 }
 
-module.exports = groupData;
+module.exports = GroupData;

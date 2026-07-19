@@ -4,7 +4,7 @@ module.exports = {
     name: "cerdascermat",
     category: "game",
     code: async (ctx) => {
-        if (session.has(ctx.id)) return await ctx.reply(tools.msg.info("Sesi permainan sedang berjalan!"));
+        if (session.has(ctx.id)) return await ctx.reply(ctx.msg.info("Sesi permainan sedang berjalan!"));
 
         try {
             const mapel = {
@@ -20,10 +20,10 @@ module.exports = {
                 ipa: "Ilmu Pengetahuan Alam"
             };
             const input = ctx.args?.[0] && mapel[ctx.args[0]] ? ctx.args[0] : "tik";
-            const apiUrl = tools.api.createUrl("siputzx", "/api/games/cc-sd", {
+            const apiUrl = ctx.api.createUrl("siputzx", "/api/games/cc-sd", {
                 matapelajaran: input
             });
-            const result = tools.helper.getRandomElement((await axios.get(apiUrl)).data.data.soal);
+            const result = ctx.helper.getRandomElement((await ctx.request.get(apiUrl)).data.data.soal);
 
             const game = {
                 coin: 5,
@@ -41,10 +41,10 @@ module.exports = {
                         return `${answer.toUpperCase()}. ${answers[answer]}`;
                     }).join("\n")}\n` +
                     "\n" +
-                    `❖ ${tools.msg.bold("Mata Pelajaran")}: ${mapel[input]}\n` +
-                    `❖ ${tools.msg.bold("Bonus")}: ${game.coin} koin\n` +
-                    `❖ ${tools.msg.bold("Batas waktu")}: ${tools.msg.convertMsToDuration(game.timeout)}\n` +
-                    `❖ ${tools.msg.bold("Cara menjawab")}: Ketik A, B, C, atau D`,
+                    `❖ ${ctx.msg.bold("Mata Pelajaran")}: ${mapel[input]}\n` +
+                    `❖ ${ctx.msg.bold("Bonus")}: ${game.coin} koin\n` +
+                    `❖ ${ctx.msg.bold("Batas waktu")}: ${ctx.msg.convertMsToDuration(game.timeout)}\n` +
+                    `❖ ${ctx.msg.bold("Cara menjawab")}: Ketik A, B, C, atau D`,
                 buttons: [{
                     text: "Menyerah",
                     id: `surrender_${ctx.used.command}`
@@ -83,14 +83,14 @@ module.exports = {
                     participantDb.winGame += 1;
                     participantDb.save();
                     await collCtx.reply({
-                        text: tools.msg.info(`Benar! +${game.coin} koin`),
+                        text: ctx.msg.info(`Benar! +${game.coin} koin`),
                         buttons: playAgain
                     });
                 } else if (participantAnswer === `surrender_${ctx.used.command}`) {
                     session.delete(ctx.id);
                     collector.stop();
                     await collCtx.reply({
-                        text: tools.msg.info(`Anda menyerah! Jawaban: ${game.answer} (${game.answerKey.toUpperCase()})`),
+                        text: ctx.msg.info(`Anda menyerah! Jawaban: ${game.answer} (${game.answerKey.toUpperCase()})`),
                         buttons: playAgain
                     });
                 }
@@ -100,13 +100,13 @@ module.exports = {
                 if (session.has(ctx.id)) {
                     session.delete(ctx.id);
                     await ctx.reply({
-                        text: tools.msg.info(`Waktu habis! Jawaban: ${game.answer} (${game.answerKey.toUpperCase()})`),
+                        text: ctx.msg.info(`Waktu habis! Jawaban: ${game.answer} (${game.answerKey.toUpperCase()})`),
                         buttons: playAgain
                     });
                 }
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

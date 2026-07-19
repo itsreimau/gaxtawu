@@ -10,28 +10,28 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "evangelion")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "evangelion")
             );
 
         try {
-            const apiUrl = tools.api.createUrl("delirius", "/search/tiktoksearch", {
+            const apiUrl = ctx.api.createUrl("delirius", "/search/tiktoksearch", {
                 query: input
             });
-            const result = tools.helper.getRandomElement((await axios.get(apiUrl)).data.meta).hd;
+            const result = ctx.helper.getRandomElement((await ctx.request.get(apiUrl)).data.meta).hd;
 
             await ctx.reply({
                 video: {
                     url: result
                 },
-                caption: `❖ ${tools.msg.bold("Kueri")}: ${input}`,
+                caption: `❖ ${ctx.msg.bold("Kueri")}: ${input}`,
                 buttons: [{
                     text: "Ambil Lagi",
                     id: `${ctx.used.prefix + ctx.used.command} ${input}`
                 }]
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

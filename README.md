@@ -1,8 +1,8 @@
-# gaxtawu - Useless WhatsApp Bot
+# nirwabot - Useless WhatsApp Bot
 
 > [!WARNING]
 >
-> `gaxtawu` **tidak berafiliasi dengan WhatsApp, Meta, atau pihak terkait mana pun**. Ini adalah **proyek sumber terbuka** yang dibuat untuk tujuan edukasi dan pengembangan.
+> `nirwabot` **tidak berafiliasi dengan WhatsApp, Meta, atau pihak terkait mana pun**. Ini adalah **proyek sumber terbuka** yang dibuat untuk tujuan edukasi dan pengembangan.
 >
 > Bot ini menggunakan **API WhatsApp tidak resmi**, yang berarti **akun WhatsApp Anda berpotensi diblokir**.
 >
@@ -10,15 +10,15 @@
 
 ## 🚀 Getting Started
 
-Ikuti langkah-langkah ini untuk menyiapkan dan menjalankan `gaxtawu`:
+Ikuti langkah-langkah ini untuk menyiapkan dan menjalankan `nirwabot`:
 
 ### 1. Clone Repository
 
 Klon repositori dan navigasi ke direktori proyek:
 
 ```bash
-git clone https://github.com/itsreimau/gaxtawu.git
-cd gaxtawu
+git clone https://github.com/itsreimau/nirwabot.git
+cd nirwabot
 ```
 
 Jika Anda ingin melewati langkah 2 dan 3:

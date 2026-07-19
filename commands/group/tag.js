@@ -17,13 +17,13 @@ module.exports = [{
 
             const resultText = mentions.map(mention => mention.tag).join(" ");
             await ctx.reply({
-                text: `${input || `>ᴗ< ${tools.msg.italic("Halo, Dunia!")}`}\n` +
+                text: `${input || `>ᴗ< ${ctx.msg.italic("Halo, Dunia!")}`}\n` +
                     `${"\u200E".repeat(4001)}\n` +
                     resultText,
                 mentions: mentions.map(mention => mention.mention)
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 }, {
@@ -39,11 +39,11 @@ module.exports = [{
 
         try {
             await ctx.reply({
-                text: input || `>ᴗ< ${tools.msg.italic("Halo, Dunia!")}`,
+                text: input || `>ᴗ< ${ctx.msg.italic("Halo, Dunia!")}`,
                 mentionAll: true
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 }, {

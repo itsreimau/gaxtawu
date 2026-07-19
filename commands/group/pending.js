@@ -9,15 +9,15 @@ module.exports = [{
     code: async (ctx) => {
         if (ctx.args[0]?.toLowerCase() === "all") {
             const pendings = await ctx.group().pendingMembers();
-            if (pendings.length === 0) return await ctx.reply(tools.msg.info("Tidak ada anggota yang menunggu persetujuan."));
+            if (pendings.length === 0) return await ctx.reply(ctx.msg.info("Tidak ada anggota yang menunggu persetujuan."));
 
             try {
                 const allJids = pendings.map(pending => pending.jid);
                 await ctx.group().approvePendingMembers(allJids);
 
-                return await ctx.reply(tools.msg.info(`Berhasil menyetujui semua anggota (${allJids.length}).`));
+                return await ctx.reply(ctx.msg.info(`Berhasil menyetujui semua anggota (${allJids.length}).`));
             } catch (error) {
-                return await tools.helper.handleError(ctx, error);
+                return await ctx.helper.handleError(ctx, error);
             }
         }
 
@@ -25,23 +25,23 @@ module.exports = [{
 
         if (!target.jid)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "6281234567891")}\n` +
-                tools.msg.generateNotes([
-                    `Ketik ${tools.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} all`)} untuk menyetujui semua anggota yang tertunda.`
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.msg.generateCmdExample(ctx.used, "6281234567891")}\n` +
+                ctx.msg.generateNotes([
+                    `Ketik ${ctx.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} all`)} untuk menyetujui semua anggota yang tertunda.`
                 ])
             );
 
         const pendings = await ctx.group().pendingMembers();
-        const isPending = pendings.some(pending => tools.helper.areJidsSameUser(pending.jid, target.jid));
-        if (!isPending) return await ctx.reply(tools.msg.info("Akun tidak ditemukan di daftar anggota yang menunggu persetujuan."));
+        const isPending = pendings.some(pending => ctx.helper.areJidsSameUser(pending.jid, target.jid));
+        if (!isPending) return await ctx.reply(ctx.msg.info("Akun tidak ditemukan di daftar anggota yang menunggu persetujuan."));
 
         try {
             await ctx.group().approvePendingMembers(target.jid);
 
-            await ctx.reply(tools.msg.info("Berhasil disetujui!"));
+            await ctx.reply(ctx.msg.info("Berhasil disetujui!"));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 }, {
@@ -55,15 +55,15 @@ module.exports = [{
     code: async (ctx) => {
         if (ctx.args[0]?.toLowerCase() === "all") {
             const pendings = await ctx.group().pendingMembers();
-            if (pendings.length === 0) return await ctx.reply(tools.msg.info("Tidak ada anggota yang menunggu persetujuan."));
+            if (pendings.length === 0) return await ctx.reply(ctx.msg.info("Tidak ada anggota yang menunggu persetujuan."));
 
             try {
                 const allJids = pendings.map(pending => pending.jid);
                 await ctx.group().rejectPendingMembers(allJids);
 
-                return await ctx.reply(tools.msg.info(`Berhasil menolak semua anggota (${allJids.length}).`));
+                return await ctx.reply(ctx.msg.info(`Berhasil menolak semua anggota (${allJids.length}).`));
             } catch (error) {
-                return await tools.helper.handleError(ctx, error);
+                return await ctx.helper.handleError(ctx, error);
             }
         }
 
@@ -71,23 +71,23 @@ module.exports = [{
 
         if (!target.jid)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "6281234567891")}\n` +
-                tools.msg.generateNotes([
-                    `Ketik ${tools.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} all`)} untuk menolak semua anggota yang tertunda.`
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.msg.generateCmdExample(ctx.used, "6281234567891")}\n` +
+                ctx.msg.generateNotes([
+                    `Ketik ${ctx.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} all`)} untuk menolak semua anggota yang tertunda.`
                 ])
             );
 
         const pendings = await ctx.group().pendingMembers();
-        const isPending = pendings.some(pending => tools.helper.areJidsSameUser(pending.jid, target.jid));
-        if (!isPending) return await ctx.reply(tools.msg.info("Akun tidak ditemukan di daftar anggota yang menunggu persetujuan."));
+        const isPending = pendings.some(pending => ctx.helper.areJidsSameUser(pending.jid, target.jid));
+        if (!isPending) return await ctx.reply(ctx.msg.info("Akun tidak ditemukan di daftar anggota yang menunggu persetujuan."));
 
         try {
             await ctx.group().rejectPendingMembers(target.jid);
 
-            await ctx.reply(tools.msg.info("Berhasil ditolak!"));
+            await ctx.reply(ctx.msg.info("Berhasil ditolak!"));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 }];

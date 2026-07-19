@@ -51,12 +51,12 @@ module.exports = {
                 const selectedCats = input === "all" || ctx.used.command === "allmenu" ? Object.keys(tag) : (tag[input] ? [input] : []);
                 const commandsData = getCommands(selectedCats);
 
-                if (Object.keys(commandsData).length === 0) return await ctx.reply(tools.msg.info("Menu tidak ditemukan!"));
+                if (Object.keys(commandsData).length === 0) return await ctx.reply(ctx.msg.info("Menu tidak ditemukan!"));
 
                 let text = "";
                 for (const [key, list] of Object.entries(commandsData)) {
                     text += "╭┈┈┈┈┈┈ ♡\n" +
-                        `┊ ✦ — ${tools.msg.bold(tag[key] || key)}\n`;
+                        `┊ ✦ — ${ctx.msg.bold(tag[key] || key)}\n`;
                     list.forEach(c => {
                         text += `┊ ❖ ${ctx.used.prefix + c.name} ${formatPerms(c.permissions)}\n`;
                     });
@@ -66,7 +66,7 @@ module.exports = {
                 text += `ⓒ koin | Ⓖ group | Ⓞ owner | Ⓟ premium | ⓟ private`;
 
                 const thumbnailText = input === "all" || ctx.used.command === "allmenu" ? "All Menu" : (input && tag[input] ? tag[input] : "Menu");
-                const thumbnail = await tools.helper.getJpegThumbnail(config.bot.thumbnail);
+                const thumbnail = await ctx.helper.getJpegThumbnail(config.bot.thumbnail);
 
                 await ctx.reply({
                     caption: text,
@@ -89,16 +89,16 @@ module.exports = {
                 const userDb = ctx.db.user;
                 const text = `✦ — Halo, @${ctx.getId(ctx.sender.jid)}! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}.\n` +
                     "\n" +
-                    `❖ ${tools.msg.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${tools.msg.convertMsToDuration(userDb.premiumExpiration - Date.now(), ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
-                    `❖ ${tools.msg.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
-                    `❖ ${tools.msg.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Unlimited" : (userDb?.coin || 0)}\n` +
+                    `❖ ${ctx.msg.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${ctx.msg.convertMsToDuration(userDb.premiumExpiration - Date.now(), ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
+                    `❖ ${ctx.msg.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
+                    `❖ ${ctx.msg.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Unlimited" : (userDb?.coin || 0)}\n` +
                     "\n" +
-                    `❖ ${tools.msg.bold("Mode")}: ${tools.msg.ucwords(ctx.db.bot?.mode || "public")}\n` +
-                    `❖ ${tools.msg.bold("Uptime")}: ${tools.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
-                    `❖ ${tools.msg.bold("Database")}: ${ctx.db.users.totalEntries} users, ${ctx.db.groups.totalEntries}/${Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id).length} groups\n` +
-                    `❖ ${tools.msg.bold("Library")}: @itsliaaa/baileys\n` +
-                    "\n" +
-                    `✧ ${tools.msg.italic("Jangan lupa berdonasi agar bot tetap online.")}`;
+                    `❖ ${ctx.msg.bold("Mode")}: ${ctx.msg.ucwords(ctx.db.bot?.mode || "public")}\n` +
+                    `❖ ${ctx.msg.bold("Uptime")}: ${ctx.msg.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
+                    `❖ ${ctx.msg.bold("Database")}: ${ctx.db.users.totalEntries} users, ${ctx.db.groups.totalEntries}/${Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id).length} groups\n` +
+                    `❖ ${ctx.msg.bold("Library")}: Baileys (${require("../../package.json").dependencies.baileys.includes(":") ? v.split(/:\/\/|:/).pop() : v.replace(/^[\^~]/, "")})`
+                "\n" +
+                `✧ ${ctx.msg.italic("Jangan lupa berdonasi agar bot tetap online.")}`;
 
                 const rows = Object.keys(tag).map(category => ({
                     title: tag[category],
@@ -142,7 +142,7 @@ module.exports = {
                 });
             }
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

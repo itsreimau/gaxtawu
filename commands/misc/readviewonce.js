@@ -3,11 +3,13 @@ module.exports = {
     aliases: ["rvo"],
     category: "misc",
     code: async (ctx) => {
-        if (!tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["audio", "image", "video"])) return await ctx.reply(tools.msg.generateInstruction(["reply"], ["viewOnce"]));
+        const isMedia = ctx.isMedia(["audio", "image", "video"]);
+
+        if (!isMedia) return await ctx.reply(ctx.msg.generateInstruction(["reply"], ["audio", "image", "video"]));
 
         const quotedMessage = ctx.quoted.message;
 
-        if (!quotedMessage[ctx.quoted.messageType].viewOnce) return await ctx.reply(tools.msg.generateInstruction(["reply"], ["viewOnce"]));
+        if (!quotedMessage[ctx.quoted.messageType].viewOnce) return await ctx.reply(ctx.msg.generateInstruction(["reply"], ["viewOnce"]));
 
         try {
             delete quotedMessage[ctx.quoted.messageType].viewOnce;
@@ -17,7 +19,7 @@ module.exports = {
                 raw: true
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

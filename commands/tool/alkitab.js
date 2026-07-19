@@ -10,37 +10,37 @@ module.exports = {
 
         if (!passage && !number)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "kej 2:18")}\n` +
-                tools.msg.generateNotes([
-                    `Ketik ${tools.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.msg.generateCmdExample(ctx.used, "kej 2:18")}\n` +
+                ctx.msg.generateNotes([
+                    `Ketik ${ctx.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
                 ])
             );
 
         if (passage.toLowerCase() === "list") {
-            const listText = await tools.list.get("alkitab");
+            const listText = await ctx.list.get(ctx, "alkitab");
             return await ctx.reply(listText);
         }
 
         try {
-            const apiUrl = tools.api.createUrl("https://api-alkitab.vercel.app", "/api/passage", {
+            const apiUrl = ctx.api.createUrl("https://api-alkitab.vercel.app", "/api/passage", {
                 passage,
                 num: number
             });
-            const result = (await axios.get(apiUrl)).data.bible.book;
+            const result = (await ctx.request.get(apiUrl)).data.bible.book;
 
             const resultText = result.chapter.verses.map(vers =>
-                `❖ ${tools.msg.bold("Ayat")}: ${vers.number}\n` +
+                `❖ ${ctx.msg.bold("Ayat")}: ${vers.number}\n` +
                 vers.text
             ).join("\n");
             await ctx.reply(
                 `${resultText}\n` +
                 "\n" +
-                `❖ ${tools.msg.bold("Nama")}: ${result.name}\n` +
-                `❖ ${tools.msg.bold("Bab")}: ${result.chapter.chap}`
+                `❖ ${ctx.msg.bold("Nama")}: ${result.name}\n` +
+                `❖ ${ctx.msg.bold("Bab")}: ${result.chapter.chap}`
             );
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

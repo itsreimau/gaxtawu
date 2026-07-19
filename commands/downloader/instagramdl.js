@@ -6,21 +6,21 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const url = ctx.args[0] || tools.helper.extractUrlFromText(ctx.quoted?.body);
+        const url = ctx.args[0] || ctx.helper.extractUrlFromText(ctx.quoted?.body);
 
         if (!url)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "https://www.instagram.com/p/DVKVfnVjyep")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "https://www.instagram.com/p/DVKVfnVjyep")
             );
 
-        if (!tools.helper.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.invalidUrl));
+        if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.msg.info(config.msg.invalidUrl));
 
         try {
-            const apiUrl = tools.api.createUrl("delirius", "/download/instagram", {
+            const apiUrl = ctx.api.createUrl("delirius", "/download/instagram", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.data;
+            const result = (await ctx.request.get(apiUrl)).data.data;
             const album = result.map(res => ({
                 [res.type]: {
                     url: res.url
@@ -29,10 +29,10 @@ module.exports = {
 
             await ctx.reply({
                 album,
-                caption: `❖ ${tools.msg.bold("URL")}: ${url}`
+                caption: `❖ ${ctx.msg.bold("URL")}: ${url}`
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

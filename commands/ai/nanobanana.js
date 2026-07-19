@@ -1,5 +1,3 @@
-const { randomUUID } = require("node:crypto");
-
 module.exports = {
     name: "nanobanana",
     category: "ai",
@@ -11,20 +9,17 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "make it evangelion art style")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "make it evangelion art style")
             );
 
-        const [checkMedia, checkQuotedMedia] = [
-                tools.helper.checkMedia(ctx.msg.messageType, ["image"]),
-                tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-            ];
+        const isMedia = ctx.isMedia(["image"]);
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image"]));
+        if (!isMedia) return await ctx.reply(ctx.msg.generateInstruction(["send", "reply"], ["image"]));
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-            const result = tools.api.createUrl("faaa", "/faa/nano-banana", {
+            const result = ctx.api.createUrl("faaa", "/faa/nano-banana", {
                 url: uploadUrl,
                 prompt: input
             });
@@ -33,10 +28,10 @@ module.exports = {
                 image: {
                     url: result
                 },
-                caption: `❖ ${tools.msg.bold("Prompt")}: ${input}`
+                caption: `❖ ${ctx.msg.bold("Prompt")}: ${input}`
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

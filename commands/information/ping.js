@@ -5,11 +5,11 @@ module.exports = {
     code: async (ctx) => {
         try {
             const startTime = performance.now();
-            const pongMsg = await ctx.reply(tools.msg.info("Pong!"));
+            const pongMsg = await ctx.reply(ctx.msg.info("Pong!"));
             const responseTime = performance.now() - startTime;
-            await ctx.editMessage(ctx.id, pongMsg.key, tools.msg.info(`Pong! Merespon dalam ${tools.msg.convertMsToDuration(responseTime)}.`));
+            await ctx.editMessage(ctx.id, pongMsg.key, ctx.msg.info(`Pong! Merespon dalam ${ctx.msg.convertMsToDuration(responseTime)}.`));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

@@ -1,14 +1,13 @@
 {
-  "name": "gaxtawu",
-  "version": "1.2.22-engine.4",
+  "name": "nirwabot",
+  "version": "1.2.22-core.5",
   "description": "Useless WhatsApp Bot",
   "main": "index.js",
   "directories": {
     "commands": "commands",
-    "engine": "engine",
+    "core": "core",
     "events": "events",
-    "middlewares": "middlewares",
-    "tools": "tools"
+    "middlewares": "middlewares"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -22,8 +21,7 @@
   "author": "ItsReimau",
   "license": "MIT",
   "imports": {
-    "#engine": "./engine/index.js",
-    "#tools": "./tools/index.js"
+    "#core": "./core/index.js"
   },
   "dependencies": {
     "@cacheable/node-cache": "^3.1.1",

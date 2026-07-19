@@ -11,10 +11,10 @@ module.exports = [{
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "halo, dunia!")}\n` +
-                tools.msg.generateNotes([
-                    `Gunakan ${tools.msg.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.msg.generateCmdExample(ctx.used, "halo, dunia!")}\n` +
+                ctx.msg.generateNotes([
+                    `Gunakan ${ctx.msg.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`
                 ])
             );
 
@@ -27,12 +27,12 @@ module.exports = [{
                 blacklist.splice(groupIndex, 1);
                 botDb.blacklistBroadcast = blacklist;
                 botDb.save();
-                return await ctx.reply(tools.msg.info("Grup ini telah dihapus dari blacklist broadcast"));
+                return await ctx.reply(ctx.msg.info("Grup ini telah dihapus dari blacklist broadcast"));
             } else {
                 blacklist.push(ctx.id);
                 botDb.blacklistBroadcast = blacklist;
                 botDb.save();
-                return await ctx.reply(tools.msg.info("Grup ini telah ditambahkan ke blacklist broadcast"));
+                return await ctx.reply(ctx.msg.info("Grup ini telah ditambahkan ke blacklist broadcast"));
             }
         }
 
@@ -41,8 +41,8 @@ module.exports = [{
             const {
                 delay,
                 duration
-            } = tools.helper.calculateDelay(groupJids.length);
-            const waitMsg = await ctx.reply(tools.msg.info(`Mengirim siaran ke ${groupJids.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(duration)}`));
+            } = ctx.helper.calculateDelay(groupJids.length);
+            const waitMsg = await ctx.reply(ctx.msg.info(`Mengirim siaran ke ${groupJids.length} grup, perkiraan waktu: ${ctx.msg.convertMsToDuration(duration)}`));
             for (const groupJid of groupJids) {
                 try {
                     await ctx.sendMessage(groupJid, {
@@ -60,13 +60,13 @@ module.exports = [{
                             id: `${ctx.used.prefix}donate`
                         }]
                     });
-                    await tools.helper.delay(delay);
+                    await ctx.helper.delay(delay);
                 } catch {}
             }
 
-            await ctx.editMessage(ctx.id, waitMsg.key, tools.msg.info(`Berhasil mengirim ke ${groupJids.length} grup.`));
+            await ctx.editMessage(ctx.id, waitMsg.key, ctx.msg.info(`Berhasil mengirim ke ${groupJids.length} grup.`));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 }, {
@@ -80,19 +80,16 @@ module.exports = [{
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.body;
 
-        const [checkMedia, checkQuotedMedia] = [
-            tools.helper.checkMedia(ctx.msg.messageType, ["image", "video"]),
-            tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["image", "video"])
-        ];
+        const isMedia = ctx.isMedia(["image", "video"]);
 
-        const type = checkMedia || checkQuotedMedia;
+        const type = isMedia;
 
         if (!input && !type)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "halo, dunia!")}\n` +
-                tools.msg.generateNotes([
-                    `Gunakan ${tools.msg.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.msg.generateCmdExample(ctx.used, "halo, dunia!")}\n` +
+                ctx.msg.generateNotes([
+                    `Gunakan ${ctx.msg.inlineCode("blacklist")} untuk memasukkan grup ke dalam blacklist. (Hanya berfungsi pada grup)`
                 ])
             );
 
@@ -105,12 +102,12 @@ module.exports = [{
                 blacklist.splice(groupIndex, 1);
                 botDb.blacklistBroadcast = blacklist;
                 botDb.save();
-                return await ctx.reply(tools.msg.info("Grup ini telah dihapus dari blacklist broadcast"));
+                return await ctx.reply(ctx.msg.info("Grup ini telah dihapus dari blacklist broadcast"));
             } else {
                 blacklist.push(ctx.id);
                 botDb.blacklistBroadcast = blacklist;
                 botDb.save();
-                return await ctx.reply(tools.msg.info("Grup ini telah ditambahkan ke blacklist broadcast"));
+                return await ctx.reply(ctx.msg.info("Grup ini telah ditambahkan ke blacklist broadcast"));
             }
         }
 
@@ -131,21 +128,21 @@ module.exports = [{
             const {
                 delay,
                 duration
-            } = tools.helper.calculateDelay(groupJids.length);
-            const waitMsg = await ctx.reply(tools.msg.info(`Mengirim siaran ke ${groupJids.length} grup, perkiraan waktu: ${tools.msg.convertMsToDuration(duration)}`));
+            } = ctx.helper.calculateDelay(groupJids.length);
+            const waitMsg = await ctx.reply(ctx.msg.info(`Mengirim siaran ke ${groupJids.length} grup, perkiraan waktu: ${ctx.msg.convertMsToDuration(duration)}`));
             for (const groupJid of groupJids) {
                 try {
                     await ctx.sendMessage(groupJid, {
                         ...content,
                         groupStatus: true
                     });
-                    await tools.helper.delay(delay);
+                    await ctx.helper.delay(delay);
                 } catch {}
             }
 
-            await ctx.editMessage(ctx.id, waitMsg.key, tools.msg.info(`Berhasil mengirim ke ${groupJids.length} grup.`));
+            await ctx.editMessage(ctx.id, waitMsg.key, ctx.msg.info(`Berhasil mengirim ke ${groupJids.length} grup.`));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 }];

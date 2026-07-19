@@ -12,19 +12,19 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "id halo, dunia!")}\n` +
-                tools.msg.generateNotes([
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.msg.generateCmdExample(ctx.used, "id halo, dunia!")}\n` +
+                ctx.msg.generateNotes([
                     "Gunakan kode bahasa 2 huruf, periksa daftar lengkapnya di Google. (contoh: en, id, ja, ar, ko)"
                 ])
             );
 
         try {
-            const apiUrl = tools.api.createUrl("delirius", "/tools/gtts", {
+            const apiUrl = ctx.api.createUrl("delirius", "/tools/gtts", {
                 text: input,
                 language: langCode
             });
-            const result = (await axios.get(apiUrl)).data.data.download;
+            const result = (await ctx.request.get(apiUrl)).data.data.download;
 
             await ctx.reply({
                 audio: {
@@ -33,7 +33,7 @@ module.exports = {
                 mimetype: "audio/mpeg"
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

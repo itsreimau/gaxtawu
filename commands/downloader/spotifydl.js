@@ -13,24 +13,24 @@ module.exports = {
                 default: false
             }
         });
-        const url = flag.input || tools.helper.extractUrlFromText(ctx.quoted?.body);
+        const url = flag.input || ctx.helper.extractUrlFromText(ctx.quoted?.body);
 
         if (!url)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "https://open.spotify.com/track/5RhWszHMSKzb7KiXk4Ae0M")}\n` +
-                tools.msg.generatesFlagInfo({
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.msg.generateCmdExample(ctx.used, "https://open.spotify.com/track/5RhWszHMSKzb7KiXk4Ae0M")}\n` +
+                ctx.msg.generatesFlagInfo({
                     "-d": "Kirim sebagai dokumen"
                 })
             );
 
-        if (!tools.helper.isUrl(url)) return await ctx.reply(tools.msg.info(config.msg.invalidUrl));
+        if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.msg.info(config.msg.invalidUrl));
 
         try {
-            const apiUrl = tools.api.createUrl("delirius", "/download/spotifydl", {
+            const apiUrl = ctx.api.createUrl("delirius", "/download/spotifydl", {
                 url
             });
-            const result = (await axios.get(apiUrl)).data.data;
+            const result = (await ctx.request.get(apiUrl)).data.data;
 
             const document = flag.document;
             if (document) {
@@ -40,7 +40,7 @@ module.exports = {
                     },
                     fileName: `${result.title}.mp3`,
                     mimetype: "audio/mpeg",
-                    caption: `❖ ${tools.msg.bold("URL")}: ${url}`
+                    caption: `❖ ${ctx.msg.bold("URL")}: ${url}`
                 });
             } else {
                 await ctx.reply({
@@ -51,7 +51,7 @@ module.exports = {
                 });
             }
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

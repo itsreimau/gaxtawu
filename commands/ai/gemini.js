@@ -9,38 +9,35 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
-                tools.msg.generateNotes([
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.msg.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
+                ctx.msg.generateNotes([
                     "AI ini dapat melihat gambar."
                 ])
             );
 
-        const [checkMedia, checkQuotedMedia] = [
-            tools.helper.checkMedia(ctx.msg.messageType, ["image"]),
-            tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["image"])
-        ];
+        const isMedia = ctx.isMedia(["image"]);
 
         try {
-            if (!!checkMedia || !!checkQuotedMedia) {
+            if (!!isMedia) {
                 const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
-                const apiUrl = tools.api.createUrl("lexcode", "/api/ai/gemini-2-5-flash", {
+                const apiUrl = ctx.api.createUrl("lexcode", "/api/ai/gemini-2-5-flash", {
                     text: input,
                     imgUrl: uploadUrl
                 });
-                const result = (await axios.get(apiUrl)).data.result;
+                const result = (await ctx.request.get(apiUrl)).data.result;
 
                 await ctx.reply(result);
             } else {
-                const apiUrl = tools.api.createUrl("lexcode", "/api/ai/gemini-2-5-flash", {
+                const apiUrl = ctx.api.createUrl("lexcode", "/api/ai/gemini-2-5-flash", {
                     text: input
                 });
-                const result = (await axios.get(apiUrl)).data.result;
+                const result = (await ctx.request.get(apiUrl)).data.result;
 
                 await ctx.reply(result);
             }
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

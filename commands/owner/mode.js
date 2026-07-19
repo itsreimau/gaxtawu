@@ -10,15 +10,15 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "self")}\n` +
-                tools.msg.generateNotes([
-                    `Ketik ${tools.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.msg.generateCmdExample(ctx.used, "self")}\n` +
+                ctx.msg.generateNotes([
+                    `Ketik ${ctx.msg.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
                 ])
             );
 
         if (input.toLowerCase() === "list") {
-            const listText = await tools.list.get("mode");
+            const listText = await ctx.list.get(ctx, "mode");
             return await ctx.reply(listText);
         }
 
@@ -35,12 +35,12 @@ module.exports = {
                     botDb.save();
                     break;
                 default:
-                    return await ctx.reply(tools.msg.info(`Mode "${input}" tidak valid!`));
+                    return await ctx.reply(ctx.msg.info(`Mode "${input}" tidak valid!`));
             }
 
-            await ctx.reply(tools.msg.info(`Berhasil mengubah mode ke ${input}!`));
+            await ctx.reply(ctx.msg.info(`Berhasil mengubah mode ke ${input}!`));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

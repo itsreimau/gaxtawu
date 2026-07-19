@@ -1,4 +1,4 @@
-class group {
+class Group {
     constructor(ctx) {
         this.ctx = ctx;
     }
@@ -20,4 +20,4 @@ class group {
     }
 }
 
-module.exports = group;
+module.exports = Group;

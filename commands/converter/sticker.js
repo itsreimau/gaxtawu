@@ -3,12 +3,9 @@ module.exports = {
     aliases: ["s", "stiker"],
     category: "converter",
     code: async (ctx) => {
-        const [checkMedia, checkQuotedMedia] = [
-            tools.helper.checkMedia(ctx.msg.messageType, ["image", "video"]),
-            tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["image", "video"])
-        ];
+        const isMedia = ctx.isMedia(["image", "video"]);
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(tools.msg.generateInstruction(["send", "reply"], ["image", "video"]));
+        if (!isMedia) return await ctx.reply(ctx.msg.generateInstruction(["send", "reply"], ["image", "video"]));
 
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
@@ -21,7 +18,7 @@ module.exports = {
                 author: author || config.sticker.author
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

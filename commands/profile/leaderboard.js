@@ -15,12 +15,12 @@ module.exports = {
                 winGame: user.winGame || 0
             })).sort((a, b) => b.winGame - a.winGame || b.level - a.level);
 
-            const userRank = leaderboardData.findIndex(user => tools.helper.areJidsSameUser(user.jid, senderLid)) + 1;
+            const userRank = leaderboardData.findIndex(user => ctx.helper.areJidsSameUser(user.jid, senderLid)) + 1;
             const topUsers = leaderboardData.slice(0, 10);
             let resultText = "";
 
             topUsers.forEach((user, i) => {
-                const isSelf = tools.helper.areJidsSameUser(user.jid, senderLid);
+                const isSelf = ctx.helper.areJidsSameUser(user.jid, senderLid);
                 const displayUser = isSelf ? `@${senderId}` : (user.pushName ? user.pushName : ctx.getId(user.jid));
                 resultText += `❖ ${displayUser} - Menang: ${user.winGame}, Level: ${user.level}, Peringkat: ${i + 1}\n`;
             });
@@ -36,7 +36,7 @@ module.exports = {
                 mentions: [senderLid]
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

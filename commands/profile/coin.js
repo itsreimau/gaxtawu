@@ -3,14 +3,14 @@ module.exports = {
     aliases: ["koin"],
     category: "profile",
     code: async (ctx) => {
-        if (ctx.sender.isOwner() || ctx.db.user?.premium) return await ctx.reply(tools.msg.info("Anda memiliki koin tak terbatas."));
+        if (ctx.sender.isOwner() || ctx.db.user?.premium) return await ctx.reply(ctx.msg.info("Anda memiliki koin tak terbatas."));
 
         try {
             const coin = ctx.db.user.coin || 0;
 
-            await ctx.reply(tools.msg.info(`Anda memiliki ${coin} koin tersisa.`));
+            await ctx.reply(ctx.msg.info(`Anda memiliki ${coin} koin tersisa.`));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

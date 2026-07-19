@@ -10,28 +10,28 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "bot wangsaf")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "bot wangsaf")
             );
 
-        if (input.length > 30) return await ctx.reply(tools.msg.info("Maksimal 30 karakter!"));
+        if (input.length > 30) return await ctx.reply(ctx.msg.info("Maksimal 30 karakter!"));
 
         try {
-            const waitMsg = await ctx.reply(tools.msg.info(config.msg.wait));
+            const waitMsg = await ctx.reply(ctx.msg.info(config.msg.wait));
             const groupJids = Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id);
             const {
                 delay
-            } = tools.helper.calculateDelay(groupJids.length);
+            } = ctx.helper.calculateDelay(groupJids.length);
             for (const groupJid of groupJids) {
                 try {
                     await ctx.core.updateMemberLabel(groupJid, input);
-                    await tools.helper.delay(delay);
+                    await ctx.helper.delay(delay);
                 } catch {}
             }
 
-            await ctx.editMessage(ctx.id, waitMsg.key, tools.msg.info(`Label bot berhasil diubah menjadi ${tools.msg.inlineCode(input)} di ${groupJids.length} grup!`));
+            await ctx.editMessage(ctx.id, waitMsg.key, ctx.msg.info(`Label bot berhasil diubah menjadi ${ctx.msg.inlineCode(input)} di ${groupJids.length} grup!`));
         } catch (error) {
-            await tools.helper.handleError(ctx, error, false);
+            await ctx.helper.handleError(ctx, error, false);
         }
     }
 };

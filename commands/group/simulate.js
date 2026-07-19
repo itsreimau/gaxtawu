@@ -1,4 +1,4 @@
-const { handleWelcome } = require("../../events/welcome");
+const { WelcomeHandler } = require("../../events/welcome");
 
 module.exports = {
     name: "simulate",
@@ -13,10 +13,10 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                `${tools.msg.generateCmdExample(ctx.used, "join")}\n` +
-                tools.msg.generateNotes([
-                    `Gunakan ${tools.msg.inlineCode("leave")} untuk mensimulasikan keluar dari grup.`
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.msg.generateCmdExample(ctx.used, "join")}\n` +
+                ctx.msg.generateNotes([
+                    `Gunakan ${ctx.msg.inlineCode("leave")} untuk mensimulasikan keluar dari grup.`
                 ])
             );
 
@@ -30,19 +30,19 @@ module.exports = {
             switch (input.toLowerCase()) {
                 case "j":
                 case "join":
-                    await handleWelcome(ctx, welcome, "UserJoin", true);
+                    await WelcomeHandler(ctx, welcome, "UserJoin", true);
                     break;
                 case "l":
                 case "leave":
-                    await handleWelcome(ctx, welcome, "UserLeave", true);
+                    await WelcomeHandler(ctx, welcome, "UserLeave", true);
                     break;
                 default:
-                    await ctx.reply(tools.msg.info(`Simulasi ${tools.msg.inlineCode(input)} tidak valid!`));
+                    await ctx.reply(ctx.msg.info(`Simulasi ${ctx.msg.inlineCode(input)} tidak valid!`));
             }
 
-            await ctx.reply(tools.msg.info("Simulasi berhasil!"));
+            await ctx.reply(ctx.msg.info("Simulasi berhasil!"));
         } catch (error) {
-            await tools.helper.handleError(ctx, error);
+            await ctx.helper.handleError(ctx, error);
         }
     }
 };

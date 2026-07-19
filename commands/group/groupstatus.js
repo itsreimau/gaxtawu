@@ -9,17 +9,14 @@ module.exports = {
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.body;
 
-        const [checkMedia, checkQuotedMedia] = [
-            tools.helper.checkMedia(ctx.msg.messageType, ["image", "video"]),
-            tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["image", "video"])
-        ];
+        const isMedia = ctx.isMedia(["image", "video"]);
 
-        const type = checkMedia || checkQuotedMedia;
+        const type = isMedia;
 
         if (!input && !type)
             return await ctx.reply(
-                `${tools.msg.generateInstruction(["send"], ["text"])}\n` +
-                tools.msg.generateCmdExample(ctx.used, "halo, dunia!")
+                `${ctx.msg.generateInstruction(["send"], ["text"])}\n` +
+                ctx.msg.generateCmdExample(ctx.used, "halo, dunia!")
             );
 
         try {
@@ -40,9 +37,9 @@ module.exports = {
                 groupStatus: true
             });
 
-            await ctx.reply(tools.msg.info("Group status berhasil dikirim!"));
+            await ctx.reply(ctx.msg.info("Group status berhasil dikirim!"));
         } catch (error) {
-            await tools.helper.handleError(ctx, error, false);
+            await ctx.helper.handleError(ctx, error, false);
         }
     }
 };

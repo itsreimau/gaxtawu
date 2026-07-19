@@ -6,11 +6,13 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        if (!tools.helper.checkQuotedMedia(ctx.quoted?.messageType, ["sticker"])) return await ctx.reply(tools.msg.generateInstruction(["reply"], ["sticker"]));
+        const isMedia = ctx.isMedia(["sticker"]);
+
+        if (!isMedia) return await ctx.reply(ctx.msg.generateInstruction(["reply"], ["sticker"]));
 
         try {
             const buffer = await ctx.quoted.download();
-            const result = (await axios.post("https://nekochii-converter.hf.space/webp2png", {
+            const result = (await ctx.request.post("https://nekochii-converter.hf.space/webp2png", {
                 file: buffer.toString("base64"),
                 json: true
             })).data.result;
@@ -21,7 +23,7 @@ module.exports = {
                 }
             });
         } catch (error) {
-            await tools.helper.handleError(ctx, error, true);
+            await ctx.helper.handleError(ctx, error, true);
         }
     }
 };

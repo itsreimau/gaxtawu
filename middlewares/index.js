@@ -4,8 +4,8 @@ const restrictions = require("./restrictions");
 const track = require("./track");
 
 module.exports = (bot) => {
-    check(bot);
-    permissions(bot);
-    restrictions(bot);
-    track(bot);
+    Check(bot);
+    Permissions(bot);
+    Restrictions(bot);
+    Track(bot);
 };
