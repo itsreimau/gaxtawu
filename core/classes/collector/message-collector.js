@@ -1,5 +1,5 @@
 const Collector = require("./collector");
-const Utils = require("../utils");
+const utils = require("../../utils");
 
 class MessageCollector extends Collector {
     constructor(clientReq, opts = {}) {
