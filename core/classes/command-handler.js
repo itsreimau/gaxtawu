@@ -55,4 +55,4 @@ class CommandHandler {
     }
 }
 
-module.exports = CommandLoader;
+module.exports = CommandHandler;
