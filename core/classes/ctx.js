@@ -6,7 +6,7 @@ const { default: axiosRetry } = require("axios-retry");
 const group = require("./group/group");
 const groupData = require("./group/group-data");
 const MessageCollector = require("./collector/message-collector");
-const utils = require("../utils");
+const Utils = require("../utils");
 
 class Ctx {
     constructor(opts) {
@@ -45,7 +45,7 @@ class Ctx {
     get sender() {
         return {
             ...this._sender,
-            isOwner: () => ctx.helper.checkOwner(this._sender.jid, this._self.owner, this._msg.key.fromMe)
+            isOwner: () => Utils.helper.checkOwner(this._sender.jid, this._self.owner, this._msg.key.fromMe)
         };
     }
 
@@ -65,26 +65,26 @@ class Ctx {
             core: this._db,
             users,
             groups,
-            bot: ctx.helper.getDb(bot),
-            user: ctx.helper.getDb(users, this._sender.lid),
-            group: this.isGroup() ? ctx.helper.getDb(groups, this.id) : null
+            bot: Utils.helper.getDb(bot),
+            user: Utils.helper.getDb(users, this._sender.lid),
+            group: this.isGroup() ? Utils.helper.getDb(groups, this.id) : null
         };
     }
 
     get api() {
-        return utils.api;
+        return Utils.api;
     }
 
     get api() {
-        return utils.helper;
+        return Utils.helper;
     }
 
     get api() {
-        return utils.list;
+        return Utils.list;
     }
 
     get msg() {
-        return utils.msg;
+        return Utils.msg;
     }
 
     get request() {
@@ -108,11 +108,11 @@ class Ctx {
         const sender = context.participant || chat;
 
         return {
-            body: ctx.helper.getBodyFromMsg({
+            body: Utils.helper.getBodyFromMsg({
                 message
             }),
             message,
-            messageType: ctx.helper.getMessageType(message),
+            messageType: Utils.helper.getMessageType(message),
             key: {
                 remoteJid: chat,
                 id: context.stanzaId,
@@ -121,7 +121,7 @@ class Ctx {
             },
             id: chat,
             sender,
-            pushName: ctx.helper.getPushName(sender, this._db),
+            pushName: Utils.helper.getPushName(sender, this._db),
             download: () => this._downloadMediaMessage({
                 message
             }),
@@ -136,7 +136,7 @@ class Ctx {
         return {
             ...this._msg,
             message,
-            messageType: ctx.helper.getMessageType(message),
+            messageType: Utils.helper.getMessageType(message),
             download: () => this._downloadMediaMessage({
                 message
             }),
@@ -241,7 +241,7 @@ class Ctx {
     }
 
     isCmd() {
-        const result = ctx.helper.parseCommand(this._self.prefix, this._msg.body);
+        const result = Utils.helper.parseCommand(this._self.prefix, this._msg.body);
         if (!result.commandName) return null;
 
         const commandsList = Array.from(this._self.cmd?.values() || []);
@@ -256,7 +256,7 @@ class Ctx {
             };
 
         const candidates = commandsList.flatMap(cmd => [cmd.name, ...(cmd.aliases || [])]);
-        const suggestion = ctx.helper.didYouMean(result.commandName, candidates);
+        const suggestion = Utils.helper.didYouMean(result.commandName, candidates);
         return suggestion ? {
             msg: result.text,
             prefix: result.selectedPrefix,
@@ -361,17 +361,17 @@ class Ctx {
         return Baileys.getDevice(id);
     }
     checkOwner(jid = this._sender.lid, fromMe = false) {
-        return ctx.helper.checkOwner(jid, this.owner, fromMe);
+        return Utils.helper.checkOwner(jid, this.owner, fromMe);
     }
     getPushName(jid = this._sender.lid) {
-        return ctx.helper.getPushName(jid, this._db);
+        return Utils.helper.getPushName(jid, this._db);
     }
     getId(jid = this._sender.jid) {
-        return ctx.helper.getId(jid);
+        return Utils.helper.getId(jid);
     }
     getDb(collection, jid = this._sender.lid) {
         const coll = this._db.getCollection(collection);
-        return ctx.helper.getDb(coll, jid);
+        return Utils.helper.getDb(coll, jid);
     }
 
     MessageCollector(args) {

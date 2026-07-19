@@ -1,5 +1,6 @@
 const Baileys = require("baileys");
 const Ctx = require("../classes/ctx");
+const Utils = require("../utils");
 
 async function Commands(self, runMiddlewares) {
     const {
@@ -59,7 +60,7 @@ async function Commands(self, runMiddlewares) {
         return;
     }
 
-    const parsed = ctx.helper.parseCommand(prefix, m.body);
+    const parsed = Utils.helper.parseCommand(prefix, m.body);
     if (!parsed.commandName) return;
 
     const matched = findMatchingCommands(cmd, parsed.commandName);

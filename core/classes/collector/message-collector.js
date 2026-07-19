@@ -1,4 +1,5 @@
 const Collector = require("./collector");
+const Utils = require("../utils");
 
 class MessageCollector extends Collector {
     constructor(clientReq, opts = {}) {
@@ -14,7 +15,7 @@ class MessageCollector extends Collector {
         const chatJids = [ctx.msg.key.remoteJid, ctx.msg.key.remoteJidAlt];
         for (const jid of this.jids) {
             for (const chatJid of chatJids) {
-                if (ctx.helper.areJidsSameUser(jid, chatJid)) return ctx;
+                if (Utils.helper.areJidsSameUser(jid, chatJid)) return ctx;
             }
         }
         return false;

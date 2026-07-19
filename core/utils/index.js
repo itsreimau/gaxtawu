@@ -3,11 +3,9 @@ const helper = require("./helper");
 const list = require("./list");
 const msg = require("./msg");
 
-const tools = {
+module.exports = {
     api,
     helper,
     list,
     msg
 };
-
-module.exports = tools;

@@ -11,6 +11,7 @@ const vCard = require("vcard-parser");
 const WASF = require("wa-sticker-formatter");
 const Commands = require("../handler/commands");
 const Ctx = require("./ctx");
+const Utils = require("../utils");
 
 class Client {
     constructor(opts = {}) {
@@ -95,7 +96,7 @@ class Client {
     }
 
     _updatePushName(jid, pushName) {
-        const userDb = ctx.helper.getDb(this.db.getCollection("users"), jid);
+        const userDb = Utils.helper.getDb(this.db.getCollection("users"), jid);
         if (userDb?.pushName !== pushName) {
             userDb.pushName = pushName;
             userDb.save();
@@ -137,7 +138,7 @@ class Client {
             },
             message: {
                 ...message,
-                body: ctx.helper.getBodyFromMsg(message)
+                body: Utils.helper.getBodyFromMsg(message)
             }
         };
     }
@@ -291,20 +292,20 @@ class Client {
     }
 
     checkOwner(jid = Baileys.PSA_WID, fromMe = false) {
-        return ctx.helper.checkOwner(jid, this.owner, fromMe);
+        return Utils.helper.checkOwner(jid, this.owner, fromMe);
     }
 
     getPushName(jid = Baileys.PSA_WID) {
-        return ctx.helper.getPushName(jid, this.db);
+        return Utils.helper.getPushName(jid, this.db);
     }
 
     getId(jid = Baileys.PSA_WID) {
-        return ctx.helper.getId(jid);
+        return Utils.helper.getId(jid);
     }
 
     getDb(collection, jid = Baileys.PSA_WID) {
         const coll = this.db.getCollection(collection);
-        return ctx.helper.getDb(coll, jid);
+        return Utils.helper.getDb(coll, jid);
     }
 
     async forceCommand(jid, command, text = "", sender) {
