@@ -1,11 +1,11 @@
 const api = require("./api");
+const format = require("./format");
 const helper = require("./helper");
 const list = require("./list");
-const text = require("./text");
 
 module.exports = {
     api,
+    format,
     helper,
-    list,
-    text
+    list
 };

@@ -11,27 +11,27 @@ module.exports = {
             const cpus = os.cpus();
 
             await ctx.reply(
-                `❖ ${ctx.text.bold("OS")}: ${os.type()} (${os.platform()})\n` +
-                `❖ ${ctx.text.bold("Arch")}: ${os.arch()}\n` +
-                `❖ ${ctx.text.bold("Release")}: ${os.release()}\n` +
-                `❖ ${ctx.text.bold("Host")}: ${os.hostname()}\n` +
+                `❖ ${ctx.format.bold("OS")}: ${os.type()} (${os.platform()})\n` +
+                `❖ ${ctx.format.bold("Arch")}: ${os.arch()}\n` +
+                `❖ ${ctx.format.bold("Release")}: ${os.release()}\n` +
+                `❖ ${ctx.format.bold("Host")}: ${os.hostname()}\n` +
                 "\n" +
-                `❖ ${ctx.text.bold("Memori")}: ${ctx.text.formatSize(usedMem)}\n` +
-                `❖ ${ctx.text.bold("Bebas")}: ${ctx.text.formatSize(freeMem)}\n` +
-                `❖ ${ctx.text.bold("Total")}: ${ctx.text.formatSize(totalMem)}\n` +
+                `❖ ${ctx.format.bold("Memori")}: ${ctx.format.formatSize(usedMem)}\n` +
+                `❖ ${ctx.format.bold("Bebas")}: ${ctx.format.formatSize(freeMem)}\n` +
+                `❖ ${ctx.format.bold("Total")}: ${ctx.format.formatSize(totalMem)}\n` +
                 "\n" +
-                `❖ ${ctx.text.bold("Model CPU")}: ${cpus[0].model}\n` +
-                `❖ ${ctx.text.bold("Kecepatan CPU")}: ${cpus[0].speed}\n` +
-                `❖ ${ctx.text.bold("Cores CPU")}: ${cpus.length}\n` +
-                `❖ ${ctx.text.bold("Muat Rata-Rata")}: ${os.loadavg().map(avg => avg.toFixed(2)).join(", ")}\n` +
+                `❖ ${ctx.format.bold("Model CPU")}: ${cpus[0].model}\n` +
+                `❖ ${ctx.format.bold("Kecepatan CPU")}: ${cpus[0].speed}\n` +
+                `❖ ${ctx.format.bold("Cores CPU")}: ${cpus.length}\n` +
+                `❖ ${ctx.format.bold("Muat Rata-Rata")}: ${os.loadavg().map(avg => avg.toFixed(2)).join(", ")}\n` +
                 "\n" +
-                `❖ ${ctx.text.bold("Versi NodeJS")}: ${process.version}\n` +
-                `❖ ${ctx.text.bold("Jalur Exec")}: ${process.execPath}\n` +
-                `❖ ${ctx.text.bold("PID")}: ${process.pid}\n` +
+                `❖ ${ctx.format.bold("Versi NodeJS")}: ${process.version}\n` +
+                `❖ ${ctx.format.bold("Jalur Exec")}: ${process.execPath}\n` +
+                `❖ ${ctx.format.bold("PID")}: ${process.pid}\n` +
                 "\n" +
-                `❖ ${ctx.text.bold("Uptime")}: ${ctx.text.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
-                `❖ ${ctx.text.bold("Database")}: ${ctx.db.users.totalEntries} users, ${ctx.db.groups.totalEntries}/${Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id).length} groups\n` +
-                `❖ ${ctx.text.bold("Library")}: Baileys (${ctx.helper.getBaileysVesion()})`
+                `❖ ${ctx.format.bold("Uptime")}: ${ctx.format.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
+                `❖ ${ctx.format.bold("Database")}: ${ctx.db.users.totalEntries} users, ${ctx.db.groups.totalEntries}/${Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id).length} groups\n` +
+                `❖ ${ctx.format.bold("Library")}: Baileys (${ctx.helper.getBaileysVersion()})`
             );
         } catch (error) {
             await ctx.helper.handleError(ctx, error);

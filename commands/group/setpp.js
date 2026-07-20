@@ -10,7 +10,7 @@ module.exports = {
     code: async (ctx) => {
         const isMedia = ctx.isMedia(["image"]);
 
-        if (!isMedia) return await ctx.reply(ctx.text.generateInstruction(["send", "reply"], ["image"]));
+        if (!isMedia) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
 
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
@@ -18,7 +18,7 @@ module.exports = {
             const dimensions = ctx.helper.calculateDimensions(image.width, image.height);
             await ctx.group().updateProfilePicture(buffer, dimensions);
 
-            await ctx.reply(ctx.text.info("Berhasil mengubah gambar profil grup!"));
+            await ctx.reply(ctx.format.info("Berhasil mengubah gambar profil grup!"));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

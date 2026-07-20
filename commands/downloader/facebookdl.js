@@ -10,11 +10,11 @@ module.exports = {
 
         if (!url)
             return await ctx.reply(
-                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                ctx.text.generateCmdExample(ctx.used, "https://www.facebook.com/reel/2796711250580249")
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                ctx.format.generateCmdExample(ctx.used, "https://www.facebook.com/reel/2796711250580249")
             );
 
-        if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.text.info(config.msg.invalidUrl));
+        if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
 
         try {
             const apiUrl = ctx.api.createUrl("delirius", "/download/facebook", {
@@ -26,7 +26,7 @@ module.exports = {
                 video: {
                     url: result
                 },
-                caption: `❖ ${ctx.text.bold("URL")}: ${url}`
+                caption: `❖ ${ctx.format.bold("URL")}: ${url}`
             });
         } catch (error) {
             await ctx.helper.handleError(ctx, error, true);

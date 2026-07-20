@@ -9,10 +9,10 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                `${ctx.text.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
-                ctx.text.generateNotes([
-                    `Ketik ${ctx.text.inlineCode(`${ctx.used.prefix + ctx.used.command} reset`)} untuk mereset riwayat percakapan.`
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.format.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
+                ctx.format.generateNotes([
+                    `Ketik ${ctx.format.inlineCode(`${ctx.used.prefix + ctx.used.command} reset`)} untuk mereset riwayat percakapan.`
                 ])
             );
 
@@ -21,7 +21,7 @@ module.exports = {
         if (input.toLowerCase() === "reset") {
             (senderDb.sessionId ||= {}).qwen = tools.helper.randomUUID();
             senderDb.save();
-            return await ctx.reply(ctx.text.info("Riwayat percakapan berhasil direset!"));
+            return await ctx.reply(ctx.format.info("Riwayat percakapan berhasil direset!"));
         }
 
         try {

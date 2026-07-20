@@ -10,8 +10,8 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                ctx.text.generateCmdExample(ctx.used, "one last kiss - hikaru utada")
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                ctx.format.generateCmdExample(ctx.used, "one last kiss - hikaru utada")
             );
 
         try {
@@ -23,8 +23,8 @@ module.exports = {
             await ctx.reply(
                 `✦ — ${result.lyrics}\n` +
                 "\n" +
-                `❖ ${ctx.text.bold("Judul")}: ${result.title}\n` +
-                `❖ ${ctx.text.bold("Artis")}: ${result.artists}`
+                `❖ ${ctx.format.bold("Judul")}: ${result.title}\n` +
+                `❖ ${ctx.format.bold("Artis")}: ${result.artists}`
             );
         } catch (error) {
             await ctx.helper.handleError(ctx, error, true);

@@ -10,11 +10,11 @@ module.exports = {
 
         if (!url)
             return await ctx.reply(
-                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                ctx.text.generateCmdExample(ctx.used, "https://www.tiktok.com/@netflixanime/video/7596931111805078805")
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                ctx.format.generateCmdExample(ctx.used, "https://www.tiktok.com/@netflixanime/video/7596931111805078805")
             );
 
-        if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.text.info(config.msg.invalidUrl));
+        if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
 
         try {
             const apiUrl = ctx.api.createUrl("delirius", "/download/tiktok", {
@@ -27,7 +27,7 @@ module.exports = {
                     video: {
                         url: result.org
                     },
-                    caption: `❖ ${ctx.text.bold("URL")}: ${url}`
+                    caption: `❖ ${ctx.format.bold("URL")}: ${url}`
                 });
             } else {
                 const album = result.images.map(res => ({
@@ -38,7 +38,7 @@ module.exports = {
 
                 await ctx.reply({
                     album,
-                    caption: `❖ ${ctx.text.bold("URL")}: ${url}`
+                    caption: `❖ ${ctx.format.bold("URL")}: ${url}`
                 });
             }
         } catch (error) {

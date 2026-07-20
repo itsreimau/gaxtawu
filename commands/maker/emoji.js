@@ -10,8 +10,8 @@ module.exports = [{
 
         if (!emoji)
             return await ctx.reply(
-                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                ctx.text.generateCmdExample(ctx.used, "😱")
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                ctx.format.generateCmdExample(ctx.used, "😱")
             );
 
         try {
@@ -43,8 +43,8 @@ module.exports = [{
 
         if (!emoji1 || !emoji2)
             return await ctx.reply(
-                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                ctx.text.generateCmdExample(ctx.used, "😱 🤓")
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                ctx.format.generateCmdExample(ctx.used, "😱 🤓")
             );
 
         try {

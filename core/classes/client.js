@@ -295,16 +295,16 @@ class Client {
         return Utils.api;
     }
 
+    get format() {
+        return Utils.format;
+    }
+
     get helper() {
         return Utils.helper;
     }
 
     get list() {
         return Utils.list;
-    }
-
-    get text() {
-        return Utils.text;
     }
 
     checkOwner(jid = Baileys.PSA_WID, fromMe = false) {
@@ -453,25 +453,17 @@ class Client {
             const sticker = Buffer.isBuffer(content.sticker) ? content.sticker : content.sticker?.url;
             if (sticker) {
                 const {
-                    pack = config.sticker.packname,
-                        author = config.sticker.author,
-                        type = WASF.StickerTypes.FULL,
-                        categories = ["🌕"],
-                        id = Date.now().toString(),
-                        quality = 50,
-                        background,
-                        ...restOpts
+                    pack = config.sticker.packname, author = config.sticker.author, type = WASF.StickerTypes.FULL, categories = ["🌕"], id = Date.now().toString(), quality = 50, background, ...restOpts
                 } = options;
                 content = {
-                    sticker: await WASF.createSticker({
+                    sticker: await WASF.Sticker(sticker, {
                         pack,
                         author,
                         type,
                         categories,
                         id,
                         quality,
-                        background,
-                        sticker
+                        background
                     }).build()
                 };
                 options = restOpts;

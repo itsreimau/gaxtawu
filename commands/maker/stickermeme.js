@@ -12,13 +12,13 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                ctx.text.generateCmdExample(ctx.used, "get in the fucking robot|shinji!")
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                ctx.format.generateCmdExample(ctx.used, "get in the fucking robot|shinji!")
             );
 
         const isMedia = ctx.isMedia(["image", "sticker"]);
 
-        if (!isMedia) return await ctx.reply(ctx.text.generateInstruction(["send", "reply"], ["image", "sticker"]));
+        if (!isMedia) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image", "sticker"]));
 
         try {
             let [top, bottom] = input.split("|").map(inp => inp);

@@ -11,20 +11,20 @@ module.exports = [{
 
         if (!target.jid)
             return await ctx.reply({
-                text: `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                    `${ctx.text.generateCmdExample(ctx.used, "@6281234567891")}\n` +
-                    ctx.text.generateNotes([
+                text: `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                    `${ctx.format.generateCmdExample(ctx.used, "@6281234567891")}\n` +
+                    ctx.format.generateNotes([
                         "Balas/quote pesan untuk menjadikan pengirim sebagai akun target."
                     ]),
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(ctx.text.info("Dia adalah owner grup!"));
+        if (await ctx.group().isOwner(target.jid)) return await ctx.reply(ctx.format.info("Dia adalah owner grup!"));
 
         try {
             await ctx.group().promote(target.jid);
 
-            await ctx.reply(ctx.text.info("Berhasil ditingkatkan dari anggota menjadi admin!"));
+            await ctx.reply(ctx.format.info("Berhasil ditingkatkan dari anggota menjadi admin!"));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }
@@ -42,20 +42,20 @@ module.exports = [{
 
         if (!target.jid)
             return await ctx.reply({
-                text: `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                    `${ctx.text.generateCmdExample(ctx.used, "@6281234567891")}\n` +
-                    ctx.text.generateNotes([
+                text: `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                    `${ctx.format.generateCmdExample(ctx.used, "@6281234567891")}\n` +
+                    ctx.format.generateNotes([
                         "Balas/quote pesan untuk menjadikan pengirim sebagai akun target."
                     ]),
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (!await ctx.group().isAdmin(target.jid)) return await ctx.reply(ctx.text.info("Dia adalah anggota!"));
+        if (!await ctx.group().isAdmin(target.jid)) return await ctx.reply(ctx.format.info("Dia adalah anggota!"));
 
         try {
             await ctx.group().demote(target.jid);
 
-            await ctx.reply(ctx.text.info("Berhasil diturunkan dari admin menjadi anggota!"));
+            await ctx.reply(ctx.format.info("Berhasil diturunkan dari admin menjadi anggota!"));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

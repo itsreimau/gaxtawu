@@ -11,14 +11,14 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                ctx.text.generateCmdExample(ctx.used, "nirwabot")
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                ctx.format.generateCmdExample(ctx.used, "nirwabot")
             );
 
         try {
             await ctx.group().updateSubject(input);
 
-            await ctx.reply(ctx.text.info("Berhasil mengubah nama grup!"));
+            await ctx.reply(ctx.format.info("Berhasil mengubah nama grup!"));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

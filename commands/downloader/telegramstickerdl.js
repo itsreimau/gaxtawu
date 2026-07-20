@@ -12,11 +12,11 @@ module.exports = {
 
         if (!url)
             return await ctx.reply(
-                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                ctx.text.generateCmdExample(ctx.used, "https://t.me/addstickers/ReiAyanamiEvangelionCute")
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                ctx.format.generateCmdExample(ctx.used, "https://t.me/addstickers/ReiAyanamiEvangelionCute")
             );
 
-        if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.text.info(config.msg.invalidUrl));
+        if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
 
         try {
             const apiUrl = ctx.api.createUrl("delirius", "/download/telegramsticker", {

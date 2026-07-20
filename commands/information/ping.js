@@ -5,9 +5,9 @@ module.exports = {
     code: async (ctx) => {
         try {
             const startTime = performance.now();
-            const pongMsg = await ctx.reply(ctx.text.info("Pong!"));
+            const pongMsg = await ctx.reply(ctx.format.info("Pong!"));
             const responseTime = performance.now() - startTime;
-            await ctx.editMessage(ctx.id, pongMsg.key, ctx.text.info(`Pong! Merespon dalam ${ctx.text.convertMsToDuration(responseTime)}.`));
+            await ctx.editMessage(ctx.id, pongMsg.key, ctx.format.info(`Pong! Merespon dalam ${ctx.format.convertMsToDuration(responseTime)}.`));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

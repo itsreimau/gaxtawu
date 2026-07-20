@@ -11,10 +11,10 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                `${ctx.text.generateCmdExample(ctx.used, "open")}\n` +
-                ctx.text.generateNotes([
-                    `Ketik ${ctx.text.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.format.generateCmdExample(ctx.used, "open")}\n` +
+                ctx.format.generateNotes([
+                    `Ketik ${ctx.format.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
                 ])
             );
 
@@ -44,10 +44,10 @@ module.exports = {
                     await ctx.group().membersCanAddMemberMode("off");
                     break;
                 default:
-                    return await ctx.reply(ctx.text.info(`Setelan "${input}" tidak valid!`));
+                    return await ctx.reply(ctx.format.info(`Setelan "${input}" tidak valid!`));
             }
 
-            await ctx.reply(ctx.text.info("Berhasil mengubah setelan grup!"));
+            await ctx.reply(ctx.format.info("Berhasil mengubah setelan grup!"));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

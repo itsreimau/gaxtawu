@@ -8,14 +8,14 @@ module.exports = {
     code: async (ctx) => {
         const isMedia = ctx.isMedia(["audio", "document", "image", "sticker", "video"]);
 
-        if (!isMedia) return await ctx.reply(ctx.text.generateInstruction(["send", "reply"], ["audio", "document", "image", "sticker", "video"]));
+        if (!isMedia) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["audio", "document", "image", "sticker", "video"]));
 
         try {
             const result = await ctx.msg.upload() || await ctx.quoted.upload();
 
             await ctx.reply({
-                text: `❖ ${ctx.text.bold("URL")}: ${result}`,
-                footer: ctx.text.info("File akan kedaluwarsa setelah 3 jam."),
+                text: `❖ ${ctx.format.bold("URL")}: ${result}`,
+                footer: ctx.format.info("File akan kedaluwarsa setelah 3 jam."),
                 nativeFlow: [{
                     text: "Salin URL",
                     copy: result

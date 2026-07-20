@@ -6,33 +6,33 @@ module.exports = {
     category: "information",
     code: async (ctx) => {
         try {
-            const speedtestMsg = await ctx.reply(ctx.text.info("Memulai speedtest..."));
+            const speedtestMsg = await ctx.reply(ctx.format.info("Memulai speedtest..."));
 
-            await ctx.editMessage(ctx.id, speedtestMsg.key, ctx.text.info("Mengambil informasi client..."));
+            await ctx.editMessage(ctx.id, speedtestMsg.key, ctx.format.info("Mengambil informasi client..."));
             const service = new SpeedTestService();
             await service.fetchClientInfo();
 
-            await ctx.editMessage(ctx.id, speedtestMsg.key, ctx.text.info("Mencari server terbaik..."));
+            await ctx.editMessage(ctx.id, speedtestMsg.key, ctx.format.info("Mencari server terbaik..."));
             const bestServer = await service.findBestServer();
 
-            await ctx.editMessage(ctx.id, speedtestMsg.key, ctx.text.info("Menguji latency..."));
+            await ctx.editMessage(ctx.id, speedtestMsg.key, ctx.format.info("Menguji latency..."));
             const latencySpeed = (await service.testLatency(bestServer, 5)).latency;
 
-            await ctx.editMessage(ctx.id, speedtestMsg.key, ctx.text.info("Menguji kecepatan download..."));
+            await ctx.editMessage(ctx.id, speedtestMsg.key, ctx.format.info("Menguji kecepatan download..."));
             const downloadSpeed = await service.testDownload(bestServer, null, {
                 threads: 4,
                 duration: 10000
             });
 
-            await ctx.editMessage(ctx.id, speedtestMsg.key, ctx.text.info("Menguji kecepatan upload..."));
+            await ctx.editMessage(ctx.id, speedtestMsg.key, ctx.format.info("Menguji kecepatan upload..."));
             const uploadSpeed = await service.testUpload(bestServer, null, {
                 duration: 10000
             });
 
             await ctx.editMessage(ctx.id, speedtestMsg.key,
-                `❖ ${ctx.text.bold("Latency")}: ${ctx.text.convertMsToDuration(latencySpeed)}\n` +
-                `❖ ${ctx.text.bold("Download")}: ${ctx.text.formatSize(downloadSpeed, true)}\n` +
-                `❖ ${ctx.text.bold("Upload")}: ${ctx.text.formatSize(uploadSpeed, true)}`
+                `❖ ${ctx.format.bold("Latency")}: ${ctx.format.convertMsToDuration(latencySpeed)}\n` +
+                `❖ ${ctx.format.bold("Download")}: ${ctx.format.formatSize(downloadSpeed, true)}\n` +
+                `❖ ${ctx.format.bold("Upload")}: ${ctx.format.formatSize(uploadSpeed, true)}`
             );
         } catch (error) {
             await ctx.helper.handleError(ctx, error);

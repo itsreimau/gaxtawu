@@ -8,7 +8,7 @@ module.exports = {
     code: async (ctx) => {
         const isMedia = ctx.isMedia(["image"]);
 
-        if (!isMedia) return await ctx.reply(ctx.text.generateInstruction(["send", "reply"], ["image"]));
+        if (!isMedia) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
 
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
@@ -16,7 +16,7 @@ module.exports = {
             const dimensions = ctx.helper.calculateDimensions(image.width, image.height);
             await ctx.core.updateProfilePicture(ctx.me.id, buffer, dimensions);
 
-            await ctx.reply(ctx.text.info("Berhasil mengubah gambar profil bot!"));
+            await ctx.reply(ctx.format.info("Berhasil mengubah gambar profil bot!"));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

@@ -8,13 +8,13 @@ module.exports = {
     code: async (ctx) => {
         const isMedia = ctx.isMedia(["image"]);
 
-        if (!isMedia) return await ctx.reply(ctx.text.generateInstruction(["send", "reply"], ["image"]));
+        if (!isMedia) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
 
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
             await ctx.core.updateCoverPhoto(buffer);
 
-            await ctx.reply(ctx.text.info("Berhasil mengubah gambar sampul bot!"));
+            await ctx.reply(ctx.format.info("Berhasil mengubah gambar sampul bot!"));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

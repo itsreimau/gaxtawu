@@ -9,13 +9,13 @@ module.exports = {
 
         if (!input)
             return await ctx.reply(
-                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                ctx.text.generateCmdExample(ctx.used, "make it evangelion art style")
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                ctx.format.generateCmdExample(ctx.used, "make it evangelion art style")
             );
 
         const isMedia = ctx.isMedia(["image"]);
 
-        if (!isMedia) return await ctx.reply(ctx.text.generateInstruction(["send", "reply"], ["image"]));
+        if (!isMedia) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
@@ -28,7 +28,7 @@ module.exports = {
                 image: {
                     url: result
                 },
-                caption: `❖ ${ctx.text.bold("Prompt")}: ${input}`
+                caption: `❖ ${ctx.format.bold("Prompt")}: ${input}`
             });
         } catch (error) {
             await ctx.helper.handleError(ctx, error, true);

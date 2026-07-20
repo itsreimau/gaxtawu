@@ -11,18 +11,18 @@ module.exports = [{
 
         if (!target.jid)
             return await ctx.reply({
-                text: `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                    `${ctx.text.generateCmdExample(ctx.used, "@6281234567891 8 -s")}\n` +
-                    `${ctx.text.generateNotes([
+                text: `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                    `${ctx.format.generateCmdExample(ctx.used, "@6281234567891 8 -s")}\n` +
+                    `${ctx.format.generateNotes([
                         "Balas/quote pesan untuk menjadikan pengirim sebagai akun target."
                     ])}\n` +
-                    ctx.text.generatesFlagInfo({
+                    ctx.format.generatesFlagInfo({
                         "-s": "Tetap diam dengan tidak menyiarkan ke akun target"
                     }),
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
 
-        if (daysAmount && daysAmount <= 0) return await ctx.reply(ctx.text.info("Durasi premium (dalam hari) harus diisi dan lebih dari 0!"));
+        if (daysAmount && daysAmount <= 0) return await ctx.reply(ctx.format.info("Durasi premium (dalam hari) harus diisi dan lebih dari 0!"));
 
         try {
             const flag = ctx.flag({
@@ -41,16 +41,16 @@ module.exports = [{
                 targetDb.premiumExpiration = expirationDate;
                 targetDb.save();
 
-                if (!silent && !config.system.restrict) await ctx.sendMessage(target.jid, ctx.text.info(`Anda telah ditambahkan sebagai pengguna premium oleh owner selama ${daysAmount} hari!`));
+                if (!silent && !config.system.restrict) await ctx.sendMessage(target.jid, ctx.format.info(`Anda telah ditambahkan sebagai pengguna premium oleh owner selama ${daysAmount} hari!`));
 
-                await ctx.reply(ctx.text.info(`Berhasil menambahkan premium selama ${daysAmount} hari kepada pengguna itu!`));
+                await ctx.reply(ctx.format.info(`Berhasil menambahkan premium selama ${daysAmount} hari kepada pengguna itu!`));
             } else {
                 targetDb.premiumExpiration == null;
                 targetDb.save();
 
-                if (!silent && !config.system.restrict) await ctx.sendMessage(target.jid, ctx.text.info("Anda telah ditambahkan sebagai pengguna premium selamanya oleh owner!"));
+                if (!silent && !config.system.restrict) await ctx.sendMessage(target.jid, ctx.format.info("Anda telah ditambahkan sebagai pengguna premium selamanya oleh owner!"));
 
-                await ctx.reply(ctx.text.info("Berhasil menambahkan premium selamanya kepada pengguna itu!"));
+                await ctx.reply(ctx.format.info("Berhasil menambahkan premium selamanya kepada pengguna itu!"));
             }
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
@@ -68,12 +68,12 @@ module.exports = [{
 
         if (!target.jid)
             return await ctx.reply({
-                text: `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                    `${ctx.text.generateCmdExample(ctx.used, "@6281234567891 -s")}\n` +
-                    `${ctx.text.generateNotes([
+                text: `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                    `${ctx.format.generateCmdExample(ctx.used, "@6281234567891 -s")}\n` +
+                    `${ctx.format.generateNotes([
                         "Balas/quote pesan untuk menjadikan pengirim sebagai akun target."
                     ])}\n` +
-                    ctx.text.generatesFlagInfo({
+                    ctx.format.generatesFlagInfo({
                         "-s": "Tetap diam dengan tidak menyiarkan ke akun target"
                     }),
                 mentions: ["6281234567891@s.whatsapp.net"]
@@ -93,9 +93,9 @@ module.exports = [{
                 }
             });
             const silent = flag?.silent;
-            if (!silent && !config.system.restrict) await ctx.sendMessage(target.jid, ctx.text.info("Anda telah dihapus sebagai pengguna premium oleh owner!"));
+            if (!silent && !config.system.restrict) await ctx.sendMessage(target.jid, ctx.format.info("Anda telah dihapus sebagai pengguna premium oleh owner!"));
 
-            await ctx.reply(ctx.text.info("Berhasil menghapuskan premium kepada pengguna itu!"));
+            await ctx.reply(ctx.format.info("Berhasil menghapuskan premium kepada pengguna itu!"));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

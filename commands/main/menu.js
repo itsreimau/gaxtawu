@@ -51,12 +51,12 @@ module.exports = {
                 const selectedCats = input === "all" || ctx.used.command === "allmenu" ? Object.keys(tag) : (tag[input] ? [input] : []);
                 const commandsData = getCommands(selectedCats);
 
-                if (Object.keys(commandsData).length === 0) return await ctx.reply(ctx.text.info("Menu tidak ditemukan!"));
+                if (Object.keys(commandsData).length === 0) return await ctx.reply(ctx.format.info("Menu tidak ditemukan!"));
 
                 let text = "";
                 for (const [key, list] of Object.entries(commandsData)) {
                     text += "╭┈┈┈┈┈┈ ♡\n" +
-                        `┊ ✦ — ${ctx.text.bold(tag[key] || key)}\n`;
+                        `┊ ✦ — ${ctx.format.bold(tag[key] || key)}\n`;
                     list.forEach(c => {
                         text += `┊ ❖ ${ctx.used.prefix + c.name} ${formatPerms(c.permissions)}\n`;
                     });
@@ -89,16 +89,16 @@ module.exports = {
                 const userDb = ctx.db.user;
                 const text = `✦ — Halo, @${ctx.getId(ctx.sender.jid)}! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}.\n` +
                     "\n" +
-                    `❖ ${ctx.text.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${ctx.text.convertMsToDuration(userDb.premiumExpiration - Date.now(), ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
-                    `❖ ${ctx.text.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
-                    `❖ ${ctx.text.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Unlimited" : (userDb?.coin || 0)}\n` +
+                    `❖ ${ctx.format.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${ctx.format.convertMsToDuration(userDb.premiumExpiration - Date.now(), ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
+                    `❖ ${ctx.format.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
+                    `❖ ${ctx.format.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Unlimited" : (userDb?.coin || 0)}\n` +
                     "\n" +
-                    `❖ ${ctx.text.bold("Mode")}: ${ctx.text.ucwords(ctx.db.bot?.mode || "public")}\n` +
-                    `❖ ${ctx.text.bold("Uptime")}: ${ctx.text.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
-                    `❖ ${ctx.text.bold("Database")}: ${ctx.db.users.totalEntries} users, ${ctx.db.groups.totalEntries}/${Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id).length} groups\n` +
-                    `❖ ${ctx.text.bold("Library")}: Baileys (${ctx.helper.getBaileysVesion()})`
+                    `❖ ${ctx.format.bold("Mode")}: ${ctx.format.ucwords(ctx.db.bot?.mode || "public")}\n` +
+                    `❖ ${ctx.format.bold("Uptime")}: ${ctx.format.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
+                    `❖ ${ctx.format.bold("Database")}: ${ctx.db.users.totalEntries} users, ${ctx.db.groups.totalEntries}/${Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id).length} groups\n` +
+                    `❖ ${ctx.format.bold("Library")}: Baileys (${ctx.helper.getBaileysVersion()})`
                 "\n" +
-                `✧ ${ctx.text.italic("Jangan lupa berdonasi agar bot tetap online.")}`;
+                `✧ ${ctx.format.italic("Jangan lupa berdonasi agar bot tetap online.")}`;
 
                 const rows = Object.keys(tag).map(category => ({
                     title: tag[category],

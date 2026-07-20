@@ -12,18 +12,18 @@ module.exports = [{
 
         if (!target.jid)
             return await ctx.reply(
-                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                `${ctx.text.generateCmdExample(ctx.used, "1234567890 8 -s")}\n` +
-                `${ctx.text.generateNotes([
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.format.generateCmdExample(ctx.used, "1234567890 8 -s")}\n` +
+                `${ctx.format.generateNotes([
                     "Gunakan di grup untuk otomatis menyewakan grup tersebut."
                 ])}\n` +
-                ctx.text.generatesFlagInfo({
+                ctx.format.generatesFlagInfo({
                     "-s": "Tetap diam dengan tidak menyiarkan ke owner grup"
                 })
             );
 
-        if (!await ctx.group(target.jid)) return await ctx.reply(ctx.text.info("Grup tidak valid atau bot tidak ada di grup tersebut!"));
-        if (daysAmount && daysAmount <= 0) return await ctx.reply(ctx.text.info("Durasi sewa (dalam hari) harus diisi dan lebih dari 0!"));
+        if (!await ctx.group(target.jid)) return await ctx.reply(ctx.format.info("Grup tidak valid atau bot tidak ada di grup tersebut!"));
+        if (daysAmount && daysAmount <= 0) return await ctx.reply(ctx.format.info("Durasi sewa (dalam hari) harus diisi dan lebih dari 0!"));
 
         try {
             const flag = ctx.flag({
@@ -54,26 +54,26 @@ module.exports = [{
 
                 if (!silent && groupOwner && !config.system.restrict)
                     await ctx.sendMessage(groupOwner, {
-                        text: ctx.text.info(`Bot berhasil disewakan ke grup @${groupMentions.groupJid} selama ${daysAmount} hari!`),
+                        text: ctx.format.info(`Bot berhasil disewakan ke grup @${groupMentions.groupJid} selama ${daysAmount} hari!`),
                         contextInfo: {
                             groupMentions
                         }
                     });
 
-                await ctx.reply(ctx.text.info(`Berhasil menyewakan bot ke grup ${ctx.isGroup() ? "ini" : "itu"} selama ${daysAmount} hari!`));
+                await ctx.reply(ctx.format.info(`Berhasil menyewakan bot ke grup ${ctx.isGroup() ? "ini" : "itu"} selama ${daysAmount} hari!`));
             } else {
                 targetDb.sewaExpiration = false;
                 targetDb.save();
 
                 if (!silent && groupOwner && !config.system.restrict)
                     await ctx.sendMessage(groupOwner, {
-                        text: ctx.text.info(`Bot berhasil disewakan ke grup @${groupMentions.groupJid} selamanya!`),
+                        text: ctx.format.info(`Bot berhasil disewakan ke grup @${groupMentions.groupJid} selamanya!`),
                         contextInfo: {
                             groupMentions
                         }
                     });
 
-                await ctx.reply(ctx.text.info(`Berhasil menyewakan bot ke grup ${ctx.isGroup() ? "ini" : "itu"} selamanya!`));
+                await ctx.reply(ctx.format.info(`Berhasil menyewakan bot ke grup ${ctx.isGroup() ? "ini" : "itu"} selamanya!`));
             }
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
@@ -93,17 +93,17 @@ module.exports = [{
 
         if (!target.jid)
             return await ctx.reply(
-                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                `${ctx.text.generateCmdExample(ctx.used, "1234567890 -s")}\n` +
-                `${ctx.text.generateNotes([
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.format.generateCmdExample(ctx.used, "1234567890 -s")}\n` +
+                `${ctx.format.generateNotes([
                     "Gunakan di grup untuk otomatis menghapus sewa grup tersebut."
             ])}\n` +
-                ctx.text.generatesFlagInfo({
+                ctx.format.generatesFlagInfo({
                     "-s": "Tetap diam dengan tidak menyiarkan ke owner grup"
                 })
             );
 
-        if (!await ctx.group(target.jid)) return await ctx.reply(ctx.text.info("Grup tidak valid atau bot tidak ada di grup tersebut!"));
+        if (!await ctx.group(target.jid)) return await ctx.reply(ctx.format.info("Grup tidak valid atau bot tidak ada di grup tersebut!"));
 
         try {
             const targetDb = ctx.getDb("users", target.jid);
@@ -127,14 +127,14 @@ module.exports = [{
                     groupSubject: await group.name()
                 }];
                 await ctx.sendMessage(groupOwner, {
-                    text: ctx.text.info(`Sewa bot untuk grup @${groupMentions.groupJid} telah dihentikan oleh owner!`),
+                    text: ctx.format.info(`Sewa bot untuk grup @${groupMentions.groupJid} telah dihentikan oleh owner!`),
                     contextInfo: {
                         groupMentions
                     }
                 });
             }
 
-            await ctx.reply(ctx.text.info(`Berhasil menghapus sewa bot untuk grup ${ctx.isGroup() ? "ini" : "itu"}!`));
+            await ctx.reply(ctx.format.info(`Berhasil menghapus sewa bot untuk grup ${ctx.isGroup() ? "ini" : "itu"}!`));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

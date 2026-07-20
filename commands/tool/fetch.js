@@ -12,11 +12,11 @@ module.exports = {
 
         if (!url)
             return await ctx.reply(
-                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                ctx.text.generateCmdExample(ctx.used, "https://itsreimau.is-a.dev")
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                ctx.format.generateCmdExample(ctx.used, "https://itsreimau.is-a.dev")
             );
 
-        if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.text.info(config.msg.invalidUrl));
+        if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
 
         try {
             const response = await ctx.request.get(url, {
@@ -79,7 +79,7 @@ module.exports = {
 
 function walkJSON(json, depth = 0, array = []) {
     for (const key in json) {
-        array.push(`${"┊".repeat(depth)}${depth > 0 ? " " : ""}${ctx.text.bold(key)}:`);
+        array.push(`${"┊".repeat(depth)}${depth > 0 ? " " : ""}${ctx.format.bold(key)}:`);
         if (typeof json[key] === "object" && json[key] !== undefined) {
             walkJSON(json[key], depth + 1, array);
         } else {

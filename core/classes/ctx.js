@@ -75,16 +75,16 @@ class Ctx {
         return Utils.api;
     }
 
+    get format() {
+        return Utils.format;
+    }
+
     get helper() {
         return Utils.helper;
     }
 
     get list() {
         return Utils.list;
-    }
-
-    get text() {
-        return Utils.text;
     }
 
     get request() {
@@ -361,7 +361,7 @@ class Ctx {
         return Baileys.getDevice(id);
     }
     checkOwner(jid = this._sender.lid, fromMe = false) {
-        return Utils.helper.checkOwner(jid, this.owner, fromMe);
+        return Utils.helper.checkOwner(jid, this._self.owner, fromMe);
     }
     getPushName(jid = this._sender.lid) {
         return Utils.helper.getPushName(jid, this._db);

@@ -10,10 +10,10 @@ module.exports = {
 
         if (!passage && !number)
             return await ctx.reply(
-                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                `${ctx.text.generateCmdExample(ctx.used, "kej 2:18")}\n` +
-                ctx.text.generateNotes([
-                    `Ketik ${ctx.text.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.format.generateCmdExample(ctx.used, "kej 2:18")}\n` +
+                ctx.format.generateNotes([
+                    `Ketik ${ctx.format.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`
                 ])
             );
 
@@ -30,14 +30,14 @@ module.exports = {
             const result = (await ctx.request.get(apiUrl)).data.bible.book;
 
             const resultText = result.chapter.verses.map(vers =>
-                `❖ ${ctx.text.bold("Ayat")}: ${vers.number}\n` +
+                `❖ ${ctx.format.bold("Ayat")}: ${vers.number}\n` +
                 vers.text
             ).join("\n");
             await ctx.reply(
                 `${resultText}\n` +
                 "\n" +
-                `❖ ${ctx.text.bold("Nama")}: ${result.name}\n` +
-                `❖ ${ctx.text.bold("Bab")}: ${result.chapter.chap}`
+                `❖ ${ctx.format.bold("Nama")}: ${result.name}\n` +
+                `❖ ${ctx.format.bold("Bab")}: ${result.chapter.chap}`
             );
         } catch (error) {
             await ctx.helper.handleError(ctx, error, true);

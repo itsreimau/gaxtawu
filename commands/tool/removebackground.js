@@ -8,7 +8,7 @@ module.exports = {
     code: async (ctx) => {
         const isMedia = ctx.isMedia(["image"]);
 
-        if (!isMedia) return await ctx.reply(ctx.text.generateInstruction(["send", "reply"], ["image"]));
+        if (!isMedia) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
 
         try {
             const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();

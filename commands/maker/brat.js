@@ -9,11 +9,11 @@ module.exports = [{
 
         if (!input)
             return await ctx.reply(
-                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                ctx.text.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                ctx.format.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")
             );
 
-        if (input.length > 1000) return await ctx.reply(ctx.text.info("Maksimal 1000 karakter!"));
+        if (input.length > 1000) return await ctx.reply(ctx.format.info("Maksimal 1000 karakter!"));
 
         try {
             const result = ctx.api.createUrl("delirius", "/canvas/brat", {
@@ -44,11 +44,11 @@ module.exports = [{
 
         if (!input)
             return await ctx.reply(
-                `${ctx.text.generateInstruction(["send"], ["text"])}\n` +
-                ctx.text.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                ctx.format.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")
             );
 
-        if (input.length > 1000) return await ctx.reply(ctx.text.info("Maksimal 1000 karakter!"));
+        if (input.length > 1000) return await ctx.reply(ctx.format.info("Maksimal 1000 karakter!"));
 
         try {
             const result = ctx.api.createUrl("delirius", "/canvas/bratvideo", {
