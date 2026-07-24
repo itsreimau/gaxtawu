@@ -19,14 +19,14 @@ module.exports = {
         const senderDb = ctx.db.user;
 
         if (input.toLowerCase() === "reset") {
-            (senderDb.sessionId ||= {}).perplexity = tools.helper.randomUUID();
+            (senderDb.sessionId ||= {}).perplexity = ctx.helper.randomUUID();
             senderDb.save();
             return await ctx.reply(ctx.format.info("Riwayat percakapan berhasil direset!"));
         }
 
         try {
             if (!senderDb.sessionId?.perplexity) {
-                (senderDb.sessionId ||= {}).perplexity = tools.helper.randomUUID();
+                (senderDb.sessionId ||= {}).perplexity = ctx.helper.randomUUID();
                 senderDb.save();
             }
             const apiUrl = ctx.api.createUrl("alwayscodex", "/api/ai/chatgpt-org", {

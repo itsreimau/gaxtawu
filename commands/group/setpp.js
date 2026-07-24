@@ -8,9 +8,7 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const isMedia = ctx.isMedia(["image"]);
-
-        if (!isMedia) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
+        if (!ctx.isMedia(["image"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
 
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();

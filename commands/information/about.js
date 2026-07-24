@@ -1,3 +1,5 @@
+const pkg = require("./package.json");
+
 module.exports = {
     name: "about",
     aliases: ["bot", "infobot"],

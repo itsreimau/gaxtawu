@@ -16,10 +16,8 @@ module.exports = {
                 ])
             );
 
-        const isMedia = ctx.isMedia(["image"]);
-
         try {
-            if (!!isMedia) {
+            if (!!ctx.isMedia(["image"])) {
                 const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
                 const apiUrl = ctx.api.createUrl("lexcode", "/api/ai/gemini-2-5-flash", {
                     text: input,

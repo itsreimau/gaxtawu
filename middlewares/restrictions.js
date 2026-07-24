@@ -1,4 +1,4 @@
-const { Cooldown } = require("#core");
+const { Cooldown } = require("../lib");
 const moment = require("moment-timezone");
 
 module.exports = (bot) => {

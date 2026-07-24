@@ -6,9 +6,7 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const isMedia = ctx.isMedia(["audio", "document", "image", "sticker", "video"]);
-
-        if (!isMedia) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["audio", "document", "image", "sticker", "video"]));
+        if (!ctx.isMedia(["audio", "document", "image", "sticker", "video"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["audio", "document", "image", "sticker", "video"]));
 
         try {
             const result = await ctx.msg.upload() || await ctx.quoted.upload();

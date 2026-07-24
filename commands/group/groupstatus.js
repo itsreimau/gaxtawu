@@ -9,11 +9,7 @@ module.exports = {
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.body;
 
-        const isMedia = ctx.isMedia(["image", "video"]);
-
-        const type = isMedia;
-
-        if (!input && !type)
+        if (!input)
             return await ctx.reply(
                 `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
                 ctx.format.generateCmdExample(ctx.used, "halo, dunia!")
@@ -21,6 +17,7 @@ module.exports = {
 
         try {
             let content;
+            const type = ctx.isMedia(["image", "video"]);
             if (["image", "video"].includes(type)) {
                 const buffer = await ctx.msg.download() || await ctx.quoted.download();
                 content = {

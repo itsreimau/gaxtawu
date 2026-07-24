@@ -3,9 +3,7 @@ module.exports = {
     aliases: ["s", "stiker"],
     category: "converter",
     code: async (ctx) => {
-        const isMedia = ctx.isMedia(["image", "video"]);
-
-        if (!isMedia) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image", "video"]));
+        if (!ctx.isMedia(["image", "video"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image", "video"]));
 
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();

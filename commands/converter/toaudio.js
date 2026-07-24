@@ -6,9 +6,7 @@ module.exports = {
         coin: 10
     },
     code: async (ctx) => {
-        const isMedia = ctx.isMedia(["video"]);
-
-        if (!isMedia) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["video"]));
+        if (!ctx.isMedia(["video"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["video"]));
 
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();

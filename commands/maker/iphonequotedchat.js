@@ -21,7 +21,7 @@ module.exports = {
         try {
             const result = ctx.api.createUrl("nexray", "/maker/v1/iqc", {
                 text: input,
-                provider: await checkBrandProvider(ctx.getId(ctx.sender.jid)),
+                provider: await checkBrandProvider(ctx, ctx.getId(ctx.sender.jid)),
                 jam: moment.tz(config.system.timeZone).format("HH:mm"),
                 baterai: Math.floor(Math.random() * 100) + 1
             });
@@ -37,7 +37,7 @@ module.exports = {
     }
 };
 
-async function checkBrandProvider(number) {
+async function checkBrandProvider(ctx, number) {
     const provider = (await ctx.request.get(ctx.api.createUrl("sanka", "/random/cek-nomor", {
         nomor: number.replace(/^62/, "0")
     }, "apikey"))).data.data.operator;

@@ -1,5 +1,5 @@
 require("node:process").loadEnvFile();
-const { Config } = require("#core");
+const { Config } = require("./lib");
 const http = require("http");
 const path = require("node:path");
 const util = require("node:util");

@@ -9,7 +9,7 @@ module.exports = {
     },
     code: async (ctx) => {
         const key = ctx.args[0];
-        const text = ctx.text ? (ctx.format.startsWith(`${key} `) ? ctx.format.slice(key.length + 1) : ctx.text) : ctx.quoted?.body;
+        const text = ctx.text ? (ctx.text.startsWith(`${key} `) ? ctx.text.slice(key.length + 1) : ctx.text) : ctx.quoted?.body;
 
         if (key?.toLowerCase() === "list") {
             const listText = await ctx.list.get(ctx, "settext");

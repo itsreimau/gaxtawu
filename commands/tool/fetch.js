@@ -69,6 +69,18 @@ module.exports = {
                     json = JSON.parse(text);
                 } catch {}
 
+                const walkJSON = (json, depth = 0, array = []) => {
+                    for (const key in json) {
+                        array.push(`${"┊".repeat(depth)}${depth > 0 ? " " : ""}${ctx.format.bold(key)}:`);
+                        if (typeof json[key] === "object" && json[key] !== undefined) {
+                            walkJSON(json[key], depth + 1, array);
+                        } else {
+                            array[array.length - 1] += ` ${json[key]}`;
+                        }
+                    }
+                    return array.join("\n");
+                }
+
                 await ctx.reply(json ? walkJSON(json) : text);
             }
         } catch (error) {
@@ -76,15 +88,3 @@ module.exports = {
         }
     }
 };
-
-function walkJSON(json, depth = 0, array = []) {
-    for (const key in json) {
-        array.push(`${"┊".repeat(depth)}${depth > 0 ? " " : ""}${ctx.format.bold(key)}:`);
-        if (typeof json[key] === "object" && json[key] !== undefined) {
-            walkJSON(json[key], depth + 1, array);
-        } else {
-            array[array.length - 1] += ` ${json[key]}`;
-        }
-    }
-    return array.join("\n");
-}

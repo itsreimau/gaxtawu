@@ -9,7 +9,7 @@ module.exports = {
 
         try {
             const command = ctx.msg.body.slice(2);
-            const output = await promisify(exec)(command);
+            const output = await util.promisify(exec)(command);
 
             await ctx.reply(ctx.format.monospace(output.stdout || output.stderr));
         } catch (error) {

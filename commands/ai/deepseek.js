@@ -19,14 +19,14 @@ module.exports = {
         const senderDb = ctx.db.user;
 
         if (input.toLowerCase() === "reset") {
-            (senderDb.sessionId ||= {}).deepseek = tools.helper.randomUUID();
+            (senderDb.sessionId ||= {}).deepseek = ctx.helper.randomUUID();
             senderDb.save();
             return await ctx.reply(ctx.format.info("Riwayat percakapan berhasil direset!"));
         }
 
         try {
             if (!senderDb.sessionId?.deepseek) {
-                (senderDb.sessionId ||= {}).deepseek = tools.helper.randomUUID();
+                (senderDb.sessionId ||= {}).deepseek = ctx.helper.randomUUID();
                 senderDb.save();
             }
             const apiUrl = ctx.api.createUrl("alwayscodex", "/api/ai/deepseek-flash", {

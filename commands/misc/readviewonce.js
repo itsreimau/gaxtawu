@@ -3,9 +3,7 @@ module.exports = {
     aliases: ["rvo"],
     category: "misc",
     code: async (ctx) => {
-        const isMedia = ctx.isMedia(["audio", "image", "video"], ["quoted"]);
-
-        if (!isMedia) return await ctx.reply(ctx.format.generateInstruction(["reply"], ["audio", "image", "video"]));
+        if (!ctx.isMedia(["audio", "image", "video"], ["quoted"])) return await ctx.reply(ctx.format.generateInstruction(["reply"], ["audio", "image", "video"]));
 
         const quotedMessage = ctx.quoted.message;
 

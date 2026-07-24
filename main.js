@@ -1,4 +1,4 @@
-const { Client, CommandHandler } = require("#core");
+const { Client, CommandHandler } = require("./lib");
 const path = require("node:path");
 const util = require("node:util");
 const Events = require("./events");

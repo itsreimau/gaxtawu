@@ -80,11 +80,7 @@ module.exports = [{
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.body;
 
-        const isMedia = ctx.isMedia(["image", "video"]);
-
-        const type = isMedia;
-
-        if (!input && !type)
+        if (!input)
             return await ctx.reply(
                 `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
                 `${ctx.format.generateCmdExample(ctx.used, "halo, dunia!")}\n` +
@@ -114,6 +110,7 @@ module.exports = [{
         try {
             const groupJids = Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !blacklist.includes(group.id) && !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id);
             let content;
+            const type = ctx.isMedia(["image", "video"]);
             if (["image", "video"].includes(type)) {
                 const buffer = await ctx.msg.download() || await ctx.quoted.download();
                 content = {
