@@ -224,6 +224,40 @@ function parseCommand(prefix, body) {
     };
 }
 
+function parseContact(contact) {
+    if (contact.vcard)
+        return {
+            displayName: contact.displayName || contact.fullName || "nirwabot",
+            vcard: contact.vcard
+        };
+    if (contact.number) {
+        const clean = contact.number.toString().replace(/\s/g, "");
+        const vcard = vCard.generate({
+            version: [{
+                value: "3.0"
+            }],
+            fn: [{
+                value: contact.fullName || contact.displayName || "nirwabot"
+            }],
+            org: [{
+                value: [contact.org || ""]
+            }],
+            tel: [{
+                value: `+${clean}`,
+                meta: {
+                    type: ["CELL", "VOICE"],
+                    waid: [clean]
+                }
+            }]
+        });
+        return {
+            displayName: contact.fullName || contact.displayName || "nirwabot",
+            vcard
+        };
+    }
+    return null;
+}
+
 module.exports = {
     areJidsSameUser: Baileys.areJidsSameUser,
     calculateDelay,
@@ -244,5 +278,6 @@ module.exports = {
     handleError,
     isUrl,
     parseCommand,
+    parseContact,
     randomUUID: crypto.randomUUID
 };

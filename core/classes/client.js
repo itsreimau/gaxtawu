@@ -67,6 +67,7 @@ class Client {
     _initMessaging(msgOpts) {
         this.autoRead = msgOpts.autoRead || false;
         this.prefix = msgOpts.prefix || /^[°•π÷×¶∆£¢€¥®™+✓_=|/~!?@#%^&.©^]/i;
+        this.customMessageId = msgOpts.messageId || "NIRWABOT";
     }
 
     _initDatabase(dbOpts) {
@@ -198,7 +199,7 @@ class Client {
         if (event.type !== "notify") return;
 
         for (const message of event.messages) {
-            if (message.key.fromMe && message.key.id.includes("STARFALL")) continue;
+            if (message.key.fromMe && message.key.id.includes(this.customMessageId)) continue;
             if (this._shouldIgnore(message.key.id)) continue;
 
             const normalized = this._normalizeMessage(message, event);
@@ -453,10 +454,17 @@ class Client {
             const sticker = Buffer.isBuffer(content.sticker) ? content.sticker : content.sticker?.url;
             if (sticker) {
                 const {
-                    pack = config.sticker.packname, author = config.sticker.author, type = WASF.StickerTypes.FULL, categories = ["🌕"], id = Date.now().toString(), quality = 50, background, ...restOpts
+                    pack = config.sticker.packname,
+                        author = config.sticker.author,
+                        type = WASF.StickerTypes.FULL,
+                        categories = ["🌕"],
+                        id = Date.now().toString(),
+                        quality = 50,
+                        background,
+                        ...restOpts
                 } = options;
                 content = {
-                    sticker: await WASF.Sticker(sticker, {
+                    sticker: await new WASF.Sticker(sticker, {
                         pack,
                         author,
                         type,
@@ -471,7 +479,7 @@ class Client {
         }
         if (content?.contacts) {
             if (Array.isArray(content.contacts)) {
-                const parsed = content.contacts.map(this._parseContact).filter(Boolean);
+                const parsed = content.contacts.map(Utis.parseContact).filter(Boolean);
                 content = {
                     contacts: {
                         displayName: "nirwabot",
@@ -479,7 +487,7 @@ class Client {
                     }
                 };
             } else if (content.contacts?.contacts) {
-                const parsed = content.contacts.contacts.map(this._parseContact).filter(Boolean);
+                const parsed = content.contacts.contacts.map(Utis.parseContact).filter(Boolean);
                 content = {
                     contacts: {
                         displayName: content.contacts.displayName || "nirwabot",
@@ -487,7 +495,7 @@ class Client {
                     }
                 };
             } else {
-                const parsed = this._parseContact(content.contacts);
+                const parsed = Utis.parseContact(content.contacts);
                 if (parsed)
                     content = {
                         contacts: parsed
@@ -496,41 +504,8 @@ class Client {
         }
         if (Baileys.isPnUser(jid) || Baileys.isLidUser(jid)) content.ai = true;
         if ((content.title || content.subtitle || content.footer) && !content.buttons && !content.nativeFlow) content.nativeFlow = {};
+        if (!options.messageId) options.messageId = Baileys.generateMessageIDV2().replace("STARFALL", this.customMessageId);
         return await this.core.sendMessage(jid, content, options);
-    }
-
-    _parseContact(contact) {
-        if (contact.vcard)
-            return {
-                displayName: contact.displayName || contact.fullName || "nirwabot",
-                vcard: contact.vcard
-            };
-        if (contact.number) {
-            const clean = contact.number.toString().replace(/\s/g, "");
-            const vcard = vCard.generate({
-                version: [{
-                    value: "3.0"
-                }],
-                fn: [{
-                    value: contact.fullName || contact.displayName || "nirwabot"
-                }],
-                org: [{
-                    value: [contact.org || ""]
-                }],
-                tel: [{
-                    value: `+${clean}`,
-                    meta: {
-                        type: ["CELL", "VOICE"],
-                        waid: [clean]
-                    }
-                }]
-            });
-            return {
-                displayName: contact.fullName || contact.displayName || "nirwabot",
-                vcard
-            };
-        }
-        return null;
     }
 }
 

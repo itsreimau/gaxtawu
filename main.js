@@ -44,7 +44,8 @@ const bot = new Client({
     },
     messaging: {
         autoRead: system.autoRead,
-        prefix: parsePrefix(botConfig?.prefix)
+        prefix: parsePrefix(botConfig?.prefix),
+        messageId: system?.messageId
     },
     database: {
         dir: directory.database,

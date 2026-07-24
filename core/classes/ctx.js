@@ -116,7 +116,7 @@ class Ctx {
             key: {
                 remoteJid: chat,
                 id: context.stanzaId,
-                fromMe: Baileys.areJidsSameUser(sender, this.me.id),
+                fromMe: Baileys.areJidsSameUser(sender, this.me?.id),
                 participant: Baileys.isJidGroup(chat) ? sender : null
             },
             id: chat,

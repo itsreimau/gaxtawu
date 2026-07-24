@@ -134,7 +134,7 @@ class GroupData {
         return await this.isOwner(this.ctx._sender.lid);
     }
     async isBotAdmin() {
-        return await this.isAdmin(this.ctx.me.lid);
+        return await this.isAdmin(this.ctx.me?.lid);
     }
 }
 
