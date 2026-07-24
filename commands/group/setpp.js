@@ -8,11 +8,13 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        if (!ctx.isMedia(["image"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
+        const type = ctx.isMedia(["image"]);
+
+        if (!type) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
 
         try {
             const buffer = await ctx.msg.download() || await ctx.quoted.download();
-            const image = isMedia ? ctx.msg.message.imageMessage : ctx.quoted.message.imageMessage;
+            const image = type ? ctx.msg.message.imageMessage : ctx.quoted.message.imageMessage;
             const dimensions = ctx.helper.calculateDimensions(image.width, image.height);
             await ctx.group().updateProfilePicture(buffer, dimensions);
 
